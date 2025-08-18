@@ -16,7 +16,8 @@ const RegionalMateApp: React.FC = () => {
         
         {/* Photo collage section */}
         <div className="pt-16 pb-8 px-6">
-          <div className="grid grid-cols-3 gap-3 h-80">
+          <div className="relative">
+            <div className="grid grid-cols-3 gap-3 h-80">
             {/* Left column */}
             <div className="flex flex-col gap-3">
               <div className="flex-1 rounded-xl overflow-hidden">
@@ -72,6 +73,10 @@ const RegionalMateApp: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
+            </div>
+            
+            {/* White gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white/40 pointer-events-none" />
             </div>
           </div>
         </div>
