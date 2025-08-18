@@ -90,7 +90,9 @@ const RegionalMateApp: React.FC = () => {
         {/* Australia icon */}
         <div className="px-6 pb-6">
           <div className="flex justify-center">
-            <AustraliaIcon className="w-16 h-12" />
+            <div className="bg-white p-4 rounded-3xl shadow-lg">
+              <AustraliaIcon className="w-16 h-12" />
+            </div>
           </div>
         </div>
 
