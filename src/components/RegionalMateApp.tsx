@@ -10,9 +10,15 @@ import vineyardLandscape from '@/assets/vineyard-landscape.jpg';
 
 const RegionalMateApp: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Main container for iPhone 16 Pro Max */}
-      <div className="max-w-sm mx-auto w-full flex-1 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      {/* iPhone 16 Pro Max frame */}
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+          {/* Dynamic Island */}
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
+          
+          {/* Main content container */}
+          <div className="w-full h-full flex flex-col">
         
         {/* Photo collage section */}
         <div className="pt-16 pb-8 px-6">
@@ -74,10 +80,10 @@ const RegionalMateApp: React.FC = () => {
                 />
               </div>
             </div>
-            
-            {/* White gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white/40 pointer-events-none" />
             </div>
+            
+            {/* Gradient overlay - thicker toward bottom */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/40 to-white/70 pointer-events-none" />
           </div>
         </div>
 
@@ -93,7 +99,7 @@ const RegionalMateApp: React.FC = () => {
           <h1 className="text-4xl font-bold text-brand-text mb-2">
             Regional Mate
           </h1>
-          <p className="text-lg text-brand-secondary-text">
+          <p className="text-lg text-brand-secondary-text whitespace-nowrap">
             Connecting People. Creating Opportunities.
           </p>
         </div>
@@ -129,6 +135,8 @@ const RegionalMateApp: React.FC = () => {
         {/* Bottom indicator */}
         <div className="px-6 pb-6 flex justify-center">
           <div className="w-32 h-1 bg-brand-text rounded-full" />
+        </div>
+        </div>
         </div>
       </div>
     </div>
