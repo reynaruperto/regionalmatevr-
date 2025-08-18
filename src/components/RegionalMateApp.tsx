@@ -1,12 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import AustraliaIcon from './AustraliaIcon';
-import farmingTeam from '@/assets/farming-team.jpg';
-import ruralMachinery from '@/assets/rural-machinery.jpg';
-import beachCelebration from '@/assets/beach-celebration.jpg';
-import businessMeeting from '@/assets/business-meeting.jpg';
-import constructionWorkers from '@/assets/construction-workers.jpg';
-import vineyardLandscape from '@/assets/vineyard-landscape.jpg';
+// Background images for the collage
 
 const RegionalMateApp: React.FC = () => {
   return (
@@ -28,15 +23,15 @@ const RegionalMateApp: React.FC = () => {
             <div className="flex flex-col gap-3">
               <div className="flex-1 rounded-xl overflow-hidden">
                 <img 
-                  src={farmingTeam} 
-                  alt="Farming team working together" 
+                  src="/lovable-uploads/cfde9671-9fd6-4ee0-9c19-a6faecaa5ca7.png" 
+                  alt="Two people outdoors in rural setting" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 rounded-xl overflow-hidden">
                 <img 
-                  src={businessMeeting} 
-                  alt="Business meeting" 
+                  src="/lovable-uploads/fa7098d9-0178-4e47-a593-f40e1dd21a54.png" 
+                  alt="Restaurant hospitality worker" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -46,20 +41,24 @@ const RegionalMateApp: React.FC = () => {
             <div className="flex flex-col gap-3">
               <div className="h-24 rounded-xl overflow-hidden">
                 <img 
-                  src={ruralMachinery} 
-                  alt="Rural machinery" 
+                  src="/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png" 
+                  alt="Person picking fruit from trees" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="h-24 rounded-xl overflow-hidden">
                 <img 
-                  src={constructionWorkers} 
-                  alt="Construction workers" 
+                  src="/lovable-uploads/ea247b49-500a-47aa-9cce-591ae45a83cb.png" 
+                  alt="Construction workers in high-vis vests" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-blue-200 to-blue-400">
-                {/* Ocean/sky gradient background */}
+              <div className="flex-1 rounded-xl overflow-hidden">
+                <img 
+                  src="/lovable-uploads/0a3cecbd-4cdc-448f-963d-67ccdc57e3dd.png" 
+                  alt="Two men working together in agriculture" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
             
@@ -67,15 +66,15 @@ const RegionalMateApp: React.FC = () => {
             <div className="flex flex-col gap-3">
               <div className="h-48 rounded-xl overflow-hidden">
                 <img 
-                  src={beachCelebration} 
-                  alt="Beach celebration" 
+                  src="/lovable-uploads/25c6fff3-e72a-47c8-a522-40d4640bd6d8.png" 
+                  alt="Two people celebrating at beach sunset" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 rounded-xl overflow-hidden">
                 <img 
-                  src={vineyardLandscape} 
-                  alt="Vineyard landscape" 
+                  src="/lovable-uploads/a5b657a2-5a0c-4116-bf17-7fbeb33b2f66.png" 
+                  alt="Woman in rural farming setting" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -88,11 +87,9 @@ const RegionalMateApp: React.FC = () => {
         </div>
 
         {/* Australia icon */}
-        <div className="px-6 pb-6">
-          <div className="flex justify-center">
-            <div className="bg-white p-4 rounded-3xl shadow-lg">
-              <AustraliaIcon className="w-16 h-12" />
-            </div>
+        <div className="absolute" style={{ left: '142.35px', top: '368px' }}>
+          <div className="bg-white p-4 rounded-3xl shadow-lg">
+            <AustraliaIcon className="w-[108px] h-[108px]" />
           </div>
         </div>
 
