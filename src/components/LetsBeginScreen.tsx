@@ -71,6 +71,7 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                onClick={() => navigate('/whv-onboarding')}
               >
                 I am a Working Holiday Visa Holder
               </Button>

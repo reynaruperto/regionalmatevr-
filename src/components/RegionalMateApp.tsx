@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AustraliaIcon from './AustraliaIcon';
+import SignInAsModal from './SignInAsModal';
 // Background images for the collage
 
 const RegionalMateApp: React.FC = () => {
   const navigate = useNavigate();
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
+  if (showSignInModal) {
+    return <SignInAsModal onClose={() => setShowSignInModal(false)} />;
+  }
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -64,7 +70,13 @@ const RegionalMateApp: React.FC = () => {
               {/* Sign in link */}
               <div className="px-6 pb-8 text-center">
                 <p className="text-brand-secondary-text">
-                  Already joined? <span className="text-brand-text font-medium">Sign in</span>
+                  Already joined? 
+                  <button 
+                    onClick={() => setShowSignInModal(true)}
+                    className="text-brand-text font-medium ml-1 hover:underline"
+                  >
+                    Sign in
+                  </button>
                 </p>
               </div>
 
