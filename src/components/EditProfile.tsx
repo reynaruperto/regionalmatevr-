@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Camera, Check, X, MapPin, Calendar, Globe, Briefcase } from 'lucide-react';
+import { Camera, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,18 +13,8 @@ const EditProfile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profilePhoto, setProfilePhoto] = useState<string>('/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png');
   const [profileVisible, setProfileVisible] = useState(true);
-  const [formData, setFormData] = useState({
-    name: 'Peter Parker',
-    email: 'peterparker@gmail.com',
-    nationality: 'Argentina',
-    currentLocation: 'Brisbane, QLD',
-    visaType: 'Working Holiday Visa (417)',
-    availableFrom: '2024-09-01',
-    bio: 'Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD',
-    experience: 'Farm work, fruit picking, packing',
-    languages: 'English, Spanish',
-    phoneNumber: '+61 423 456 789'
-  });
+  const [name, setName] = useState('Peter Parker');
+  const [email, setEmail] = useState('peterparker@gmail.com');
 
   useEffect(() => {
     // Load profile photo from localStorage
@@ -59,13 +47,6 @@ const EditProfile: React.FC = () => {
 
   const handlePhotoClick = () => {
     fileInputRef.current?.click();
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
   };
 
   const handleSave = () => {
@@ -104,7 +85,7 @@ const EditProfile: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <h1 className="text-lg font-semibold text-gray-900">{formData.name}</h1>
+                <h1 className="text-lg font-semibold text-gray-900">{name}</h1>
                 <button 
                   onClick={handleSave}
                   className="flex items-center text-orange-500 font-medium underline"
@@ -182,11 +163,11 @@ const EditProfile: React.FC = () => {
               <div className="space-y-4">
                 {/* Name */}
                 <div>
-                  <Label htmlFor="name" className="text-gray-600 mb-2 block">Full Name</Label>
+                  <Label htmlFor="name" className="text-gray-600 mb-2 block">Name</Label>
                   <Input
                     id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="h-12 rounded-xl border-gray-200 bg-white"
                   />
                 </div>
@@ -197,106 +178,9 @@ const EditProfile: React.FC = () => {
                   <Input
                     id="email"
                     type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Phone Number */}
-                <div>
-                  <Label htmlFor="phone" className="text-gray-600 mb-2 block">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    value={formData.phoneNumber}
-                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Nationality */}
-                <div>
-                  <Label htmlFor="nationality" className="text-gray-600 mb-2 block">Nationality</Label>
-                  <Input
-                    id="nationality"
-                    value={formData.nationality}
-                    onChange={(e) => handleInputChange('nationality', e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Current Location */}
-                <div>
-                  <Label htmlFor="location" className="text-gray-600 mb-2 block">Current Location</Label>
-                  <Input
-                    id="location"
-                    value={formData.currentLocation}
-                    onChange={(e) => handleInputChange('currentLocation', e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Visa Type */}
-                <div>
-                  <Label htmlFor="visa" className="text-gray-600 mb-2 block">Visa Type</Label>
-                  <Select value={formData.visaType} onValueChange={(value) => handleInputChange('visaType', value)}>
-                    <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Working Holiday Visa (417)">Working Holiday Visa (417)</SelectItem>
-                      <SelectItem value="Work and Holiday Visa (462)">Work and Holiday Visa (462)</SelectItem>
-                      <SelectItem value="Student Visa (500)">Student Visa (500)</SelectItem>
-                      <SelectItem value="Temporary Skill Shortage (482)">Temporary Skill Shortage (482)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Available From */}
-                <div>
-                  <Label htmlFor="available" className="text-gray-600 mb-2 block">Available From</Label>
-                  <Input
-                    id="available"
-                    type="date"
-                    value={formData.availableFrom}
-                    onChange={(e) => handleInputChange('availableFrom', e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Languages */}
-                <div>
-                  <Label htmlFor="languages" className="text-gray-600 mb-2 block">Languages</Label>
-                  <Input
-                    id="languages"
-                    value={formData.languages}
-                    onChange={(e) => handleInputChange('languages', e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                    placeholder="e.g., English, Spanish, French"
-                  />
-                </div>
-
-                {/* Work Experience */}
-                <div>
-                  <Label htmlFor="experience" className="text-gray-600 mb-2 block">Work Experience</Label>
-                  <Textarea
-                    id="experience"
-                    value={formData.experience}
-                    onChange={(e) => handleInputChange('experience', e.target.value)}
-                    className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
-                    placeholder="Describe your work experience..."
-                  />
-                </div>
-
-                {/* Bio */}
-                <div>
-                  <Label htmlFor="bio" className="text-gray-600 mb-2 block">About Me</Label>
-                  <Textarea
-                    id="bio"
-                    value={formData.bio}
-                    onChange={(e) => handleInputChange('bio', e.target.value)}
-                    className="min-h-24 rounded-xl border-gray-200 bg-white resize-none"
-                    placeholder="Tell employers about yourself..."
                   />
                 </div>
               </div>
