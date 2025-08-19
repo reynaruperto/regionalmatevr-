@@ -93,8 +93,73 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   ];
 
   const licenseTypes = [
-    'No License/ Tickets', 'White Card', 'RSA', 'First Aid Certification',
-    'Forklift License', 'CPR Certification'
+    'No License/Tickets Required',
+    
+    // Construction & Safety
+    'White Card (Construction Induction)',
+    'Blue Card (Working with Children)',
+    'Yellow Card (Mining Induction)',
+    
+    // First Aid & Safety
+    'First Aid Certificate',
+    'CPR Certificate',
+    'Senior First Aid',
+    'Occupational First Aid',
+    
+    // Hospitality & Food Safety
+    'RSA (Responsible Service of Alcohol)',
+    'RCG (Responsible Conduct of Gambling)',
+    'Food Safety Supervisor Certificate',
+    'Food Handling Certificate',
+    
+    // Driving & Heavy Machinery
+    'Car License (Class C)',
+    'Heavy Rigid (HR) License',
+    'Heavy Combination (HC) License',
+    'Multi Combination (MC) License',
+    'Forklift License (LF)',
+    'High Risk Work License - Forklift',
+    'Excavator License',
+    'Bobcat/Skid Steer License',
+    'Crane License (High Risk)',
+    'EWP (Elevated Work Platform) License',
+    
+    // Agriculture Specific
+    'ChemCert (Chemical Application)',
+    'AusChem Accreditation',
+    'Tractor Operation License',
+    'Farm Machinery Operation',
+    
+    // Working at Heights & Confined Spaces
+    'Working at Heights Certificate',
+    'Confined Space Entry',
+    'Fall Protection Certificate',
+    'Rope Access (IRATA)',
+    
+    // Welding & Trade Skills
+    'Welding Certificate',
+    'Basic Welding',
+    'Advanced Welding (Coded)',
+    'Electrical License',
+    'Plumbing License',
+    
+    // Security & Crowd Control
+    'Security License',
+    'Crowd Control License',
+    'Armed Guard License',
+    
+    // Marine & Water Safety
+    'Boat License',
+    'Marine Radio Operator License',
+    'Swim Safety Certificate',
+    'Bronze Medallion (Surf Life Saving)',
+    
+    // Specialized Certifications
+    'Manual Handling Certificate',
+    'Asbestos Awareness',
+    'Dangerous Goods Handling',
+    'Explosive Ordnance License',
+    'Train the Trainer Certificate'
   ];
 
   const availabilityOptions = [
