@@ -45,7 +45,7 @@ const WHVCurrentAddress: React.FC = () => {
     e.preventDefault();
     console.log('Current Address:', formData);
     // Navigate to next step
-    navigate('/whv-step-4');
+    navigate('/whv-work-experience');
   };
 
   return (
