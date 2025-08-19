@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
@@ -10,6 +10,7 @@ interface CandidateProfileCardProps {
 
 const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [showLikeModal, setShowLikeModal] = useState(false);
 
   // Mock data - in real app this would come from props or API
@@ -36,11 +37,13 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
 
   const handleCloseLikeModal = () => {
     setShowLikeModal(false);
-    navigate('/browse-candidates');
+    const fromPage = searchParams.get('from');
+    navigate(fromPage === 'matches' ? '/matches' : '/browse-candidates');
   };
 
   const handleBackToBrowse = () => {
-    navigate('/browse-candidates');
+    const fromPage = searchParams.get('from');
+    navigate(fromPage === 'matches' ? '/matches' : '/browse-candidates');
   };
 
   return (

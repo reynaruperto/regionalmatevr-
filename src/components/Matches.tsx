@@ -64,7 +64,7 @@ const Matches: React.FC = () => {
       location: 'Gold Coast, 4221',
       availability: 'Available from Aug 2025',
       matchPercentage: 95,
-      profileImage: '/lovable-uploads/7f241d90-ee65-4e5d-bf17-dee78ed2774e.png',
+      profileImage: '/lovable-uploads/f43f9801-cb24-4f5a-a1d5-e3930b9d9db0.png',
       isMutualMatch: true
     },
     {
@@ -75,7 +75,7 @@ const Matches: React.FC = () => {
       location: 'N/A',
       availability: 'Available from Sep 2025',
       matchPercentage: 91,
-      profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png',
+      profileImage: '/lovable-uploads/f2586d6e-7636-4b34-a77f-f83920653d1c.png',
       isMutualMatch: true
     },
     {
@@ -86,13 +86,13 @@ const Matches: React.FC = () => {
       location: 'Moreton Bay, 4020',
       availability: 'Available from Aug 2025',
       matchPercentage: 89,
-      profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png',
+      profileImage: '/lovable-uploads/6f81a14b-1d2f-47b9-bfa2-2a7d3b81d8fc.png',
       isMutualMatch: true
     }
   ];
 
   const handleViewProfile = (candidateId: string) => {
-    navigate(`/candidate-profile/${candidateId}`);
+    navigate(`/candidate-profile/${candidateId}?from=matches`);
   };
 
   const currentCandidates = activeTab === 'topMatches' ? topMatches : mutualLikes;
