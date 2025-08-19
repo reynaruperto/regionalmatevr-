@@ -71,7 +71,7 @@ const BusinessOnboardingForm: React.FC = () => {
       title: "Business information saved!",
       description: "Proceeding to next step",
     });
-    // Navigate to next step
+    navigate('/business-address');
   };
 
   return (
