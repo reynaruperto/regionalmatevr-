@@ -11,9 +11,41 @@ const WHVCurrentAddress: React.FC = () => {
   const [formData, setFormData] = useState({
     addressLine1: '',
     suburb: '',
+    regionalArea: '',
     state: '',
     postCode: ''
   });
+
+  // Regional areas recognized by Department of Home Affairs for Working Holiday visa
+  const REGIONAL_AREAS = [
+    // Queensland Regional Areas
+    'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
+    'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
+    'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
+    
+    // New South Wales Regional Areas  
+    'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
+    'NSW - Dubbo', 'NSW - Griffith', 'NSW - Lismore', 'NSW - Orange',
+    'NSW - Tamworth', 'NSW - Wagga Wagga', 'NSW - Young',
+    
+    // Victoria Regional Areas
+    'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
+    'VIC - Shepparton', 'VIC - Warrnambool',
+    
+    // Western Australia Regional Areas
+    'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
+    'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
+    'WA - Port Hedland',
+    
+    // South Australia Regional Areas
+    'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
+    
+    // Tasmania Regional Areas
+    'TAS - Burnie', 'TAS - Devonport', 'TAS - Launceston',
+    
+    // Northern Territory Regional Areas
+    'NT - Alice Springs', 'NT - Katherine'
+  ];
 
   // Australian states and territories
   const australianStates = [
@@ -109,6 +141,24 @@ const WHVCurrentAddress: React.FC = () => {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="regionalArea" className="text-base font-medium text-gray-700">
+                  Regional Area
+                </Label>
+                <Select onValueChange={(value) => handleSelectChange('regionalArea', value)}>
+                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                    <SelectValue placeholder="Select regional area" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                    {REGIONAL_AREAS.map((area) => (
+                      <SelectItem key={area} value={area} className="hover:bg-gray-100">
+                        {area}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="state" className="text-base font-medium text-gray-700">
                   State
                 </Label>
@@ -116,7 +166,7 @@ const WHVCurrentAddress: React.FC = () => {
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
                     <SelectValue placeholder="Queensland" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto">
+                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
                     {australianStates.map((state) => (
                       <SelectItem key={state} value={state} className="hover:bg-gray-100">
                         {state}

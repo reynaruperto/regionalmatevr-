@@ -46,12 +46,12 @@ const WHVLogin: React.FC = () => {
           {/* Content */}
           <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
             {/* Logo */}
-            <div className="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-12">
-              <div className="text-center">
-                <div className="text-orange-500 text-sm font-bold">RM</div>
-                <div className="text-xs text-gray-600 font-medium">REGIONAL</div>
-                <div className="text-xs text-gray-600 font-medium">MATE</div>
-              </div>
+            <div className="w-24 h-24 mb-12">
+              <img 
+                src="/lovable-uploads/26827d2b-5f93-4b4e-9f49-77007dda53ca.png" 
+                alt="Regional Mate Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
 
             {/* Login Form */}
@@ -101,6 +101,16 @@ const WHVLogin: React.FC = () => {
                 >
                   Sign in
                 </Button>
+              </div>
+
+              {/* Forgot Password */}
+              <div className="pt-4 text-center">
+                <button 
+                  type="button"
+                  className="text-gray-500 hover:text-gray-700 text-sm hover:underline"
+                >
+                  Forgot password?
+                </button>
               </div>
             </form>
 
