@@ -10,6 +10,7 @@ import EmployerOnboarding from "./pages/EmployerOnboarding";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
+import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
+          <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

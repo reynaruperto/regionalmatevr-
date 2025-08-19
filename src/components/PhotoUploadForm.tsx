@@ -45,12 +45,7 @@ const PhotoUploadForm: React.FC = () => {
   const handleContinue = () => {
     if (selectedFile) {
       console.log('Photo uploaded:', selectedFile);
-      toast({
-        title: "Account setup complete!",
-        description: "Welcome to Regional Mate",
-      });
-      // Navigate to dashboard or next screen
-      // navigate('/dashboard');
+      navigate('/account-confirmation');
     } else {
       toast({
         title: "Please upload a photo",
