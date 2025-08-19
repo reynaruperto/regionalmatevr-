@@ -13,6 +13,7 @@ import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
 import Dashboard from "./pages/Dashboard";
 import EditProfile from "./pages/EditProfile";
+import WHVEditProfile from "./pages/WHVEditProfile";
 import ProfileCardPreview from "./pages/ProfileCardPreview";
 import Security from "./pages/Security";
 import EditBusinessProfile from "./pages/EditBusinessProfile";
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/whv-edit-profile" element={<WHVEditProfile />} />
           <Route path="/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
           <Route path="/edit-business-profile" element={<EditBusinessProfile />} />
