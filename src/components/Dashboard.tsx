@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Edit, FileText, Shield, Bell, Lock, HelpCircle, Info, LogOut } from 'lucide-react';
 import BottomNavigation from './BottomNavigation';
 
 const Dashboard: React.FC = () => {
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Retrieve the uploaded photo from localStorage
+    const storedPhoto = localStorage.getItem('userProfilePhoto');
+    if (storedPhoto) {
+      setProfilePhoto(storedPhoto);
+    }
+  }, []);
+
   const settingsItems = [
     { icon: FileText, label: 'Edit Business Profile', color: 'text-gray-600' },
     { icon: Shield, label: 'Security', color: 'text-gray-600' },
@@ -39,11 +49,17 @@ const Dashboard: React.FC = () => {
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-4">
                   <div className="w-32 h-32 rounded-full border-4 border-[#1E293B] overflow-hidden">
-                    <img 
-                      src="/lovable-uploads/031d587d-6ada-42f3-adda-58351781f00f.png" 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
-                    />
+                    {profilePhoto ? (
+                      <img 
+                        src={profilePhoto} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">No Photo</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

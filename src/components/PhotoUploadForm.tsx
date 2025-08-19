@@ -43,7 +43,9 @@ const PhotoUploadForm: React.FC = () => {
   };
 
   const handleContinue = () => {
-    if (selectedFile) {
+    if (selectedFile && selectedImage) {
+      // Store the uploaded photo in localStorage
+      localStorage.setItem('userProfilePhoto', selectedImage);
       console.log('Photo uploaded:', selectedFile);
       navigate('/account-confirmation');
     } else {
