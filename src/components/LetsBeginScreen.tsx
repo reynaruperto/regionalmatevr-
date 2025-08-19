@@ -26,7 +26,12 @@ const LetsBeginScreen: React.FC = () => {
             
             {/* Header with back button */}
             <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button variant="ghost" size="icon" className="w-12 h-12 bg-white rounded-2xl shadow-sm">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 bg-white rounded-2xl shadow-sm"
+                onClick={() => navigate('/')}
+              >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
               <div className="flex-1"></div>
