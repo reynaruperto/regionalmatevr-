@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import AustraliaIcon from './AustraliaIcon';
 
 const LetsBeginScreen: React.FC = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -48,6 +51,7 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
+                onClick={() => navigate('/employer-onboarding')}
               >
                 I am an Employer
               </Button>
