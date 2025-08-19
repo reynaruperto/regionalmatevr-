@@ -18,38 +18,48 @@ const WHVAccountConfirmation: React.FC = () => {
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-white">
-            
+          {/* Main content container with background */}
+          <div 
+            className="w-full h-full flex flex-col relative"
+            style={{
+              backgroundImage: `url(/lovable-uploads/21ecf2a5-2e71-47ed-b042-d7c41af18dd0.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+
             {/* Content */}
-            <div className="flex-1 px-6 flex flex-col items-center justify-center">
-              {/* Success Icon */}
-              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-8">
-                <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-8 h-8 text-white" />
+            <div className="flex-1 flex items-center justify-center px-6">
+              <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
+                {/* Success Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Success Message */}
-              <div className="text-center mb-12">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  You have created your Regional Mate Account Successfully
-                </h2>
-                
-                <p className="text-gray-600 mb-8">
-                  Start looking for employers and your Working Holiday visa Journey
-                </p>
-              </div>
-            </div>
+                {/* Success Message */}
+                <div className="text-center mb-8">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                    You have created your Regional Mate Account Successfully
+                  </h2>
+                  
+                  <p className="text-gray-500 text-sm">
+                    Start looking for employers and your Working Holiday visa Journey
+                  </p>
+                </div>
 
-            {/* Continue button */}
-            <div className="px-6 pb-8">
-              <Button 
-                onClick={handleContinue}
-                className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-              >
-                Sign In
-              </Button>
+                {/* Sign In Button */}
+                <Button 
+                  onClick={handleContinue}
+                  className="w-full h-12 text-base rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  Sign In
+                </Button>
+              </div>
             </div>
 
           </div>
