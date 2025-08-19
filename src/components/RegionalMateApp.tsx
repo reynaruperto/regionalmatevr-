@@ -18,12 +18,12 @@ const RegionalMateApp: React.FC = () => {
             {/* Background image covering top portion */}
             <div className="absolute inset-0 top-0">
               <img 
-                src="/lovable-uploads/cc51fbe9-5230-4422-9bc5-e23485b9bdd2.png" 
+                src="/lovable-uploads/57d1a927-999d-413d-8ed8-46c50ac0edde.png" 
                 alt="Regional Mate collage of people working and celebrating" 
                 className="w-full h-full object-cover"
               />
-              {/* Strong gradient overlay - very thick toward bottom for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/50 to-white/95 pointer-events-none" />
+              {/* Gradient overlay - thicker toward bottom */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/20 to-white/80 pointer-events-none" />
             </div>
 
             {/* Content positioned over background */}
