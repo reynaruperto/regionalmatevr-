@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { REGIONAL_AREAS_WITH_INDUSTRIES, getIndustriesForLocation, getAllUniqueIndustries } from '@/lib/locationIndustryMapping';
 
 interface FilterPageProps {
   onClose: () => void;
@@ -20,73 +21,11 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     whvHolders: false,
     willingToRelocate: false,
   });
+  const [availableIndustries, setAvailableIndustries] = useState<string[]>(getAllUniqueIndustries());
 
-  const locations = [
-    // Queensland Regional Areas
-    'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
-    'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
-    'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
-    
-    // New South Wales Regional Areas  
-    'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
-    'NSW - Dubbo', 'NSW - Goulburn', 'NSW - Grafton', 'NSW - Orange',
-    'NSW - Port Macquarie', 'NSW - Tamworth', 'NSW - Wagga Wagga',
-    
-    // Victoria Regional Areas
-    'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
-    'VIC - Latrobe Valley', 'VIC - Mildura', 'VIC - Shepparton', 'VIC - Warrnambool',
-    
-    // Western Australia Regional Areas
-    'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
-    'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
-    'WA - Port Hedland',
-    
-    // South Australia Regional Areas
-    'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
-    
-    // Tasmania (All Areas Regional)
-    'TAS - Burnie', 'TAS - Devonport', 'TAS - Hobart', 'TAS - Launceston',
-    
-    // Northern Territory (All Areas Regional)
-    'NT - Alice Springs', 'NT - Darwin', 'NT - Katherine',
-    
-    // Australian Capital Territory
-    'ACT - Canberra (Limited Regional Work)'
-  ];
+  const locations = REGIONAL_AREAS_WITH_INDUSTRIES.map(area => area.name);
 
-  const industries = [
-    // Agriculture and Food Production
-    'Agriculture, Animal Husbandry, Fishing, Pearling',
-    'Farming (Crop/Livestock)',
-    'Fruit and Vegetable Picking/Packing',
-    'Dairy Farming',
-    'Beef Cattle Farming',
-    'Sheep and Goat Farming',
-    'Poultry Farming',
-    'Aquaculture',
-    'Forestry and Logging',
-    
-    // Mining and Resources
-    'Mining and Construction',
-    'Coal Mining',
-    'Iron Ore Mining',
-    'Gold Mining',
-    'Oil and Gas Extraction',
-    
-    // Tourism and Hospitality
-    'Tourism and Hospitality',
-    'Accommodation Services',
-    'Food and Beverage Services',
-    'Travel and Tour Arrangement',
-    
-    // Other Specified Work
-    'Bushfire Recovery',
-    'COVID-19 Critical Work',
-    'Plant and Machine Operation',
-    'Construction and Infrastructure',
-    'Healthcare and Medical',
-    'Aged Care and Disability Services'
-  ];
+  const industries = availableIndustries;
 
   const experienceLevels = [
     'No Experience', '1-2 Years', '3-5 years', '6-10 years'
@@ -107,6 +46,21 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
       ...prev,
       [category]: value
     }));
+    
+    // Update available industries when location changes
+    if (category === 'location') {
+      const selectedArea = REGIONAL_AREAS_WITH_INDUSTRIES.find(area => area.name === value);
+      if (selectedArea) {
+        const locationIndustries = selectedArea.industries.map(ind => ind.name);
+        setAvailableIndustries(locationIndustries);
+        // Reset industry selection if current industry is not available in selected location
+        if (selectedFilters.industry && !locationIndustries.includes(selectedFilters.industry)) {
+          setSelectedFilters(prev => ({ ...prev, industry: '' }));
+        }
+      } else {
+        setAvailableIndustries(getAllUniqueIndustries());
+      }
+    }
   };
 
   const handleBooleanFilterChange = (category: string, checked: boolean) => {
