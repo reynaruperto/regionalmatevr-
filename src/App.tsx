@@ -20,6 +20,7 @@ import Notifications from "./pages/Notifications";
 import Privacy from "./pages/Privacy";
 import HelpSupport from "./pages/HelpSupport";
 import TermsPolicies from "./pages/TermsPolicies";
+import PostJobs from "./pages/PostJobs";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/help-support" element={<HelpSupport />} />
           <Route path="/terms-policies" element={<TermsPolicies />} />
+          <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
