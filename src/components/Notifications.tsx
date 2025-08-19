@@ -18,37 +18,37 @@ const Notifications: React.FC = () => {
     {
       id: '1',
       type: 'Match and Like Activity',
-      message: 'Alex T. liked your profile.',
+      message: 'Outback Winery liked your profile.',
       isRead: false
     },
     {
       id: '2', 
       type: 'Match and Like Activity',
-      message: 'Emma L. liked you back — it\'s a match',
+      message: 'Kangafarm liked you back — it\'s a match',
       isRead: false
     },
     {
       id: '3',
       type: 'Like Milestone',
-      message: 'You\'ve received 10 likes — keep it going.',
+      message: 'You\'ve received 5 likes — keep it going.',
       isRead: false
     },
     {
       id: '4',
-      type: 'Job Listing',
-      message: 'Congrats! Your job is now live on Regional Mate.',
+      type: 'Visa Expiry Reminder',
+      message: 'Your WHV visa is expiring in 30 days. Update your details if renewed.',
       isRead: true
     },
     {
       id: '5',
-      type: 'Post a Job', 
-      message: 'Ready to hire? Post your first job to start matching.',
+      type: 'Profile Updated', 
+      message: 'Your WHV profile has been successfully updated.',
       isRead: true
     },
     {
       id: '6',
       type: 'Welcome Message',
-      message: 'Welcome to RegionalMate! Complete your profile and start connecting with WHV workers.',
+      message: 'Welcome to RegionalMate! Complete your profile and start connecting with Regional Employers.',
       isRead: true
     }
   ]);
