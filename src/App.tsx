@@ -23,6 +23,7 @@ import TermsPolicies from "./pages/TermsPolicies";
 import PostJobs from "./pages/PostJobs";
 import BrowseCandidates from "./pages/BrowseCandidates";
 import CandidateProfile from "./pages/CandidateProfile";
+import FullCandidateProfile from "./pages/FullCandidateProfile";
 import Matches from "./pages/Matches";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
           <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
+          <Route path="/full-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

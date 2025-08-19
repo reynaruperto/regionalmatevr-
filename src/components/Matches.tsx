@@ -91,8 +91,9 @@ const Matches: React.FC = () => {
     }
   ];
 
-  const handleViewProfile = (candidateId: string) => {
-    navigate(`/candidate-profile/${candidateId}?from=matches`);
+  const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
+    const route = isMutualMatch ? `/full-candidate-profile/${candidateId}` : `/candidate-profile/${candidateId}`;
+    navigate(`${route}?from=matches`);
   };
 
   const currentCandidates = activeTab === 'topMatches' ? topMatches : mutualLikes;
@@ -190,7 +191,7 @@ const Matches: React.FC = () => {
                       
                       <div className="flex items-center gap-2 mt-3">
                         <Button
-                          onClick={() => handleViewProfile(candidate.id)}
+                          onClick={() => handleViewProfile(candidate.id, candidate.isMutualMatch)}
                           className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-sm h-10"
                         >
                           {candidate.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
