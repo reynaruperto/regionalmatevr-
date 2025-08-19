@@ -89,6 +89,8 @@ const Dashboard: React.FC = () => {
                         onClick={() => {
                           if (item.label === 'Security') {
                             navigate('/security');
+                          } else if (item.label === 'Edit Business Profile') {
+                            navigate('/edit-business-profile');
                           }
                         }}
                         className="flex items-center w-full p-3 rounded-xl hover:bg-gray-50 transition-colors"
