@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Check, ChevronDown } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,11 +15,7 @@ const WHVEditProfile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form state
-  const [profilePhoto, setProfilePhoto] = useState<string>('/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png');
-  const [profileVisible, setProfileVisible] = useState(true);
   const [name, setName] = useState('Peter Parker');
-  const [email, setEmail] = useState('peterparker@gmail.com');
-  const [dob, setDob] = useState('15/08/1995');
   const [availableStartDate, setAvailableStartDate] = useState('10/10/2025');
   const [nationality, setNationality] = useState('Argentina');
   const [visa, setVisa] = useState('462');
@@ -56,38 +51,6 @@ const WHVEditProfile: React.FC = () => {
     'South Australia', 'Tasmania', 'Northern Territory', 'Australian Capital Territory'
   ];
 
-  useEffect(() => {
-    const storedPhoto = localStorage.getItem('whvProfilePhoto');
-    if (storedPhoto) {
-      setProfilePhoto(storedPhoto);
-    }
-  }, []);
-
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target?.result as string;
-          setProfilePhoto(result);
-          localStorage.setItem('whvProfilePhoto', result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please select an image file",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
-  const handlePhotoClick = () => {
-    fileInputRef.current?.click();
-  };
-
   const handleSave = () => {
     toast({
       title: "Profile Updated",
@@ -98,10 +61,6 @@ const WHVEditProfile: React.FC = () => {
 
   const handleCancel = () => {
     navigate('/dashboard');
-  };
-
-  const handlePreviewProfile = () => {
-    navigate('/profile-preview');
   };
 
   return (
@@ -138,102 +97,8 @@ const WHVEditProfile: React.FC = () => {
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto">
               
-              {/* Profile Visibility */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Profile Visibility</h3>
-                    <p className="text-sm text-gray-500">Your profile is currently visible to all employers</p>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm text-gray-600 mr-2">ON</span>
-                    <Switch 
-                      checked={profileVisible}
-                      onCheckedChange={setProfileVisible}
-                      className="data-[state=checked]:bg-orange-500"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Preview Profile Card */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-900">Preview Profile card</h3>
-                  <Button 
-                    onClick={handlePreviewProfile}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full text-sm"
-                  >
-                    VIEW
-                  </Button>
-                </div>
-              </div>
-
-              {/* Profile Picture */}
-              <div className="mb-6">
-                <h3 className="text-gray-600 mb-3">Profile Picture</h3>
-                <div className="relative w-24 h-24">
-                  <button 
-                    onClick={handlePhotoClick}
-                    className="w-24 h-24 rounded-full overflow-hidden border-4 border-orange-500 hover:opacity-80 transition-opacity"
-                  >
-                    <img 
-                      src={profilePhoto} 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center pointer-events-none">
-                    <Camera size={16} className="text-white" />
-                  </div>
-                </div>
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-              </div>
-
               {/* Form Fields */}
               <div className="space-y-4">
-                {/* Name */}
-                <div>
-                  <Label htmlFor="name" className="text-gray-600 mb-2 block">Name</Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <Label htmlFor="email" className="text-gray-600 mb-2 block">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Date of Birth */}
-                <div>
-                  <Label htmlFor="dob" className="text-gray-600 mb-2 block">Date of Birth (DD/MM/YYYY)</Label>
-                  <Input
-                    id="dob"
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
-                    placeholder="DD/MM/YYYY"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
                 {/* Available Start Date */}
                 <div>
                   <Label htmlFor="startDate" className="text-gray-600 mb-2 block">Available Start Date (DD/MM/YYYY)</Label>
@@ -253,7 +118,7 @@ const WHVEditProfile: React.FC = () => {
                     <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white z-50">
                       {countries.map((country) => (
                         <SelectItem key={country} value={country}>{country}</SelectItem>
                       ))}
@@ -268,7 +133,7 @@ const WHVEditProfile: React.FC = () => {
                     <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white z-50">
                       {visaTypes.map((type) => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
                       ))}
@@ -295,7 +160,7 @@ const WHVEditProfile: React.FC = () => {
                     <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white z-50">
                       {industries.map((industry) => (
                         <SelectItem key={industry} value={industry}>{industry}</SelectItem>
                       ))}
@@ -343,7 +208,7 @@ const WHVEditProfile: React.FC = () => {
                     <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white z-50">
                       {australianStates.map((state) => (
                         <SelectItem key={state} value={state}>{state}</SelectItem>
                       ))}
