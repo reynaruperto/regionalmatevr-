@@ -86,6 +86,11 @@ const Dashboard: React.FC = () => {
                     return (
                       <button
                         key={index}
+                        onClick={() => {
+                          if (item.label === 'Security') {
+                            navigate('/security');
+                          }
+                        }}
                         className="flex items-center w-full p-3 rounded-xl hover:bg-gray-50 transition-colors"
                       >
                         <Icon size={20} className={`mr-4 ${item.color}`} />
