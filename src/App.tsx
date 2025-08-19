@@ -13,6 +13,7 @@ import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
 import Dashboard from "./pages/Dashboard";
 import EditProfile from "./pages/EditProfile";
+import ProfileCardPreview from "./pages/ProfileCardPreview";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

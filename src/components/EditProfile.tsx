@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Camera, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,12 +10,11 @@ import { useToast } from '@/hooks/use-toast';
 const EditProfile: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [profileVisible, setProfileVisible] = useState(true);
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('johndoe@gmail.com');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     // Load profile photo from localStorage
@@ -24,6 +23,31 @@ const EditProfile: React.FC = () => {
       setProfilePhoto(storedPhoto);
     }
   }, []);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          setProfilePhoto(result);
+          localStorage.setItem('userProfilePhoto', result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file",
+          variant: "destructive"
+        });
+      }
+    }
+  };
+
+  const handlePhotoClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleSave = () => {
     toast({
@@ -38,10 +62,7 @@ const EditProfile: React.FC = () => {
   };
 
   const handlePreviewProfile = () => {
-    toast({
-      title: "Preview Profile",
-      description: "Profile preview functionality would be implemented here",
-    });
+    navigate('/profile-preview');
   };
 
   return (
@@ -113,7 +134,10 @@ const EditProfile: React.FC = () => {
               <div className="mb-6">
                 <h3 className="text-gray-600 mb-3">Profile Picture</h3>
                 <div className="relative w-24 h-24">
-                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#1E293B]">
+                  <button 
+                    onClick={handlePhotoClick}
+                    className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#1E293B] hover:opacity-80 transition-opacity"
+                  >
                     {profilePhoto ? (
                       <img 
                         src={profilePhoto} 
@@ -125,11 +149,20 @@ const EditProfile: React.FC = () => {
                         <span className="text-gray-400 text-xs">No Photo</span>
                       </div>
                     )}
-                  </div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                  </button>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center pointer-events-none">
                     <Camera size={16} className="text-white" />
                   </div>
                 </div>
+                
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
               </div>
 
               {/* Form Fields */}
@@ -153,32 +186,6 @@ const EditProfile: React.FC = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* Current Password */}
-                <div>
-                  <Label htmlFor="currentPassword" className="text-gray-600 mb-2 block">Current Password</Label>
-                  <Input
-                    id="currentPassword"
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="******************"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
-                </div>
-
-                {/* New Password */}
-                <div>
-                  <Label htmlFor="newPassword" className="text-gray-600 mb-2 block">New Password</Label>
-                  <Input
-                    id="newPassword"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="******************"
                     className="h-12 rounded-xl border-gray-200 bg-white"
                   />
                 </div>
