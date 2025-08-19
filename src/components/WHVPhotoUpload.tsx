@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import WHVSuccessModal from './WHVSuccessModal';
 
 const WHVPhotoUpload: React.FC = () => {
   const navigate = useNavigate();
@@ -11,7 +10,6 @@ const WHVPhotoUpload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -49,7 +47,7 @@ const WHVPhotoUpload: React.FC = () => {
       // Store the uploaded photo in localStorage
       localStorage.setItem('whvProfilePhoto', selectedImage);
       console.log('WHV Photo uploaded:', selectedFile);
-      setShowSuccessModal(true);
+      navigate('/whv-account-confirmation');
     } else {
       toast({
         title: "Please upload a photo",
@@ -132,12 +130,6 @@ const WHVPhotoUpload: React.FC = () => {
               </Button>
             )}
           </div>
-
-          {/* Success Modal */}
-          <WHVSuccessModal 
-            isOpen={showSuccessModal} 
-            onClose={() => setShowSuccessModal(false)} 
-          />
 
           {/* Continue button */}
           <div className="px-4 pb-8">
