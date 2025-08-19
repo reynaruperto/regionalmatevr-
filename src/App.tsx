@@ -17,6 +17,9 @@ import ProfileCardPreview from "./pages/ProfileCardPreview";
 import Security from "./pages/Security";
 import EditBusinessProfile from "./pages/EditBusinessProfile";
 import Notifications from "./pages/Notifications";
+import Privacy from "./pages/Privacy";
+import HelpSupport from "./pages/HelpSupport";
+import TermsPolicies from "./pages/TermsPolicies";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -42,6 +45,9 @@ const App = () => (
           <Route path="/security" element={<Security />} />
           <Route path="/edit-business-profile" element={<EditBusinessProfile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/help-support" element={<HelpSupport />} />
+          <Route path="/terms-policies" element={<TermsPolicies />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
