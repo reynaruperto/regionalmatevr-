@@ -184,10 +184,9 @@ const BrowseCandidates: React.FC = () => {
                           onClick={() => handleLikeCandidate(candidate.id)}
                           variant="outline"
                           size="icon"
-                          className="h-7 w-7 flex-shrink-0 border-gray-200 bg-white hover:bg-gray-50 relative overflow-hidden"
+                          className="h-7 w-7 flex-shrink-0"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-b from-orange-400 to-slate-700 opacity-100"></div>
-                          <ThumbsUp size={14} className="relative z-10 text-white mix-blend-screen" />
+                          <ThumbsUp size={14} className="text-orange-500" />
                         </Button>
                       </div>
                     </div>
