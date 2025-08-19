@@ -70,8 +70,7 @@ const BrowseCandidates: React.FC = () => {
   };
 
   const handleViewProfile = (candidateId: string) => {
-    console.log('View profile for candidate:', candidateId);
-    // This will later navigate to candidate profile view
+    navigate(`/candidate-profile/${candidateId}`);
   };
 
   const handleApplyFilters = (filters: any) => {
