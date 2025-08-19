@@ -111,7 +111,7 @@ const EmployerSignInForm: React.FC = () => {
                   {/* Sign In Button */}
                   <Button 
                     type="submit"
-                    variant="brand"
+                    variant="navy"
                     className="w-full h-12 text-base rounded-xl"
                   >
                     Sign in
