@@ -182,7 +182,7 @@ const BrowseCandidates: React.FC = () => {
                         </Button>
                         <button
                           onClick={() => handleLikeCandidate(candidate.id)}
-                          className="h-7 w-7 flex-shrink-0 bg-gradient-to-r from-orange-400 to-pink-500 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-pink-600 transition-all duration-200 shadow-sm"
+                          className="h-7 w-7 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm"
                         >
                           <ThumbsUp size={14} className="text-white" />
                         </button>
