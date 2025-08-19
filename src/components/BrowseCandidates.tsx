@@ -180,14 +180,12 @@ const BrowseCandidates: React.FC = () => {
                         >
                           View Profile Card
                         </Button>
-                        <Button
+                        <button
                           onClick={() => handleLikeCandidate(candidate.id)}
-                          variant="outline"
-                          size="icon"
-                          className="h-7 w-7 flex-shrink-0"
+                          className="h-7 w-7 flex-shrink-0 bg-gradient-to-r from-orange-400 to-pink-500 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-pink-600 transition-all duration-200 shadow-sm"
                         >
-                          <ThumbsUp size={14} className="text-orange-500" />
-                        </Button>
+                          <ThumbsUp size={14} className="text-white" />
+                        </button>
                       </div>
                     </div>
                   </div>
