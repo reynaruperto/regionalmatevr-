@@ -31,12 +31,37 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   ];
 
   const industries = [
-    'Agriculture', 'Farming', 'Hospitality', 'Tourism',
-    'Maintenance', 'Construction', 'Tractor Driving', 'Marketing',
-    'Carpentry', 'Aged Care', 'Disability', 'Forklift Operator',
-    'Painting', 'Tiling', 'Bartending', 'Fishing', 'Pearling', 'Packing',
-    'Tour Guiding', 'Childcare', 'Mining', 'Bushfire Recovery',
-    'Infrastructure', 'Plumbing', 'Dairy Farming', 'Livestock Farming'
+    // Agriculture and Food Production
+    'Agriculture, Animal Husbandry, Fishing, Pearling',
+    'Farming (Crop/Livestock)',
+    'Fruit and Vegetable Picking/Packing',
+    'Dairy Farming',
+    'Beef Cattle Farming',
+    'Sheep and Goat Farming',
+    'Poultry Farming',
+    'Aquaculture',
+    'Forestry and Logging',
+    
+    // Mining and Resources
+    'Mining and Construction',
+    'Coal Mining',
+    'Iron Ore Mining',
+    'Gold Mining',
+    'Oil and Gas Extraction',
+    
+    // Tourism and Hospitality
+    'Tourism and Hospitality',
+    'Accommodation Services',
+    'Food and Beverage Services',
+    'Travel and Tour Arrangement',
+    
+    // Other Specified Work
+    'Bushfire Recovery',
+    'COVID-19 Critical Work',
+    'Plant and Machine Operation',
+    'Construction and Infrastructure',
+    'Healthcare and Medical',
+    'Aged Care and Disability Services'
   ];
 
   const experienceLevels = [
