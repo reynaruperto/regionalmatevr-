@@ -93,7 +93,7 @@ const Dashboard: React.FC = () => {
                           if (item.label === 'Security') {
                             navigate('/security');
                           } else if (item.label === 'Edit WHV Profile') {
-                            navigate('/edit-profile');
+                            navigate('/whv-edit-profile');
                           } else if (item.label === 'Notifications') {
                             navigate('/notifications');
                           } else if (item.label === 'Privacy') {
