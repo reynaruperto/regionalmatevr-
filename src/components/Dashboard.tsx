@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const settingsItems = [
-    { icon: FileText, label: 'Edit Business Profile', color: 'text-gray-600' },
+    { icon: FileText, label: 'Edit WHV Profile', color: 'text-gray-600' },
     { icon: Shield, label: 'Security', color: 'text-gray-600' },
     { icon: Bell, label: 'Notifications', color: 'text-gray-600' },
     { icon: Lock, label: 'Privacy', color: 'text-gray-600' },
@@ -29,68 +29,71 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-200">
+          <div className="w-full h-full flex flex-col relative bg-gray-100">
             {/* Content */}
             <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
-              {/* Welcome Section */}
-              <div className="bg-white rounded-3xl p-6 mb-6 shadow-sm">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Welcome Back</h1>
-                
-                {/* User Badge */}
-                <div className="flex justify-center mb-4">
-                  <div className="bg-[#1E293B] text-white px-6 py-2 rounded-2xl">
-                    <span className="font-medium">John Doe</span>
-                  </div>
-                </div>
+              {/* Welcome Back Header */}
+              <div className="text-center mb-8">
+                <h1 className="text-2xl font-semibold text-gray-900">Welcome Back</h1>
+              </div>
 
-                {/* Profile Picture */}
-                <div className="flex justify-center mb-4">
-                  <div className="w-32 h-32 rounded-full border-4 border-[#1E293B] overflow-hidden">
-                    <img 
-                      src="/lovable-uploads/51369c33-1aa8-4f19-b8a1-e65e12f9ec9f.png" 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                {/* Business Info */}
-                <div className="text-center mb-4">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">Kangafarm</h2>
-                  <p className="text-gray-600 text-sm italic mb-4">
-                    "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing"
-                  </p>
-                  
-                  <button 
-                    onClick={() => navigate('/edit-profile')}
-                    className="flex items-center justify-center mx-auto text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    <Edit size={16} className="mr-2" />
-                    <span className="text-sm">Edit Profile</span>
-                  </button>
+              {/* User Name Badge */}
+              <div className="flex justify-center mb-6">
+                <div className="bg-orange-500 text-white px-6 py-3 rounded-2xl">
+                  <span className="font-medium text-base">Peter Parker</span>
                 </div>
               </div>
 
+              {/* Profile Picture */}
+              <div className="flex justify-center mb-6">
+                <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
+                  <img 
+                    src="/lovable-uploads/533b9faf-8093-4e1d-b089-759120f751e1.png" 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Profile Description */}
+              <div className="text-center mb-6">
+                <p className="text-gray-700 text-base leading-relaxed">
+                  Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD
+                </p>
+              </div>
+
+              {/* Edit Profile Button */}
+              <div className="flex justify-center mb-8">
+                <button 
+                  onClick={() => navigate('/edit-profile')}
+                  className="flex items-center bg-gray-200 px-6 py-3 rounded-2xl hover:bg-gray-300 transition-colors"
+                >
+                  <Edit size={16} className="mr-2 text-gray-700" />
+                  <span className="text-gray-700 font-medium">Edit Profile</span>
+                </button>
+              </div>
+
               {/* Settings Section */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Settings</h3>
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 px-2">Settings</h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-1">
                   {settingsItems.map((item, index) => {
                     const Icon = item.icon;
+                    const isLogout = item.label === 'Log out';
                     return (
                       <button
                         key={index}
                         onClick={() => {
                           if (item.label === 'Security') {
                             navigate('/security');
-                          } else if (item.label === 'Edit Business Profile') {
-                            navigate('/edit-business-profile');
+                          } else if (item.label === 'Edit WHV Profile') {
+                            navigate('/edit-profile');
                           } else if (item.label === 'Notifications') {
                             navigate('/notifications');
                           } else if (item.label === 'Privacy') {
@@ -103,10 +106,10 @@ const Dashboard: React.FC = () => {
                             navigate('/');
                           }
                         }}
-                        className="flex items-center w-full p-3 rounded-xl hover:bg-gray-50 transition-colors"
+                        className={`flex items-center w-full p-4 ${isLogout ? 'bg-red-50' : 'bg-white'} hover:bg-opacity-80 transition-colors`}
                       >
                         <Icon size={20} className={`mr-4 ${item.color}`} />
-                        <span className={`text-left ${item.color}`}>{item.label}</span>
+                        <span className={`text-left font-medium ${item.color}`}>{item.label}</span>
                       </button>
                     );
                   })}
