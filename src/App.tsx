@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
+import EmployerSignIn from "./pages/EmployerSignIn";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/lets-begin" element={<LetsBegin />} />
           <Route path="/employer-onboarding" element={<EmployerOnboarding />} />
+          <Route path="/employer-sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
