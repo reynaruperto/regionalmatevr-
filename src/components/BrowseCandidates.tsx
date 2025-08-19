@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BottomNavigation from '@/components/BottomNavigation';
 import FilterPage from '@/components/FilterPage';
+import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface Candidate {
   id: string;
@@ -21,6 +22,8 @@ const BrowseCandidates: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [showLikeModal, setShowLikeModal] = useState(false);
+  const [likedCandidateName, setLikedCandidateName] = useState('');
   const [selectedFilters, setSelectedFilters] = useState([
     { label: 'Industry: Agriculture', value: 'agriculture' },
     { label: 'Availability: Sep-Dec', value: 'sep-dec' }
@@ -65,12 +68,20 @@ const BrowseCandidates: React.FC = () => {
   };
 
   const handleLikeCandidate = (candidateId: string) => {
-    console.log('Liked candidate:', candidateId);
-    // This will later handle the like functionality
+    const candidate = candidates.find(c => c.id === candidateId);
+    if (candidate) {
+      setLikedCandidateName(candidate.name);
+      setShowLikeModal(true);
+    }
   };
 
   const handleViewProfile = (candidateId: string) => {
     navigate(`/candidate-profile/${candidateId}`);
+  };
+
+  const handleCloseLikeModal = () => {
+    setShowLikeModal(false);
+    setLikedCandidateName('');
   };
 
   const handleApplyFilters = (filters: any) => {
@@ -197,6 +208,13 @@ const BrowseCandidates: React.FC = () => {
           <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
             <BottomNavigation />
           </div>
+
+          {/* Like Confirmation Modal */}
+          <LikeConfirmationModal
+            candidateName={likedCandidateName}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>

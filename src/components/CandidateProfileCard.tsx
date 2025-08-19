@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface CandidateProfileCardProps {
   candidateId: string;
@@ -9,6 +10,7 @@ interface CandidateProfileCardProps {
 
 const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId }) => {
   const navigate = useNavigate();
+  const [showLikeModal, setShowLikeModal] = useState(false);
 
   // Mock data - in real app this would come from props or API
   const candidate = {
@@ -29,8 +31,12 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
   };
 
   const handleLikeToMatch = () => {
-    console.log('Like to match:', candidateId);
-    // This will later handle the matching functionality
+    setShowLikeModal(true);
+  };
+
+  const handleCloseLikeModal = () => {
+    setShowLikeModal(false);
+    navigate('/browse-candidates');
   };
 
   const handleBackToBrowse = () => {
@@ -138,6 +144,13 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
               </div>
             </div>
           </div>
+
+          {/* Like Confirmation Modal */}
+          <LikeConfirmationModal
+            candidateName={candidate.name}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>

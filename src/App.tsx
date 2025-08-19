@@ -22,6 +22,7 @@ import HelpSupport from "./pages/HelpSupport";
 import TermsPolicies from "./pages/TermsPolicies";
 import PostJobs from "./pages/PostJobs";
 import BrowseCandidates from "./pages/BrowseCandidates";
+import CandidateProfile from "./pages/CandidateProfile";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/terms-policies" element={<TermsPolicies />} />
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
+          <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
