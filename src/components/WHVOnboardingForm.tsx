@@ -49,12 +49,8 @@ const WHVOnboardingForm: React.FC = () => {
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600">1</span>
-                </div>
-                <span className="mx-2 text-gray-400">/</span>
-                <span className="text-sm text-gray-400">5</span>
+              <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <span className="text-sm font-medium text-gray-600">1/5</span>
               </div>
             </div>
           </div>

@@ -6,34 +6,25 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-react';
 
-const WHVProfileSetup: React.FC = () => {
+const WHVCurrentAddress: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    dateOfBirth: '',
-    nationality: '',
-    visaType: '',
-    visaExpiryDate: '',
-    phoneNumber: ''
+    addressLine1: '',
+    suburb: '',
+    state: '',
+    postCode: ''
   });
 
-  // WHV eligible countries
-  const whvCountries = [
-    'Argentina', 'Austria', 'Belgium', 'Canada', 'Chile', 'Czech Republic',
-    'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Hong Kong',
-    'Hungary', 'Ireland', 'Israel', 'Italy', 'Japan', 'Latvia', 'Lithuania',
-    'Luxembourg', 'Malta', 'Netherlands', 'Norway', 'Poland', 'Portugal',
-    'Slovakia', 'Slovenia', 'South Korea', 'Spain', 'Sweden', 'Taiwan',
-    'Turkey', 'United Kingdom', 'United States', 'Uruguay'
-  ];
-
-  // Working Holiday Visa types
-  const visaTypes = [
-    '417 (Working Holiday Visa)',
-    '462 (Work and Holiday Visa)',
-    '417 Second Year Extension',
-    '462 Second Year Extension',
-    '417 Third Year Extension',
-    '462 Third Year Extension'
+  // Australian states and territories
+  const australianStates = [
+    'Australian Capital Territory',
+    'New South Wales',
+    'Northern Territory',
+    'Queensland',
+    'South Australia',
+    'Tasmania',
+    'Victoria',
+    'Western Australia'
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,9 +43,9 @@ const WHVProfileSetup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('WHV Profile Setup:', formData);
+    console.log('Current Address:', formData);
     // Navigate to next step
-    navigate('/whv-current-address');
+    navigate('/whv-step-4');
   };
 
   return (
@@ -69,14 +60,14 @@ const WHVProfileSetup: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-onboarding')}
+                onClick={() => navigate('/whv-profile-setup')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">2/5</span>
+                <span className="text-sm font-medium text-gray-600">3/5</span>
               </div>
             </div>
           </div>
@@ -86,32 +77,49 @@ const WHVProfileSetup: React.FC = () => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="dateOfBirth" className="text-base font-medium text-gray-700">
-                  Date of Birth (DD/MM/YYYY)
+                <Label htmlFor="addressLine1" className="text-base font-medium text-gray-700">
+                  Current Address Line 1
                 </Label>
                 <Input
-                  id="dateOfBirth"
-                  name="dateOfBirth"
+                  id="addressLine1"
+                  name="addressLine1"
                   type="text"
-                  value={formData.dateOfBirth}
+                  required
+                  value={formData.addressLine1}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="01/01/1990"
+                  placeholder="22 Valley St."
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="nationality" className="text-base font-medium text-gray-700">
-                  Nationality (Country of Passport)
+                <Label htmlFor="suburb" className="text-base font-medium text-gray-700">
+                  Suburb/City
                 </Label>
-                <Select onValueChange={(value) => handleSelectChange('nationality', value)}>
+                <Input
+                  id="suburb"
+                  name="suburb"
+                  type="text"
+                  required
+                  value={formData.suburb}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Brisbane"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="state" className="text-base font-medium text-gray-700">
+                  State
+                </Label>
+                <Select onValueChange={(value) => handleSelectChange('state', value)}>
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="Argentina" />
+                    <SelectValue placeholder="Queensland" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto">
-                    {whvCountries.map((country) => (
-                      <SelectItem key={country} value={country} className="hover:bg-gray-100">
-                        {country}
+                    {australianStates.map((state) => (
+                      <SelectItem key={state} value={state} className="hover:bg-gray-100">
+                        {state}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -119,52 +127,18 @@ const WHVProfileSetup: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="visaType" className="text-base font-medium text-gray-700">
-                  Visa Type
-                </Label>
-                <Select onValueChange={(value) => handleSelectChange('visaType', value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="462" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto">
-                    {visaTypes.map((visa) => (
-                      <SelectItem key={visa} value={visa} className="hover:bg-gray-100">
-                        {visa}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="visaExpiryDate" className="text-base font-medium text-gray-700">
-                  Visa Expiry Date (DD/MM/YYYY)
+                <Label htmlFor="postCode" className="text-base font-medium text-gray-700">
+                  Post Code
                 </Label>
                 <Input
-                  id="visaExpiryDate"
-                  name="visaExpiryDate"
+                  id="postCode"
+                  name="postCode"
                   type="text"
                   required
-                  value={formData.visaExpiryDate}
+                  value={formData.postCode}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="01/01/2026"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber" className="text-base font-medium text-gray-700">
-                  Phone Number
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  type="tel"
-                  required
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="+61 492 333 444"
+                  placeholder="4000"
                 />
               </div>
 
@@ -184,4 +158,4 @@ const WHVProfileSetup: React.FC = () => {
   );
 };
 
-export default WHVProfileSetup;
+export default WHVCurrentAddress;
