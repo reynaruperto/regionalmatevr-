@@ -26,7 +26,7 @@ const ProfileCardPreview: React.FC = () => {
                 {/* Business Header */}
                 <div className="bg-[#1E293B] text-white text-center py-4 rounded-2xl mb-6">
                   <h2 className="text-xl font-bold">KANGAFARM</h2>
-                  <p className="text-sm opacity-90">Employer: John Doe</p>
+                  <p className="text-sm opacity-90">Verified Employer</p>
                 </div>
 
                 {/* Profile Picture */}
@@ -51,12 +51,12 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Location:</span> Clontarf, QLD 4017</div>
+                  <div><span className="font-semibold">Region:</span> South East Queensland</div>
                   <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
-                  <div><span className="font-semibold">Jobs Offered:</span> Fruit Picking, Farm Hand</div>
-                  <div><span className="font-semibold">Job Availability:</span> Ongoing, September 2025</div>
-                  <div><span className="font-semibold">Pay & Benefits:</span> $28/hour + super</div>
-                  <div><span className="font-semibold">Facilities / Extras:</span> Meals included, Accommodation available on discounted price</div>
+                  <div><span className="font-semibold">Jobs Available:</span> Fruit Picking, Farm Hand</div>
+                  <div><span className="font-semibold">Season:</span> September 2025 onwards</div>
+                  <div><span className="font-semibold">Pay Range:</span> $25-30/hour + super</div>
+                  <div><span className="font-semibold">Benefits:</span> Accommodation & meals available</div>
                 </div>
 
                 {/* Locked Message */}
