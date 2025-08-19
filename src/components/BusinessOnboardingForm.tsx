@@ -15,7 +15,7 @@ const formSchema = z.object({
   abn: z.string().min(11, { message: "Please enter a valid ABN." }),
   industryType: z.string().min(1, { message: "Please select an industry type." }),
   businessPhone: z.string().min(10, { message: "Please enter a valid phone number." }),
-  website: z.string().url({ message: "Please enter a valid website URL." }).optional().or(z.literal(""))
+  website: z.string().optional().or(z.literal(""))
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -60,9 +60,17 @@ const BusinessOnboardingForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch
+    watch,
+    control
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      businessName: "",
+      abn: "",
+      industryType: "",
+      businessPhone: "",
+      website: ""
+    }
   });
 
   const onSubmit = (data: FormData) => {
@@ -150,7 +158,10 @@ const BusinessOnboardingForm: React.FC = () => {
                   <Label htmlFor="industryType" className="text-base font-medium text-gray-900 mb-2 block">
                     Industry Type
                   </Label>
-                  <Select onValueChange={(value) => setValue("industryType", value)}>
+                  <Select 
+                    onValueChange={(value) => setValue("industryType", value, { shouldValidate: true })}
+                    defaultValue=""
+                  >
                     <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
                       <SelectValue placeholder="Agriculture & Farming" />
                     </SelectTrigger>
