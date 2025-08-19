@@ -16,8 +16,8 @@ const LikeConfirmationModal: React.FC<LikeConfirmationModalProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 w-full max-w-sm mx-auto shadow-xl">
+    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 rounded-[48px]">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-xs mx-auto shadow-xl">
         {/* Lightning Icon */}
         <div className="flex justify-center mb-4">
           <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
