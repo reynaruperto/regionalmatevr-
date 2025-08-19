@@ -19,15 +19,16 @@ const AccountConfirmation: React.FC = () => {
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-white">
-            
-            {/* Header */}
-            <div className="px-6 pt-16 pb-6">
-              <div className="text-center">
-                <h1 className="text-xl font-semibold text-gray-900">Complete profile Confirmation Employer</h1>
-              </div>
-            </div>
+          {/* Main content container with background */}
+          <div 
+            className="w-full h-full flex flex-col relative"
+            style={{
+              backgroundImage: `url(/lovable-uploads/c250e98e-db6b-418e-a60f-e42559ce2ef4.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
 
             {/* Content */}
             <div className="flex-1 flex items-center justify-center px-6">
