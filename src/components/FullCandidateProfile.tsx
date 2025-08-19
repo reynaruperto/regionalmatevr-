@@ -45,7 +45,12 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
 
   const handleBack = () => {
     const fromPage = searchParams.get('from');
-    navigate(fromPage === 'matches' ? '/matches' : '/browse-candidates');
+    const tab = searchParams.get('tab');
+    if (fromPage === 'matches') {
+      navigate(`/matches?tab=${tab || 'mutualLikes'}`);
+    } else {
+      navigate('/browse-candidates');
+    }
   };
 
   return (

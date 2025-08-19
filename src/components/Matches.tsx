@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
@@ -18,7 +18,17 @@ interface MatchCandidate {
 
 const Matches: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<'topMatches' | 'mutualLikes'>('topMatches');
+
+  // Check URL parameters to set initial tab
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tab = urlParams.get('tab');
+    if (tab === 'mutualLikes' || tab === 'topMatches') {
+      setActiveTab(tab as 'topMatches' | 'mutualLikes');
+    }
+  }, [location.search]);
 
   // Mock data for top matches
   const topMatches: MatchCandidate[] = [
@@ -93,7 +103,8 @@ const Matches: React.FC = () => {
 
   const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
     const route = isMutualMatch ? `/full-candidate-profile/${candidateId}` : `/candidate-profile/${candidateId}`;
-    navigate(`${route}?from=matches`);
+    const tab = isMutualMatch ? 'mutualLikes' : activeTab;
+    navigate(`${route}?from=matches&tab=${tab}`);
   };
 
   const currentCandidates = activeTab === 'topMatches' ? topMatches : mutualLikes;
