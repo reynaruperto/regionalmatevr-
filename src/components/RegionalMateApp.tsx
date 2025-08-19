@@ -15,15 +15,15 @@ const RegionalMateApp: React.FC = () => {
           {/* Main content container with background image */}
           <div className="w-full h-full flex flex-col relative">
             
-            {/* Background image covering top portion */}
-            <div className="absolute inset-0 top-0">
+            {/* Background image covering full screen */}
+            <div className="absolute inset-0">
               <img 
                 src="/lovable-uploads/57d1a927-999d-413d-8ed8-46c50ac0edde.png" 
                 alt="Regional Mate collage of people working and celebrating" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
               {/* Gradient overlay - thicker toward bottom */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/20 to-white/80 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-white/70 pointer-events-none" />
             </div>
 
             {/* Content positioned over background */}
