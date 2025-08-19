@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
               <div className="flex justify-center mb-6">
                 <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
                   <img 
-                    src="/lovable-uploads/533b9faf-8093-4e1d-b089-759120f751e1.png" 
+                    src="/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png" 
                     alt="Profile" 
                     className="w-full h-full object-cover"
                   />

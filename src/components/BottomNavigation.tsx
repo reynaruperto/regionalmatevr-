@@ -7,11 +7,10 @@ const BottomNavigation: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
-    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
-    { id: 'post-jobs', label: 'Post Jobs', icon: Building2, path: '/post-jobs' },
-    { id: 'browse', label: 'Browse Candidates', icon: Users, path: '/browse-candidates' },
+    { id: 'browse', label: 'Browse Employers', icon: Building2, path: '/browse-candidates' },
     { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
