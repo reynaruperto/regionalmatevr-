@@ -51,7 +51,7 @@ const BusinessAddressForm: React.FC = () => {
       title: "Business address saved!",
       description: "Proceeding to final step",
     });
-    // Navigate to next step (step 4/4)
+    navigate('/photo-upload');
   };
 
   return (

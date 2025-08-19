@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
+import PhotoUpload from "./pages/PhotoUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +26,7 @@ const App = () => (
           <Route path="/employer-onboarding" element={<EmployerOnboarding />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
+          <Route path="/photo-upload" element={<PhotoUpload />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
