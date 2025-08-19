@@ -32,8 +32,8 @@ const EmployerSignInForm: React.FC = () => {
       description: "Signed in successfully",
     });
     
-    // Navigate to dashboard or home
-    navigate('/');
+    // Navigate to dashboard
+    navigate('/dashboard');
   };
 
   const handleForgotPassword = () => {

@@ -11,6 +11,7 @@ import EmployerSignIn from "./pages/EmployerSignIn";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
+import Dashboard from "./pages/Dashboard";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
