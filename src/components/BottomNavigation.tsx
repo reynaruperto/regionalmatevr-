@@ -7,10 +7,10 @@ const BottomNavigation: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
+    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
     { id: 'browse', label: 'Browse Employers', icon: Building2, path: '/browse-candidates' },
     { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
-    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -28,7 +28,7 @@ const BottomNavigation: React.FC = () => {
               onClick={() => navigate(item.path)}
               className={`flex flex-col items-center justify-center px-3 rounded-lg transition-colors flex-1 mx-1 ${
                 active 
-                  ? 'bg-[#1E293B]/10 text-[#1E293B]' 
+                  ? 'bg-orange-500/10 text-orange-500' 
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
