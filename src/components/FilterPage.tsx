@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface FilterPageProps {
   onClose: () => void;
@@ -11,12 +12,13 @@ interface FilterPageProps {
 
 const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   const [selectedFilters, setSelectedFilters] = useState({
-    locations: [],
+    location: '',
+    industry: '',
+    experience: '',
+    license: '',
+    availability: '',
     whvHolders: false,
     willingToRelocate: false,
-    experience: [],
-    licenses: [],
-    availability: [],
   });
 
   const locations = [
@@ -51,12 +53,10 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     'Next 3 Months', 'Next 6 Months', 'Next 9 Months', 'Next 12 Months'
   ];
 
-  const handleFilterChange = (category: string, value: string, checked: boolean) => {
+  const handleSelectChange = (category: string, value: string) => {
     setSelectedFilters(prev => ({
       ...prev,
-      [category]: checked
-        ? [...(prev[category] as string[]), value]
-        : (prev[category] as string[]).filter(item => item !== value)
+      [category]: value
     }));
   };
 
@@ -72,23 +72,29 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     onClose();
   };
 
-  const FilterSection = ({ title, items, category }: { title: string; items: string[]; category: string }) => (
+  const DropdownSection = ({ title, items, category, placeholder }: { 
+    title: string; 
+    items: string[]; 
+    category: string; 
+    placeholder: string; 
+  }) => (
     <div className="mb-6">
       <h3 className="font-semibold text-gray-900 mb-3">{title}</h3>
-      <div className="space-y-2">
-        {items.map((item) => (
-          <div key={item} className="flex items-center space-x-2">
-            <Checkbox
-              id={`${category}-${item}`}
-              checked={(selectedFilters[category] as string[])?.includes(item)}
-              onCheckedChange={(checked) => handleFilterChange(category, item, checked as boolean)}
-            />
-            <Label htmlFor={`${category}-${item}`} className="text-sm text-gray-700">
+      <Select 
+        value={selectedFilters[category] as string} 
+        onValueChange={(value) => handleSelectChange(category, value)}
+      >
+        <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent className="bg-white border border-gray-300 shadow-lg z-50 max-h-60 overflow-y-auto">
+          {items.map((item) => (
+            <SelectItem key={item} value={item} className="hover:bg-gray-100">
               {item}
-            </Label>
-          </div>
-        ))}
-      </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 
@@ -112,7 +118,44 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
         {/* Scrollable Content */}
         <div className="flex-1 px-4 py-4 overflow-y-auto pb-24">
           {/* Location */}
-          <FilterSection title="Location" items={locations} category="locations" />
+          <DropdownSection 
+            title="Location" 
+            items={locations} 
+            category="location" 
+            placeholder="Select location"
+          />
+
+          {/* Industry */}
+          <DropdownSection 
+            title="Industry" 
+            items={industries} 
+            category="industry" 
+            placeholder="Select industry"
+          />
+
+          {/* Experience */}
+          <DropdownSection 
+            title="Experience" 
+            items={experienceLevels} 
+            category="experience" 
+            placeholder="Select experience level"
+          />
+
+          {/* License and Tickets */}
+          <DropdownSection 
+            title="License and Tickets" 
+            items={licenseTypes} 
+            category="license" 
+            placeholder="Select license/ticket"
+          />
+
+          {/* Availability */}
+          <DropdownSection 
+            title="Availability" 
+            items={availabilityOptions} 
+            category="availability" 
+            placeholder="Select availability"
+          />
 
           {/* WHV Holders */}
           <div className="mb-6">
@@ -143,18 +186,6 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               </Label>
             </div>
           </div>
-
-          {/* Industry */}
-          <FilterSection title="Industry" items={industries} category="industry" />
-
-          {/* Experience */}
-          <FilterSection title="Experience" items={experienceLevels} category="experience" />
-
-          {/* License and Tickets */}
-          <FilterSection title="License and Tickets" items={licenseTypes} category="licenses" />
-
-          {/* Availability */}
-          <FilterSection title="Availability" items={availabilityOptions} category="availability" />
         </div>
 
         {/* Fixed Bottom Button */}
