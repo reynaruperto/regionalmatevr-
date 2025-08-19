@@ -101,7 +101,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* iPhone Frame */}
-      <div className="flex-1 max-w-sm mx-auto bg-white shadow-xl relative">
+      <div className="flex-1 max-w-sm mx-auto bg-white shadow-xl relative min-h-screen">
         {/* Dynamic Island */}
         <div className="w-32 h-6 bg-black rounded-full mx-auto mb-4"></div>
         
@@ -116,7 +116,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 px-4 py-4 overflow-y-auto pb-32">
+        <div className="flex-1 px-4 py-4 overflow-y-auto" style={{ height: 'calc(100vh - 160px)' }}>
           {/* Location */}
           <DropdownSection 
             title="Location" 

@@ -86,7 +86,7 @@ const BrowseCandidates: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* iPhone Frame */}
-      <div className="flex-1 max-w-sm mx-auto bg-white shadow-xl">
+      <div className="flex-1 max-w-sm mx-auto bg-white shadow-xl relative">
         {/* Dynamic Island */}
         <div className="w-32 h-6 bg-black rounded-full mx-auto mb-4"></div>
         
@@ -103,7 +103,7 @@ const BrowseCandidates: React.FC = () => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 px-4 py-4">
+        <div className="flex-1 px-4 py-4 pb-24 overflow-y-auto">
           <h2 className="text-2xl font-bold text-primary mb-6">Browse Candidates</h2>
           
           {/* Search Bar */}
@@ -142,7 +142,7 @@ const BrowseCandidates: React.FC = () => {
           </div>
 
           {/* Candidates List */}
-          <div className="space-y-3 mb-20">
+          <div className="space-y-3">
             {candidates.map((candidate) => (
               <div key={candidate.id} className="bg-white rounded-lg p-3 shadow-sm border">
                 <div className="flex items-start gap-3">
@@ -196,7 +196,7 @@ const BrowseCandidates: React.FC = () => {
         </div>
 
         {/* Bottom Navigation */}
-        <div className="bg-white border-t">
+        <div className="absolute bottom-0 left-0 right-0 bg-white border-t">
           <BottomNavigation />
         </div>
       </div>
