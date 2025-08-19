@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import AustraliaIcon from './AustraliaIcon';
-import SignInAsModal from './SignInAsModal';
 
-const LetsBeginScreen: React.FC = () => {
+interface SignInAsModalProps {
+  onClose: () => void;
+}
+
+const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
   const navigate = useNavigate();
-  const [showSignInModal, setShowSignInModal] = useState(false);
 
-  if (showSignInModal) {
-    return <SignInAsModal onClose={() => setShowSignInModal(false)} />;
-  }
-  
+  const handleEmployerSignIn = () => {
+    navigate('/employer-sign-in');
+  };
+
+  const handleWHVSignIn = () => {
+    // Future implementation for WHV holder sign in
+    console.log('WHV sign in - future implementation');
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -26,7 +33,12 @@ const LetsBeginScreen: React.FC = () => {
             
             {/* Header with back button */}
             <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button variant="ghost" size="icon" className="w-12 h-12 bg-white rounded-2xl shadow-sm">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 bg-white rounded-2xl shadow-sm"
+                onClick={onClose}
+              >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
               <div className="flex-1"></div>
@@ -41,47 +53,32 @@ const LetsBeginScreen: React.FC = () => {
               </div>
             </div>
 
-            {/* Title and subtitle */}
+            {/* Title */}
             <div className="px-6 pb-16 text-center">
-              <h1 className="text-4xl font-bold text-brand-text mb-4">
-                Let's Begin!
+              <h1 className="text-2xl font-medium text-gray-600">
+                Sign In As
               </h1>
-              <p className="text-lg text-brand-secondary-text leading-relaxed">
-                Connect for jobs and travel. Choose your role to get started.
-              </p>
             </div>
 
-            {/* Role selection buttons */}
+            {/* Sign in options */}
             <div className="px-6 pb-8 space-y-4">
               <Button 
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                onClick={() => navigate('/employer-onboarding')}
+                onClick={handleEmployerSignIn}
               >
-                I am an Employer
+                Employer
               </Button>
               
               <Button 
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                onClick={handleWHVSignIn}
               >
-                I am a Working Holiday Visa Holder
+                Working Holiday Visa Holder
               </Button>
-            </div>
-
-            {/* Sign in link */}
-            <div className="px-6 pb-12 text-center">
-              <p className="text-brand-secondary-text">
-                Already have an account? 
-                <button 
-                  onClick={() => setShowSignInModal(true)}
-                  className="text-brand-text font-medium ml-1 hover:underline"
-                >
-                  Sign in
-                </button>
-              </p>
             </div>
 
           </div>
@@ -91,4 +88,4 @@ const LetsBeginScreen: React.FC = () => {
   );
 };
 
-export default LetsBeginScreen;
+export default SignInAsModal;
