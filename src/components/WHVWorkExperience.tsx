@@ -57,7 +57,7 @@ const WHVWorkExperience: React.FC = () => {
     e.preventDefault();
     console.log('Work Experience:', formData);
     // Navigate to next step
-    navigate('/whv-step-5');
+    navigate('/whv-photo-upload');
   };
 
   return (

@@ -30,6 +30,7 @@ import WHVOnboarding from "./pages/WHVOnboarding";
 import WHVProfileSetup from "./pages/WHVProfileSetup";
 import WHVCurrentAddress from "./pages/WHVCurrentAddress";
 import WHVWorkExperience from "./pages/WHVWorkExperience";
+import WHVPhotoUpload from "./pages/WHVPhotoUpload";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -68,6 +69,7 @@ const App = () => (
         <Route path="/whv-profile-setup" element={<WHVProfileSetup />} />
         <Route path="/whv-current-address" element={<WHVCurrentAddress />} />
         <Route path="/whv-work-experience" element={<WHVWorkExperience />} />
+        <Route path="/whv-photo-upload" element={<WHVPhotoUpload />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
