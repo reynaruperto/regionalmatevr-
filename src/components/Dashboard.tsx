@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Edit, FileText, Shield, Bell, Lock, HelpCircle, Info, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import BottomNavigation from './BottomNavigation';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
@@ -64,7 +66,10 @@ const Dashboard: React.FC = () => {
                     "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing"
                   </p>
                   
-                  <button className="flex items-center justify-center mx-auto text-gray-600 hover:text-gray-800 transition-colors">
+                  <button 
+                    onClick={() => navigate('/edit-profile')}
+                    className="flex items-center justify-center mx-auto text-gray-600 hover:text-gray-800 transition-colors"
+                  >
                     <Edit size={16} className="mr-2" />
                     <span className="text-sm">Edit Profile</span>
                   </button>
