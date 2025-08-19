@@ -36,7 +36,7 @@ const BrowseCandidates: React.FC = () => {
       location: 'QLD - Bundaberg',
       availability: 'Available from Sep 2025',
       matchPercentage: 92,
-      profileImage: '/lovable-uploads/51369c33-1aa8-4f19-b8a1-e65e12f9ec9f.png'
+      profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
     },
     {
       id: '2',
