@@ -24,17 +24,17 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
-      <div className="max-w-md mx-auto bg-black rounded-t-[60px] min-h-screen p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-t-[48px] overflow-hidden relative">
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-200 pb-20">
+          <div className="w-full h-full flex flex-col relative bg-gray-200">
             {/* Content */}
-            <div className="flex-1 px-6 pt-16">
+            <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
               {/* Welcome Section */}
               <div className="bg-white rounded-3xl p-6 mb-6 shadow-sm">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Welcome Back</h1>
@@ -49,17 +49,11 @@ const Dashboard: React.FC = () => {
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-4">
                   <div className="w-32 h-32 rounded-full border-4 border-[#1E293B] overflow-hidden">
-                    {profilePhoto ? (
-                      <img 
-                        src={profilePhoto} 
-                        alt="Profile" 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400 text-sm">No Photo</span>
-                      </div>
-                    )}
+                    <img 
+                      src="/lovable-uploads/51369c33-1aa8-4f19-b8a1-e65e12f9ec9f.png" 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
@@ -97,12 +91,14 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Bottom Navigation - Inside phone frame */}
+            <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 rounded-b-[48px]">
+              <BottomNavigation />
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Bottom Navigation */}
-      <BottomNavigation />
     </div>
   );
 };
