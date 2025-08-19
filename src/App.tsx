@@ -16,6 +16,7 @@ import EditProfile from "./pages/EditProfile";
 import ProfileCardPreview from "./pages/ProfileCardPreview";
 import Security from "./pages/Security";
 import EditBusinessProfile from "./pages/EditBusinessProfile";
+import Notifications from "./pages/Notifications";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
           <Route path="/edit-business-profile" element={<EditBusinessProfile />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
