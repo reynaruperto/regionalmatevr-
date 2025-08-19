@@ -58,15 +58,8 @@ const EmployerSignInForm: React.FC = () => {
           {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-200">
 
-            {/* Header */}
-            <div className="px-6 pt-16 pb-6">
-              <div className="text-center">
-                <h1 className="text-xl font-semibold text-gray-900">Emp Sign In Landing</h1>
-              </div>
-            </div>
-
             {/* Content */}
-            <div className="flex-1 flex items-center justify-center px-6">
+            <div className="flex-1 flex items-center justify-center px-6 pt-16">
               <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
                 
                 {/* Logo */}

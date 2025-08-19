@@ -8,7 +8,7 @@ const AustraliaIcon: React.FC<AustraliaIconProps> = ({ className = "w-8 h-8" }) 
   return (
     <div className={`relative ${className}`}>
       <img 
-        src="/lovable-uploads/8389e708-fc56-490f-a882-9c8c88e62de8.png" 
+        src="/lovable-uploads/dc42dd18-7be3-4aca-8b86-359bd8f7af03.png" 
         alt="Regional Mate Logo - Australia with location pin" 
         className="w-full h-full object-contain"
       />
