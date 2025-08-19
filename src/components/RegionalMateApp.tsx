@@ -15,8 +15,8 @@ const RegionalMateApp: React.FC = () => {
           {/* Main content container with background image */}
           <div className="w-full h-full flex flex-col relative">
             
-            {/* Background image with specific dimensions */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[390px] h-[688px]">
+            {/* Background image with full width and specific height */}
+            <div className="absolute top-0 left-0 w-full h-[688px]">
               <img 
                 src="/lovable-uploads/57d1a927-999d-413d-8ed8-46c50ac0edde.png" 
                 alt="Regional Mate collage of people working and celebrating" 
@@ -28,11 +28,11 @@ const RegionalMateApp: React.FC = () => {
 
             {/* Content positioned over background */}
             <div className="relative z-10 flex flex-col h-full justify-end">
-              {/* Australia icon */}
-              <div className="px-6 pb-6">
+              {/* Australia icon positioned higher */}
+              <div className="px-6 pb-2">
                 <div className="flex justify-center">
                   <div className="bg-white p-4 rounded-3xl shadow-lg">
-                    <AustraliaIcon className="w-16 h-12" />
+                    <AustraliaIcon className="w-[108px] h-[108px]" />
                   </div>
                 </div>
               </div>
