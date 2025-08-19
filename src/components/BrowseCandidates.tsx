@@ -33,7 +33,7 @@ const BrowseCandidates: React.FC = () => {
       name: 'Peter',
       skills: ['Agriculture', 'Marketing'],
       country: 'Argentina',
-      location: 'Brisbane, 4000',
+      location: 'QLD - Bundaberg',
       availability: 'Available from Sep 2025',
       matchPercentage: 92,
       profileImage: '/lovable-uploads/51369c33-1aa8-4f19-b8a1-e65e12f9ec9f.png'
@@ -43,7 +43,7 @@ const BrowseCandidates: React.FC = () => {
       name: 'Daniel',
       skills: ['Construction', 'Agriculture'],
       country: 'Germany',
-      location: 'Sunshine Coast, 4551',
+      location: 'NSW - Tamworth',
       availability: 'Available from Oct 2025',
       matchPercentage: 88,
       profileImage: '/lovable-uploads/7f241d90-ee65-4e5d-bf17-dee78ed2774e.png'
@@ -53,7 +53,7 @@ const BrowseCandidates: React.FC = () => {
       name: 'Hannah',
       skills: ['Hospitality', 'Agriculture'],
       country: 'United Kingdom',
-      location: 'Gold Coast, 4224',
+      location: 'VIC - Mildura',
       availability: 'Available from Nov 2025',
       matchPercentage: 86,
       profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png'

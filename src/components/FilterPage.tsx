@@ -22,12 +22,36 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   });
 
   const locations = [
-    'Queensland', 'New South Wales', 'Western Australia',
-    'Victoria', 'South Australia', 'Tasmania', 'Northern Territory',
-    'Australian Capital Territory', 'Brisbane, QLD', 'Armidale, NSW',
-    'Parramatta, NSW', 'Gold Coast, QLD', 'Perth, WA',
-    'New Castle, NSW', 'Geelong, VIC', 'Hobart, TAS',
-    'Launceston, TAS'
+    // Queensland Regional Areas
+    'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
+    'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
+    'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
+    
+    // New South Wales Regional Areas  
+    'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
+    'NSW - Dubbo', 'NSW - Goulburn', 'NSW - Grafton', 'NSW - Orange',
+    'NSW - Port Macquarie', 'NSW - Tamworth', 'NSW - Wagga Wagga',
+    
+    // Victoria Regional Areas
+    'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
+    'VIC - Latrobe Valley', 'VIC - Mildura', 'VIC - Shepparton', 'VIC - Warrnambool',
+    
+    // Western Australia Regional Areas
+    'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
+    'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
+    'WA - Port Hedland',
+    
+    // South Australia Regional Areas
+    'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
+    
+    // Tasmania (All Areas Regional)
+    'TAS - Burnie', 'TAS - Devonport', 'TAS - Hobart', 'TAS - Launceston',
+    
+    // Northern Territory (All Areas Regional)
+    'NT - Alice Springs', 'NT - Darwin', 'NT - Katherine',
+    
+    // Australian Capital Territory
+    'ACT - Canberra (Limited Regional Work)'
   ];
 
   const industries = [

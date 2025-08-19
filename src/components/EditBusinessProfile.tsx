@@ -19,8 +19,7 @@ const formSchema = z.object({
   website: z.string().optional().or(z.literal("")),
   industryType: z.string().min(1, { message: "Please select an industry type." }),
   addressLine1: z.string().min(5, { message: "Please enter a valid address." }),
-  suburbCity: z.string().min(2, { message: "Please enter a valid suburb/city." }),
-  state: z.string().min(1, { message: "Please select a state." }),
+  regionalArea: z.string().min(1, { message: "Please select a regional area." }),
   postCode: z.string().min(4, { message: "Please enter a valid post code." })
 });
 
@@ -57,16 +56,38 @@ const INDUSTRY_OPTIONS = [
   "Other Eligible Industries"
 ];
 
-// Australian states
-const AUSTRALIAN_STATES = [
-  "New South Wales",
-  "Victoria", 
-  "Queensland",
-  "Western Australia",
-  "South Australia",
-  "Tasmania",
-  "Australian Capital Territory",
-  "Northern Territory"
+// Regional areas recognized by Department of Home Affairs for Working Holiday visa
+const REGIONAL_AREAS = [
+  // Queensland Regional Areas
+  'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
+  'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
+  'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
+  
+  // New South Wales Regional Areas  
+  'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
+  'NSW - Dubbo', 'NSW - Goulburn', 'NSW - Grafton', 'NSW - Orange',
+  'NSW - Port Macquarie', 'NSW - Tamworth', 'NSW - Wagga Wagga',
+  
+  // Victoria Regional Areas
+  'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
+  'VIC - Latrobe Valley', 'VIC - Mildura', 'VIC - Shepparton', 'VIC - Warrnambool',
+  
+  // Western Australia Regional Areas
+  'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
+  'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
+  'WA - Port Hedland',
+  
+  // South Australia Regional Areas
+  'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
+  
+  // Tasmania (All Areas Regional)
+  'TAS - Burnie', 'TAS - Devonport', 'TAS - Hobart', 'TAS - Launceston',
+  
+  // Northern Territory (All Areas Regional)
+  'NT - Alice Springs', 'NT - Darwin', 'NT - Katherine',
+  
+  // Australian Capital Territory
+  'ACT - Canberra (Limited Regional Work)'
 ];
 
 const EditBusinessProfile: React.FC = () => {
@@ -89,8 +110,7 @@ const EditBusinessProfile: React.FC = () => {
       website: "www.kangafarm.com",
       industryType: "Agriculture & Farming",
       addressLine1: "11 Apple St.",
-      suburbCity: "Clontarf",
-      state: "Queensland",
+      regionalArea: "QLD - Bundaberg",
       postCode: "4019"
     }
   });
@@ -248,43 +268,30 @@ const EditBusinessProfile: React.FC = () => {
                   )}
                 </div>
 
-                {/* Suburb/City */}
+                {/* Regional Area */}
                 <div>
-                  <Label htmlFor="suburbCity" className="text-gray-600 mb-2 block">Suburb/City</Label>
-                  <Input
-                    id="suburbCity"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                    {...register("suburbCity")}
-                  />
-                  {errors.suburbCity && (
-                    <p className="text-red-500 text-sm mt-1">{errors.suburbCity.message}</p>
-                  )}
-                </div>
-
-                {/* State */}
-                <div>
-                  <Label htmlFor="state" className="text-gray-600 mb-2 block">State</Label>
+                  <Label htmlFor="regionalArea" className="text-gray-600 mb-2 block">Regional Area</Label>
                   <Select 
-                    onValueChange={(value) => setValue("state", value, { shouldValidate: true })}
-                    defaultValue="Queensland"
+                    onValueChange={(value) => setValue("regionalArea", value, { shouldValidate: true })}
+                    defaultValue="QLD - Bundaberg"
                   >
                     <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                      <SelectValue placeholder="Queensland" />
+                      <SelectValue placeholder="QLD - Bundaberg" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-[300px] overflow-y-auto">
-                      {AUSTRALIAN_STATES.map((state) => (
+                      {REGIONAL_AREAS.map((area) => (
                         <SelectItem 
-                          key={state} 
-                          value={state}
+                          key={area} 
+                          value={area}
                           className="py-3 px-4 hover:bg-gray-50 cursor-pointer"
                         >
-                          {state}
+                          {area}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.state && (
-                    <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+                  {errors.regionalArea && (
+                    <p className="text-red-500 text-sm mt-1">{errors.regionalArea.message}</p>
                   )}
                 </div>
 
