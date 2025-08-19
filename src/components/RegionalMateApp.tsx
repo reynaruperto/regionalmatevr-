@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AustraliaIcon from './AustraliaIcon';
 // Background images for the collage
 
 const RegionalMateApp: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -53,6 +55,7 @@ const RegionalMateApp: React.FC = () => {
                   variant="brand" 
                   size="lg" 
                   className="w-full h-14 text-lg rounded-xl"
+                  onClick={() => navigate('/lets-begin')}
                 >
                   ✨ Get started
                 </Button>
