@@ -148,108 +148,104 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* iPhone Frame Container */}
-      <div className="w-full max-w-sm mx-auto bg-gray-50 relative">
-        {/* iPhone Physical Frame */}
-        <div className="bg-black rounded-[3rem] p-2 shadow-2xl mx-4 my-4">
-          {/* iPhone Screen */}
-          <div className="bg-white rounded-[2.5rem] overflow-hidden relative min-h-[800px] flex flex-col">
-            {/* Dynamic Island */}
-            <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4"></div>
-            
-            {/* Header */}
-            <div className="px-4 py-3 border-b bg-white">
-              <div className="flex items-center gap-3">
-                <button onClick={onClose}>
-                  <ArrowLeft size={24} className="text-gray-600" />
-                </button>
-                <h1 className="text-lg font-medium text-gray-900">Filters</h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      {/* iPhone 16 Pro Max Frame - Fixed dimensions */}
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+          {/* Dynamic Island */}
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
+          
+          {/* Header - Fixed */}
+          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
+            <div className="flex items-center gap-3">
+              <button onClick={onClose}>
+                <ArrowLeft size={24} className="text-gray-600" />
+              </button>
+              <h1 className="text-lg font-medium text-gray-900">Filters</h1>
+            </div>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 px-4 py-4 overflow-y-auto">
+            {/* Location */}
+            <DropdownSection 
+              title="Location" 
+              items={locations} 
+              category="location" 
+              placeholder="Select location"
+            />
+
+            {/* Industry */}
+            <DropdownSection 
+              title="Industry" 
+              items={industries} 
+              category="industry" 
+              placeholder="Select industry"
+            />
+
+            {/* Experience */}
+            <DropdownSection 
+              title="Experience" 
+              items={experienceLevels} 
+              category="experience" 
+              placeholder="Select experience level"
+            />
+
+            {/* License and Tickets */}
+            <DropdownSection 
+              title="License and Tickets" 
+              items={licenseTypes} 
+              category="license" 
+              placeholder="Select license/ticket"
+            />
+
+            {/* Availability */}
+            <DropdownSection 
+              title="Availability" 
+              items={availabilityOptions} 
+              category="availability" 
+              placeholder="Select availability"
+            />
+
+            {/* WHV Holders */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">WHV Holders</h3>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="whv-holders"
+                  checked={selectedFilters.whvHolders}
+                  onCheckedChange={(checked) => handleBooleanFilterChange('whvHolders', checked as boolean)}
+                />
+                <Label htmlFor="whv-holders" className="text-sm text-gray-700">
+                  Only show WHV holders
+                </Label>
               </div>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 px-4 py-4 overflow-y-auto pb-24">
-              {/* Location */}
-              <DropdownSection 
-                title="Location" 
-                items={locations} 
-                category="location" 
-                placeholder="Select location"
-              />
-
-              {/* Industry */}
-              <DropdownSection 
-                title="Industry" 
-                items={industries} 
-                category="industry" 
-                placeholder="Select industry"
-              />
-
-              {/* Experience */}
-              <DropdownSection 
-                title="Experience" 
-                items={experienceLevels} 
-                category="experience" 
-                placeholder="Select experience level"
-              />
-
-              {/* License and Tickets */}
-              <DropdownSection 
-                title="License and Tickets" 
-                items={licenseTypes} 
-                category="license" 
-                placeholder="Select license/ticket"
-              />
-
-              {/* Availability */}
-              <DropdownSection 
-                title="Availability" 
-                items={availabilityOptions} 
-                category="availability" 
-                placeholder="Select availability"
-              />
-
-              {/* WHV Holders */}
-              <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3">WHV Holders</h3>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="whv-holders"
-                    checked={selectedFilters.whvHolders}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('whvHolders', checked as boolean)}
-                  />
-                  <Label htmlFor="whv-holders" className="text-sm text-gray-700">
-                    Only show WHV holders
-                  </Label>
-                </div>
-              </div>
-
-              {/* Willing to Relocate */}
-              <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Relocation</h3>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-relocate"
-                    checked={selectedFilters.willingToRelocate}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToRelocate', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-relocate" className="text-sm text-gray-700">
-                    Willing to relocate
-                  </Label>
-                </div>
+            {/* Willing to Relocate */}
+            <div className="mb-20">
+              <h3 className="font-semibold text-gray-900 mb-3">Relocation</h3>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="willing-relocate"
+                  checked={selectedFilters.willingToRelocate}
+                  onCheckedChange={(checked) => handleBooleanFilterChange('willingToRelocate', checked as boolean)}
+                />
+                <Label htmlFor="willing-relocate" className="text-sm text-gray-700">
+                  Willing to relocate
+                </Label>
               </div>
             </div>
+          </div>
 
-            {/* Fixed Bottom Button */}
-            <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 rounded-b-[2.5rem]">
-              <Button
-                onClick={applyFilters}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
-              >
-                Confirm
-              </Button>
-            </div>
+          {/* Fixed Bottom Button */}
+          <div className="bg-white border-t p-4 flex-shrink-0 rounded-b-[48px]">
+            <Button
+              onClick={applyFilters}
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+            >
+              Confirm
+            </Button>
           </div>
         </div>
       </div>
