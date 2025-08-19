@@ -69,7 +69,7 @@ const ProfileCardPreview: React.FC = () => {
                   <Button className="flex-1 bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl h-12">
                     View Jobs
                   </Button>
-                  <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2">
+                  <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
                     <span className="text-[#1E293B] font-medium text-sm">Like to Match</span>
                     <div className="flex items-center justify-center">
                       <img 
