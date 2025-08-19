@@ -3,18 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import AustraliaIcon from './AustraliaIcon';
 
 const WHVOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -31,144 +32,134 @@ const WHVOnboardingForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
           
-          {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-50">
-            
-            {/* Header with back button */}
-            <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="w-12 h-12 bg-white rounded-2xl shadow-sm"
+          {/* Header - Fixed */}
+          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <button 
                 onClick={() => navigate('/lets-begin')}
+                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
-                <ArrowLeft className="w-6 h-6 text-gray-700" />
-              </Button>
-              <div className="flex-1"></div>
-            </div>
-
-            {/* Logo section */}
-            <div className="px-6 pt-4 pb-8">
-              <div className="flex justify-center">
-                <div className="bg-white p-4 rounded-3xl shadow-lg">
-                  <AustraliaIcon className="w-[80px] h-[80px]" />
+                <ArrowLeft size={20} className="text-gray-600" />
+              </button>
+              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-600">1</span>
                 </div>
+                <span className="mx-2 text-gray-400">/</span>
+                <span className="text-sm text-gray-400">5</span>
               </div>
             </div>
+          </div>
 
-            {/* Title */}
-            <div className="px-6 pb-6 text-center">
-              <h1 className="text-2xl font-bold text-brand-text mb-2">
-                Join as WHV Holder
-              </h1>
-              <p className="text-brand-secondary-text">
-                Create your account to start connecting with employers
-              </p>
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-4 py-6">
+            {/* Section Title */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">About you</h2>
+              <p className="text-gray-600">Find your RegionalMate. Let's get to know you!</p>
             </div>
 
             {/* Form */}
-            <div className="px-6 flex-1 overflow-y-auto">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">
-                      First Name
-                    </Label>
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      type="text"
-                      required
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      className="h-12"
-                      placeholder="Enter first name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">
-                      Last Name
-                    </Label>
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      type="text"
-                      required
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      className="h-12"
-                      placeholder="Enter last name"
-                    />
-                  </div>
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-base font-medium text-gray-700">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Peter Parker"
+                />
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="h-12"
-                    placeholder="Enter your email"
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-base font-medium text-gray-700">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="peterparker@gmail.com"
+                />
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                    Password
-                  </Label>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-base font-medium text-gray-700">
+                  Password
+                </Label>
+                <div className="relative">
                   <Input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="h-12"
-                    placeholder="Create a password"
+                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    placeholder="••••••••••••••••••••"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
                 </div>
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
-                    Confirm Password
-                  </Label>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-700">
+                  Confirm Password
+                </Label>
+                <div className="relative">
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     required
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className="h-12"
-                    placeholder="Confirm your password"
+                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    placeholder="••••••••••••••••••••"
                   />
-                </div>
-
-                <div className="pt-6 pb-8">
-                  <Button 
-                    type="submit"
-                    variant="default" 
-                    size="lg" 
-                    className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
-                    Create Account
-                  </Button>
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
                 </div>
-              </form>
-            </div>
+              </div>
+
+              <div className="pt-8">
+                <Button 
+                  type="submit"
+                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                >
+                  Continue →
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
