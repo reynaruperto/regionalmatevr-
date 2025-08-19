@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Filter, Heart } from 'lucide-react';
+import { ArrowLeft, Search, Filter, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BottomNavigation from '@/components/BottomNavigation';
@@ -186,7 +186,7 @@ const BrowseCandidates: React.FC = () => {
                           size="icon"
                           className="h-7 w-7 flex-shrink-0"
                         >
-                          <Heart size={14} className="text-orange-500" />
+                          <ThumbsUp size={14} className="text-orange-500" />
                         </Button>
                       </div>
                     </div>
