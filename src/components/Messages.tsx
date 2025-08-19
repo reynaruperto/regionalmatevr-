@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Bell, Zap } from 'lucide-react';
+import { Search, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 
@@ -23,11 +23,8 @@ const Messages: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <Search size={24} className="text-gray-600" />
-              <h1 className="text-xl font-bold text-orange-500">Inbox</h1>
-              <div className="relative">
-                <Bell size={24} className="text-gray-600" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full"></div>
-              </div>
+              <h1 className="text-xl font-bold text-orange-500">Messages</h1>
+              <div className="w-6"></div> {/* Spacer for balance */}
             </div>
           </div>
 
