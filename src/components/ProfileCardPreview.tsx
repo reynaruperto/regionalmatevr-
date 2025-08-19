@@ -65,20 +65,20 @@ const ProfileCardPreview: React.FC = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <Button className="flex-1 bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl h-12">
+                <div className="space-y-3">
+                  <Button className="w-full bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl h-12">
                     View Jobs
                   </Button>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#1E293B] font-semibold text-sm">Like to Match</span>
-                    <div className="w-16 h-16 flex items-center justify-center">
+                  <button className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between w-full">
+                    <span className="text-[#1E293B] font-medium text-sm">Like to Match</span>
+                    <div className="w-14 h-14 flex items-center justify-center">
                       <img 
                         src="/lovable-uploads/e71624ef-9964-4e25-bd6d-239d2fc301b9.png" 
                         alt="Like to Match" 
                         className="w-12 h-12 object-contain"
                       />
                     </div>
-                  </div>
+                  </button>
                 </div>
               </div>
 
