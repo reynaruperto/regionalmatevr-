@@ -3,6 +3,8 @@ import { ArrowLeft, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import PostJobForm from '@/components/PostJobForm';
+import BottomNavigation from '@/components/BottomNavigation';
 
 interface Job {
   id: string;
@@ -15,6 +17,8 @@ interface Job {
 const PostJobs: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showForm, setShowForm] = useState(false);
+  const [editingJob, setEditingJob] = useState<Job | null>(null);
 
   const [jobs, setJobs] = useState<Job[]>([
     {
@@ -41,17 +45,16 @@ const PostJobs: React.FC = () => {
   ]);
 
   const handlePostJobs = () => {
-    toast({
-      title: "Post New Job",
-      description: "Job posting functionality would be implemented here",
-    });
+    setEditingJob(null);
+    setShowForm(true);
   };
 
   const handleEditJob = (jobId: string) => {
-    toast({
-      title: "Edit Job",
-      description: `Editing job ${jobId}`,
-    });
+    const job = jobs.find(j => j.id === jobId);
+    if (job) {
+      setEditingJob(job);
+      setShowForm(true);
+    }
   };
 
   const handleDeleteJob = (jobId: string) => {
@@ -61,6 +64,15 @@ const PostJobs: React.FC = () => {
       description: "Job has been successfully deleted",
     });
   };
+
+  if (showForm) {
+    return (
+      <PostJobForm 
+        onBack={() => setShowForm(false)} 
+        editingJob={editingJob}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
@@ -164,6 +176,11 @@ const PostJobs: React.FC = () => {
               )}
 
               <div className="h-20"></div>
+            </div>
+
+            {/* Bottom Navigation */}
+            <div className="absolute bottom-0 left-0 right-0 bg-white">
+              <BottomNavigation />
             </div>
           </div>
         </div>
