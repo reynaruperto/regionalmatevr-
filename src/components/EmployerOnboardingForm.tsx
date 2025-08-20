@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  givenName: z.string().min(2, { message: "Given name must be at least 2 characters." }),
+  middleName: z.string().optional(),
+  familyName: z.string().min(2, { message: "Family name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   password: z.string().min(8, { message: "Password must be at least 8 characters." }),
   confirmPassword: z.string()
@@ -92,19 +94,51 @@ const EmployerOnboardingForm: React.FC = () => {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Name field */}
+                {/* Given Name field */}
                 <div>
-                  <Label htmlFor="name" className="text-base font-medium text-gray-900 mb-2 block">
-                    Name
+                  <Label htmlFor="givenName" className="text-base font-medium text-gray-900 mb-2 block">
+                    Given Name
                   </Label>
                   <Input
-                    id="name"
-                    placeholder="John Doe"
+                    id="givenName"
+                    placeholder="John"
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                    {...register("name")}
+                    {...register("givenName")}
                   />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                  {errors.givenName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.givenName.message}</p>
+                  )}
+                </div>
+
+                {/* Middle Name field */}
+                <div>
+                  <Label htmlFor="middleName" className="text-base font-medium text-gray-900 mb-2 block">
+                    Middle Name (if applicable)
+                  </Label>
+                  <Input
+                    id="middleName"
+                    placeholder="Michael"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("middleName")}
+                  />
+                  {errors.middleName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.middleName.message}</p>
+                  )}
+                </div>
+
+                {/* Family Name field */}
+                <div>
+                  <Label htmlFor="familyName" className="text-base font-medium text-gray-900 mb-2 block">
+                    Family Name
+                  </Label>
+                  <Input
+                    id="familyName"
+                    placeholder="Doe"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("familyName")}
+                  />
+                  {errors.familyName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.familyName.message}</p>
                   )}
                 </div>
 

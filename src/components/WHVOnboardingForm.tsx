@@ -9,7 +9,9 @@ import AustraliaIcon from './AustraliaIcon';
 const WHVOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    givenName: '',
+    middleName: '',
+    familyName: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -66,18 +68,49 @@ const WHVOnboardingForm: React.FC = () => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-base font-medium text-gray-700">
-                  Name
+                <Label htmlFor="givenName" className="text-base font-medium text-gray-700">
+                  Given Name
                 </Label>
                 <Input
-                  id="name"
-                  name="name"
+                  id="givenName"
+                  name="givenName"
                   type="text"
                   required
-                  value={formData.name}
+                  value={formData.givenName}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="Peter Parker"
+                  placeholder="Peter"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="middleName" className="text-base font-medium text-gray-700">
+                  Middle Name (if applicable)
+                </Label>
+                <Input
+                  id="middleName"
+                  name="middleName"
+                  type="text"
+                  value={formData.middleName}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Benjamin"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="familyName" className="text-base font-medium text-gray-700">
+                  Family Name
+                </Label>
+                <Input
+                  id="familyName"
+                  name="familyName"
+                  type="text"
+                  required
+                  value={formData.familyName}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Parker"
                 />
               </div>
 

@@ -64,7 +64,7 @@ const LetsBeginScreen: React.FC = () => {
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                 onClick={() => navigate('/employer-onboarding')}
               >
-                I am an Employer
+                I want to hire
               </Button>
               
               <Button 
