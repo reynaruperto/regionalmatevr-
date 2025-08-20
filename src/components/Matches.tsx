@@ -74,7 +74,7 @@ const Matches: React.FC = () => {
       location: 'Northrivers, NSW 2470',
       availability: 'Available from Aug 2025',
       matchPercentage: 95,
-      profileImage: '/lovable-uploads/f43f9801-cb24-4f5a-a1d5-e3930b9d9db0.png',
+      profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png',
       isMutualMatch: true
     },
     {
@@ -85,7 +85,7 @@ const Matches: React.FC = () => {
       location: 'Coolangatta, QLD 4225',
       availability: 'Available from Sep 2025',
       matchPercentage: 91,
-      profileImage: '/lovable-uploads/f2586d6e-7636-4b34-a77f-f83920653d1c.png',
+      profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
       isMutualMatch: true
     },
     {
@@ -96,7 +96,7 @@ const Matches: React.FC = () => {
       location: 'Sunshine Coast, 4019',
       availability: 'Available from Oct 2025',
       matchPercentage: 89,
-      profileImage: '/lovable-uploads/6f81a14b-1d2f-47b9-bfa2-2a7d3b81d8fc.png',
+      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
       isMutualMatch: true
     }
   ];
