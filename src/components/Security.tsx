@@ -32,11 +32,11 @@ const Security: React.FC = () => {
       title: "Security Settings Updated",
       description: "Your security settings have been successfully updated",
     });
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   const recentActivity = [

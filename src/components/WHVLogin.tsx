@@ -28,7 +28,7 @@ const WHVLogin: React.FC = () => {
       title: "Welcome back!",
       description: "Successfully signed in to Regional Mate",
     });
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   const handleGetStarted = () => {

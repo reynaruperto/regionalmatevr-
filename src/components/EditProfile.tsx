@@ -54,11 +54,11 @@ const EditProfile: React.FC = () => {
       title: "Profile Updated",
       description: "Your WHV profile has been successfully updated",
     });
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   const handlePreviewProfile = () => {

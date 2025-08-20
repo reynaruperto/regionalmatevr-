@@ -8,7 +8,7 @@ const Messages: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate('/dashboard');
+    navigate('/whv-dashboard');
   };
 
   return (

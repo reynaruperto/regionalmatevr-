@@ -108,7 +108,7 @@ const BrowseEmployers: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-3 mb-6">
-              <button onClick={() => navigate('/dashboard')}>
+              <button onClick={() => navigate('/whv-dashboard')}>
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-xl font-semibold text-gray-900">Browse Employers</h1>

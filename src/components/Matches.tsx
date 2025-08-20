@@ -120,7 +120,7 @@ const Matches: React.FC = () => {
           {/* Header - Fixed */}
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/dashboard')}>
+              <button onClick={() => navigate('/whv-dashboard')}>
                 <ArrowLeft size={24} className="text-gray-600" />
               </button>
               <h1 className="text-sm font-medium text-gray-700 text-center flex-1 pr-6">

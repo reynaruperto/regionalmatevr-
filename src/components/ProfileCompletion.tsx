@@ -64,7 +64,7 @@ const ProfileCompletion: React.FC = () => {
     if (nextIncompleteStep && nextIncompleteStep.route) {
       navigate(nextIncompleteStep.route);
     } else {
-      navigate('/dashboard');
+      navigate('/whv-dashboard');
     }
   };
 
@@ -179,7 +179,7 @@ const ProfileCompletion: React.FC = () => {
               </Button>
               <Button 
                 variant="ghost"
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/whv-dashboard')}
                 className="w-full h-12 text-gray-600 hover:text-gray-900"
               >
                 Skip to Dashboard

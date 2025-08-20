@@ -7,7 +7,10 @@ const BottomNavigation: React.FC = () => {
   const location = useLocation();
 
   // Check if we're on an employer or WHV page to show appropriate navigation
-  const isEmployerDashboard = location.pathname === '/employer-dashboard';
+  const isEmployerPage = location.pathname.includes('/employer') || 
+                         location.pathname === '/post-jobs' || 
+                         location.pathname === '/browse-candidates' ||
+                         location.pathname.startsWith('/employer');
   
   const employerNavItems = [
     { id: 'post-jobs', label: 'Post Jobs', icon: Briefcase, path: '/post-jobs' },
@@ -24,7 +27,7 @@ const BottomNavigation: React.FC = () => {
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
   ];
 
-  const navItems = isEmployerDashboard ? employerNavItems : whvNavItems;
+  const navItems = isEmployerPage ? employerNavItems : whvNavItems;
 
   const isActive = (path: string) => location.pathname === path;
 
