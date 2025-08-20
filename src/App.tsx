@@ -12,7 +12,8 @@ import ProfileCompletion from "./pages/ProfileCompletion";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
-import Dashboard from "./pages/Dashboard";
+import EmployerDashboard from "./pages/EmployerDashboard";
+import WHVDashboard from "./pages/WHVDashboard";
 import EditProfile from "./pages/EditProfile";
 import WHVEditProfile from "./pages/WHVEditProfile";
 import ProfileCardPreview from "./pages/ProfileCardPreview";
@@ -65,7 +66,9 @@ const App = () => (
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+          <Route path="/whv-dashboard" element={<WHVDashboard />} />
+          <Route path="/dashboard" element={<WHVDashboard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/whv-edit-profile" element={<WHVEditProfile />} />
           <Route path="/profile-preview" element={<ProfileCardPreview />} />
