@@ -24,6 +24,7 @@ import TermsPolicies from "./pages/TermsPolicies";
 import PostJobs from "./pages/PostJobs";
 import BrowseCandidates from "./pages/BrowseCandidates";
 import CandidateProfile from "./pages/CandidateProfile";
+import EmployerProfile from "./pages/EmployerProfile";
 import FullCandidateProfile from "./pages/FullCandidateProfile";
 import Matches from "./pages/Matches";
 import Messages from "./pages/Messages";
@@ -65,6 +66,7 @@ const App = () => (
           <Route path="/terms-policies" element={<TermsPolicies />} />
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
+          <Route path="/employer-profile/:id" element={<EmployerProfile />} />
           <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
           <Route path="/full-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />
