@@ -14,9 +14,8 @@ const formSchema = z.object({
   businessDescription: z.string().min(10, { message: "Please describe your business (minimum 10 characters)." }),
   yearsInBusiness: z.string().min(1, { message: "Please specify years in business." }),
   employeeQualities: z.string().min(10, { message: "Please describe what you look for in employees (minimum 10 characters)." }),
-  industryType: z.string().min(2, { message: "Please specify your industry type." }),
   businessSize: z.string().min(1, { message: "Please select your business size." })
-});
+}).partial();
 
 type FormData = z.infer<typeof formSchema>;
 
@@ -36,9 +35,17 @@ const EmployerAboutBusiness: React.FC = () => {
     console.log('Business info submitted:', data);
     toast({
       title: "Business information saved!",
-      description: "Let's continue with your business details",
+      description: "Let's continue with your business address",
     });
-    navigate('/business-onboarding');
+    navigate('/business-address');
+  };
+
+  const handleSkip = () => {
+    toast({
+      title: "Step skipped",
+      description: "You can complete this later in your profile settings",
+    });
+    navigate('/business-address');
   };
 
   return (
@@ -71,7 +78,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">2/4</span>
+                    <span className="text-sm font-medium text-gray-600">3/4</span>
                   </div>
                 </div>
               </div>
@@ -80,8 +87,18 @@ const EmployerAboutBusiness: React.FC = () => {
             {/* Form content */}
             <div className="flex-1 overflow-y-auto px-6 pb-20">
               <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">Tell us about your business</h2>
-                <p className="text-gray-600">Help us understand your business to better match you with candidates.</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">Tell us about your business</h2>
+                    <p className="text-gray-600">Help us understand your business to better match you with candidates.</p>
+                  </div>
+                  <button
+                    onClick={handleSkip}
+                    className="text-orange-500 font-medium hover:text-orange-600 text-sm"
+                  >
+                    Skip for now
+                  </button>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -114,22 +131,6 @@ const EmployerAboutBusiness: React.FC = () => {
                   />
                   {errors.yearsInBusiness && (
                     <p className="text-red-500 text-sm mt-1">{errors.yearsInBusiness.message}</p>
-                  )}
-                </div>
-
-                {/* Industry Type */}
-                <div>
-                  <Label htmlFor="industryType" className="text-base font-medium text-gray-900 mb-2 block">
-                    What industry are you in?
-                  </Label>
-                  <Input
-                    id="industryType"
-                    placeholder="Agriculture, Hospitality, Construction, etc."
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                    {...register("industryType")}
-                  />
-                  {errors.industryType && (
-                    <p className="text-red-500 text-sm mt-1">{errors.industryType.message}</p>
                   )}
                 </div>
 

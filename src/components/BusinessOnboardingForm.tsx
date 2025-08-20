@@ -79,7 +79,7 @@ const BusinessOnboardingForm: React.FC = () => {
       title: "Business information saved!",
       description: "Proceeding to next step",
     });
-    navigate('/business-address');
+    navigate('/employer-about-business');
   };
 
   return (
@@ -110,7 +110,7 @@ const BusinessOnboardingForm: React.FC = () => {
               {/* Progress indicator and title */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Business Details</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                     <span className="text-sm font-medium text-gray-600">2/4</span>
                   </div>

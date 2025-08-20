@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
 import EmployerSignIn from "./pages/EmployerSignIn";
+import ProfileCompletion from "./pages/ProfileCompletion";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/lets-begin" element={<LetsBegin />} />
           <Route path="/employer-onboarding" element={<EmployerOnboarding />} />
           <Route path="/employer-about-business" element={<EmployerAboutBusiness />} />
+          <Route path="/profile-completion" element={<ProfileCompletion />} />
           <Route path="/employer-sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
