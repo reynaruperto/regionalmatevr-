@@ -4,7 +4,7 @@ import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 
-interface MatchCandidate {
+interface MatchEmployer {
   id: string;
   name: string;
   skills: string[];
@@ -31,47 +31,47 @@ const Matches: React.FC = () => {
   }, [location.search]);
 
   // Mock data for top matches
-  const topMatches: MatchCandidate[] = [
+  const topMatches: MatchEmployer[] = [
     {
       id: '1',
-      name: 'Peter',
-      skills: ['Agriculture', 'Marketing'],
-      country: 'Argentina',
-      location: 'Brisbane, 4000',
-      availability: 'Available from Sep 2025',
+      name: 'Kangafarm',
+      skills: ['Agriculture & Farming', 'Fruit Picker'],
+      country: 'Australia',
+      location: 'Clontarf, QLD, 4017',
+      availability: 'Start Date from Sep 2025',
       matchPercentage: 92,
       profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
     },
     {
       id: '2',
-      name: 'Daniel',
-      skills: ['Construction', 'Agriculture'],
-      country: 'Germany',
+      name: 'Sunny Wines',
+      skills: ['Wine Production', 'Farm Supervisor'],
+      country: 'Australia',
       location: 'Sunshine Coast, 4551',
-      availability: 'Available from Oct 2025',
+      availability: 'Start Date from Oct 2025',
       matchPercentage: 88,
-      profileImage: '/lovable-uploads/7f241d90-ee65-4e5d-bf17-dee78ed2774e.png'
+      profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png'
     },
     {
       id: '3',
-      name: 'Hannah',
-      skills: ['Hospitality', 'Agriculture'],
-      country: 'United Kingdom',
-      location: 'Gold Coast, 4224',
-      availability: 'Available from Sep 2025',
+      name: 'Oakridge Farm',
+      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
+      country: 'Australia',
+      location: 'Toowoomba, 4350',
+      availability: 'Start Date from Oct 2025',
       matchPercentage: 86,
-      profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png'
+      profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
     }
   ];
 
   // Mock data for mutual likes
-  const mutualLikes: MatchCandidate[] = [
+  const mutualLikes: MatchEmployer[] = [
     {
       id: '4',
-      name: 'Thomas',
-      skills: ['Agriculture', 'Hospitality'],
-      country: 'United States of America',
-      location: 'Gold Coast, 4221',
+      name: 'Green Harvest Farms',
+      skills: ['Agriculture & Farming', 'Farm Assistant'],
+      country: 'Australia',
+      location: 'Northrivers, NSW 2470',
       availability: 'Available from Aug 2025',
       matchPercentage: 95,
       profileImage: '/lovable-uploads/f43f9801-cb24-4f5a-a1d5-e3930b9d9db0.png',
@@ -79,10 +79,10 @@ const Matches: React.FC = () => {
     },
     {
       id: '5',
-      name: 'Emma',
-      skills: ['Maintenance', 'Farming'],
-      country: 'Canada',
-      location: 'N/A',
+      name: 'Coastal Breeze Resort',
+      skills: ['Hospitality and Tourism', 'Barista'],
+      country: 'Australia',
+      location: 'Coolangatta, QLD 4225',
       availability: 'Available from Sep 2025',
       matchPercentage: 91,
       profileImage: '/lovable-uploads/f2586d6e-7636-4b34-a77f-f83920653d1c.png',
@@ -90,24 +90,24 @@ const Matches: React.FC = () => {
     },
     {
       id: '6',
-      name: 'Megan',
-      skills: ['Farming', 'Marketing'],
-      country: 'Sweden',
-      location: 'Moreton Bay, 4020',
-      availability: 'Available from Aug 2025',
+      name: 'Gotall Estates',
+      skills: ['Dairy Farm', 'Farm Maintenance'],
+      country: 'Australia',
+      location: 'Sunshine Coast, 4019',
+      availability: 'Available from Oct 2025',
       matchPercentage: 89,
       profileImage: '/lovable-uploads/6f81a14b-1d2f-47b9-bfa2-2a7d3b81d8fc.png',
       isMutualMatch: true
     }
   ];
 
-  const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/full-candidate-profile/${candidateId}` : `/candidate-profile/${candidateId}`;
+  const handleViewProfile = (employerId: string, isMutualMatch?: boolean) => {
+    const route = isMutualMatch ? `/full-employer-profile/${employerId}` : `/employer-profile/${employerId}`;
     const tab = isMutualMatch ? 'mutualLikes' : activeTab;
     navigate(`${route}?from=matches&tab=${tab}`);
   };
 
-  const currentCandidates = activeTab === 'topMatches' ? topMatches : mutualLikes;
+  const currentEmployers = activeTab === 'topMatches' ? topMatches : mutualLikes;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -124,7 +124,7 @@ const Matches: React.FC = () => {
                 <ArrowLeft size={24} className="text-gray-600" />
               </button>
               <h1 className="text-sm font-medium text-gray-700 text-center flex-1 pr-6">
-                Explore your top Match and Mutual Likes with Working Holiday Visa workers
+                Explore your top Match and Mutual Likes with Regional Employers
               </h1>
             </div>
           </div>
@@ -136,7 +136,7 @@ const Matches: React.FC = () => {
                 onClick={() => setActiveTab('mutualLikes')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'mutualLikes'
-                    ? 'bg-slate-800 text-white'
+                    ? 'bg-orange-500 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -146,7 +146,7 @@ const Matches: React.FC = () => {
                 onClick={() => setActiveTab('topMatches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'topMatches'
-                    ? 'bg-slate-800 text-white'
+                    ? 'bg-orange-500 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -158,27 +158,26 @@ const Matches: React.FC = () => {
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 pb-20">
             <div className="space-y-4">
-              {currentCandidates.map((candidate) => (
-                <div key={candidate.id} className="bg-white rounded-lg p-4 shadow-sm border">
+              {currentEmployers.map((employer) => (
+                <div key={employer.id} className="bg-white rounded-lg p-4 shadow-sm border">
                   <div className="flex items-start gap-3">
                     <img
-                      src={candidate.profileImage}
-                      alt={candidate.name}
+                      src={employer.profileImage}
+                      alt={employer.name}
                       className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-base">{candidate.name}</h3>
+                          <h3 className="font-semibold text-gray-900 text-base">{employer.name}</h3>
                           <p className="text-sm text-gray-600">
-                            {candidate.skills.join(', ')}
+                            {employer.skills.join(', ')}
                           </p>
-                          <p className="text-sm text-gray-600">{candidate.country}</p>
-                          <p className="text-sm text-gray-600">{candidate.location}</p>
-                          <p className="text-sm text-gray-600">{candidate.availability}</p>
+                          <p className="text-sm text-gray-600">{employer.location}</p>
+                          <p className="text-sm text-gray-600">{employer.availability}</p>
                         </div>
                         <div className="text-right flex-shrink-0 ml-2">
-                          {candidate.isMutualMatch ? (
+                          {employer.isMutualMatch ? (
                             <div className="text-right">
                               <div className="text-lg font-bold text-orange-500">
                                 It's a
@@ -190,7 +189,7 @@ const Matches: React.FC = () => {
                           ) : (
                             <div className="text-right">
                               <div className="text-lg font-bold text-orange-500">
-                                {candidate.matchPercentage}%
+                                {employer.matchPercentage}%
                               </div>
                               <div className="text-sm font-semibold text-orange-500">
                                 Match
@@ -202,12 +201,12 @@ const Matches: React.FC = () => {
                       
                       <div className="flex items-center gap-2 mt-3">
                         <Button
-                          onClick={() => handleViewProfile(candidate.id, candidate.isMutualMatch)}
-                          className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-sm h-10"
+                          onClick={() => handleViewProfile(employer.id, employer.isMutualMatch)}
+                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-full"
                         >
-                          {candidate.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
+                          {employer.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
                         </Button>
-                        {!candidate.isMutualMatch && (
+                        {!employer.isMutualMatch && (
                           <button className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm">
                             <ThumbsUp size={16} className="text-white" />
                           </button>
