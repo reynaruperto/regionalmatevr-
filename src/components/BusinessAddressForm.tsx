@@ -53,7 +53,7 @@ const BusinessAddressForm: React.FC = () => {
       title: "Business address saved!",
       description: "Proceeding to final step",
     });
-    navigate('/employer-dashboard');
+    navigate('/employer-photo-upload');
   };
 
   return (

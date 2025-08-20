@@ -33,6 +33,8 @@ import JobDetails from "./pages/JobDetails";
 import Matches from "./pages/Matches";
 import MutualMatchProfile from "./pages/MutualMatchProfile";
 import Messages from "./pages/Messages";
+import EmployerPhotoUpload from "./pages/EmployerPhotoUpload";
+import EmployerAccountConfirmation from "./pages/EmployerAccountConfirmation";
 import EmployerEmailConfirmation from "./pages/EmployerEmailConfirmation";
 import WHVEmailConfirmation from "./pages/WHVEmailConfirmation";
 import EmployerAboutBusiness from "./pages/EmployerAboutBusiness";
@@ -65,6 +67,8 @@ const App = () => (
           <Route path="/employer-sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
+          <Route path="/employer-photo-upload" element={<EmployerPhotoUpload />} />
+          <Route path="/employer-account-confirmation" element={<EmployerAccountConfirmation />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/employer-dashboard" element={<EmployerDashboard />} />
           <Route path="/whv-dashboard" element={<WHVDashboard />} />
