@@ -49,7 +49,7 @@ const BrowseEmployers: React.FC = () => {
       location: 'Sunshine Coast, 4551',
       availability: 'Start Date from Oct 2025',
       matchPercentage: 88,
-      profileImage: '/lovable-uploads/7f241d90-ee65-4e5d-bf17-dee78ed2774e.png'
+      profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png'
     },
     {
       id: '3',
@@ -59,7 +59,7 @@ const BrowseEmployers: React.FC = () => {
       location: 'Toowoomba, 4350',
       availability: 'Start Date from Oct 2025',
       matchPercentage: 86,
-      profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png'
+      profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
     }
   ];
 
