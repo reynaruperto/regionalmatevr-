@@ -14,6 +14,7 @@ const formSchema = z.object({
   addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
   addressLine2: z.string().optional(),
   suburb: z.string().min(2, { message: "Suburb is required." }),
+  city: z.string().min(2, { message: "City is required." }),
   state: z.string().min(1, { message: "Please select a state." }),
   postCode: z.string().min(4, { message: "Please enter a valid post code." }).max(4, { message: "Post code must be 4 digits." })
 });
@@ -129,16 +130,32 @@ const BusinessAddressForm: React.FC = () => {
                 {/* Suburb field */}
                 <div>
                   <Label htmlFor="suburb" className="text-base font-medium text-gray-900 mb-2 block">
-                    Suburb/City
+                    Suburb
                   </Label>
                   <Input
                     id="suburb"
-                    placeholder="Brisbane"
+                    placeholder="Spring Hill"
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("suburb")}
                   />
                   {errors.suburb && (
                     <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>
+                  )}
+                </div>
+
+                {/* City field */}
+                <div>
+                  <Label htmlFor="city" className="text-base font-medium text-gray-900 mb-2 block">
+                    City
+                  </Label>
+                  <Input
+                    id="city"
+                    placeholder="Brisbane"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("city")}
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
                   )}
                 </div>
 

@@ -12,6 +12,7 @@ const WHVCurrentAddress: React.FC = () => {
     addressLine1: '',
     addressLine2: '',
     suburb: '',
+    city: '',
     state: '',
     postCode: ''
   });
@@ -111,7 +112,7 @@ const WHVCurrentAddress: React.FC = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="suburb" className="text-base font-medium text-gray-700">
-                  Suburb/City
+                  Suburb
                 </Label>
                 <Input
                   id="suburb"
@@ -119,6 +120,22 @@ const WHVCurrentAddress: React.FC = () => {
                   type="text"
                   required
                   value={formData.suburb}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Spring Hill"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="city" className="text-base font-medium text-gray-700">
+                  City
+                </Label>
+                <Input
+                  id="city"
+                  name="city"
+                  type="text"
+                  required
+                  value={formData.city}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   placeholder="Brisbane"
