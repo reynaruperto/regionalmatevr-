@@ -7,7 +7,7 @@ import BottomNavigation from '@/components/BottomNavigation';
 import FilterPage from '@/components/FilterPage';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
-interface Candidate {
+interface Employer {
   id: string;
   name: string;
   skills: string[];
@@ -18,19 +18,19 @@ interface Candidate {
   profileImage: string;
 }
 
-const BrowseCandidates: React.FC = () => {
+const BrowseEmployers: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [showLikeModal, setShowLikeModal] = useState(false);
-  const [likedCandidateName, setLikedCandidateName] = useState('');
+  const [likedEmployerName, setLikedEmployerName] = useState('');
   const [selectedFilters, setSelectedFilters] = useState([
     { label: 'Industry: Agriculture', value: 'agriculture' },
     { label: 'Start Date: Sep-Dec', value: 'sep-dec' }
   ]);
 
-  // Mock candidate data
-  const candidates: Candidate[] = [
+  // Mock employer data
+  const employers: Employer[] = [
     {
       id: '1',
       name: 'Kangafarm',
@@ -67,21 +67,21 @@ const BrowseCandidates: React.FC = () => {
     setSelectedFilters(selectedFilters.filter(filter => filter.value !== filterValue));
   };
 
-  const handleLikeCandidate = (candidateId: string) => {
-    const candidate = candidates.find(c => c.id === candidateId);
-    if (candidate) {
-      setLikedCandidateName(candidate.name);
+  const handleLikeEmployer = (employerId: string) => {
+    const employer = employers.find(c => c.id === employerId);
+    if (employer) {
+      setLikedEmployerName(employer.name);
       setShowLikeModal(true);
     }
   };
 
-  const handleViewProfile = (candidateId: string) => {
-    navigate(`/candidate-profile/${candidateId}`);
+  const handleViewProfile = (employerId: string) => {
+    navigate(`/employer-profile/${employerId}`);
   };
 
   const handleCloseLikeModal = () => {
     setShowLikeModal(false);
-    setLikedCandidateName('');
+    setLikedEmployerName('');
   };
 
   const handleApplyFilters = (filters: any) => {
@@ -149,30 +149,30 @@ const BrowseCandidates: React.FC = () => {
               ))}
             </div>
 
-            {/* Candidates List */}
+            {/* Employers List */}
             <div className="space-y-3 pb-20">
-              {candidates.map((candidate) => (
-                <div key={candidate.id} className="bg-white rounded-lg p-3 shadow-sm border">
+              {employers.map((employer) => (
+                <div key={employer.id} className="bg-white rounded-lg p-3 shadow-sm border">
                   <div className="flex items-start gap-3">
                     <img
-                      src={candidate.profileImage}
-                      alt={candidate.name}
+                      src={employer.profileImage}
+                      alt={employer.name}
                       className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm">{candidate.name}</h3>
+                          <h3 className="font-semibold text-gray-900 text-sm">{employer.name}</h3>
                           <p className="text-xs text-gray-600 truncate">
-                            {candidate.skills.join(', ')}
+                            {employer.skills.join(', ')}
                           </p>
-                          <p className="text-xs text-gray-600">{candidate.country}</p>
-                          <p className="text-xs text-gray-600 truncate">{candidate.location}</p>
-                          <p className="text-xs text-gray-600 truncate">{candidate.availability}</p>
+                          <p className="text-xs text-gray-600">{employer.country}</p>
+                          <p className="text-xs text-gray-600 truncate">{employer.location}</p>
+                          <p className="text-xs text-gray-600 truncate">{employer.availability}</p>
                         </div>
                         <div className="text-right flex-shrink-0 ml-2">
                           <div className="text-sm font-bold text-orange-500">
-                            {candidate.matchPercentage}%
+                            {employer.matchPercentage}%
                           </div>
                           <div className="text-xs font-semibold text-orange-500">
                             Match
@@ -182,13 +182,13 @@ const BrowseCandidates: React.FC = () => {
                       
                       <div className="flex items-center gap-2 mt-2">
                         <Button
-                          onClick={() => handleViewProfile(candidate.id)}
+                          onClick={() => handleViewProfile(employer.id)}
                           className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-xs h-7"
                         >
                           View Profile Card
                         </Button>
                         <button
-                          onClick={() => handleLikeCandidate(candidate.id)}
+                          onClick={() => handleLikeEmployer(employer.id)}
                           className="h-7 w-7 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm"
                         >
                           <ThumbsUp size={14} className="text-white" />
@@ -208,7 +208,7 @@ const BrowseCandidates: React.FC = () => {
 
           {/* Like Confirmation Modal */}
           <LikeConfirmationModal
-            candidateName={likedCandidateName}
+            candidateName={likedEmployerName}
             onClose={handleCloseLikeModal}
             isVisible={showLikeModal}
           />
@@ -218,4 +218,4 @@ const BrowseCandidates: React.FC = () => {
   );
 };
 
-export default BrowseCandidates;
+export default BrowseEmployers;
