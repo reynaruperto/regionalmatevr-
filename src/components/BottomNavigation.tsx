@@ -15,7 +15,7 @@ const BottomNavigation: React.FC = () => {
   const employerNavItems = [
     { id: 'post-jobs', label: 'Post Jobs', icon: Briefcase, path: '/post-jobs' },
     { id: 'browse', label: 'Browse Candidates', icon: Users, path: '/browse-candidates' },
-    { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
+    { id: 'matches', label: 'Matches', icon: Heart, path: '/employer-matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
     { id: 'profile', label: 'Profile', icon: User, path: '/employer-dashboard' },
   ];
@@ -23,7 +23,7 @@ const BottomNavigation: React.FC = () => {
   const whvNavItems = [
     { id: 'profile', label: 'Profile', icon: User, path: '/whv-dashboard' },
     { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/browse-candidates' },
-    { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
+    { id: 'matches', label: 'Matches', icon: Heart, path: '/whv-matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
   ];
 
