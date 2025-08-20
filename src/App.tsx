@@ -32,6 +32,8 @@ import JobDetails from "./pages/JobDetails";
 import Matches from "./pages/Matches";
 import MutualMatchProfile from "./pages/MutualMatchProfile";
 import Messages from "./pages/Messages";
+import EmployerEmailConfirmation from "./pages/EmployerEmailConfirmation";
+import WHVEmailConfirmation from "./pages/WHVEmailConfirmation";
 import EmployerAboutBusiness from "./pages/EmployerAboutBusiness";
 import WHVAboutYou from "./pages/WHVAboutYou";
 import WHVOnboarding from "./pages/WHVOnboarding";
@@ -56,6 +58,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/lets-begin" element={<LetsBegin />} />
           <Route path="/employer-onboarding" element={<EmployerOnboarding />} />
+          <Route path="/employer-email-confirmation" element={<EmployerEmailConfirmation />} />
           <Route path="/employer-about-business" element={<EmployerAboutBusiness />} />
           <Route path="/profile-completion" element={<ProfileCompletion />} />
           <Route path="/employer-sign-in" element={<EmployerSignIn />} />
@@ -83,6 +86,7 @@ const App = () => (
           <Route path="/matches" element={<Matches />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/whv-onboarding" element={<WHVOnboarding />} />
+          <Route path="/whv-email-confirmation" element={<WHVEmailConfirmation />} />
           <Route path="/whv-about-you" element={<WHVAboutYou />} />
         <Route path="/whv-profile-setup" element={<WHVProfileSetup />} />
         <Route path="/whv-current-address" element={<WHVCurrentAddress />} />
