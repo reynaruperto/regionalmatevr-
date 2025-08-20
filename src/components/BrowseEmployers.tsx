@@ -104,21 +104,21 @@ const BrowseEmployers: React.FC = () => {
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <div className="text-center mb-4">
-              <p className="text-gray-600 text-sm">Browse the right candidates for your Job</p>
+              <p className="text-gray-600 text-sm">Browse for employers</p>
             </div>
             
             <div className="flex items-center gap-3 mb-6">
               <button onClick={() => navigate('/dashboard')}>
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-xl font-semibold text-gray-900">Browse Candidates</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Browse Employers</h1>
             </div>
             
             {/* Search Bar */}
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <Input
-                placeholder="Search for candidates."
+                placeholder="Browse for employers"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-12 h-10"
