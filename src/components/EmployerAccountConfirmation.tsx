@@ -7,7 +7,7 @@ const EmployerAccountConfirmation: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    navigate('/employer-dashboard');
+    navigate('/employer-sign-in');
   };
 
   return (
