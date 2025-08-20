@@ -87,17 +87,9 @@ const EmployerAboutBusiness: React.FC = () => {
             {/* Form content */}
             <div className="flex-1 overflow-y-auto px-6 pb-20">
               <div className="mb-8">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">Tell us about your business</h2>
-                    <p className="text-gray-600">Help us understand your business to better match you with candidates.</p>
-                  </div>
-                  <button
-                    onClick={handleSkip}
-                    className="text-orange-500 font-medium hover:text-orange-600 text-sm"
-                  >
-                    Skip for now
-                  </button>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2">Tell us about your business</h2>
+                  <p className="text-gray-600">Help us understand your business to better match you with candidates.</p>
                 </div>
               </div>
 
@@ -167,13 +159,24 @@ const EmployerAboutBusiness: React.FC = () => {
                 </div>
 
                 {/* Continue button */}
-                <div className="pt-8">
+                <div className="pt-8 space-y-4">
                   <Button 
                     type="submit"
                     className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                   >
                     Continue
                   </Button>
+                  
+                  {/* Skip for now link */}
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={handleSkip}
+                      className="text-gray-600 hover:text-gray-800 underline text-sm"
+                    >
+                      Skip for now
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

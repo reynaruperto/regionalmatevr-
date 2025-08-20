@@ -10,42 +10,12 @@ const WHVCurrentAddress: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     addressLine1: '',
+    addressLine2: '',
     suburb: '',
-    regionalArea: '',
     state: '',
     postCode: ''
   });
 
-  // Regional areas recognized by Department of Home Affairs for Working Holiday visa
-  const REGIONAL_AREAS = [
-    // Queensland Regional Areas
-    'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
-    'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
-    'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
-    
-    // New South Wales Regional Areas  
-    'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
-    'NSW - Dubbo', 'NSW - Griffith', 'NSW - Lismore', 'NSW - Orange',
-    'NSW - Tamworth', 'NSW - Wagga Wagga', 'NSW - Young',
-    
-    // Victoria Regional Areas
-    'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
-    'VIC - Shepparton', 'VIC - Warrnambool',
-    
-    // Western Australia Regional Areas
-    'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
-    'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
-    'WA - Port Hedland',
-    
-    // South Australia Regional Areas
-    'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
-    
-    // Tasmania Regional Areas
-    'TAS - Burnie', 'TAS - Devonport', 'TAS - Launceston',
-    
-    // Northern Territory Regional Areas
-    'NT - Alice Springs', 'NT - Katherine'
-  ];
 
   // Australian states and territories
   const australianStates = [
@@ -125,6 +95,21 @@ const WHVCurrentAddress: React.FC = () => {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="addressLine2" className="text-base font-medium text-gray-700">
+                  Street Address Line 2 (if applicable)
+                </Label>
+                <Input
+                  id="addressLine2"
+                  name="addressLine2"
+                  type="text"
+                  value={formData.addressLine2}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Unit 5, Building B"
+                />
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="suburb" className="text-base font-medium text-gray-700">
                   Suburb/City
                 </Label>
@@ -138,24 +123,6 @@ const WHVCurrentAddress: React.FC = () => {
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   placeholder="Brisbane"
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="regionalArea" className="text-base font-medium text-gray-700">
-                  Regional Area
-                </Label>
-                <Select onValueChange={(value) => handleSelectChange('regionalArea', value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="Select regional area" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                    {REGIONAL_AREAS.map((area) => (
-                      <SelectItem key={area} value={area} className="hover:bg-gray-100">
-                        {area}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
               </div>
 
               <div className="space-y-2">
