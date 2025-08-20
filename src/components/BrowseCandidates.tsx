@@ -26,38 +26,38 @@ const BrowseCandidates: React.FC = () => {
   const [likedCandidateName, setLikedCandidateName] = useState('');
   const [selectedFilters, setSelectedFilters] = useState([
     { label: 'Industry: Agriculture', value: 'agriculture' },
-    { label: 'Availability: Sep-Dec', value: 'sep-dec' }
+    { label: 'Start Date: Sep-Dec', value: 'sep-dec' }
   ]);
 
   // Mock candidate data
   const candidates: Candidate[] = [
     {
       id: '1',
-      name: 'Peter',
-      skills: ['Agriculture', 'Marketing'],
-      country: 'Argentina',
-      location: 'QLD - Bundaberg',
-      availability: 'Available from Sep 2025',
+      name: 'Kangafarm',
+      skills: ['Agriculture & Farming', 'Fruit Picker'],
+      country: 'Australia',
+      location: 'Clontarf, QLD, 4017',
+      availability: 'Start Date from Sep 2025',
       matchPercentage: 92,
       profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
     },
     {
       id: '2',
-      name: 'Daniel',
-      skills: ['Construction', 'Agriculture'],
-      country: 'Germany',
-      location: 'NSW - Tamworth',
-      availability: 'Available from Oct 2025',
+      name: 'Sunny Wines',
+      skills: ['Wine Production', 'Farm Supervisor'],
+      country: 'Australia',
+      location: 'Sunshine Coast, 4551',
+      availability: 'Start Date from Oct 2025',
       matchPercentage: 88,
       profileImage: '/lovable-uploads/7f241d90-ee65-4e5d-bf17-dee78ed2774e.png'
     },
     {
       id: '3',
-      name: 'Hannah',
-      skills: ['Hospitality', 'Agriculture'],
-      country: 'United Kingdom',
-      location: 'VIC - Mildura',
-      availability: 'Available from Nov 2025',
+      name: 'Oakridge Farm',
+      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
+      country: 'Australia',
+      location: 'Toowoomba, 4350',
+      availability: 'Start Date from Oct 2025',
       matchPercentage: 86,
       profileImage: '/lovable-uploads/3d82699d-3fd9-45d2-a5c9-c336f9b20745.png'
     }
@@ -101,27 +101,24 @@ const BrowseCandidates: React.FC = () => {
           {/* Dynamic Island */}
           <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
           
-          {/* Header - Fixed */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/dashboard')}>
-                <ArrowLeft size={24} className="text-gray-600" />
-              </button>
-              <h1 className="text-lg font-medium text-gray-900 truncate">
-                Browse Candidates
-              </h1>
-            </div>
-          </div>
-
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
-            <h2 className="text-xl font-bold text-primary mb-4">Browse Candidates</h2>
+            <div className="text-center mb-4">
+              <p className="text-gray-600 text-sm">Browse the right candidates for your Job</p>
+            </div>
+            
+            <div className="flex items-center gap-3 mb-6">
+              <button onClick={() => navigate('/dashboard')}>
+                <ArrowLeft size={20} className="text-gray-600" />
+              </button>
+              <h1 className="text-xl font-semibold text-gray-900">Browse Candidates</h1>
+            </div>
             
             {/* Search Bar */}
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <Input
-                placeholder="Search for candidates..."
+                placeholder="Search for candidates."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-12 h-10"
