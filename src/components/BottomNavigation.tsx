@@ -1,17 +1,30 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Building2, Users, Heart, MessageCircle, User } from 'lucide-react';
+import { Briefcase, Users, Heart, MessageCircle, User } from 'lucide-react';
 
 const BottomNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navItems = [
-    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
-    { id: 'browse', label: 'Browse Employers', icon: Building2, path: '/browse-candidates' },
+  // Check if we're on an employer or WHV page to show appropriate navigation
+  const isEmployerDashboard = location.pathname === '/employer-dashboard';
+  
+  const employerNavItems = [
+    { id: 'post-jobs', label: 'Post Jobs', icon: Briefcase, path: '/post-jobs' },
+    { id: 'browse', label: 'Browse Candidates', icon: Users, path: '/browse-candidates' },
+    { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
+    { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/employer-dashboard' },
+  ];
+
+  const whvNavItems = [
+    { id: 'profile', label: 'Profile', icon: User, path: '/whv-dashboard' },
+    { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/browse-candidates' },
     { id: 'matches', label: 'Matches', icon: Heart, path: '/matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
   ];
+
+  const navItems = isEmployerDashboard ? employerNavItems : whvNavItems;
 
   const isActive = (path: string) => location.pathname === path;
 
