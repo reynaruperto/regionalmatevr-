@@ -26,6 +26,8 @@ import BrowseCandidates from "./pages/BrowseCandidates";
 import CandidateProfile from "./pages/CandidateProfile";
 import EmployerProfile from "./pages/EmployerProfile";
 import FullCandidateProfile from "./pages/FullCandidateProfile";
+import EmployerJobs from "./pages/EmployerJobs";
+import JobDetails from "./pages/JobDetails";
 import Matches from "./pages/Matches";
 import Messages from "./pages/Messages";
 import WHVOnboarding from "./pages/WHVOnboarding";
@@ -67,6 +69,8 @@ const App = () => (
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
           <Route path="/employer-profile/:id" element={<EmployerProfile />} />
+          <Route path="/employer-jobs/:employerId" element={<EmployerJobs />} />
+          <Route path="/job-details/:employerId/:jobId" element={<JobDetails />} />
           <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
           <Route path="/full-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />

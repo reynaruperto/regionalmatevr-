@@ -76,8 +76,7 @@ const EmployerProfileCard: React.FC = () => {
   };
 
   const handleViewJobs = () => {
-    // Navigate to jobs view - placeholder for now
-    console.log('View jobs for', employer.name);
+    navigate(`/employer-jobs/${employer.id}`);
   };
 
   if (!employer) {
