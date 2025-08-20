@@ -47,7 +47,7 @@ const EmployerOnboardingForm: React.FC = () => {
       title: "Account created successfully!",
       description: "Welcome to Regional Mate",
     });
-    navigate('/business-onboarding');
+    navigate('/employer-about-business');
   };
 
   return (
@@ -87,7 +87,7 @@ const EmployerOnboardingForm: React.FC = () => {
             </div>
 
             {/* Form content */}
-            <div className="flex-1 px-6">
+            <div className="flex-1 overflow-y-auto px-6 pb-20">
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">About you</h2>
                 <p className="text-gray-600">Find your RegionalMate. Let's get to know you!</p>
@@ -221,17 +221,17 @@ const EmployerOnboardingForm: React.FC = () => {
                     <p className="text-red-500 text-sm mt-1">Passwords don't match</p>
                   )}
                 </div>
-              </form>
-            </div>
 
-            {/* Continue button */}
-            <div className="px-6 pb-8 mt-auto">
-              <Button 
-                onClick={handleSubmit(onSubmit)}
-                className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-              >
-                Continue
-              </Button>
+                {/* Continue button */}
+                <div className="pt-8">
+                  <Button 
+                    type="submit"
+                    className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </form>
             </div>
 
           </div>

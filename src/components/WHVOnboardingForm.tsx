@@ -30,7 +30,7 @@ const WHVOnboardingForm: React.FC = () => {
     e.preventDefault();
     console.log('WHV Registration:', formData);
     // Future: Handle WHV registration logic
-    navigate('/whv-profile-setup');
+    navigate('/whv-about-you');
   };
 
   return (
