@@ -33,6 +33,16 @@ import JobDetails from "./pages/JobDetails";
 import Matches from "./pages/Matches";
 import MutualMatchProfile from "./pages/MutualMatchProfile";
 import Messages from "./pages/Messages";
+import EmployerMatches from "./pages/EmployerMatches";
+import EmployerMessages from "./pages/EmployerMessages";
+import EmployerNotifications from "./pages/EmployerNotifications";
+import EmployerPrivacy from "./pages/EmployerPrivacy";
+import EmployerHelpSupport from "./pages/EmployerHelpSupport";
+import WHVMatches from "./pages/Matches";
+import WHVMessages from "./pages/Messages";
+import WHVNotifications from "./pages/Notifications";
+import WHVPrivacy from "./pages/Privacy";
+import WHVHelpSupport from "./pages/HelpSupport";
 import EmployerPhotoUpload from "./pages/EmployerPhotoUpload";
 import EmployerAccountConfirmation from "./pages/EmployerAccountConfirmation";
 import EmployerEmailConfirmation from "./pages/EmployerEmailConfirmation";
@@ -91,6 +101,16 @@ const App = () => (
           <Route path="/full-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/employer-matches" element={<EmployerMatches />} />
+          <Route path="/employer-messages" element={<EmployerMessages />} />
+          <Route path="/employer-notifications" element={<EmployerNotifications />} />
+          <Route path="/employer-privacy" element={<EmployerPrivacy />} />
+          <Route path="/employer-help-support" element={<EmployerHelpSupport />} />
+          <Route path="/whv-matches" element={<WHVMatches />} />
+          <Route path="/whv-messages" element={<WHVMessages />} />
+          <Route path="/whv-notifications" element={<WHVNotifications />} />
+          <Route path="/whv-privacy" element={<WHVPrivacy />} />
+          <Route path="/whv-help-support" element={<WHVHelpSupport />} />
           <Route path="/whv-onboarding" element={<WHVOnboarding />} />
           <Route path="/whv-email-confirmation" element={<WHVEmailConfirmation />} />
           <Route path="/whv-about-you" element={<WHVAboutYou />} />
