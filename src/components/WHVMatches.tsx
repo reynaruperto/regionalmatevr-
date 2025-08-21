@@ -136,7 +136,7 @@ const WHVMatches: React.FC = () => {
                 onClick={() => setActiveTab('mutualLikes')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'mutualLikes'
-                    ? 'bg-orange-500 text-white'
+                    ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -146,7 +146,7 @@ const WHVMatches: React.FC = () => {
                 onClick={() => setActiveTab('topMatches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'topMatches'
-                    ? 'bg-orange-500 text-white'
+                    ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
