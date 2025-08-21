@@ -1,7 +1,7 @@
-import HelpSupport from '@/components/HelpSupport';
+import WHVHelpSupport from '@/components/WHVHelpSupport';
 
 const HelpSupportPage = () => {
-  return <HelpSupport />;
+  return <WHVHelpSupport />;
 };
 
 export default HelpSupportPage;

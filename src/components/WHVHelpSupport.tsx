@@ -3,7 +3,7 @@ import { ArrowLeft, MessageCircle, Mail, Phone, HelpCircle, BookOpen, Video } fr
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-const HelpSupport: React.FC = () => {
+const WHVHelpSupport: React.FC = () => {
   const navigate = useNavigate();
 
   const supportOptions = [
@@ -155,4 +155,4 @@ const HelpSupport: React.FC = () => {
   );
 };
 
-export default HelpSupport;
+export default WHVHelpSupport;

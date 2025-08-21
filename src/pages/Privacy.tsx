@@ -1,7 +1,7 @@
-import Privacy from '@/components/Privacy';
+import WHVPrivacy from '@/components/WHVPrivacy';
 
 const PrivacyPage = () => {
-  return <Privacy />;
+  return <WHVPrivacy />;
 };
 
 export default PrivacyPage;

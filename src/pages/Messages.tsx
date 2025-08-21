@@ -1,7 +1,7 @@
-import Messages from '@/components/Messages';
+import WHVMessages from '@/components/WHVMessages';
 
 const MessagesPage = () => {
-  return <Messages />;
+  return <WHVMessages />;
 };
 
 export default MessagesPage;

@@ -4,11 +4,11 @@ import { Search, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 
-const Messages: React.FC = () => {
+const EmployerMessages: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate('/whv-dashboard');
+    navigate('/employer-dashboard');
   };
 
   return (
@@ -74,4 +74,4 @@ const Messages: React.FC = () => {
   );
 };
 
-export default Messages;
+export default EmployerMessages;

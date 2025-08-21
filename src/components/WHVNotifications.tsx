@@ -11,7 +11,7 @@ interface NotificationItem {
   isRead: boolean;
 }
 
-const Notifications: React.FC = () => {
+const WHVNotifications: React.FC = () => {
   const navigate = useNavigate();
   const [alertNotifications, setAlertNotifications] = useState(true);
   const [notifications, setNotifications] = useState<NotificationItem[]>([
@@ -147,4 +147,4 @@ const Notifications: React.FC = () => {
   );
 };
 
-export default Notifications;
+export default WHVNotifications;

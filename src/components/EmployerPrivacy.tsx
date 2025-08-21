@@ -3,29 +3,29 @@ import { ArrowLeft, Shield, Eye, Lock, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-const Privacy: React.FC = () => {
+const EmployerPrivacy: React.FC = () => {
   const navigate = useNavigate();
 
   const privacyItems = [
     {
       icon: Shield,
-      title: "Data Protection",
-      description: "We protect your personal information with industry-standard security measures."
+      title: "Business Data Protection",
+      description: "We protect your business information and job postings with industry-standard security measures."
     },
     {
       icon: Eye,
       title: "Information We Collect",
-      description: "We collect information you provide, usage data, and device information to improve our services."
+      description: "We collect your business details, job postings, and candidate interactions to provide effective matching services."
     },
     {
       icon: Lock,
       title: "How We Use Your Data",
-      description: "Your data helps us provide better matching, improve our platform, and ensure security."
+      description: "Your data helps us match you with qualified workers, improve our platform, and ensure hiring security."
     },
     {
       icon: UserCheck,
       title: "Your Rights",
-      description: "You can access, update, or delete your personal information at any time through your account settings."
+      description: "You can access, update, or delete your business information at any time through your employer account settings."
     }
   ];
 
@@ -47,7 +47,7 @@ const Privacy: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-white rounded-xl shadow-sm mr-4"
-                  onClick={() => navigate('/whv-dashboard')}
+                  onClick={() => navigate('/employer-dashboard')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -62,9 +62,9 @@ const Privacy: React.FC = () => {
               <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Privacy Policy</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  At Regional Mate, we are committed to protecting your privacy and ensuring 
-                  the security of your personal information. This policy explains how we collect, 
-                  use, and safeguard your data.
+                  At Regional Mate, we are committed to protecting your business privacy and ensuring 
+                  the security of your company information. This policy explains how we collect, 
+                  use, and safeguard your business data.
                 </p>
                 <p className="text-sm text-gray-500">
                   Last updated: January 2025
@@ -95,7 +95,7 @@ const Privacy: React.FC = () => {
               <div className="bg-white rounded-2xl p-6 mt-6 shadow-sm">
                 <h3 className="font-semibold text-gray-900 mb-3">Questions about Privacy?</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  If you have any questions about our privacy policy or how we handle your data, 
+                  If you have any questions about our privacy policy or how we handle your business data, 
                   please don't hesitate to contact us.
                 </p>
                 <Button className="bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl">
@@ -112,4 +112,4 @@ const Privacy: React.FC = () => {
   );
 };
 
-export default Privacy;
+export default EmployerPrivacy;

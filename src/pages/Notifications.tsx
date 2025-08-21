@@ -1,7 +1,7 @@
-import Notifications from '@/components/Notifications';
+import WHVNotifications from '@/components/WHVNotifications';
 
 const NotificationsPage = () => {
-  return <Notifications />;
+  return <WHVNotifications />;
 };
 
 export default NotificationsPage;
