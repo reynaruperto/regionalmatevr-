@@ -260,6 +260,10 @@ const WHVEmployerFullProfileCard: React.FC = () => {
               {/* Full Details - Available because it's a match */}
               <div className="px-4 space-y-3 mb-6">
                 <div>
+                  <span className="font-semibold text-gray-900">ABN: </span>
+                  <span className="text-gray-700">{employer.abn}</span>
+                </div>
+                <div>
                   <span className="font-semibold text-gray-900">Location: </span>
                   <span className="text-gray-700">{employer.location}</span>
                 </div>
