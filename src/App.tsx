@@ -83,7 +83,7 @@ const App = () => (
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/employer-dashboard" element={<EmployerDashboard />} />
           <Route path="/whv-dashboard" element={<WHVDashboard />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/whv-profile-edit" element={<EditProfile />} />
           <Route path="/employer-edit-profile" element={<EmployerEditProfile />} />
           <Route path="/whv-edit-profile" element={<WHVEditProfile />} />
           <Route path="/profile-preview" element={<ProfileCardPreview />} />
