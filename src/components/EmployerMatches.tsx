@@ -34,6 +34,40 @@ const EmployerMatches: React.FC = () => {
   const topRecommended: MatchCandidate[] = [
     {
       id: '1',
+      name: 'Peter',
+      skills: ['Agriculture', 'Marketing'],
+      country: 'Argentina',
+      location: 'Brisbane, 4000',
+      availability: 'Available from Sep 2025',
+      matchPercentage: 92,
+      profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
+    },
+    {
+      id: '2',
+      name: 'Daniel',
+      skills: ['Construction', 'Agriculture'],
+      country: 'Germany',
+      location: 'Sunshine Coast, 4551',
+      availability: 'Available from Oct 2025',
+      matchPercentage: 88,
+      profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
+    },
+    {
+      id: '3',
+      name: 'Hannah',
+      skills: ['Hospitality', 'Agriculture'],
+      country: 'United Kingdom',
+      location: 'Gold Coast, 4224',
+      availability: 'Available from Sep 2025',
+      matchPercentage: 86,
+      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
+    }
+  ];
+
+  // Mock data for matches
+  const matches: MatchCandidate[] = [
+    {
+      id: '4',
       name: 'Thomas',
       skills: ['Agriculture', 'Hospitality'],
       country: 'United States of America',
@@ -44,7 +78,7 @@ const EmployerMatches: React.FC = () => {
       isMutualMatch: true
     },
     {
-      id: '2',
+      id: '5',
       name: 'Emma',
       skills: ['Maintenance', 'Farming'],
       country: 'Canada',
@@ -55,7 +89,7 @@ const EmployerMatches: React.FC = () => {
       isMutualMatch: true
     },
     {
-      id: '3',
+      id: '6',
       name: 'Megan',
       skills: ['Farming', 'Marketing'],
       country: 'Sweden',
@@ -67,43 +101,9 @@ const EmployerMatches: React.FC = () => {
     }
   ];
 
-  // Mock data for matches
-  const matches: MatchCandidate[] = [
-    {
-      id: '4',
-      name: 'Peter',
-      skills: ['Agriculture', 'Marketing'],
-      country: 'Argentina',
-      location: 'Brisbane, 4000',
-      availability: 'Available from Sep 2025',
-      matchPercentage: 92,
-      profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
-    },
-    {
-      id: '5',
-      name: 'Daniel',
-      skills: ['Construction', 'Agriculture'],
-      country: 'Germany',
-      location: 'Sunshine Coast, 4551',
-      availability: 'Available from Oct 2025',
-      matchPercentage: 88,
-      profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
-    },
-    {
-      id: '6',
-      name: 'Hannah',
-      skills: ['Hospitality', 'Agriculture'],
-      country: 'United Kingdom',
-      location: 'Gold Coast, 4224',
-      availability: 'Available from Sep 2025',
-      matchPercentage: 86,
-      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
-    }
-  ];
-
   const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
     const route = isMutualMatch ? `/mutual-match-profile/${candidateId}` : `/full-candidate-profile/${candidateId}`;
-    const tab = isMutualMatch ? 'topRecommended' : activeTab;
+    const tab = isMutualMatch ? 'matches' : 'topRecommended';
     navigate(`${route}?from=matches&tab=${tab}`);
   };
 
