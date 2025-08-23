@@ -28,7 +28,7 @@ const LikeConfirmationModal: React.FC<LikeConfirmationModalProps> = ({
         {/* Message */}
         <div className="text-center mb-6">
           <p className="text-gray-900 font-medium leading-relaxed">
-            You liked {candidateName}'s profile! They'll be notified, and if they like you back, you'll unlock full profile access.
+            You hearted {candidateName}{"'"}s profile! They{"'"}ll be notified, and if they heart you back, you{"'"}ll unlock full profile access.
           </p>
         </div>
 
