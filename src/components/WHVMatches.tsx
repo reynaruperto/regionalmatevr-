@@ -159,7 +159,7 @@ const WHVMatches: React.FC = () => {
                 onClick={() => setActiveTab('matches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'matches'
-                    ? 'bg-slate-900 text-white shadow-lg'
+                    ? 'bg-orange-500 text-white shadow-lg'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -169,7 +169,7 @@ const WHVMatches: React.FC = () => {
                 onClick={() => setActiveTab('topRecommended')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'topRecommended'
-                    ? 'bg-slate-900 text-white shadow-lg'
+                    ? 'bg-orange-500 text-white shadow-lg'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
