@@ -258,87 +258,40 @@ const WHVEmployerJobDetails: React.FC = () => {
                 <p className="text-sm text-gray-700 leading-relaxed">{job.description}</p>
               </div>
 
-              {/* Company Details */}
-              <div className="space-y-2">
-                <div><span className="font-semibold">ABN:</span> {job.abn}</div>
-                <div><span className="font-semibold">Location (Current / Preferred):</span> {job.location}</div>
-                <div><span className="font-semibold">Industry:</span> {job.industry}</div>
-              </div>
-
-              {/* Job Openings */}
+              {/* Job Openings Summary */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Job Openings / Roles:</h3>
-                <ul className="space-y-1">
+                <h3 className="font-semibold text-gray-900 mb-3">Available Job Positions</h3>
+                <div className="space-y-3">
                   {job.jobOpenings.map((opening, index) => (
-                    <li key={index} className="text-sm">
-                      • {opening.title} ({opening.status}){opening.period && ` - ${opening.period}`}
-                    </li>
+                    <div key={index} className="bg-orange-50 rounded-lg p-3">
+                      <h4 className="font-medium text-gray-900">{opening.title}</h4>
+                      <p className="text-sm text-gray-600">Status: {opening.status}</p>
+                      {opening.period && <p className="text-sm text-gray-600">Period: {opening.period}</p>}
+                    </div>
                   ))}
-                </ul>
-              </div>
-
-              {/* Visa Acceptance */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Visa Acceptance:</h3>
-                <ul className="space-y-1">
-                  {job.visaAcceptance.map((visa, index) => (
-                    <li key={index} className="text-sm">• {visa}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Experience / Skills */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Experience Preferred / Skills Sought:</h3>
-                <ul className="space-y-1">
-                  {job.experienceSkills.map((skill, index) => (
-                    <li key={index} className="text-sm">• {skill}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Licenses */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Licenses / Certificates (Preferred):</h3>
-                <ul className="space-y-1">
-                  {job.licenses.map((license, index) => (
-                    <li key={index} className="text-sm">• {license}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Salary & Inclusions */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Salary & Inclusions:</h3>
-                <div className="space-y-1 text-sm">
-                  <div>• <span className="font-medium">Hourly Rate:</span> {job.salary.hourlyRate}</div>
-                  <div>• {job.salary.overtimeRate}</div>
-                  <div>• <span className="font-medium">Inclusions:</span></div>
-                  <ul className="ml-4 space-y-1">
-                    {job.salary.inclusions.map((inclusion, index) => (
-                      <li key={index}>• {inclusion}</li>
-                    ))}
-                  </ul>
                 </div>
               </div>
 
-              {/* Employment Type */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Employment Type / Duration:</h3>
-                <div className="space-y-1 text-sm">
-                  <div>• {job.employmentType}</div>
-                  <div>• {job.extensions}</div>
+              {/* Basic Job Info */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-3">Job Summary</h3>
+                <div className="space-y-2 text-sm">
+                  <div><span className="font-medium">Industry:</span> {job.industry}</div>
+                  <div><span className="font-medium">Location:</span> {job.location}</div>
+                  <div><span className="font-medium">Employment Type:</span> {job.employmentType}</div>
+                  <div><span className="font-medium">Duration:</span> {job.duration}</div>
+                  <div><span className="font-medium">Hourly Rate:</span> {job.salary.hourlyRate}</div>
                 </div>
               </div>
 
-              {/* Contact Details */}
+              {/* Key Inclusions */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Contact Details:</h3>
-                <div className="space-y-1 text-sm">
-                  <div>• <span className="font-medium">Email:</span> {job.contactDetails.email}</div>
-                  <div>• <span className="font-medium">Phone:</span> {job.contactDetails.phone}</div>
-                  <div>• <span className="font-medium">Website:</span> {job.contactDetails.website}</div>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Key Benefits & Inclusions:</h3>
+                <ul className="space-y-1">
+                  {job.salary.inclusions.slice(0, 4).map((inclusion, index) => (
+                    <li key={index} className="text-sm text-gray-700">• {inclusion}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
