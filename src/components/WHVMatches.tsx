@@ -105,7 +105,7 @@ const WHVMatches: React.FC = () => {
   ];
 
   const handleViewProfile = (employerId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
+    const route = isMutualMatch ? `/whv/employer/full-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
     const tab = isMutualMatch ? 'matches' : activeTab;
     navigate(`${route}?from=whv-matches&tab=${tab}`);
   };
