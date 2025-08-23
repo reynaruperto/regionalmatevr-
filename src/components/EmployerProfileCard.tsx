@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -20,7 +20,11 @@ interface EmployerProfile {
 const EmployerProfileCard: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const [showLikeModal, setShowLikeModal] = useState(false);
+
+  // Determine if this is being accessed from WHV or employer context
+  const isWHVContext = location.pathname.includes('whv-employer-short-profile');
 
   // Mock employer data - in real app this would come from API
   const employerProfiles: { [key: string]: EmployerProfile } = {
@@ -79,6 +83,14 @@ const EmployerProfileCard: React.FC = () => {
     navigate(`/employer/jobs/${employer.id}`);
   };
 
+  const handleBackNavigation = () => {
+    if (isWHVContext) {
+      navigate('/whv/browse-employers');
+    } else {
+      navigate('/employer/matches');
+    }
+  };
+
   if (!employer) {
     return <div>Employer not found</div>;
   }
@@ -93,7 +105,7 @@ const EmployerProfileCard: React.FC = () => {
           
           {/* Header */}
           <div className="px-4 py-3 flex-shrink-0">
-            <button onClick={() => navigate('/employer/matches')}>
+            <button onClick={handleBackNavigation}>
               <ArrowLeft size={24} className="text-gray-600" />
             </button>
           </div>
