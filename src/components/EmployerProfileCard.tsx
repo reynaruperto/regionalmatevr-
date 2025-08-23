@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; // Fixed ThumbsUp import
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -21,6 +21,7 @@ const EmployerProfileCard: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [showLikeModal, setShowLikeModal] = useState(false);
 
   // Determine if this is being accessed from WHV or employer context
@@ -84,8 +85,10 @@ const EmployerProfileCard: React.FC = () => {
   };
 
   const handleBackNavigation = () => {
+    const fromPage = searchParams.get('from');
     if (isWHVContext) {
-      navigate('/whv/browse-employers');
+      // Navigate based on the 'from' parameter
+      navigate(fromPage === 'matches' ? '/whv/matches' : '/whv/browse-employers');
     } else {
       navigate('/employer/matches');
     }
