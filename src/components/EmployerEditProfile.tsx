@@ -81,16 +81,16 @@ const EmployerEditProfile: React.FC = () => {
               <div className="flex items-center justify-between">
                 <button 
                   onClick={handleCancel}
-                  className="text-lg font-medium text-orange-500 underline"
+                  className="text-base font-medium text-orange-500 underline"
                 >
                   Cancel
                 </button>
-                <h1 className="text-lg font-semibold text-gray-900">{name}</h1>
+                <h1 className="text-base font-semibold text-gray-900">{name}</h1>
                 <button 
                   onClick={handleSave}
-                  className="flex items-center text-lg font-medium text-orange-500 underline"
+                  className="flex items-center text-base font-medium text-orange-500 underline"
                 >
-                  <Check size={20} className="mr-1" />
+                  <Check size={16} className="mr-1" />
                   Save
                 </button>
               </div>
@@ -103,15 +103,15 @@ const EmployerEditProfile: React.FC = () => {
               <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
                 <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Profile Visibility</h3>
-                  <p className="text-sm text-gray-500">Your profile is currently visible to all employers</p>
+                  <h3 className="text-base font-semibold text-gray-900 mb-1">Profile Visibility</h3>
+                  <p className="text-xs text-gray-500">Your profile is currently visible to all RegionalMate users</p>
                   </div>
                 <div className="flex items-center">
-                  <span className="text-lg font-medium text-gray-900 mr-3">ON</span>
+                  <span className="text-sm font-medium text-gray-900 mr-3">ON</span>
                   <Switch 
                     checked={profileVisible}
                     onCheckedChange={setProfileVisible}
-                    className="data-[state=checked]:bg-blue-600 scale-125"
+                    className="data-[state=checked]:bg-[#1E293B]"
                   />
                 </div>
                 </div>
@@ -120,10 +120,10 @@ const EmployerEditProfile: React.FC = () => {
               {/* Preview Profile Card */}
               <div className="bg-white rounded-2xl p-5 mb-5 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Preview Profile card</h3>
+                  <h3 className="text-base font-semibold text-gray-900">Preview Profile card</h3>
                   <Button 
                     onClick={handlePreviewProfile}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg font-medium"
+                    className="bg-[#1E293B] hover:bg-[#334155] text-white px-6 py-2 rounded-full text-sm font-medium"
                   >
                     VIEW
                   </Button>
@@ -132,11 +132,11 @@ const EmployerEditProfile: React.FC = () => {
 
               {/* Profile Picture */}
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-600 mb-3">Profile Picture</h3>
-                <div className="relative w-32 h-32">
+                <h3 className="text-base font-medium text-gray-600 mb-3">Profile Picture</h3>
+                <div className="relative w-28 h-28">
                   <button 
                     onClick={handlePhotoClick}
-                    className="w-32 h-32 rounded-full overflow-hidden border-4 border-orange-500 hover:opacity-80 transition-opacity"
+                    className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#1E293B] hover:opacity-80 transition-opacity"
                   >
                     <img 
                       src={profilePhoto} 
@@ -144,8 +144,8 @@ const EmployerEditProfile: React.FC = () => {
                       className="w-full h-full object-cover"
                     />
                   </button>
-                  <div className="absolute bottom-2 right-2 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center pointer-events-none">
-                    <Camera size={20} className="text-white" />
+                  <div className="absolute bottom-1 right-1 w-8 h-8 bg-[#1E293B] rounded-full flex items-center justify-center pointer-events-none">
+                    <Camera size={16} className="text-white" />
                   </div>
                 </div>
                 
@@ -160,27 +160,27 @@ const EmployerEditProfile: React.FC = () => {
               </div>
 
               {/* Form Fields */}
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {/* Name */}
                 <div>
-                  <Label htmlFor="name" className="text-lg font-medium text-gray-600 mb-2 block">Name</Label>
+                  <Label htmlFor="name" className="text-base font-medium text-gray-600 mb-2 block">Name</Label>
                   <Input
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white text-base px-4"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm px-4"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="text-lg font-medium text-gray-600 mb-2 block">Email</Label>
+                  <Label htmlFor="email" className="text-base font-medium text-gray-600 mb-2 block">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white text-base px-4"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm px-4"
                   />
                 </div>
               </div>
