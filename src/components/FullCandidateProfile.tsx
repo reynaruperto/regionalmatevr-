@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 interface FullCandidateProfileProps {
@@ -22,14 +22,18 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         description: 'Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD',
         nationality: 'Argentina',
         location: 'Brisbane, QLD 4000',
+        willingToRelocate: 'Yes, anywhere in QLD/NSW',
         industry: 'Agriculture and Farming',
+        visa: '417 (Working Holiday)',
+        visaExpiry: 'Sep 2026',
         experience: [
           '2020-2025: Farm Attendant - VillaFarm',
           '2019-2020: Marketing Head - Workspace',
           '2007-2019: Winery Assistant - BodegaWinery'
         ],
-        licenses: 'N/A',
-        availability: 'Sep 2025'
+        licenses: 'Driver\'s License, First Aid',
+        availability: 'Sep 2025 (8 months)',
+        languages: 'Spanish (Native), English (Fluent)'
       },
       '2': {
         id: '2',
@@ -38,14 +42,18 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         description: 'German backpacker with construction and agriculture experience, currently in Tamworth, NSW',
         nationality: 'Germany',
         location: 'Tamworth, NSW 2340',
+        willingToRelocate: 'Yes, within NSW/QLD',
         industry: 'Construction, Agriculture',
+        visa: '462 (Work and Holiday)',
+        visaExpiry: 'Oct 2026',
         experience: [
           '2020-2024: Construction Worker - Berlin Infrastructure',
           '2019-2020: Farm Equipment Technician - Bavaria Farms',
           '2018-2019: Apprentice Carpenter - Munich Construction'
         ],
-        licenses: 'White Card, Forklift License',
-        availability: 'Oct 2025'
+        licenses: 'White Card, Forklift License, Driver\'s License',
+        availability: 'Oct 2025 (12 months)',
+        languages: 'German (Native), English (Fluent)'
       },
       '3': {
         id: '3',
@@ -54,14 +62,18 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         description: 'British hospitality professional exploring agriculture opportunities, currently in Mildura, VIC',
         nationality: 'United Kingdom',
         location: 'Mildura, VIC 3500',
+        willingToRelocate: 'Yes, anywhere in Australia',
         industry: 'Hospitality, Agriculture',
+        visa: '417 (Working Holiday)',
+        visaExpiry: 'Nov 2026',
         experience: [
           '2021-2024: Restaurant Supervisor - London Bistro Chain',
           '2020-2021: Barista - Edinburgh Coffee House',
           '2019-2020: Hotel Receptionist - Manchester Grand Hotel'
         ],
-        licenses: 'RSA, Food Safety Certificate',
-        availability: 'Nov 2025'
+        licenses: 'RSA, Food Safety Certificate, Driver\'s License',
+        availability: 'Nov 2025 (10 months)',
+        languages: 'English (Native)'
       }
     };
     
@@ -138,6 +150,16 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
                 </div>
 
                 <div>
+                  <span className="font-semibold text-slate-800">Willing to Relocate:</span>
+                  <span className="text-gray-700 ml-1">{candidate.willingToRelocate}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Visa Type & Expiry:</span>
+                  <span className="text-gray-700 ml-1">{candidate.visa} - Expires {candidate.visaExpiry}</span>
+                </div>
+
+                <div>
                   <span className="font-semibold text-slate-800">Industry:</span>
                   <span className="text-gray-700 ml-1">{candidate.industry}</span>
                 </div>
@@ -162,6 +184,11 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
                   <span className="font-semibold text-slate-800">Availability (date, duration):</span>
                   <span className="text-gray-700 ml-1">{candidate.availability}</span>
                 </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Languages:</span>
+                  <span className="text-gray-700 ml-1">{candidate.languages}</span>
+                </div>
               </div>
 
               {/* Full Details Message */}
@@ -171,15 +198,15 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
                 </p>
               </div>
 
-              {/* Like to Match Button */}
+              {/* Heart to Match Button */}
               <div className="text-center mb-6">
                 <Button
                   onClick={handleLikeCandidate}
                   className="bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 mx-auto"
                 >
-                  <span className="font-semibold">Like to Match</span>
+                  <span className="font-semibold">Heart to Match</span>
                   <div className="bg-orange-500 rounded-full p-2">
-                    <ThumbsUp size={20} className="text-white" />
+                    <Heart size={20} className="text-white fill-white" />
                   </div>
                 </Button>
               </div>
