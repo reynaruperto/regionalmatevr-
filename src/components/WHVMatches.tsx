@@ -229,8 +229,13 @@ const WHVMatches: React.FC = () => {
                         </Button>
                         {!employer.isMutualMatch && (
                           <button 
-                            onClick={() => handleLikeEmployer(employer.id)}
-                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              console.log('Heart button clicked!');
+                              handleLikeEmployer(employer.id);
+                            }}
+                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm relative z-10"
                           >
                             <ThumbsUp size={16} className="text-white" />
                           </button>
