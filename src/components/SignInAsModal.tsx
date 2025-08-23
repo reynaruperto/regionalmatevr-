@@ -16,8 +16,7 @@ const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
   };
 
   const handleWHVSignIn = () => {
-    // Future implementation for WHV holder sign in
-    console.log('WHV sign in - future implementation');
+    navigate('/whv/login');
   };
 
   return (
@@ -68,7 +67,7 @@ const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                 onClick={handleEmployerSignIn}
               >
-                Employer
+                I want to hire
               </Button>
               
               <Button 
@@ -77,7 +76,7 @@ const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
                 onClick={handleWHVSignIn}
               >
-                Working Holiday Visa Holder
+                I want to get hired
               </Button>
             </div>
 
