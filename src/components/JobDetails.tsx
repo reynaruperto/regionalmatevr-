@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -24,6 +24,7 @@ interface JobDetail {
 const JobDetails: React.FC = () => {
   const navigate = useNavigate();
   const { employerId, jobId } = useParams();
+  const [searchParams] = useSearchParams();
 
   // Mock job details data
   const jobDetails: { [key: string]: { [key: string]: JobDetail } } = {
@@ -157,7 +158,9 @@ const JobDetails: React.FC = () => {
   const job = jobDetails[employerId || '1']?.[jobId || '1'];
 
   const handleViewEmployerProfile = () => {
-    navigate(`/employer/profile/${employerId}`);
+    const fromPage = searchParams.get('from');
+    const tab = searchParams.get('tab');
+    navigate(`/employer/profile/${employerId}?from=${fromPage || 'job-details'}&tab=${tab || ''}`);
   };
 
   if (!job) {
