@@ -44,7 +44,9 @@ const BottomNavigation: React.FC = () => {
               onClick={() => navigate(item.path)}
               className={`flex flex-col items-center justify-center px-3 rounded-lg transition-colors flex-1 mx-1 ${
                 active 
-                  ? 'bg-orange-500/10 text-orange-500' 
+                  ? isEmployerPage 
+                    ? 'bg-[#1E293B]/10 text-[#1E293B]' 
+                    : 'bg-orange-500/10 text-orange-500'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >

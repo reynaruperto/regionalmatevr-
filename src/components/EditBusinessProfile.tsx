@@ -140,7 +140,8 @@ const EditBusinessProfile: React.FC = () => {
                 </button>
                 <h1 className="text-lg font-semibold text-gray-900">John Doe</h1>
                 <button 
-                  onClick={handleSubmit(onSubmit)}
+                  type="submit"
+                  form="business-profile-form"
                   className="flex items-center text-[#1E293B] font-medium underline"
                 >
                   <Check size={16} className="mr-1" />
@@ -151,7 +152,7 @@ const EditBusinessProfile: React.FC = () => {
 
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <form id="business-profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 
                 {/* Business Name */}
                 <div>
