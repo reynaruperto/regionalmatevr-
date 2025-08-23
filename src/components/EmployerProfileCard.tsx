@@ -115,7 +115,7 @@ const EmployerProfileCard: React.FC = () => {
             {/* Profile Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               {/* Header */}
-              <div className="bg-gray-800 text-white p-4 text-center">
+              <div className="bg-orange-500 text-white p-4 text-center">
                 <h1 className="text-xl font-bold">{employer.name}</h1>
                 <p className="text-sm opacity-90">Employer: {employer.employerName}</p>
               </div>
@@ -183,7 +183,7 @@ const EmployerProfileCard: React.FC = () => {
                 </Button>
                 <button
                   onClick={handleLikeEmployer}
-                  className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg hover:from-orange-500 hover:to-orange-700 transition-all shadow-md"
+                  className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-900 to-orange-500 text-white rounded-lg hover:from-blue-800 hover:to-orange-600 transition-all shadow-md"
                 >
                   <span className="font-medium">Heart to Match</span>
                   <Heart size={20} className="text-white" />
