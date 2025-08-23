@@ -33,7 +33,29 @@ const EditProfile: React.FC = () => {
   const [availableStartDate, setAvailableStartDate] = useState('Sep 2025');
   const [preferredIndustry, setPreferredIndustry] = useState('Agriculture and Farming');
   const [licenses, setLicenses] = useState("Driver's License, First Aid");
-  const [workExperiences, setWorkExperiences] = useState('2020-2025: Farm Attendant - VillaFarm\n2019-2020: Marketing Head - Workspace\n2007-2019: Winery Assistant - BodegaWinery');
+  const [workExperiences, setWorkExperiences] = useState([
+    {
+      startDate: '2020',
+      endDate: '2025',
+      position: 'Farm Attendant',
+      company: 'VillaFarm',
+      location: 'Queensland, Australia'
+    },
+    {
+      startDate: '2019',
+      endDate: '2020',
+      position: 'Marketing Head',
+      company: 'Workspace',
+      location: 'Buenos Aires, Argentina'
+    },
+    {
+      startDate: '2007',
+      endDate: '2019',
+      position: 'Winery Assistant',
+      company: 'BodegaWinery',
+      location: 'Mendoza, Argentina'
+    }
+  ]);
   
   // Personal Info
   const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
@@ -376,14 +398,118 @@ const EditProfile: React.FC = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="workExperiences" className="text-gray-600 mb-2 block">Work Experience</Label>
-                      <Textarea
-                        id="workExperiences"
-                        value={workExperiences}
-                        onChange={(e) => setWorkExperiences(e.target.value)}
-                        className="min-h-24 rounded-xl border-gray-200 bg-white resize-none"
-                        placeholder="List your work experience..."
-                      />
+                      <Label className="text-gray-600 mb-3 block">Work Experience</Label>
+                      <div className="space-y-4">
+                        {workExperiences.map((experience, index) => (
+                          <div key={index} className="border border-gray-200 rounded-xl p-4 space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-medium text-gray-900">Experience {index + 1}</h4>
+                              {workExperiences.length > 1 && (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newExperiences = workExperiences.filter((_, i) => i !== index);
+                                    setWorkExperiences(newExperiences);
+                                  }}
+                                  className="text-red-500 hover:text-red-700 h-8 px-2"
+                                >
+                                  Remove
+                                </Button>
+                              )}
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label className="text-sm text-gray-600">Start Date</Label>
+                                <Input
+                                  value={experience.startDate}
+                                  onChange={(e) => {
+                                    const newExperiences = [...workExperiences];
+                                    newExperiences[index].startDate = e.target.value;
+                                    setWorkExperiences(newExperiences);
+                                  }}
+                                  className="h-10 rounded-lg border-gray-200 bg-white text-sm"
+                                  placeholder="2020"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-sm text-gray-600">End Date</Label>
+                                <Input
+                                  value={experience.endDate}
+                                  onChange={(e) => {
+                                    const newExperiences = [...workExperiences];
+                                    newExperiences[index].endDate = e.target.value;
+                                    setWorkExperiences(newExperiences);
+                                  }}
+                                  className="h-10 rounded-lg border-gray-200 bg-white text-sm"
+                                  placeholder="2025 or Present"
+                                />
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <Label className="text-sm text-gray-600">Position</Label>
+                              <Input
+                                value={experience.position}
+                                onChange={(e) => {
+                                  const newExperiences = [...workExperiences];
+                                  newExperiences[index].position = e.target.value;
+                                  setWorkExperiences(newExperiences);
+                                }}
+                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
+                                placeholder="Farm Attendant"
+                              />
+                            </div>
+                            
+                            <div>
+                              <Label className="text-sm text-gray-600">Company</Label>
+                              <Input
+                                value={experience.company}
+                                onChange={(e) => {
+                                  const newExperiences = [...workExperiences];
+                                  newExperiences[index].company = e.target.value;
+                                  setWorkExperiences(newExperiences);
+                                }}
+                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
+                                placeholder="VillaFarm"
+                              />
+                            </div>
+                            
+                            <div>
+                              <Label className="text-sm text-gray-600">Location</Label>
+                              <Input
+                                value={experience.location}
+                                onChange={(e) => {
+                                  const newExperiences = [...workExperiences];
+                                  newExperiences[index].location = e.target.value;
+                                  setWorkExperiences(newExperiences);
+                                }}
+                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
+                                placeholder="Queensland, Australia"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                        
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setWorkExperiences([...workExperiences, {
+                              startDate: '',
+                              endDate: '',
+                              position: '',
+                              company: '',
+                              location: ''
+                            }]);
+                          }}
+                          className="w-full h-10 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500"
+                        >
+                          + Add Work Experience
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
