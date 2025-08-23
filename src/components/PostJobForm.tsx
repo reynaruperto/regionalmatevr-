@@ -160,35 +160,35 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
             <div className="flex-1 px-6 overflow-y-auto pb-24">
               
               {/* Basic Job Information */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Basic Job Information</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Basic Job Information</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Job Title</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Job Title</label>
                     <Input
                       value={formData.jobTitle}
                       onChange={(e) => handleInputChange('jobTitle', e.target.value)}
                       placeholder="e.g., Fruit Picker"
-                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Job Description</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Job Description</label>
                     <Textarea
                       value={formData.jobDescription}
                       onChange={(e) => handleInputChange('jobDescription', e.target.value)}
                       placeholder="Describe the role, duties, and work environment..."
-                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[80px] resize-none"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Industry</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Industry</label>
                       <Select value={formData.industryType} onValueChange={(value) => handleInputChange('industryType', value)}>
-                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
@@ -202,9 +202,9 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Job Type</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Job Type</label>
                       <Select value={formData.jobType} onValueChange={(value) => handleInputChange('jobType', value)}>
-                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
@@ -220,72 +220,72 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
               </div>
 
               {/* Schedule & Duration */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Schedule & Duration</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Schedule & Duration</h2>
                 
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Start Date</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
                       <Input
                         value={formData.startDate}
                         onChange={(e) => handleInputChange('startDate', e.target.value)}
                         placeholder="e.g., September 2025"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">End Date</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
                       <Input
                         value={formData.endDate}
                         onChange={(e) => handleInputChange('endDate', e.target.value)}
                         placeholder="e.g., November 2025"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Hours per Week</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Hours per Week</label>
                     <Input
                       value={formData.hours}
                       onChange={(e) => handleInputChange('hours', e.target.value)}
                       placeholder="e.g., 30-38 hours per week"
-                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Pay Information */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Pay Information</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Pay Information</h2>
                 
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Min Rate</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Min Rate</label>
                       <Input
                         value={formData.payRateMin}
                         onChange={(e) => handleInputChange('payRateMin', e.target.value)}
                         placeholder="25"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Max Rate</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Max Rate</label>
                       <Input
                         value={formData.payRateMax}
                         onChange={(e) => handleInputChange('payRateMax', e.target.value)}
                         placeholder="30"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Type</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
                       <Select value={formData.payType} onValueChange={(value) => handleInputChange('payType', value)}>
-                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
@@ -299,7 +299,7 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Superannuation Included</span>
+                    <span className="text-xs font-medium text-gray-600">Superannuation Included</span>
                     <Switch
                       checked={formData.superannuation}
                       onCheckedChange={(checked) => handleInputChange('superannuation', checked)}
@@ -310,12 +310,12 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
               </div>
 
               {/* Experience Requirements */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Experience Requirements</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Experience Requirements</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Previous Experience Required?</span>
+                    <span className="text-xs font-medium text-gray-600">Previous Experience Required?</span>
                     <Switch
                       checked={formData.previousExperienceRequired}
                       onCheckedChange={(checked) => handleInputChange('previousExperienceRequired', checked)}
@@ -324,26 +324,23 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   {formData.previousExperienceRequired && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Experience Details</label>
-                      <Textarea
-                        value={formData.experienceDetails}
-                        onChange={(e) => handleInputChange('experienceDetails', e.target.value)}
-                        placeholder="Specify what kind of experience is required..."
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
-                      />
-                    </div>
+                    <Textarea
+                      value={formData.experienceDetails}
+                      onChange={(e) => handleInputChange('experienceDetails', e.target.value)}
+                      placeholder="Specify what kind of experience is required..."
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[50px] resize-none"
+                    />
                   )}
                 </div>
               </div>
 
               {/* Tickets & Certifications */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Tickets & Certifications</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Tickets & Certifications</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Any Tickets Required?</span>
+                    <span className="text-xs font-medium text-gray-600">Any Tickets Required?</span>
                     <Switch
                       checked={formData.ticketsRequired}
                       onCheckedChange={(checked) => handleInputChange('ticketsRequired', checked)}
@@ -352,36 +349,33 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   {formData.ticketsRequired && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Select Required Tickets</label>
-                      <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
-                        {commonTickets.map((ticket) => (
-                          <div key={ticket} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              id={ticket}
-                              checked={formData.requiredTickets.includes(ticket)}
-                              onChange={() => handleTicketToggle(ticket)}
-                              className="rounded text-[#1E293B] focus:ring-[#1E293B]"
-                            />
-                            <label htmlFor={ticket} className="text-xs text-gray-600 cursor-pointer">
-                              {ticket}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto">
+                      {commonTickets.map((ticket) => (
+                        <div key={ticket} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            id={ticket}
+                            checked={formData.requiredTickets.includes(ticket)}
+                            onChange={() => handleTicketToggle(ticket)}
+                            className="rounded text-[#1E293B] focus:ring-[#1E293B]"
+                          />
+                          <label htmlFor={ticket} className="text-xs text-gray-600 cursor-pointer">
+                            {ticket}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Physical Requirements */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Physical Requirements</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Physical Requirements</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Physical Conditions Required?</span>
+                    <span className="text-xs font-medium text-gray-600">Physical Conditions Required?</span>
                     <Switch
                       checked={formData.physicalConditionsRequired}
                       onCheckedChange={(checked) => handleInputChange('physicalConditionsRequired', checked)}
@@ -390,26 +384,23 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   {formData.physicalConditionsRequired && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Physical Requirements Details</label>
-                      <Textarea
-                        value={formData.physicalDetails}
-                        onChange={(e) => handleInputChange('physicalDetails', e.target.value)}
-                        placeholder="e.g., Ability to lift 20kg, work outdoors, stand for long periods..."
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
-                      />
-                    </div>
+                    <Textarea
+                      value={formData.physicalDetails}
+                      onChange={(e) => handleInputChange('physicalDetails', e.target.value)}
+                      placeholder="e.g., Ability to lift 20kg, work outdoors, stand for long periods..."
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[50px] resize-none"
+                    />
                   )}
                 </div>
               </div>
 
               {/* Skills Requirements */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Skills Requirements</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Skills Requirements</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Specific Skills Required?</span>
+                    <span className="text-xs font-medium text-gray-600">Specific Skills Required?</span>
                     <Switch
                       checked={formData.specificSkillsRequired}
                       onCheckedChange={(checked) => handleInputChange('specificSkillsRequired', checked)}
@@ -418,99 +409,23 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   {formData.specificSkillsRequired && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Skills Details</label>
-                      <Textarea
-                        value={formData.skillsDetails}
-                        onChange={(e) => handleInputChange('skillsDetails', e.target.value)}
-                        placeholder="e.g., Equipment operation, computer skills, language requirements..."
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
-                      />
-                    </div>
+                    <Textarea
+                      value={formData.skillsDetails}
+                      onChange={(e) => handleInputChange('skillsDetails', e.target.value)}
+                      placeholder="e.g., Equipment operation, computer skills, language requirements..."
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[50px] resize-none"
+                    />
                   )}
                 </div>
               </div>
 
-              {/* Benefits & Facilities */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Benefits & Facilities</h2>
-                
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Accommodation Provided</span>
-                      <Switch
-                        checked={formData.accommodationProvided}
-                        onCheckedChange={(checked) => handleInputChange('accommodationProvided', checked)}
-                        className="data-[state=checked]:bg-[#1E293B]"
-                      />
-                    </div>
-                    {formData.accommodationProvided && (
-                      <Input
-                        value={formData.accommodationDetails}
-                        onChange={(e) => handleInputChange('accommodationDetails', e.target.value)}
-                        placeholder="e.g., On-site shared rooms, $150/week"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
-                      />
-                    )}
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Meals Provided</span>
-                      <Switch
-                        checked={formData.mealsProvided}
-                        onCheckedChange={(checked) => handleInputChange('mealsProvided', checked)}
-                        className="data-[state=checked]:bg-[#1E293B]"
-                      />
-                    </div>
-                    {formData.mealsProvided && (
-                      <Input
-                        value={formData.mealsDetails}
-                        onChange={(e) => handleInputChange('mealsDetails', e.target.value)}
-                        placeholder="e.g., Breakfast and lunch provided"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
-                      />
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Transport Provided</span>
-                    <Switch
-                      checked={formData.transportProvided}
-                      onCheckedChange={(checked) => handleInputChange('transportProvided', checked)}
-                      className="data-[state=checked]:bg-[#1E293B]"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Training Provided</span>
-                    <Switch
-                      checked={formData.trainingProvided}
-                      onCheckedChange={(checked) => handleInputChange('trainingProvided', checked)}
-                      className="data-[state=checked]:bg-[#1E293B]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Other Benefits</label>
-                    <Input
-                      value={formData.otherBenefits}
-                      onChange={(e) => handleInputChange('otherBenefits', e.target.value)}
-                      placeholder="e.g., Gym access, social activities, bonuses"
-                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Visa Preferences */}
-              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Visa Preferences</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Visa Preferences</h2>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">Valid Work Visa Required?</span>
+                    <span className="text-xs font-medium text-gray-600">Valid Work Visa Required?</span>
                     <Switch
                       checked={formData.visaRequired}
                       onCheckedChange={(checked) => handleInputChange('visaRequired', checked)}
@@ -519,60 +434,57 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                   </div>
 
                   {formData.visaRequired && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Preferred Visa Types</label>
-                      <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-                        {whvVisaTypes.map((visa) => (
-                          <div key={visa} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              id={visa}
-                              checked={formData.preferredVisaTypes.includes(visa)}
-                              onChange={() => handleVisaToggle(visa)}
-                              className="rounded text-[#1E293B] focus:ring-[#1E293B]"
-                            />
-                            <label htmlFor={visa} className="text-xs text-gray-600 cursor-pointer">
-                              {visa}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="grid grid-cols-1 gap-1 max-h-32 overflow-y-auto">
+                      {whvVisaTypes.map((visa) => (
+                        <div key={visa} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            id={visa}
+                            checked={formData.preferredVisaTypes.includes(visa)}
+                            onChange={() => handleVisaToggle(visa)}
+                            className="rounded text-[#1E293B] focus:ring-[#1E293B]"
+                          />
+                          <label htmlFor={visa} className="text-xs text-gray-600 cursor-pointer">
+                            {visa}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Location */}
-              <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm">
-                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Job Location</h2>
+              <div className="bg-white rounded-2xl p-3 mb-3 shadow-sm">
+                <h2 className="text-sm font-semibold text-[#1E293B] mb-3">Job Location</h2>
                 
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Suburb/City</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Suburb/City</label>
                       <Input
                         value={formData.suburb}
                         onChange={(e) => handleInputChange('suburb', e.target.value)}
                         placeholder="e.g., Clontarf"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-2">Post Code</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Post Code</label>
                       <Input
                         value={formData.postCode}
                         onChange={(e) => handleInputChange('postCode', e.target.value)}
                         placeholder="e.g., 4116"
-                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">State</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">State</label>
                     <Select value={formData.state} onValueChange={(value) => handleInputChange('state', value)}>
-                      <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                      <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-9">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
