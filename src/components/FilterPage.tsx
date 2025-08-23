@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface FilterPageProps {
@@ -12,7 +13,9 @@ interface FilterPageProps {
 
 const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   const [selectedFilters, setSelectedFilters] = useState({
-    location: '',
+    state: '',
+    citySuburb: '',
+    postcode: '',
     industry: '',
     experience: '',
     license: '',
@@ -24,41 +27,15 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     willingToRelocate: false,
   });
 
-  const locations = [
-    // Queensland
-    'QLD - Brisbane', 'QLD - Gold Coast', 'QLD - Sunshine Coast', 'QLD - Cairns', 
-    'QLD - Townsville', 'QLD - Toowoomba', 'QLD - Mackay', 'QLD - Rockhampton',
-    'QLD - Bundaberg', 'QLD - Hervey Bay', 'QLD - Gladstone', 'QLD - Mount Isa',
-    'QLD - Emerald', 'QLD - Charleville', 'QLD - Maryborough', 'QLD - Warwick',
-    
-    // New South Wales
-    'NSW - Sydney', 'NSW - Newcastle', 'NSW - Central Coast', 'NSW - Wollongong',
-    'NSW - Albury', 'NSW - Tamworth', 'NSW - Wagga Wagga', 'NSW - Orange',
-    'NSW - Bathurst', 'NSW - Dubbo', 'NSW - Armidale', 'NSW - Broken Hill',
-    'NSW - Port Macquarie', 'NSW - Coffs Harbour', 'NSW - Grafton', 'NSW - Goulburn',
-    
-    // Victoria
-    'VIC - Melbourne', 'VIC - Geelong', 'VIC - Ballarat', 'VIC - Bendigo',
-    'VIC - Shepparton', 'VIC - Mildura', 'VIC - Warrnambool', 'VIC - Horsham',
-    'VIC - Latrobe Valley', 'VIC - Sale', 'VIC - Wodonga',
-    
-    // Western Australia
-    'WA - Perth', 'WA - Mandurah', 'WA - Bunbury', 'WA - Kalgoorlie',
-    'WA - Geraldton', 'WA - Albany', 'WA - Broome', 'WA - Port Hedland',
-    'WA - Karratha', 'WA - Carnarvon', 'WA - Esperance',
-    
-    // South Australia
-    'SA - Adelaide', 'SA - Mount Gambier', 'SA - Whyalla', 'SA - Port Augusta',
-    'SA - Port Lincoln', 'SA - Murray Bridge',
-    
-    // Tasmania
-    'TAS - Hobart', 'TAS - Launceston', 'TAS - Devonport', 'TAS - Burnie',
-    
-    // Northern Territory
-    'NT - Darwin', 'NT - Alice Springs', 'NT - Katherine',
-    
-    // Australian Capital Territory
-    'ACT - Canberra'
+  const states = [
+    'Queensland (QLD)',
+    'New South Wales (NSW)', 
+    'Victoria (VIC)',
+    'Western Australia (WA)',
+    'South Australia (SA)',
+    'Tasmania (TAS)',
+    'Northern Territory (NT)',
+    'Australian Capital Territory (ACT)'
   ];
 
   const industries = [
@@ -229,13 +206,54 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
 
           {/* Scrollable Content */}
           <div className="flex-1 px-4 py-4 overflow-y-auto">
-            {/* Location */}
-            <DropdownSection 
-              title="Location" 
-              items={locations} 
-              category="location" 
-              placeholder="Select location"
-            />
+            {/* Location Filters */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
+              
+              {/* State Selection */}
+              <div className="mb-3">
+                <Label className="text-sm text-gray-600 mb-2 block">State</Label>
+                <Select 
+                  value={selectedFilters.state} 
+                  onValueChange={(value) => handleSelectChange('state', value)}
+                >
+                  <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
+                    <SelectValue placeholder="Select state (optional)" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
+                    {states.map((state) => (
+                      <SelectItem key={state} value={state} className="hover:bg-gray-100">
+                        {state}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* City/Suburb Search */}
+              <div className="mb-3">
+                <Label className="text-sm text-gray-600 mb-2 block">City or Suburb</Label>
+                <Input
+                  type="text"
+                  placeholder="e.g., Brisbane, Tamworth, Mildura..."
+                  value={selectedFilters.citySuburb}
+                  onChange={(e) => handleSelectChange('citySuburb', e.target.value)}
+                  className="w-full bg-white border border-gray-300"
+                />
+              </div>
+
+              {/* Postcode Search */}
+              <div>
+                <Label className="text-sm text-gray-600 mb-2 block">Postcode</Label>
+                <Input
+                  type="text"
+                  placeholder="e.g., 4000, 2000, 3000..."
+                  value={selectedFilters.postcode}
+                  onChange={(e) => handleSelectChange('postcode', e.target.value)}
+                  className="w-full bg-white border border-gray-300"
+                />
+              </div>
+            </div>
 
             {/* Industry */}
             <DropdownSection 
