@@ -204,12 +204,16 @@ const WHVEmployerJobDetails: React.FC = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     
-    if (fromPage === 'whv-matches') {
+    // IDs 4, 5, 6 are mutual matches and should always go to full profile
+    const isMutualMatch = ['4', '5', '6'].includes(id || '');
+    
+    if (isMutualMatch) {
+      // Always navigate to full profile for mutual matches
       navigate(`/whv/employer/full-profile/${id}?from=whv-matches&tab=${tab || 'matches'}`);
-    } else if (fromPage === 'whv-full-profile') {
-      navigate(`/whv/employer/full-profile/${id}?from=whv-matches&tab=${tab || 'matches'}`);
+    } else if (fromPage === 'whv-matches') {
+      navigate(`/whv/employer/profile/${id}?from=whv-matches&tab=${tab || 'matches'}`);
     } else {
-      navigate(`/whv/employer/full-profile/${id}`);
+      navigate(`/whv/employer/profile/${id}`);
     }
   };
 
