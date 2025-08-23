@@ -126,6 +126,7 @@ const App = () => (
         <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
         <Route path="/whv/login" element={<WHVLogin />} />
         <Route path="/whv/account-confirmation" element={<WHVAccountConfirmation />} />
+          <Route path="/whv-employer-short-profile/:id" element={<WHVEmployerProfile />} />
           <Route path="/whv/employer/profile/:id" element={<WHVEmployerProfile />} />
           <Route path="/whv/employer/jobs/:employerId" element={<WHVEmployerJobs />} />
           <Route path="/whv/job-details/:employerId/:jobId" element={<WHVJobDetails />} />
