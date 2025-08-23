@@ -97,10 +97,10 @@ const EmployerEditProfile: React.FC = () => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 px-6 overflow-y-auto">
+            <div className="flex-1 px-6 overflow-y-auto pb-6">
               
               {/* Profile Visibility */}
-              <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
+              <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">Profile Visibility</h3>
@@ -118,7 +118,7 @@ const EmployerEditProfile: React.FC = () => {
               </div>
 
               {/* Preview Profile Card */}
-              <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm">
+              <div className="bg-white rounded-2xl p-5 mb-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">Preview Profile card</h3>
                   <Button 
@@ -131,8 +131,8 @@ const EmployerEditProfile: React.FC = () => {
               </div>
 
               {/* Profile Picture */}
-              <div className="mb-8">
-                <h3 className="text-lg font-medium text-gray-600 mb-4">Profile Picture</h3>
+              <div className="mb-6">
+                <h3 className="text-lg font-medium text-gray-600 mb-3">Profile Picture</h3>
                 <div className="relative w-32 h-32">
                   <button 
                     onClick={handlePhotoClick}
@@ -160,32 +160,32 @@ const EmployerEditProfile: React.FC = () => {
               </div>
 
               {/* Form Fields */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {/* Name */}
                 <div>
-                  <Label htmlFor="name" className="text-lg font-medium text-gray-600 mb-3 block">Name</Label>
+                  <Label htmlFor="name" className="text-lg font-medium text-gray-600 mb-2 block">Name</Label>
                   <Input
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="h-14 rounded-2xl border-gray-200 bg-white text-lg px-6"
+                    className="h-12 rounded-xl border-gray-200 bg-white text-base px-4"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="text-lg font-medium text-gray-600 mb-3 block">Email</Label>
+                  <Label htmlFor="email" className="text-lg font-medium text-gray-600 mb-2 block">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="h-14 rounded-2xl border-gray-200 bg-white text-lg px-6"
+                    className="h-12 rounded-xl border-gray-200 bg-white text-base px-4"
                   />
                 </div>
               </div>
 
-              <div className="h-20"></div>
+              <div className="h-6"></div>
             </div>
           </div>
         </div>
