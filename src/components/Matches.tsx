@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 
@@ -136,7 +136,7 @@ const Matches: React.FC = () => {
                 onClick={() => setActiveTab('matches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'matches'
-                    ? 'bg-slate-800 text-white'
+                    ? 'bg-orange-500 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -146,7 +146,7 @@ const Matches: React.FC = () => {
                 onClick={() => setActiveTab('topRecommended')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
                   activeTab === 'topRecommended'
-                    ? 'bg-slate-800 text-white'
+                    ? 'bg-orange-500 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
@@ -208,7 +208,7 @@ const Matches: React.FC = () => {
                         </Button>
                         {!employer.isMutualMatch && (
                           <button className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm">
-                            <ThumbsUp size={16} className="text-white" />
+                            <Heart size={16} className="text-white" />
                           </button>
                         )}
                       </div>
