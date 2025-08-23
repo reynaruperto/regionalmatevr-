@@ -115,14 +115,15 @@ const EmployerProfileCard: React.FC = () => {
             {/* Profile Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               {/* Header */}
-              <div className="bg-orange-500 text-white p-4 text-center">
+              <div className="bg-orange-500 text-white p-4 text-center relative">
                 <h1 className="text-xl font-bold">{employer.name}</h1>
                 <p className="text-sm opacity-90">Employer: {employer.employerName}</p>
+                <div className="h-4"></div> {/* Extra space for overlapping image */}
               </div>
 
               {/* Profile Image */}
-              <div className="flex justify-center -mt-8 mb-4">
-                <div className="w-24 h-24 rounded-full border-4 border-orange-500 overflow-hidden bg-white">
+              <div className="flex justify-center -mt-12 mb-6 relative z-10">
+                <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
                   <img
                     src={employer.profileImage}
                     alt={employer.name}
