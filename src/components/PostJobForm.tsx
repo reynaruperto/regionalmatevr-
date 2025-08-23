@@ -62,6 +62,10 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
     specificSkillsRequired: false,
     skillsDetails: '',
     
+    // Visa Preferences
+    preferredVisaTypes: [] as string[],
+    visaRequired: true,
+    
     // Benefits & Facilities
     accommodationProvided: false,
     accommodationDetails: '',
@@ -85,6 +89,15 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
     'Chemical Handling'
   ];
 
+  const whvVisaTypes = [
+    'Subclass 417 (Working Holiday)',
+    'Subclass 462 (Work and Holiday)',
+    'Student Visa (Subclass 500)',
+    'Temporary Graduate (Subclass 485)',
+    'Skilled Independent (Subclass 189)',
+    'Any Valid Work Visa'
+  ];
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -95,6 +108,15 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
       requiredTickets: prev.requiredTickets.includes(ticket)
         ? prev.requiredTickets.filter(t => t !== ticket)
         : [...prev.requiredTickets, ticket]
+    }));
+  };
+
+  const handleVisaToggle = (visa: string) => {
+    setFormData(prev => ({
+      ...prev,
+      preferredVisaTypes: prev.preferredVisaTypes.includes(visa)
+        ? prev.preferredVisaTypes.filter(v => v !== visa)
+        : [...prev.preferredVisaTypes, visa]
     }));
   };
 
@@ -479,6 +501,44 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                       className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Visa Preferences */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Visa Preferences</h2>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Valid Work Visa Required?</span>
+                    <Switch
+                      checked={formData.visaRequired}
+                      onCheckedChange={(checked) => handleInputChange('visaRequired', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+
+                  {formData.visaRequired && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Preferred Visa Types</label>
+                      <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
+                        {whvVisaTypes.map((visa) => (
+                          <div key={visa} className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id={visa}
+                              checked={formData.preferredVisaTypes.includes(visa)}
+                              onChange={() => handleVisaToggle(visa)}
+                              className="rounded text-[#1E293B] focus:ring-[#1E293B]"
+                            />
+                            <label htmlFor={visa} className="text-xs text-gray-600 cursor-pointer">
+                              {visa}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
