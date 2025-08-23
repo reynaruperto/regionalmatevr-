@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import BottomNavigation from '@/components/BottomNavigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,44 +23,79 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
+    // Basic Job Info
     jobTitle: editingJob?.title || '',
-    jobDescription: 'We are looking for hardworking and reliable WHV holders to join our team for seasonal fruit picking. Duties include harvesting, sorting, and packing fruit. This role is outdoors and requires good physical fitness. Previous experience is welcome but not required. Accommodation is available on site at discounted rates.',
+    jobDescription: '',
     industryType: 'Agriculture & Farming',
     jobType: 'Casual / Seasonal',
+    
+    // Schedule & Duration
     fullTime: true,
-    startDate: editingJob?.startDate || '10 September 2025',
-    endDate: '30 November 2025',
-    // Season fields
-    seasonType: 'Harvest Season',
-    seasonDescription: 'September 2025 onwards',
-    // Pay Range fields
-    payRateMin: '25',
-    payRateMax: '30',
+    startDate: editingJob?.startDate || '',
+    endDate: '',
+    hours: '',
+    
+    // Pay Information
+    payRateMin: '',
+    payRateMax: '',
     payType: '/hour',
     superannuation: true,
-    // Benefits fields
-    accommodation: true,
-    accommodationType: 'On-site available',
-    meals: true,
-    mealsType: 'Provided',
-    transport: false,
-    training: false,
-    otherBenefits: '',
-    hours: '30-38 hours per week',
-    suburb: 'Clontarf',
+    
+    // Location
+    suburb: '',
     state: 'Queensland',
-    postCode: '4116',
-    requirements: [
-      'Must hold a valid Working Holiday Visa (417/462)',
-      'White Card preferred but not essential',
-      'Prior fruit-picking experience is an advantage',
-      'Ability to work outdoors in all weather conditions',
-      'Physically fit and able to lift up to 20kg'
-    ]
+    postCode: '',
+    
+    // Experience Requirements (YES/NO FLAGS)
+    previousExperienceRequired: false,
+    experienceDetails: '',
+    
+    // Tickets & Certifications (YES/NO FLAGS)
+    ticketsRequired: false,
+    requiredTickets: [] as string[],
+    
+    // Physical Requirements (YES/NO FLAGS)
+    physicalConditionsRequired: false,
+    physicalDetails: '',
+    
+    // Skills Requirements (YES/NO FLAGS)
+    specificSkillsRequired: false,
+    skillsDetails: '',
+    
+    // Benefits & Facilities
+    accommodationProvided: false,
+    accommodationDetails: '',
+    mealsProvided: false,
+    mealsDetails: '',
+    transportProvided: false,
+    trainingProvided: false,
+    otherBenefits: ''
   });
 
-  const handleInputChange = (field: string, value: string) => {
+  const commonTickets = [
+    'White Card (Construction)',
+    'RSA (Responsible Service of Alcohol)',
+    'RSG (Responsible Service of Gaming)',
+    'Food Safety Supervisor',
+    'First Aid Certificate',
+    'Driver\'s License',
+    'Forklift License',
+    'Working at Heights',
+    'Manual Handling',
+    'Chemical Handling'
+  ];
+
+  const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleTicketToggle = (ticket: string) => {
+    setFormData(prev => ({
+      ...prev,
+      requiredTickets: prev.requiredTickets.includes(ticket)
+        ? prev.requiredTickets.filter(t => t !== ticket)
+        : [...prev.requiredTickets, ticket]
+    }));
   };
 
   const handleSaveAndPost = () => {
@@ -101,239 +137,337 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto pb-24">
               
-              {/* Job Basics */}
-              <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-700 mb-4 border-b border-gray-300 pb-2">Job Basics</h2>
+              {/* Basic Job Information */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Basic Job Information</h2>
                 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Job Title</label>
-                  <Input
-                    value={formData.jobTitle}
-                    onChange={(e) => handleInputChange('jobTitle', e.target.value)}
-                    placeholder="Fruit Picker"
-                    className="bg-white border-gray-200 rounded-xl"
-                  />
-                </div>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">Job Title</label>
+                    <Input
+                      value={formData.jobTitle}
+                      onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                      placeholder="e.g., Fruit Picker"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Job Description</label>
-                  <Textarea
-                    value={formData.jobDescription}
-                    onChange={(e) => handleInputChange('jobDescription', e.target.value)}
-                    className="bg-white border-gray-200 rounded-xl min-h-[120px] resize-none"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">Job Description</label>
+                    <Textarea
+                      value={formData.jobDescription}
+                      onChange={(e) => handleInputChange('jobDescription', e.target.value)}
+                      placeholder="Describe the role, duties, and work environment..."
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[80px] resize-none"
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Industry Type</label>
-                  <Select value={formData.industryType} onValueChange={(value) => handleInputChange('industryType', value)}>
-                    <SelectTrigger className="bg-white border-gray-200 rounded-xl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="Agriculture & Farming">Agriculture & Farming</SelectItem>
-                      <SelectItem value="Hospitality">Hospitality</SelectItem>
-                      <SelectItem value="Construction">Construction</SelectItem>
-                      <SelectItem value="Tourism">Tourism</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Job Details and Requirements */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                
-                {/* Job Details */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-600 mb-3">Job Details</h3>
-                  <div className="space-y-3 text-sm text-gray-700">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="font-medium">Job Type:</span>
-                      <div className="text-gray-600">{formData.jobType}</div>
-                      <div className="text-gray-600">Full-time</div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Industry</label>
+                      <Select value={formData.industryType} onValueChange={(value) => handleInputChange('industryType', value)}>
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          <SelectItem value="Agriculture & Farming">Agriculture & Farming</SelectItem>
+                          <SelectItem value="Hospitality">Hospitality</SelectItem>
+                          <SelectItem value="Construction">Construction</SelectItem>
+                          <SelectItem value="Tourism">Tourism</SelectItem>
+                          <SelectItem value="Mining">Mining</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
+                    
                     <div>
-                      <span className="font-medium">Start Date:</span>
-                      <div className="text-gray-600">{formData.startDate}</div>
-                    </div>
-                    <div>
-                      <span className="font-medium">End Date:</span>
-                      <div className="text-gray-600">{formData.endDate}</div>
-                    </div>
-                    <div>
-                      <span className="font-medium">Pay Range:</span>
-                      <div className="text-gray-600">${formData.payRateMin}-${formData.payRateMax}{formData.payType}</div>
-                    </div>
-                    <div>
-                      <span className="font-medium">Hours:</span>
-                      <div className="text-gray-600">{formData.hours}</div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Job Type</label>
+                      <Select value={formData.jobType} onValueChange={(value) => handleInputChange('jobType', value)}>
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          <SelectItem value="Casual / Seasonal">Casual / Seasonal</SelectItem>
+                          <SelectItem value="Part-time">Part-time</SelectItem>
+                          <SelectItem value="Full-time">Full-time</SelectItem>
+                          <SelectItem value="Contract">Contract</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Job Requirements */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-600 mb-3">Job Requirements</h3>
-                  <div className="space-y-2">
-                    {formData.requirements.map((req, index) => (
-                      <div key={index} className="text-xs text-gray-600 leading-tight">
-                        -{req}
+              {/* Schedule & Duration */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Schedule & Duration</h2>
+                
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Start Date</label>
+                      <Input
+                        value={formData.startDate}
+                        onChange={(e) => handleInputChange('startDate', e.target.value)}
+                        placeholder="e.g., September 2025"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">End Date</label>
+                      <Input
+                        value={formData.endDate}
+                        onChange={(e) => handleInputChange('endDate', e.target.value)}
+                        placeholder="e.g., November 2025"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">Hours per Week</label>
+                    <Input
+                      value={formData.hours}
+                      onChange={(e) => handleInputChange('hours', e.target.value)}
+                      placeholder="e.g., 30-38 hours per week"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Pay Information */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Pay Information</h2>
+                
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Min Rate</label>
+                      <Input
+                        value={formData.payRateMin}
+                        onChange={(e) => handleInputChange('payRateMin', e.target.value)}
+                        placeholder="25"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Max Rate</label>
+                      <Input
+                        value={formData.payRateMax}
+                        onChange={(e) => handleInputChange('payRateMax', e.target.value)}
+                        placeholder="30"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Type</label>
+                      <Select value={formData.payType} onValueChange={(value) => handleInputChange('payType', value)}>
+                        <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          <SelectItem value="/hour">/hour</SelectItem>
+                          <SelectItem value="/day">/day</SelectItem>
+                          <SelectItem value="/week">/week</SelectItem>
+                          <SelectItem value="/piece">/piece</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Superannuation Included</span>
+                    <Switch
+                      checked={formData.superannuation}
+                      onCheckedChange={(checked) => handleInputChange('superannuation', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Experience Requirements */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Experience Requirements</h2>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Previous Experience Required?</span>
+                    <Switch
+                      checked={formData.previousExperienceRequired}
+                      onCheckedChange={(checked) => handleInputChange('previousExperienceRequired', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+
+                  {formData.previousExperienceRequired && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Experience Details</label>
+                      <Textarea
+                        value={formData.experienceDetails}
+                        onChange={(e) => handleInputChange('experienceDetails', e.target.value)}
+                        placeholder="Specify what kind of experience is required..."
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Tickets & Certifications */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Tickets & Certifications</h2>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Any Tickets Required?</span>
+                    <Switch
+                      checked={formData.ticketsRequired}
+                      onCheckedChange={(checked) => handleInputChange('ticketsRequired', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+
+                  {formData.ticketsRequired && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Select Required Tickets</label>
+                      <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
+                        {commonTickets.map((ticket) => (
+                          <div key={ticket} className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id={ticket}
+                              checked={formData.requiredTickets.includes(ticket)}
+                              onChange={() => handleTicketToggle(ticket)}
+                              className="rounded text-[#1E293B] focus:ring-[#1E293B]"
+                            />
+                            <label htmlFor={ticket} className="text-xs text-gray-600 cursor-pointer">
+                              {ticket}
+                            </label>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Season Information */}
-              <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-700 mb-4 border-b border-gray-300 pb-2">Season & Availability</h2>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Season Type</label>
-                  <Select value={formData.seasonType} onValueChange={(value) => handleInputChange('seasonType', value)}>
-                    <SelectTrigger className="bg-white border-gray-200 rounded-xl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="Harvest Season">Harvest Season</SelectItem>
-                      <SelectItem value="Planting Season">Planting Season</SelectItem>
-                      <SelectItem value="Peak Season">Peak Season</SelectItem>
-                      <SelectItem value="Year Round">Year Round</SelectItem>
-                      <SelectItem value="Summer Season">Summer Season</SelectItem>
-                      <SelectItem value="Winter Season">Winter Season</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Season Description</label>
-                  <Input
-                    value={formData.seasonDescription}
-                    onChange={(e) => handleInputChange('seasonDescription', e.target.value)}
-                    placeholder="e.g., September 2025 onwards"
-                    className="bg-white border-gray-200 rounded-xl"
-                  />
-                </div>
-              </div>
-
-              {/* Pay Range */}
-              <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-700 mb-4 border-b border-gray-300 pb-2">Pay Range</h2>
-                
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Min Rate</label>
-                    <Input
-                      value={formData.payRateMin}
-                      onChange={(e) => handleInputChange('payRateMin', e.target.value)}
-                      placeholder="25"
-                      className="bg-white border-gray-200 rounded-xl"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Max Rate</label>
-                    <Input
-                      value={formData.payRateMax}
-                      onChange={(e) => handleInputChange('payRateMax', e.target.value)}
-                      placeholder="30"
-                      className="bg-white border-gray-200 rounded-xl"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-2">Type</label>
-                    <Select value={formData.payType} onValueChange={(value) => handleInputChange('payType', value)}>
-                      <SelectTrigger className="bg-white border-gray-200 rounded-xl">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white">
-                        <SelectItem value="/hour">/hour</SelectItem>
-                        <SelectItem value="/day">/day</SelectItem>
-                        <SelectItem value="/week">/week</SelectItem>
-                        <SelectItem value="/piece">/piece</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="superannuation"
-                    checked={formData.superannuation}
-                    onChange={(e) => handleInputChange('superannuation', e.target.checked.toString())}
-                    className="rounded"
-                  />
-                  <label htmlFor="superannuation" className="text-sm text-gray-600">+ Superannuation</label>
-                </div>
-              </div>
-
-              {/* Benefits */}
-              <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-700 mb-4 border-b border-gray-300 pb-2">Benefits & Facilities</h2>
-                
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <input
-                        type="checkbox"
-                        id="accommodation"
-                        checked={formData.accommodation}
-                        onChange={(e) => handleInputChange('accommodation', e.target.checked.toString())}
-                        className="rounded"
-                      />
-                      <label htmlFor="accommodation" className="text-sm font-medium text-gray-600">Accommodation</label>
                     </div>
-                    {formData.accommodation && (
+                  )}
+                </div>
+              </div>
+
+              {/* Physical Requirements */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Physical Requirements</h2>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Physical Conditions Required?</span>
+                    <Switch
+                      checked={formData.physicalConditionsRequired}
+                      onCheckedChange={(checked) => handleInputChange('physicalConditionsRequired', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+
+                  {formData.physicalConditionsRequired && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Physical Requirements Details</label>
+                      <Textarea
+                        value={formData.physicalDetails}
+                        onChange={(e) => handleInputChange('physicalDetails', e.target.value)}
+                        placeholder="e.g., Ability to lift 20kg, work outdoors, stand for long periods..."
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Skills Requirements */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Skills Requirements</h2>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Specific Skills Required?</span>
+                    <Switch
+                      checked={formData.specificSkillsRequired}
+                      onCheckedChange={(checked) => handleInputChange('specificSkillsRequired', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
+
+                  {formData.specificSkillsRequired && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Skills Details</label>
+                      <Textarea
+                        value={formData.skillsDetails}
+                        onChange={(e) => handleInputChange('skillsDetails', e.target.value)}
+                        placeholder="e.g., Equipment operation, computer skills, language requirements..."
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm min-h-[60px] resize-none"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Benefits & Facilities */}
+              <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Benefits & Facilities</h2>
+                
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-600">Accommodation Provided</span>
+                      <Switch
+                        checked={formData.accommodationProvided}
+                        onCheckedChange={(checked) => handleInputChange('accommodationProvided', checked)}
+                        className="data-[state=checked]:bg-[#1E293B]"
+                      />
+                    </div>
+                    {formData.accommodationProvided && (
                       <Input
-                        value={formData.accommodationType}
-                        onChange={(e) => handleInputChange('accommodationType', e.target.value)}
-                        placeholder="e.g., On-site available, Shared rooms"
-                        className="bg-white border-gray-200 rounded-xl ml-6"
+                        value={formData.accommodationDetails}
+                        onChange={(e) => handleInputChange('accommodationDetails', e.target.value)}
+                        placeholder="e.g., On-site shared rooms, $150/week"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
                       />
                     )}
                   </div>
 
                   <div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <input
-                        type="checkbox"
-                        id="meals"
-                        checked={formData.meals}
-                        onChange={(e) => handleInputChange('meals', e.target.checked.toString())}
-                        className="rounded"
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-600">Meals Provided</span>
+                      <Switch
+                        checked={formData.mealsProvided}
+                        onCheckedChange={(checked) => handleInputChange('mealsProvided', checked)}
+                        className="data-[state=checked]:bg-[#1E293B]"
                       />
-                      <label htmlFor="meals" className="text-sm font-medium text-gray-600">Meals</label>
                     </div>
-                    {formData.meals && (
+                    {formData.mealsProvided && (
                       <Input
-                        value={formData.mealsType}
-                        onChange={(e) => handleInputChange('mealsType', e.target.value)}
-                        placeholder="e.g., Provided, Breakfast included"
-                        className="bg-white border-gray-200 rounded-xl ml-6"
+                        value={formData.mealsDetails}
+                        onChange={(e) => handleInputChange('mealsDetails', e.target.value)}
+                        placeholder="e.g., Breakfast and lunch provided"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
                       />
                     )}
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="transport"
-                      checked={formData.transport}
-                      onChange={(e) => handleInputChange('transport', e.target.checked.toString())}
-                      className="rounded"
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Transport Provided</span>
+                    <Switch
+                      checked={formData.transportProvided}
+                      onCheckedChange={(checked) => handleInputChange('transportProvided', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
                     />
-                    <label htmlFor="transport" className="text-sm font-medium text-gray-600">Transport Provided</label>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="training"
-                      checked={formData.training}
-                      onChange={(e) => handleInputChange('training', e.target.checked.toString())}
-                      className="rounded"
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">Training Provided</span>
+                    <Switch
+                      checked={formData.trainingProvided}
+                      onCheckedChange={(checked) => handleInputChange('trainingProvided', checked)}
+                      className="data-[state=checked]:bg-[#1E293B]"
                     />
-                    <label htmlFor="training" className="text-sm font-medium text-gray-600">Training Provided</label>
                   </div>
 
                   <div>
@@ -341,71 +475,68 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
                     <Input
                       value={formData.otherBenefits}
                       onChange={(e) => handleInputChange('otherBenefits', e.target.value)}
-                      placeholder="e.g., Gym access, social activities"
-                      className="bg-white border-gray-200 rounded-xl"
+                      placeholder="e.g., Gym access, social activities, bonuses"
+                      className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Location & Dates */}
-              <div className="mb-8">
-                <h2 className="text-base font-semibold text-gray-700 mb-4 border-b border-gray-300 pb-2">Location & Dates</h2>
+              {/* Location */}
+              <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm">
+                <h2 className="text-base font-semibold text-[#1E293B] mb-4">Job Location</h2>
                 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Suburb/City</label>
-                  <Input
-                    value={formData.suburb}
-                    onChange={(e) => handleInputChange('suburb', e.target.value)}
-                    className="bg-white border-gray-200 rounded-xl"
-                  />
-                </div>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Suburb/City</label>
+                      <Input
+                        value={formData.suburb}
+                        onChange={(e) => handleInputChange('suburb', e.target.value)}
+                        placeholder="e.g., Clontarf"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-2">Post Code</label>
+                      <Input
+                        value={formData.postCode}
+                        onChange={(e) => handleInputChange('postCode', e.target.value)}
+                        placeholder="e.g., 4116"
+                        className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10"
+                      />
+                    </div>
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">State</label>
-                  <Select value={formData.state} onValueChange={(value) => handleInputChange('state', value)}>
-                    <SelectTrigger className="bg-white border-gray-200 rounded-xl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="Queensland">Queensland</SelectItem>
-                      <SelectItem value="New South Wales">New South Wales</SelectItem>
-                      <SelectItem value="Victoria">Victoria</SelectItem>
-                      <SelectItem value="South Australia">South Australia</SelectItem>
-                      <SelectItem value="Western Australia">Western Australia</SelectItem>
-                      <SelectItem value="Tasmania">Tasmania</SelectItem>
-                      <SelectItem value="Northern Territory">Northern Territory</SelectItem>
-                      <SelectItem value="Australian Capital Territory">Australian Capital Territory</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Post Code</label>
-                  <Input
-                    value={formData.postCode}
-                    onChange={(e) => handleInputChange('postCode', e.target.value)}
-                    className="bg-white border-gray-200 rounded-xl"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Start Date</label>
-                  <Input
-                    value={formData.startDate}
-                    onChange={(e) => handleInputChange('startDate', e.target.value)}
-                    className="bg-white border-gray-200 rounded-xl"
-                  />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">State</label>
+                    <Select value={formData.state} onValueChange={(value) => handleInputChange('state', value)}>
+                      <SelectTrigger className="bg-gray-50 border-gray-200 rounded-xl text-sm h-10">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                        <SelectItem value="Queensland">Queensland</SelectItem>
+                        <SelectItem value="New South Wales">New South Wales</SelectItem>
+                        <SelectItem value="Victoria">Victoria</SelectItem>
+                        <SelectItem value="South Australia">South Australia</SelectItem>
+                        <SelectItem value="Western Australia">Western Australia</SelectItem>
+                        <SelectItem value="Tasmania">Tasmania</SelectItem>
+                        <SelectItem value="Northern Territory">Northern Territory</SelectItem>
+                        <SelectItem value="Australian Capital Territory">Australian Capital Territory</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
 
-              {/* Save and Post Button */}
-              <div className="flex justify-center mb-6">
+              {/* Save Button */}
+              <div className="pb-6">
                 <Button 
                   onClick={handleSaveAndPost}
-                  className="bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-2xl px-8 py-3 text-base font-medium"
+                  className="w-full bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl h-12 text-base font-medium"
                 >
-                  {editingJob ? 'Save Changes' : 'Save and Post'}
+                  {editingJob ? 'Update Job' : 'Post Job'}
                 </Button>
               </div>
             </div>
