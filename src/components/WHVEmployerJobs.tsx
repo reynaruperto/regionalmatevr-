@@ -44,11 +44,38 @@ const WHVEmployerJobs: React.FC = () => {
         status: 'Closed',
         employerId: '1'
       }
+    ],
+    '4': [ // Green Harvest Farms jobs
+      {
+        id: '4',
+        title: 'Farm Assistant',
+        location: 'Northrivers, NSW',
+        startDate: 'Starts: Ongoing',
+        status: 'Active',
+        employerId: '4'
+      },
+      {
+        id: '5',
+        title: 'Seasonal Harvest Workers',
+        location: 'Northrivers, NSW',
+        startDate: 'Starts: September-December',
+        status: 'Active',
+        employerId: '4'
+      },
+      {
+        id: '6',
+        title: 'Packing & Sorting Operators',
+        location: 'Northrivers, NSW',
+        startDate: 'Starts: Available',
+        status: 'Active',
+        employerId: '4'
+      }
     ]
   };
 
   const employerNames: { [key: string]: string } = {
-    '1': 'Kangafarm'
+    '1': 'Kangafarm',
+    '4': 'Green Harvest Farms'
   };
 
   const jobs = jobsByEmployer[employerId || '1'] || [];
@@ -65,7 +92,9 @@ const WHVEmployerJobs: React.FC = () => {
     const originalFrom = searchParams.get('originalFrom');
     const tab = searchParams.get('tab');
     
-    if (originalFrom === 'whv-matches' || tab === 'topRecommended' || tab === 'matches') {
+    if (fromPage === 'whv-full-profile') {
+      navigate(`/whv/employer/full-profile/${employerId}?from=whv-matches&tab=${tab || 'matches'}`);
+    } else if (originalFrom === 'whv-matches' || tab === 'topRecommended' || tab === 'matches') {
       navigate(`/whv/employer/profile/${employerId}?from=whv-matches&tab=${tab || 'topRecommended'}`);
     } else if (fromPage === 'whv-employer-profile') {
       navigate(`/whv/employer/profile/${employerId}?from=whv-browse-employers&tab=${tab || ''}`);
@@ -120,6 +149,11 @@ const WHVEmployerJobs: React.FC = () => {
                     </div>
                   </div>
                   
+                  <div className="mt-3">
+                    <div className="w-full rounded-full bg-gray-100 text-gray-500 text-sm h-10 flex items-center justify-center">
+                      {job.status === 'Active' ? 'Currently Available' : 'Position Closed'}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
