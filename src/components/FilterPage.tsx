@@ -17,14 +17,17 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     citySuburb: '',
     postcode: '',
     industry: '',
-    experience: '',
-    license: '',
-    availability: '',
-    whv417: false,
-    whv462: false,
-    studentVisa: false,
-    otherVisas: false,
-    willingToRelocate: false,
+    jobType: '',
+    accommodationProvided: false,
+    mealsProvided: false,
+    transportProvided: false,
+    startDate: '',
+    payRateMin: '',
+    payRateMax: '',
+    experienceRequired: '',
+    acceptsWHV417: false,
+    acceptsWHV462: false,
+    acceptsStudentVisa: false,
   });
 
   const states = [
@@ -39,106 +42,66 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   ];
 
   const industries = [
-    // Agriculture and Food Production
     'Agriculture & Farming',
     'Horticulture & Fruit Picking', 
     'Livestock & Dairy Farming',
     'Viticulture & Wine Production',
     'Aquaculture & Fishing',
     'Forestry & Logging',
-    
-    // Hospitality & Tourism
     'Hospitality & Food Service',
     'Accommodation & Tourism',
     'Event Management',
     'Entertainment & Recreation',
-    
-    // Construction & Infrastructure
     'Construction & Building',
     'Road Construction & Maintenance',
     'Plumbing & Electrical',
     'Landscaping & Gardening',
-    
-    // Mining & Resources
     'Mining Operations',
     'Oil & Gas',
     'Resource Processing',
-    
-    // Healthcare & Community
     'Healthcare & Medical',
     'Aged Care & Disability Services',
     'Childcare & Education',
-    
-    // Manufacturing & Production
     'Food Processing & Manufacturing',
     'Industrial Manufacturing',
     'Packaging & Warehousing',
-    
-    // Transport & Logistics
     'Transport & Delivery',
     'Warehousing & Distribution',
     'Freight & Logistics',
-    
-    // Retail & Sales
     'Retail & Customer Service',
     'Sales & Marketing',
-    
-    // Other
     'Cleaning Services',
     'Administration & Office',
     'General Labour'
   ];
 
-  const experienceLevels = [
-    'No Experience Required', 'Entry Level (0-1 years)', '1-2 Years Experience', 
-    '3-5 Years Experience', '5+ Years Experience', 'Senior Level (10+ years)'
+  const jobTypes = [
+    'Casual / Seasonal',
+    'Part-time',
+    'Full-time',
+    'Contract',
+    'Temporary'
   ];
 
-  const licenseTypes = [
-    'No License/Tickets Required',
-    
-    // Driving & Transport
-    'Driver\'s License (Car)',
-    'Heavy Rigid (HR) License',
-    'Heavy Combination (HC) License',
-    'Multi Combination (MC) License',
-    'Motorcycle License',
-    'Forklift License',
-    
-    // Construction & Safety
-    'White Card (Construction)',
-    'Working at Heights',
-    'Confined Space Entry',
-    'First Aid Certificate',
-    'CPR Certificate',
-    
-    // Hospitality & Food
-    'RSA (Responsible Service of Alcohol)',
-    'Food Safety Certificate',
-    'Food Handling Certificate',
-    
-    // Agriculture Specific
-    'ChemCert (Chemical Application)',
-    'Tractor Operation',
-    'Farm Machinery Operation',
-    
-    // Trade & Technical
-    'Welding Certificate',
-    'Electrical License',
-    'Plumbing License',
-    'Crane License',
-    'Excavator License',
-    
-    // Security & Other
-    'Security License',
-    'Blue Card (Working with Children)',
-    'Manual Handling Certificate'
+  const experienceRequiredLevels = [
+    'No Experience Required',
+    'Some Experience Preferred',
+    '1+ Years Required',
+    '2+ Years Required',
+    '3+ Years Required'
   ];
 
-  const availabilityOptions = [
-    'Immediately Available', 'Within 1 Month', 'Within 3 Months', 
-    'Within 6 Months', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025',
-    'Jan 2026', 'Feb 2026', 'Mar 2026', 'Flexible Start Date'
+  const startDateOptions = [
+    'Immediately',
+    'September 2025',
+    'October 2025',
+    'November 2025',
+    'December 2025',
+    'January 2026',
+    'February 2026',
+    'March 2026',
+    'April 2026',
+    'Flexible'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -263,39 +226,103 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               placeholder="Select industry"
             />
 
-            {/* Experience */}
+            {/* Job Type */}
             <DropdownSection 
-              title="Experience" 
-              items={experienceLevels} 
-              category="experience" 
+              title="Job Type" 
+              items={jobTypes} 
+              category="jobType" 
+              placeholder="Select job type"
+            />
+
+            {/* Start Date */}
+            <DropdownSection 
+              title="Start Date" 
+              items={startDateOptions} 
+              category="startDate" 
+              placeholder="Select start date"
+            />
+
+            {/* Experience Required */}
+            <DropdownSection 
+              title="Experience Required" 
+              items={experienceRequiredLevels} 
+              category="experienceRequired" 
               placeholder="Select experience level"
             />
 
-            {/* License and Tickets */}
-            <DropdownSection 
-              title="License and Tickets" 
-              items={licenseTypes} 
-              category="license" 
-              placeholder="Select license/ticket"
-            />
-
-            {/* Availability */}
-            <DropdownSection 
-              title="Availability" 
-              items={availabilityOptions} 
-              category="availability" 
-              placeholder="Select availability"
-            />
-
-            {/* Visa Type */}
+            {/* Pay Rate Range */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Visa Type</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Pay Rate (per hour)</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-sm text-gray-600 mb-2 block">Min $</Label>
+                  <Input
+                    type="number"
+                    placeholder="25"
+                    value={selectedFilters.payRateMin}
+                    onChange={(e) => handleSelectChange('payRateMin', e.target.value)}
+                    className="w-full bg-white border border-gray-300"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm text-gray-600 mb-2 block">Max $</Label>
+                  <Input
+                    type="number"
+                    placeholder="35"
+                    value={selectedFilters.payRateMax}
+                    onChange={(e) => handleSelectChange('payRateMax', e.target.value)}
+                    className="w-full bg-white border border-gray-300"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits & Facilities */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Benefits & Facilities</h3>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="accommodation"
+                    checked={selectedFilters.accommodationProvided}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('accommodationProvided', checked as boolean)}
+                  />
+                  <Label htmlFor="accommodation" className="text-sm text-gray-700">
+                    Accommodation Provided
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="meals"
+                    checked={selectedFilters.mealsProvided}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('mealsProvided', checked as boolean)}
+                  />
+                  <Label htmlFor="meals" className="text-sm text-gray-700">
+                    Meals Provided
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="transport"
+                    checked={selectedFilters.transportProvided}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('transportProvided', checked as boolean)}
+                  />
+                  <Label htmlFor="transport" className="text-sm text-gray-700">
+                    Transport Provided
+                  </Label>
+                </div>
+              </div>
+            </div>
+
+            {/* Visa Types Accepted */}
+            <div className="mb-20">
+              <h3 className="font-semibold text-gray-900 mb-3">Accepts My Visa Type</h3>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="whv-417"
-                    checked={selectedFilters.whv417 || false}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('whv417', checked as boolean)}
+                    checked={selectedFilters.acceptsWHV417}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsWHV417', checked as boolean)}
                   />
                   <Label htmlFor="whv-417" className="text-sm text-gray-700">
                     Subclass 417 (Working Holiday)
@@ -304,8 +331,8 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="whv-462"
-                    checked={selectedFilters.whv462 || false}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('whv462', checked as boolean)}
+                    checked={selectedFilters.acceptsWHV462}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsWHV462', checked as boolean)}
                   />
                   <Label htmlFor="whv-462" className="text-sm text-gray-700">
                     Subclass 462 (Work and Holiday)
@@ -314,38 +341,13 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="student-visa"
-                    checked={selectedFilters.studentVisa || false}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('studentVisa', checked as boolean)}
+                    checked={selectedFilters.acceptsStudentVisa}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsStudentVisa', checked as boolean)}
                   />
                   <Label htmlFor="student-visa" className="text-sm text-gray-700">
                     Student Visa (Subclass 500)
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="other-visas"
-                    checked={selectedFilters.otherVisas || false}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('otherVisas', checked as boolean)}
-                  />
-                  <Label htmlFor="other-visas" className="text-sm text-gray-700">
-                    Other Work Visas
-                  </Label>
-                </div>
-              </div>
-            </div>
-
-            {/* Willing to Relocate */}
-            <div className="mb-20">
-              <h3 className="font-semibold text-gray-900 mb-3">Relocation</h3>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="willing-relocate"
-                  checked={selectedFilters.willingToRelocate}
-                  onCheckedChange={(checked) => handleBooleanFilterChange('willingToRelocate', checked as boolean)}
-                />
-                <Label htmlFor="willing-relocate" className="text-sm text-gray-700">
-                  Willing to relocate
-                </Label>
               </div>
             </div>
           </div>
