@@ -27,7 +27,7 @@ const WHVEmailConfirmation: React.FC = () => {
       title: "Email confirmed!",
       description: "Your account has been verified successfully",
     });
-    navigate('/whv-about-you');
+    navigate('/whv-profile-setup');
   };
 
   const handleResendCode = async () => {

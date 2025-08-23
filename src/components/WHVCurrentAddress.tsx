@@ -14,8 +14,11 @@ const WHVCurrentAddress: React.FC = () => {
     suburb: '',
     city: '',
     state: '',
-    postCode: ''
+    postCode: '',
+    isInAustralia: true
   });
+
+  const [showSkipOption, setShowSkipOption] = useState(false);
 
 
   // Australian states and territories
@@ -48,7 +51,11 @@ const WHVCurrentAddress: React.FC = () => {
     e.preventDefault();
     console.log('Current Address:', formData);
     // Navigate to next step
-    navigate('/whv-work-experience');
+    navigate('/whv-photo-upload');
+  };
+
+  const handleSkip = () => {
+    navigate('/whv-photo-upload');
   };
 
   return (
@@ -77,21 +84,69 @@ const WHVCurrentAddress: React.FC = () => {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-6">
+            {/* Section Title */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Location</h2>
+              <p className="text-gray-600">Let us know where you are now.</p>
+            </div>
+
+            {/* Location Toggle */}
+            <div className="mb-6 space-y-4">
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, isInAustralia: true})}
+                  className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
+                    formData.isInAustralia 
+                      ? 'border-orange-500 bg-orange-50' 
+                      : 'border-gray-200 bg-white'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">🇦🇺</div>
+                    <div className="font-medium text-gray-900">I'm in Australia</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, isInAustralia: false})}
+                  className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
+                    !formData.isInAustralia 
+                      ? 'border-orange-500 bg-orange-50' 
+                      : 'border-gray-200 bg-white'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">🌍</div>
+                    <div className="font-medium text-gray-900">I'm overseas</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {!formData.isInAustralia && (
+              <div className="mb-6 p-4 bg-blue-50 rounded-xl">
+                <p className="text-blue-800 text-sm">
+                  No worries! You can update your Australian address later when you arrive.
+                </p>
+              </div>
+            )}
+
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="addressLine1" className="text-base font-medium text-gray-700">
-                  Current Address Line 1
+                  {formData.isInAustralia ? 'Current Address Line 1' : 'Address Line 1'}
                 </Label>
                 <Input
                   id="addressLine1"
                   name="addressLine1"
                   type="text"
-                  required
+                  required={formData.isInAustralia}
                   value={formData.addressLine1}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="22 Valley St."
+                  placeholder={formData.isInAustralia ? "22 Valley St." : "Your current address"}
                 />
               </div>
 
@@ -112,17 +167,17 @@ const WHVCurrentAddress: React.FC = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="suburb" className="text-base font-medium text-gray-700">
-                  Suburb
+                  {formData.isInAustralia ? 'Suburb' : 'District/Area'}
                 </Label>
                 <Input
                   id="suburb"
                   name="suburb"
                   type="text"
-                  required
+                  required={formData.isInAustralia}
                   value={formData.suburb}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="Spring Hill"
+                  placeholder={formData.isInAustralia ? "Spring Hill" : "Your area/district"}
                 />
               </div>
 
@@ -134,55 +189,82 @@ const WHVCurrentAddress: React.FC = () => {
                   id="city"
                   name="city"
                   type="text"
-                  required
+                  required={formData.isInAustralia}
                   value={formData.city}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="Brisbane"
+                  placeholder={formData.isInAustralia ? "Brisbane" : "Your city"}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="state" className="text-base font-medium text-gray-700">
-                  State
-                </Label>
-                <Select onValueChange={(value) => handleSelectChange('state', value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="Queensland" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                    {australianStates.map((state) => (
-                      <SelectItem key={state} value={state} className="hover:bg-gray-100">
-                        {state}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {formData.isInAustralia ? (
+                <div className="space-y-2">
+                  <Label htmlFor="state" className="text-base font-medium text-gray-700">
+                    State
+                  </Label>
+                  <Select onValueChange={(value) => handleSelectChange('state', value)}>
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                      <SelectValue placeholder="Queensland" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                      {australianStates.map((state) => (
+                        <SelectItem key={state} value={state} className="hover:bg-gray-100">
+                          {state}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Label htmlFor="state" className="text-base font-medium text-gray-700">
+                    State/Province/Country
+                  </Label>
+                  <Input
+                    id="state"
+                    name="state"
+                    type="text"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className="h-12 bg-gray-100 border-0 text-gray-900"
+                    placeholder="Your state/province/country"
+                  />
+                </div>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="postCode" className="text-base font-medium text-gray-700">
-                  Post Code
+                  {formData.isInAustralia ? 'Post Code' : 'Postal/Zip Code'}
                 </Label>
                 <Input
                   id="postCode"
                   name="postCode"
                   type="text"
-                  required
+                  required={formData.isInAustralia}
                   value={formData.postCode}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="4000"
+                  placeholder={formData.isInAustralia ? "4000" : "Your postal/zip code"}
                 />
               </div>
 
-              <div className="pt-8">
+              <div className="pt-8 space-y-3">
                 <Button 
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
                   Continue →
                 </Button>
+                {!formData.isInAustralia && (
+                  <Button 
+                    type="button"
+                    onClick={handleSkip}
+                    variant="ghost"
+                    className="w-full h-12 text-gray-600 hover:text-gray-800"
+                  >
+                    Skip for now
+                  </Button>
+                )}
               </div>
             </form>
           </div>
