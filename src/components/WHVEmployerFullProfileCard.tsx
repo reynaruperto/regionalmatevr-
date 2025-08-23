@@ -250,12 +250,6 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
             {/* Profile Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-              {/* Header */}
-              <div className="bg-orange-500 text-white p-4 text-center">
-                <h1 className="text-xl font-bold">{employer.name}</h1>
-                <p className="text-sm opacity-90">Employer: {employer.employerName}</p>
-              </div>
-
               {/* Profile Image - Smaller since we have one at top */}
               <div className="flex justify-center mt-6 mb-6">
                 <div className="w-20 h-20 rounded-full border-4 border-gray-800 overflow-hidden bg-white shadow-lg">
