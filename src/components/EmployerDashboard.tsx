@@ -71,7 +71,7 @@ const EmployerDashboard: React.FC = () => {
                 
                 {/* Edit Profile Button */}
                 <Button
-                  onClick={() => navigate('/edit-business-profile')}
+                  onClick={() => navigate('/employer-edit-profile')}
                   variant="outline"
                   className="mb-8 bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
