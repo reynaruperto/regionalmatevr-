@@ -1,7 +1,7 @@
-import BrowseEmployers from '@/components/BrowseEmployers';
+import BrowseCandidates from '@/components/BrowseCandidates';
 
 const BrowseCandidatesPage = () => {
-  return <BrowseEmployers />;
+  return <BrowseCandidates />;
 };
 
 export default BrowseCandidatesPage;
