@@ -10,18 +10,18 @@ const ProfileCardPreview: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-200">
             
-            {/* Content */}
-            <div className="flex-1 px-6 pt-16 flex flex-col items-center justify-center">
+            {/* Scrollable Content */}
+            <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
               
               {/* Profile Card */}
-              <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg">
+              <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
                 <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
@@ -88,7 +88,7 @@ const ProfileCardPreview: React.FC = () => {
 
             </div>
 
-            {/* Back Button */}
+            {/* Back Button - Fixed at bottom */}
             <div className="absolute bottom-8 left-6">
               <Button 
                 variant="ghost" 
