@@ -2,19 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>regional-mate-pixel-perfect</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Regional Mate</title>
+    <meta name="description" content="Connect for jobs and travel - Working Holiday Visa matching platform" />
+    <meta name="author" content="Regional Mate" />
 
-    <meta property="og:title" content="regional-mate-pixel-perfect" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="Regional Mate" />
+    <meta property="og:description" content="Connect for jobs and travel - Working Holiday Visa matching platform" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <style>
+      /* Critical CSS for iPhone 16 Pro Max viewport */
+      html, body {
+        height: 100%;
+        height: 100vh;
+        height: 100dvh;
+        overflow-x: hidden;
+        -webkit-text-size-adjust: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Prevent zoom on input focus */
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+      
+      /* Safe area support */
+      #root {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+      }
+    </style>
   </head>
 
   <body>
