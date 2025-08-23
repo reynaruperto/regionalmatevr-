@@ -40,7 +40,7 @@ const EmployerMatches: React.FC = () => {
       location: 'Gold Coast, 4221',
       availability: 'Available from Aug 2025',
       matchPercentage: 95,
-      profileImage: '/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png',
+      profileImage: '/lovable-uploads/140ed1a1-12da-4d98-8f41-9aed46049366.png',
       isMutualMatch: true
     },
     {
@@ -51,7 +51,7 @@ const EmployerMatches: React.FC = () => {
       location: 'N/A',
       availability: 'Available from Sep 2025',
       matchPercentage: 91,
-      profileImage: '/lovable-uploads/533b9faf-8093-4e1d-b089-759120f751e1.png',
+      profileImage: '/lovable-uploads/76ee4cf4-2a7f-4575-a02c-ba69817bfa35.png',
       isMutualMatch: true
     },
     {
@@ -62,7 +62,7 @@ const EmployerMatches: React.FC = () => {
       location: 'Moreton Bay, 4020',
       availability: 'Available from Aug 2025',
       matchPercentage: 88,
-      profileImage: '/lovable-uploads/ea247b49-500a-47aa-9cce-591ae45a83cb.png',
+      profileImage: '/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png',
       isMutualMatch: true
     }
   ];
