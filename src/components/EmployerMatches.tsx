@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import BottomNavigation from '@/components/BottomNavigation';
+import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface MatchCandidate {
   id: string;
@@ -20,8 +20,9 @@ interface MatchCandidate {
 const EmployerMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'topRecommended' | 'matches'>('matches');
+  const [showLikeModal, setShowLikeModal] = useState(false);
+  const [likedCandidateName, setLikedCandidateName] = useState('');
 
   // Check URL parameters to set initial tab
   useEffect(() => {
@@ -110,10 +111,13 @@ const EmployerMatches: React.FC = () => {
   };
 
   const handleHeartClick = (candidateName: string) => {
-    toast({
-      title: "Profile Hearted!",
-      description: `You hearted ${candidateName}'s profile! They'll be notified, and if they heart you back, you'll unlock full profile access.`,
-    });
+    setLikedCandidateName(candidateName);
+    setShowLikeModal(true);
+  };
+
+  const handleCloseLikeModal = () => {
+    setShowLikeModal(false);
+    setLikedCandidateName('');
   };
 
   const currentCandidates = activeTab === 'topRecommended' ? topRecommended : matches;
@@ -241,6 +245,13 @@ const EmployerMatches: React.FC = () => {
           <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
             <BottomNavigation />
           </div>
+
+          {/* Like Confirmation Modal */}
+          <LikeConfirmationModal
+            candidateName={likedCandidateName}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>
