@@ -24,16 +24,16 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
-                <div className="bg-[#1E293B] text-white text-center py-4 rounded-2xl mb-6">
-                  <h2 className="text-xl font-bold">KANGAFARM</h2>
-                  <p className="text-sm opacity-90">Verified Employer</p>
+                <div className="bg-orange-500 text-white text-center py-4 rounded-2xl mb-6">
+                  <h2 className="text-xl font-bold">PETER PARKER</h2>
+                  <p className="text-sm opacity-90">WHV Backpacker</p>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-32 h-32 rounded-full border-4 border-[#1E293B] overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
                     <img 
-                      src="/lovable-uploads/51369c33-1aa8-4f19-b8a1-e65e12f9ec9f.png" 
+                      src="/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png" 
                       alt="Profile" 
                       className="w-full h-full object-cover"
                     />
@@ -43,20 +43,19 @@ const ProfileCardPreview: React.FC = () => {
                 {/* Description */}
                 <div className="text-center mb-6">
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    Family-run farm in regional Queensland,<br />
-                    offering seasonal work in fruit picking<br />
-                    and packing
+                    Backpacker from Argentina with experience<br />
+                    in farm work, currently in Brisbane, QLD
                   </p>
                 </div>
 
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Region:</span> South East Queensland</div>
-                  <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
-                  <div><span className="font-semibold">Jobs Available:</span> Fruit Picking, Farm Hand</div>
-                  <div><span className="font-semibold">Season:</span> September 2025 onwards</div>
-                  <div><span className="font-semibold">Pay Range:</span> $25-30/hour + super</div>
-                  <div><span className="font-semibold">Benefits:</span> Accommodation & meals available</div>
+                  <div><span className="font-semibold">Age:</span> 24</div>
+                  <div><span className="font-semibold">From:</span> Argentina</div>
+                  <div><span className="font-semibold">Visa:</span> Working Holiday Visa</div>
+                  <div><span className="font-semibold">Experience:</span> Farm Work, Hospitality</div>
+                  <div><span className="font-semibold">Languages:</span> Spanish, English</div>
+                  <div><span className="font-semibold">Availability:</span> Immediate</div>
                 </div>
 
                 {/* Locked Message */}
@@ -66,11 +65,11 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
-                  <Button className="flex-1 bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl h-12">
-                    View Jobs
+                  <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
+                    Message
                   </Button>
                   <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
-                    <span className="text-[#1E293B] font-medium text-sm">Like to Match</span>
+                    <span className="text-orange-500 font-medium text-sm">Like to Match</span>
                     <div className="flex items-center justify-center">
                       <img 
                         src="/lovable-uploads/e71624ef-9964-4e25-bd6d-239d2fc301b9.png" 
@@ -90,7 +89,7 @@ const ProfileCardPreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate('/employer-edit-profile')}
+                onClick={() => navigate('/whv-profile-edit')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>

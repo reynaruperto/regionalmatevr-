@@ -62,7 +62,7 @@ const EditProfile: React.FC = () => {
   };
 
   const handlePreviewProfile = () => {
-    navigate('/profile-preview');
+    navigate('/whv-profile-preview');
   };
 
   return (
