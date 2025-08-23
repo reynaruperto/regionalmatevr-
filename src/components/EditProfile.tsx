@@ -22,12 +22,23 @@ const EditProfile: React.FC = () => {
   const [email, setEmail] = useState('peterparker@gmail.com');
   
   // Address Info
+  const [isInAustralia, setIsInAustralia] = useState(true);
   const [addressLine1, setAddressLine1] = useState('22 Valley St');
   const [suburb, setSuburb] = useState('Spring Hill');
   const [city, setCity] = useState('Brisbane');
   const [state, setState] = useState('Queensland');
   const [postCode, setPostCode] = useState('4000');
   
+  // Personal Info - Tell us about yourself
+  const [workExperienceDescription, setWorkExperienceDescription] = useState('I have experience in hospitality, worked as a barista for 2 years, and have some construction experience...');
+  const [skillsInterests, setSkillsInterests] = useState("I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities...");
+  const [whyAustralia, setWhyAustralia] = useState("I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture...");
+  const [workPreferences, setWorkPreferences] = useState('Farm work, hospitality, construction');
+  const [availabilityDuration, setAvailabilityDuration] = useState('12 months, flexible');
+  const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
+  const [nationality, setNationality] = useState('Argentina');
+  const [visaType, setVisaType] = useState('417 (Working Holiday)');
+  const [visaExpiry, setVisaExpiry] = useState('Sep 2026');
   // Work Info
   const [willingToRelocate, setWillingToRelocate] = useState('Yes, anywhere in QLD/NSW');
   const [availableStartDate, setAvailableStartDate] = useState('Sep 2025');
@@ -56,12 +67,6 @@ const EditProfile: React.FC = () => {
       location: 'Mendoza, Argentina'
     }
   ]);
-  
-  // Personal Info
-  const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
-  const [nationality, setNationality] = useState('Argentina');
-  const [visaType, setVisaType] = useState('417 (Working Holiday)');
-  const [visaExpiry, setVisaExpiry] = useState('Sep 2026');
 
   useEffect(() => {
     // Load profile photo from localStorage
@@ -255,9 +260,9 @@ const EditProfile: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="languages" className="text-gray-600 mb-2 block">Languages</Label>
+                        <Label htmlFor="languagesBasic" className="text-gray-600 mb-2 block">Languages</Label>
                         <Input
-                          id="languages"
+                          id="languagesBasic"
                           value={languages}
                           onChange={(e) => setLanguages(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
@@ -267,28 +272,140 @@ const EditProfile: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Location Information Section */}
+                {/* About You Section */}
                 <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Current Location</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Tell us about yourself</h3>
+                  <p className="text-gray-600 text-sm mb-4">This helps us match you with the right employers and opportunities.</p>
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">Address Line 1</Label>
-                      <Input
-                        id="addressLine1"
-                        value={addressLine1}
-                        onChange={(e) => setAddressLine1(e.target.value)}
-                        className="h-12 rounded-xl border-gray-200 bg-white"
+                      <Label htmlFor="workExperienceDescription" className="text-gray-600 mb-2 block">What work experience do you have?</Label>
+                      <Textarea
+                        id="workExperienceDescription"
+                        value={workExperienceDescription}
+                        onChange={(e) => setWorkExperienceDescription(e.target.value)}
+                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
+                        placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="skillsInterests" className="text-gray-600 mb-2 block">What are your main skills and interests?</Label>
+                      <Textarea
+                        id="skillsInterests"
+                        value={skillsInterests}
+                        onChange={(e) => setSkillsInterests(e.target.value)}
+                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
+                        placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills..."
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="whyAustralia" className="text-gray-600 mb-2 block">Why did you choose Australia for your working holiday?</Label>
+                      <Textarea
+                        id="whyAustralia"
+                        value={whyAustralia}
+                        onChange={(e) => setWhyAustralia(e.target.value)}
+                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
+                        placeholder="I've always wanted to experience Australian culture, explore the outback..."
                       />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="suburb" className="text-gray-600 mb-2 block">Suburb</Label>
+                        <Label htmlFor="workPreferences" className="text-gray-600 mb-2 block">What type of work are you most interested in?</Label>
+                        <Input
+                          id="workPreferences"
+                          value={workPreferences}
+                          onChange={(e) => setWorkPreferences(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder="Farm work, hospitality, construction..."
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="availabilityDuration" className="text-gray-600 mb-2 block">How long are you planning to stay in Australia?</Label>
+                        <Input
+                          id="availabilityDuration"
+                          value={availabilityDuration}
+                          onChange={(e) => setAvailabilityDuration(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder="12 months, 2 years, flexible..."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location Information Section */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-gray-900 mb-4">Current Location</h3>
+                  
+                  {/* Location Toggle */}
+                  <div className="mb-6 space-y-4">
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsInAustralia(true)}
+                        className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
+                          isInAustralia 
+                            ? 'border-orange-500 bg-orange-50' 
+                            : 'border-gray-200 bg-white'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🇦🇺</div>
+                          <div className="font-medium text-gray-900">I'm in Australia</div>
+                        </div>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsInAustralia(false)}
+                        className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
+                          !isInAustralia 
+                            ? 'border-orange-500 bg-orange-50' 
+                            : 'border-gray-200 bg-white'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🌍</div>
+                          <div className="font-medium text-gray-900">I'm overseas</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {!isInAustralia && (
+                    <div className="mb-6 p-4 bg-blue-50 rounded-xl">
+                      <p className="text-blue-800 text-sm">
+                        No worries! You can update your Australian address later when you arrive.
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">
+                        {isInAustralia ? 'Current Address Line 1' : 'Address Line 1'}
+                      </Label>
+                      <Input
+                        id="addressLine1"
+                        value={addressLine1}
+                        onChange={(e) => setAddressLine1(e.target.value)}
+                        className="h-12 rounded-xl border-gray-200 bg-white"
+                        placeholder={isInAustralia ? "22 Valley St." : "Your current address"}
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="suburb" className="text-gray-600 mb-2 block">
+                          {isInAustralia ? 'Suburb' : 'District/Area'}
+                        </Label>
                         <Input
                           id="suburb"
                           value={suburb}
                           onChange={(e) => setSuburb(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder={isInAustralia ? "Spring Hill" : "Your area/district"}
                         />
                       </div>
                       <div>
@@ -298,27 +415,34 @@ const EditProfile: React.FC = () => {
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder={isInAustralia ? "Brisbane" : "Your city"}
                         />
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="state" className="text-gray-600 mb-2 block">State</Label>
+                        <Label htmlFor="state" className="text-gray-600 mb-2 block">
+                          {isInAustralia ? 'State' : 'State/Province/Country'}
+                        </Label>
                         <Input
                           id="state"
                           value={state}
                           onChange={(e) => setState(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder={isInAustralia ? "Queensland" : "Your state/province/country"}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="postCode" className="text-gray-600 mb-2 block">Post Code</Label>
+                        <Label htmlFor="postCode" className="text-gray-600 mb-2 block">
+                          {isInAustralia ? 'Post Code' : 'Postal/Zip Code'}
+                        </Label>
                         <Input
                           id="postCode"
                           value={postCode}
                           onChange={(e) => setPostCode(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
+                          placeholder={isInAustralia ? "4000" : "Your postal/zip code"}
                         />
                       </div>
                     </div>
