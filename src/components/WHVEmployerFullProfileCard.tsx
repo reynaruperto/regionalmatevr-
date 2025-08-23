@@ -127,11 +127,11 @@ const WHVEmployerFullProfileCard: React.FC = () => {
       {/* iPhone 16 Pro Max Frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
-          {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
+          {/* Dynamic Island - Fixed */}
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0 sticky top-2 z-10"></div>
           
-          {/* Header */}
-          <div className="px-4 py-3 flex-shrink-0">
+          {/* Header - Fixed */}
+          <div className="px-4 py-3 flex-shrink-0 sticky top-8 z-10 bg-white border-b">
             <button onClick={handleBackNavigation}>
               <ArrowLeft size={24} className="text-gray-600" />
             </button>
