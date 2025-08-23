@@ -57,6 +57,7 @@ import WHVWorkExperience from "./pages/WHVWorkExperience";
 import WHVPhotoUpload from "./pages/WHVPhotoUpload";
 import WHVLogin from "./pages/WHVLogin";
 import WHVAccountConfirmation from "./pages/WHVAccountConfirmation";
+import WHVBrowseEmployers from "./pages/WHVBrowseEmployers";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -123,6 +124,7 @@ const App = () => (
         <Route path="/whv-photo-upload" element={<WHVPhotoUpload />} />
         <Route path="/whv-login" element={<WHVLogin />} />
         <Route path="/whv-account-confirmation" element={<WHVAccountConfirmation />} />
+          <Route path="/whv-browse-employers" element={<WHVBrowseEmployers />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -22,7 +22,7 @@ const BottomNavigation: React.FC = () => {
 
   const whvNavItems = [
     { id: 'profile', label: 'Profile', icon: User, path: '/whv-dashboard' },
-    { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/browse-candidates' },
+    { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/whv-browse-employers' },
     { id: 'matches', label: 'Matches', icon: Heart, path: '/whv-matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
   ];
