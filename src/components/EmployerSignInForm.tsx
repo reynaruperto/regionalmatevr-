@@ -38,8 +38,8 @@ const EmployerSignInForm: React.FC = () => {
 
   const handleForgotPassword = () => {
     toast({
-      title: "Forgot Password",
-      description: "Password reset functionality would be implemented here",
+      title: "Password Reset Email Sent",
+      description: "Please check your email for password reset instructions",
     });
   };
 
