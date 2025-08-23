@@ -90,49 +90,11 @@ export default {
 					to: {
 						height: '0'
 					}
-				},
-				'fade-in': {
-					'0%': { opacity: '0' },
-					'100%': { opacity: '1' }
-				},
-				'slide-up': {
-					'0%': { transform: 'translateY(20px)', opacity: '0' },
-					'100%': { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.3s ease-out',
-				'slide-up': 'slide-up 0.3s ease-out'
-			},
-			screens: {
-				'mobile': '430px',
-				'iphone-16-pro-max': {'raw': '(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)'}
-			},
-			spacing: {
-				'safe-top': 'env(safe-area-inset-top, 54px)',
-				'safe-bottom': 'env(safe-area-inset-bottom, 34px)',
-				'safe-left': 'env(safe-area-inset-left, 0px)',
-				'safe-right': 'env(safe-area-inset-right, 0px)'
-			},
-			minHeight: {
-				'mobile-screen': '100vh',
-				'mobile-dynamic': '100dvh',
-				'mobile-content': 'calc(100vh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))',
-				'mobile-content-dynamic': 'calc(100dvh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))'
-			},
-			maxHeight: {
-				'mobile-screen': '100vh',
-				'mobile-dynamic': '100dvh',
-				'mobile-content': 'calc(100vh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))',
-				'mobile-content-dynamic': 'calc(100dvh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))'
-			},
-			height: {
-				'mobile-screen': '100vh',
-				'mobile-dynamic': '100dvh',
-				'mobile-content': 'calc(100vh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))',
-				'mobile-content-dynamic': 'calc(100dvh - env(safe-area-inset-top, 54px) - env(safe-area-inset-bottom, 34px))'
+				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
 		}
 	},

@@ -58,7 +58,7 @@ const WHVOnboardingForm: React.FC = () => {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-6">
+          <div className="flex-1 iphone-scroll-content px-4 py-6">
             {/* Section Title */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">About you</h2>
