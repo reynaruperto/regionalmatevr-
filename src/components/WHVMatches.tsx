@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
@@ -237,7 +237,7 @@ const WHVMatches: React.FC = () => {
                             }}
                             className="h-10 w-10 flex-shrink-0 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700 transition-all duration-200 shadow-lg cursor-pointer border-2 border-white"
                           >
-                            <ThumbsUp size={16} className="text-white" />
+                            <Heart size={16} className="text-white" />
                           </div>
                         )}
                       </div>
