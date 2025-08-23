@@ -190,6 +190,10 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
   const employer = employerProfiles[id || '1'];
 
+  const handleViewJobs = () => {
+    navigate(`/whv/employer/jobs/${id}?from=whv-full-profile&tab=matches`);
+  };
+
   const handleBackNavigation = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
@@ -314,81 +318,14 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Job Details Section */}
-              <div className="px-4 mb-6 bg-blue-50 rounded-lg p-4 mx-4">
-                <h3 className="font-semibold text-gray-900 mb-3 text-center">Available Job Positions</h3>
-                
-                {/* ABN */}
-                <div className="mb-3">
-                  <span className="font-semibold text-gray-900">ABN: </span>
-                  <span className="text-gray-700">{employer.abn}</span>
-                </div>
-
-                {/* Job Openings */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Job Openings / Roles:</h4>
-                  <ul className="space-y-1">
-                    {employer.jobOpenings.map((opening, index) => (
-                      <li key={index} className="text-sm text-gray-700">
-                        • {opening.title} ({opening.status}){opening.period && ` - ${opening.period}`}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Visa Acceptance */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Visa Acceptance:</h4>
-                  <ul className="space-y-1">
-                    {employer.visaAcceptance.map((visa, index) => (
-                      <li key={index} className="text-sm text-gray-700">• {visa}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Experience / Skills */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Experience Preferred / Skills Sought:</h4>
-                  <ul className="space-y-1">
-                    {employer.experienceSkills.map((skill, index) => (
-                      <li key={index} className="text-sm text-gray-700">• {skill}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Licenses */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Licenses / Certificates (Preferred):</h4>
-                  <ul className="space-y-1">
-                    {employer.licenses.map((license, index) => (
-                      <li key={index} className="text-sm text-gray-700">• {license}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Salary & Inclusions */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Salary & Inclusions:</h4>
-                  <div className="space-y-1 text-sm text-gray-700">
-                    <div>• <span className="font-medium">Hourly Rate:</span> {employer.salary.hourlyRate}</div>
-                    <div>• {employer.salary.overtimeRate}</div>
-                    <div>• <span className="font-medium">Inclusions:</span></div>
-                    <ul className="ml-4 space-y-1">
-                      {employer.salary.inclusions.map((inclusion, index) => (
-                        <li key={index}>• {inclusion}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Employment Type */}
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-900 mb-2">Employment Type / Duration:</h4>
-                  <div className="space-y-1 text-sm text-gray-700">
-                    <div>• {employer.employmentType}</div>
-                    <div>• {employer.extensions}</div>
-                  </div>
-                </div>
+              {/* View Jobs Button */}
+              <div className="px-4 pb-6">
+                <button
+                  onClick={handleViewJobs}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2 font-medium"
+                >
+                  View Available Jobs
+                </button>
               </div>
             </div>
           </div>
