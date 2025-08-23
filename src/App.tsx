@@ -15,6 +15,7 @@ import PhotoUpload from "./pages/PhotoUpload";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import WHVDashboard from "./pages/WHVDashboard";
 import EditProfile from "./pages/EditProfile";
+import EmployerEditProfile from "./pages/EmployerEditProfile";
 import WHVEditProfile from "./pages/WHVEditProfile";
 import ProfileCardPreview from "./pages/ProfileCardPreview";
 import Security from "./pages/Security";
@@ -83,6 +84,7 @@ const App = () => (
           <Route path="/employer-dashboard" element={<EmployerDashboard />} />
           <Route path="/whv-dashboard" element={<WHVDashboard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/employer-edit-profile" element={<EmployerEditProfile />} />
           <Route path="/whv-edit-profile" element={<WHVEditProfile />} />
           <Route path="/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
