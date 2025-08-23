@@ -23,12 +23,31 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
     location: 'Brisbane QLD 4000',
     industry: 'Agriculture and Farming',
     experience: [
-      '2020-2025 - Farm Attendant - Villafarm',
-      '2010-2020 - Marketing Head - Worksport',
-      '2007-2010 - Winery Assistant - Bodegawinery'
+      {
+        startDate: '01/2020',
+        endDate: '12/2025',
+        position: 'Farm Attendant',
+        company: 'Villafarm',
+        location: 'Brisbane, QLD'
+      },
+      {
+        startDate: '03/2010',
+        endDate: '12/2020',
+        position: 'Marketing Head',
+        company: 'Worksport',
+        location: 'Buenos Aires, Argentina'
+      },
+      {
+        startDate: '06/2007',
+        endDate: '02/2010',
+        position: 'Winery Assistant',
+        company: 'Bodegawinery',
+        location: 'Mendoza, Argentina'
+      }
     ],
     licenses: 'N/A',
-    availability: 'Sep 2025'
+    availability: 'Sep 2025',
+    languages: ['Spanish', 'English']
   };
 
   const handleLikeToMatch = () => {
@@ -111,10 +130,15 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
                   <div className="mt-1 space-y-1">
                     {candidate.experience.map((exp, index) => (
                       <div key={index} className="text-gray-700 text-xs ml-1">
-                        {exp}
+                        • {exp.startDate} - {exp.endDate}: {exp.position} - {exp.company} - {exp.location}
                       </div>
                     ))}
                   </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Languages:</span>
+                  <span className="text-gray-700 ml-1">{candidate.languages.join(', ')}</span>
                 </div>
 
                 <div>

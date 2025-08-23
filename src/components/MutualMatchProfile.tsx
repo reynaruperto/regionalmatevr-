@@ -14,9 +14,21 @@ interface MutualMatchCandidate {
   industry: string;
   visa: string;
   visaExpiry: string;
-  experience: string[];
+  experience: {
+    startDate: string;
+    endDate: string;
+    position: string;
+    company: string;
+    location: string;
+  }[];
   licenses: string[];
   availability: string;
+  stayDuration: string;
+  languages: string[];
+  workExperience: string;
+  skillsInterests: string;
+  whyAustralia: string;
+  workPreferences: string;
   contactDetails: {
     email: string;
     phone: string;
@@ -47,15 +59,39 @@ const MutualMatchProfile: React.FC = () => {
       visa: '462',
       visaExpiry: '02/02/2026',
       experience: [
-        '2022-2025: Hotel assistant - Milton Group',
-        '2019-2024: Farm Supervisor - 360 Farmers',
-        '2011-2015: Agronomist - 360 Farmers'
+        {
+          startDate: '01/2022',
+          endDate: '12/2025',
+          position: 'Hotel Assistant',
+          company: 'Milton Group',
+          location: 'Gold Coast, QLD'
+        },
+        {
+          startDate: '03/2019',
+          endDate: '11/2024',
+          position: 'Farm Supervisor',
+          company: '360 Farmers',
+          location: 'Toowoomba, QLD'
+        },
+        {
+          startDate: '05/2011',
+          endDate: '02/2015',
+          position: 'Agronomist',
+          company: '360 Farmers',
+          location: 'Toowoomba, QLD'
+        }
       ],
       licenses: [
         'Forklift License',
         'Driver\'s License'
       ],
       availability: 'August 2025 (6 months)',
+      stayDuration: '6 months',
+      languages: ['English', 'Spanish'],
+      workExperience: 'I have 8+ years of experience in hospitality and agriculture. Started as a hotel assistant and worked my way up to farm supervisor managing teams of 15+ people.',
+      skillsInterests: 'Strong leadership skills, equipment operation, guest services, team management, problem-solving, and outdoor activities.',
+      whyAustralia: 'I chose Australia for its amazing agricultural opportunities and multicultural environment. I want to learn sustainable farming practices and experience the unique Australian work culture.',
+      workPreferences: 'Farm work, hospitality management, equipment operation',
       contactDetails: {
         email: 'tomasedison@hotmail.com',
         phone: '+61 400 123 456'
@@ -78,9 +114,27 @@ const MutualMatchProfile: React.FC = () => {
       visa: '417',
       visaExpiry: '15/09/2026',
       experience: [
-        '2020-2024: Farm Maintenance Technician - Prairie Farms Canada',
-        '2018-2020: Equipment Operator - Alberta Agriculture',
-        '2016-2018: Crop Assistant - Manitoba Co-op'
+        {
+          startDate: '03/2020',
+          endDate: '12/2024',
+          position: 'Farm Maintenance Technician',
+          company: 'Prairie Farms Canada',
+          location: 'Manitoba, Canada'
+        },
+        {
+          startDate: '06/2018',
+          endDate: '02/2020',
+          position: 'Equipment Operator',
+          company: 'Alberta Agriculture',
+          location: 'Alberta, Canada'
+        },
+        {
+          startDate: '04/2016',
+          endDate: '05/2018',
+          position: 'Crop Assistant',
+          company: 'Manitoba Co-op',
+          location: 'Manitoba, Canada'
+        }
       ],
       licenses: [
         'Heavy Machinery License',
@@ -88,6 +142,12 @@ const MutualMatchProfile: React.FC = () => {
         'First Aid Certificate'
       ],
       availability: 'September 2025 (12 months)',
+      stayDuration: '12 months',
+      languages: ['English', 'French'],
+      workExperience: 'I have 8 years of hands-on farm experience in Canada, specializing in equipment maintenance and crop management. Skilled in operating heavy machinery and troubleshooting technical issues.',
+      skillsInterests: 'Heavy machinery operation, equipment maintenance, crop management, technical troubleshooting, first aid, and sustainable farming practices.',
+      whyAustralia: 'Australia offers incredible farming innovation and technology. I want to learn from Australian farmers and bring new techniques back to Canada while experiencing the amazing landscapes.',
+      workPreferences: 'Farm maintenance, equipment operation, crop management',
       contactDetails: {
         email: 'emma.taylor@gmail.com',
         phone: '+61 423 789 012'
@@ -110,9 +170,27 @@ const MutualMatchProfile: React.FC = () => {
       visa: '417',
       visaExpiry: '22/08/2026',
       experience: [
-        '2021-2024: Agricultural Marketing Specialist - Nordic Farms Sweden',
-        '2019-2021: Farm Operations Assistant - Stockholm Agriculture',
-        '2017-2019: Greenhouse Technician - Swedish Organics'
+        {
+          startDate: '01/2021',
+          endDate: '12/2024',
+          position: 'Agricultural Marketing Specialist',
+          company: 'Nordic Farms Sweden',
+          location: 'Stockholm, Sweden'
+        },
+        {
+          startDate: '03/2019',
+          endDate: '12/2021',
+          position: 'Farm Operations Assistant',
+          company: 'Stockholm Agriculture',
+          location: 'Stockholm, Sweden'
+        },
+        {
+          startDate: '06/2017',
+          endDate: '02/2019',
+          position: 'Greenhouse Technician',
+          company: 'Swedish Organics',
+          location: 'Gothenburg, Sweden'
+        }
       ],
       licenses: [
         'Driver\'s License',
@@ -120,6 +198,12 @@ const MutualMatchProfile: React.FC = () => {
         'Marketing Qualification'
       ],
       availability: 'August 2025 (10 months)',
+      stayDuration: '10 months',
+      languages: ['Swedish', 'English', 'Norwegian'],
+      workExperience: 'I have 7 years of combined experience in agricultural marketing and greenhouse operations. I specialize in connecting farm products with markets and understanding sustainable growing practices.',
+      skillsInterests: 'Marketing strategy, greenhouse management, organic farming, customer relations, social media marketing, and sustainable agriculture practices.',
+      whyAustralia: 'Australia has an amazing agricultural export market and innovative farming techniques. I want to learn how Australian farms market their products globally and experience the diverse agricultural regions.',
+      workPreferences: 'Agricultural marketing, greenhouse work, farm operations',
       contactDetails: {
         email: 'megan.larsson@hotmail.com',
         phone: '+61 467 234 567'
@@ -227,11 +311,32 @@ const MutualMatchProfile: React.FC = () => {
                 </div>
 
                 <div>
-                  <span className="font-semibold text-gray-900">Experience / Skills:</span>
+                  <span className="font-semibold text-gray-900">Tell us about yourself:</span>
+                  <div className="mt-1 text-gray-700 text-sm ml-1">
+                    {candidate.workExperience}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Skills & Interests:</span>
+                  <div className="mt-1 text-gray-700 text-sm ml-1">
+                    {candidate.skillsInterests}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Why Australia:</span>
+                  <div className="mt-1 text-gray-700 text-sm ml-1">
+                    {candidate.whyAustralia}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Work Experience:</span>
                   <div className="mt-1 space-y-1">
                     {candidate.experience.map((exp, index) => (
                       <div key={index} className="text-gray-700 text-sm ml-1">
-                        • {exp}
+                        • {exp.startDate} - {exp.endDate}: {exp.position} - {exp.company} - {exp.location}
                       </div>
                     ))}
                   </div>
@@ -246,6 +351,21 @@ const MutualMatchProfile: React.FC = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Languages:</span>
+                  <span className="text-gray-700 ml-1">{candidate.languages.join(', ')}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Preferred Work Types:</span>
+                  <span className="text-gray-700 ml-1">{candidate.workPreferences}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-gray-900">Stay Duration:</span>
+                  <span className="text-gray-700 ml-1">{candidate.stayDuration}</span>
                 </div>
 
                 <div>

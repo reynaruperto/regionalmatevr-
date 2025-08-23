@@ -27,13 +27,34 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         visa: '417 (Working Holiday)',
         visaExpiry: 'Sep 2026',
         experience: [
-          '2020-2025: Farm Attendant - VillaFarm',
-          '2019-2020: Marketing Head - Workspace',
-          '2007-2019: Winery Assistant - BodegaWinery'
+          {
+            startDate: '01/2020',
+            endDate: '12/2025',
+            position: 'Farm Attendant',
+            company: 'VillaFarm',
+            location: 'Brisbane, QLD'
+          },
+          {
+            startDate: '03/2019',
+            endDate: '12/2020',
+            position: 'Marketing Head',
+            company: 'Workspace',
+            location: 'Buenos Aires, Argentina'
+          },
+          {
+            startDate: '06/2007',
+            endDate: '02/2019',
+            position: 'Winery Assistant',
+            company: 'BodegaWinery',
+            location: 'Mendoza, Argentina'
+          }
         ],
         licenses: 'Driver\'s License, First Aid',
         availability: 'Sep 2025 (8 months)',
-        languages: 'Spanish (Native), English (Fluent)'
+        languages: ['Spanish', 'English'],
+        workExperience: 'I have extensive experience in agriculture and marketing. Started in wineries and moved into farm operations in Australia. Passionate about sustainable farming and connecting with local communities.',
+        skillsInterests: 'Farm operations, wine production, marketing, team leadership, sustainable agriculture, and learning about Australian farming techniques.',
+        whyAustralia: 'Australia offers incredible opportunities to learn modern farming techniques and experience a multicultural work environment. I want to contribute my experience while learning new skills.'
       },
       '2': {
         id: '2',
@@ -47,13 +68,34 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         visa: '462 (Work and Holiday)',
         visaExpiry: 'Oct 2026',
         experience: [
-          '2020-2024: Construction Worker - Berlin Infrastructure',
-          '2019-2020: Farm Equipment Technician - Bavaria Farms',
-          '2018-2019: Apprentice Carpenter - Munich Construction'
+          {
+            startDate: '01/2020',
+            endDate: '12/2024',
+            position: 'Construction Worker',
+            company: 'Berlin Infrastructure',
+            location: 'Berlin, Germany'
+          },
+          {
+            startDate: '03/2019',
+            endDate: '12/2020',
+            position: 'Farm Equipment Technician',
+            company: 'Bavaria Farms',
+            location: 'Munich, Germany'
+          },
+          {
+            startDate: '06/2018',
+            endDate: '02/2019',
+            position: 'Apprentice Carpenter',
+            company: 'Munich Construction',
+            location: 'Munich, Germany'
+          }
         ],
         licenses: 'White Card, Forklift License, Driver\'s License',
         availability: 'Oct 2025 (12 months)',
-        languages: 'German (Native), English (Fluent)'
+        languages: ['German', 'English'],
+        workExperience: 'I have 6 years of experience in construction and farm equipment maintenance. Strong technical skills and enjoy working with my hands on complex projects.',
+        skillsInterests: 'Construction work, equipment maintenance, carpentry, technical problem-solving, outdoor activities, and learning new building techniques.',
+        whyAustralia: 'I want to experience Australian construction standards and work on unique projects. Australia has amazing infrastructure and I want to contribute my skills while learning new techniques.'
       },
       '3': {
         id: '3',
@@ -67,13 +109,34 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         visa: '417 (Working Holiday)',
         visaExpiry: 'Nov 2026',
         experience: [
-          '2021-2024: Restaurant Supervisor - London Bistro Chain',
-          '2020-2021: Barista - Edinburgh Coffee House',
-          '2019-2020: Hotel Receptionist - Manchester Grand Hotel'
+          {
+            startDate: '01/2021',
+            endDate: '12/2024',
+            position: 'Restaurant Supervisor',
+            company: 'London Bistro Chain',
+            location: 'London, UK'
+          },
+          {
+            startDate: '03/2020',
+            endDate: '12/2021',
+            position: 'Barista',
+            company: 'Edinburgh Coffee House',
+            location: 'Edinburgh, UK'
+          },
+          {
+            startDate: '06/2019',
+            endDate: '02/2020',
+            position: 'Hotel Receptionist',
+            company: 'Manchester Grand Hotel',
+            location: 'Manchester, UK'
+          }
         ],
         licenses: 'RSA, Food Safety Certificate, Driver\'s License',
         availability: 'Nov 2025 (10 months)',
-        languages: 'English (Native)'
+        languages: ['English'],
+        workExperience: 'I have 5 years of hospitality experience, from front-of-house to management roles. Excellent customer service skills and enjoy working in fast-paced environments.',
+        skillsInterests: 'Customer service, team management, food safety, coffee preparation, hospitality operations, and exploring agricultural tourism.',
+        whyAustralia: 'I want to combine my hospitality background with agricultural work, especially in rural tourism. Australia offers unique opportunities to work in diverse environments and meet people from around the world.'
       }
     };
     
@@ -165,11 +228,32 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
                 </div>
 
                 <div>
-                  <span className="font-semibold text-slate-800">Experience / Skills:</span>
+                  <span className="font-semibold text-slate-800">Tell us about yourself:</span>
+                  <div className="mt-1 text-gray-700 text-sm">
+                    {candidate.workExperience}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Skills & Interests:</span>
+                  <div className="mt-1 text-gray-700 text-sm">
+                    {candidate.skillsInterests}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Why Australia:</span>
+                  <div className="mt-1 text-gray-700 text-sm">
+                    {candidate.whyAustralia}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Work Experience:</span>
                   <div className="mt-1 space-y-1">
                     {candidate.experience.map((exp, index) => (
                       <div key={index} className="text-gray-700 text-sm">
-                        {exp}
+                        • {exp.startDate} - {exp.endDate}: {exp.position} - {exp.company} - {exp.location}
                       </div>
                     ))}
                   </div>
@@ -187,7 +271,7 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
 
                 <div>
                   <span className="font-semibold text-slate-800">Languages:</span>
-                  <span className="text-gray-700 ml-1">{candidate.languages}</span>
+                  <span className="text-gray-700 ml-1">{candidate.languages.join(', ')}</span>
                 </div>
               </div>
 
