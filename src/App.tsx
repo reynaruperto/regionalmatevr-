@@ -39,7 +39,7 @@ import EmployerMessages from "./pages/EmployerMessages";
 import EmployerNotifications from "./pages/EmployerNotifications";
 import EmployerPrivacy from "./pages/EmployerPrivacy";
 import EmployerHelpSupport from "./pages/EmployerHelpSupport";
-import WHVMatches from "./pages/Matches";
+import WHVMatches from "./pages/WHVMatches";
 import WHVMessages from "./pages/Messages";
 import WHVNotifications from "./pages/Notifications";
 import WHVPrivacy from "./pages/Privacy";
