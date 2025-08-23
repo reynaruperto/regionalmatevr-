@@ -226,11 +226,26 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-6 pb-6">
-            {/* Match Badge */}
-            <div className="text-center mb-4">
-              <span className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                It's a Match! 🎉
-              </span>
+            {/* Match Header with Speech Bubble Design */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-16 h-16 rounded-full border-4 border-orange-500 overflow-hidden bg-white shadow-lg flex-shrink-0">
+                <img
+                  src={employer.profileImage}
+                  alt={employer.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="relative bg-orange-500 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
+                <div className="text-center">
+                  <div className="text-sm font-semibold">It's a Match</div>
+                  <div className="text-sm font-semibold">with</div>
+                  <div className="text-sm font-bold">{employer.name}</div>
+                </div>
+                {/* Speech bubble tail */}
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
+                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-orange-500"></div>
+                </div>
+              </div>
             </div>
 
             {/* Profile Card */}
@@ -241,9 +256,9 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                 <p className="text-sm opacity-90">Employer: {employer.employerName}</p>
               </div>
 
-              {/* Profile Image */}
+              {/* Profile Image - Smaller since we have one at top */}
               <div className="flex justify-center mt-6 mb-6">
-                <div className="w-24 h-24 rounded-full border-4 border-gray-800 overflow-hidden bg-white shadow-lg">
+                <div className="w-20 h-20 rounded-full border-4 border-gray-800 overflow-hidden bg-white shadow-lg">
                   <img
                     src={employer.profileImage}
                     alt={employer.name}
