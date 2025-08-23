@@ -93,6 +93,7 @@ const WHVEmployerFullProfileCard: React.FC = () => {
   const employer = employerProfiles[id || '1'];
 
   console.log('WHVEmployerFullProfileCard - ID:', id, 'Employer found:', !!employer, 'All IDs:', Object.keys(employerProfiles));
+  console.log('Current URL should be:', window.location.pathname);
 
   const handleBackNavigation = () => {
     const fromPage = searchParams.get('from');
