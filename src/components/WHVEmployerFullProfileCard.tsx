@@ -115,7 +115,7 @@ const WHVEmployerFullProfileCard: React.FC = () => {
   };
 
   const handleViewJobs = () => {
-    navigate(`/whv/employer/jobs/${id}?from=whv-matches&tab=matches`);
+    navigate(`/whv/employer/jobs/${id}?from=whv-full-profile&tab=matches`);
   };
 
   if (!employer) {

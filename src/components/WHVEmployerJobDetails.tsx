@@ -206,6 +206,8 @@ const WHVEmployerJobDetails: React.FC = () => {
     
     if (fromPage === 'whv-matches') {
       navigate(`/whv/employer/full-profile/${id}?from=whv-matches&tab=${tab || 'matches'}`);
+    } else if (fromPage === 'whv-full-profile') {
+      navigate(`/whv/employer/full-profile/${id}?from=whv-matches&tab=${tab || 'matches'}`);
     } else {
       navigate(`/whv/employer/full-profile/${id}`);
     }
