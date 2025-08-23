@@ -15,7 +15,6 @@ const WHVEditProfile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form state
-  const [name, setName] = useState('Peter Parker');
   const [dateOfBirth, setDateOfBirth] = useState('15/03/1995');
   const [availableStartDate, setAvailableStartDate] = useState('10/10/2025');
   const [nationality, setNationality] = useState('Argentina');
@@ -23,7 +22,6 @@ const WHVEditProfile: React.FC = () => {
   const [visaExpiryDate, setVisaExpiryDate] = useState('01/01/2026');
   const [countryCode, setCountryCode] = useState('+61');
   const [phoneNumber, setPhoneNumber] = useState('492 333 444');
-  const [email, setEmail] = useState('peterparker@email.com');
   
   // Address fields
   const [inAustralia, setInAustralia] = useState(true);
@@ -177,7 +175,7 @@ const WHVEditProfile: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <h1 className="text-lg font-semibold text-gray-900">{name}</h1>
+                <h1 className="text-lg font-semibold text-gray-900">WHV Profile Details</h1>
                 <button 
                   onClick={handleSave}
                   className="flex items-center text-orange-500 font-medium underline"
@@ -197,17 +195,6 @@ const WHVEditProfile: React.FC = () => {
                 <div className="bg-white rounded-2xl p-4 shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-4">Personal Information</h3>
                   
-                  {/* Name */}
-                  <div className="mb-4">
-                    <Label htmlFor="name" className="text-gray-600 mb-2 block">Full Name</Label>
-                    <Input
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-
                   {/* Date of Birth */}
                   <div className="mb-4">
                     <Label htmlFor="dob" className="text-gray-600 mb-2 block">Date of Birth (DD/MM/YYYY)</Label>
@@ -216,18 +203,6 @@ const WHVEditProfile: React.FC = () => {
                       value={dateOfBirth}
                       onChange={(e) => setDateOfBirth(e.target.value)}
                       placeholder="DD/MM/YYYY"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div className="mb-4">
-                    <Label htmlFor="email" className="text-gray-600 mb-2 block">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
                       className="h-12 rounded-xl border-gray-200 bg-white"
                     />
                   </div>
