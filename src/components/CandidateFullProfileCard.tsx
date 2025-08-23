@@ -50,7 +50,7 @@ const CandidateFullProfileCard: React.FC = () => {
     '4': {
       id: '4',
       name: 'Thomas',
-      profileImage: '/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png',
+      profileImage: '/lovable-uploads/616bea44-f5b8-46dc-8948-70e269f076a0.png',
       quote: '"Ready to work hard and experience the real Australia! I bring European farming expertise and enthusiasm for learning new agricultural techniques."',
       nationality: 'France',
       location: 'Cairns, QLD 4870',
