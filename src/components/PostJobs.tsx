@@ -19,6 +19,7 @@ const PostJobs: React.FC = () => {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
+  const [filter, setFilter] = useState<'all' | 'active' | 'closed'>('all');
 
   const [jobs, setJobs] = useState<Job[]>([
     {
@@ -64,6 +65,12 @@ const PostJobs: React.FC = () => {
       description: "Job has been successfully deleted",
     });
   };
+
+  const filteredJobs = jobs.filter(job => {
+    if (filter === 'active') return job.status === 'Active';
+    if (filter === 'closed') return job.status === 'Closed';
+    return true;
+  });
 
   if (showForm) {
     return (
@@ -112,12 +119,56 @@ const PostJobs: React.FC = () => {
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto">
               
-              {jobs.length === 0 ? (
-                /* Empty State */
-                <div className="flex flex-col items-center justify-center h-full">
-                  <div className="bg-white rounded-2xl p-8 shadow-sm text-center">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Jobs Posted Yet</h3>
-                    <p className="text-gray-600 mb-4">Create your first job posting to start finding the right candidates.</p>
+            {/* Filter Toggle */}
+            <div className="mb-4">
+              <div className="flex bg-white rounded-xl p-1 shadow-sm">
+                <button
+                  onClick={() => setFilter('all')}
+                  className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+                    filter === 'all' 
+                      ? 'bg-[#1E293B] text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  All Jobs
+                </button>
+                <button
+                  onClick={() => setFilter('active')}
+                  className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+                    filter === 'active' 
+                      ? 'bg-[#1E293B] text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Active
+                </button>
+                <button
+                  onClick={() => setFilter('closed')}
+                  className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+                    filter === 'closed' 
+                      ? 'bg-[#1E293B] text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Closed
+                </button>
+              </div>
+            </div>
+
+            {filteredJobs.length === 0 ? (
+              /* Empty State */
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="bg-white rounded-2xl p-8 shadow-sm text-center">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {filter === 'all' ? 'No Jobs Posted Yet' : `No ${filter} Jobs`}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {filter === 'all' 
+                      ? 'Create your first job posting to start finding the right candidates.'
+                      : `You don't have any ${filter} jobs at the moment.`
+                    }
+                  </p>
+                  {filter === 'all' && (
                     <Button 
                       onClick={handlePostJobs}
                       className="bg-[#1E293B] hover:bg-[#1E293B]/90 text-white rounded-xl"
@@ -125,57 +176,58 @@ const PostJobs: React.FC = () => {
                       <Plus size={16} className="mr-2" />
                       Post Your First Job
                     </Button>
-                  </div>
+                  )}
                 </div>
-              ) : (
-                /* Jobs List */
-                <div className="space-y-4">
-                  {jobs.map((job) => (
-                    <div key={job.id} className="bg-white rounded-2xl p-4 shadow-sm">
-                      <div className="flex items-start justify-between">
+              </div>
+            ) : (
+              /* Jobs List */
+              <div className="space-y-4">
+                {filteredJobs.map((job) => (
+                  <div key={job.id} className="bg-white rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-start justify-between">
+                      
+                      {/* Job Info */}
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{job.title}</h3>
+                        <p className="text-gray-600 text-sm mb-1">{job.location}</p>
+                        <p className="text-gray-600 text-sm">Starts: {job.startDate}</p>
+                      </div>
+
+                      {/* Status and Actions */}
+                      <div className="flex flex-col items-end gap-3">
                         
-                        {/* Job Info */}
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 mb-1">{job.title}</h3>
-                          <p className="text-gray-600 text-sm mb-1">{job.location}</p>
-                          <p className="text-gray-600 text-sm">Starts: {job.startDate}</p>
-                        </div>
+                        {/* Status Badge */}
+                        <span className={`px-4 py-2 rounded-full text-sm font-medium ${
+                          job.status === 'Active' 
+                            ? 'bg-green-500 text-white' 
+                            : 'bg-gray-400 text-white'
+                        }`}>
+                          {job.status}
+                        </span>
 
-                        {/* Status and Actions */}
-                        <div className="flex flex-col items-end gap-3">
-                          
-                          {/* Status Badge */}
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            job.status === 'Active' 
-                              ? 'bg-green-500 text-white' 
-                              : 'bg-gray-300 text-gray-700'
-                          }`}>
-                            {job.status}
-                          </span>
-
-                          {/* Action Buttons */}
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleEditJob(job.id)}
-                              className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-colors"
-                            >
-                              <Edit size={16} className="text-gray-600" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteJob(job.id)}
-                              className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-red-50 transition-colors"
-                            >
-                              <Trash2 size={16} className="text-gray-600 hover:text-red-600" />
-                            </button>
-                          </div>
+                        {/* Action Buttons */}
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditJob(job.id)}
+                            className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-colors"
+                          >
+                            <Edit size={18} className="text-gray-600" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteJob(job.id)}
+                            className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-red-50 transition-colors"
+                          >
+                            <Trash2 size={18} className="text-gray-600 hover:text-red-600" />
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
+            )}
 
-              <div className="h-20"></div>
+            <div className="h-20"></div>
             </div>
 
             {/* Bottom Navigation */}
