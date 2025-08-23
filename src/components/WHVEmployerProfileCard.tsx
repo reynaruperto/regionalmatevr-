@@ -63,6 +63,45 @@ const WHVEmployerProfileCard: React.FC = () => {
       payBenefits: '$30/hour + super',
       facilities: 'On-site accommodation, Equipment provided',
       profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
+    },
+    '4': {
+      id: '4',
+      name: 'Green Harvest Farms',
+      employerName: 'Sarah Mitchell',
+      description: 'Sustainable organic farm in northern NSW, specializing in diverse crop production and eco-friendly farming practices',
+      location: 'Northrivers, NSW 2470',
+      industry: 'Agriculture & Farming',
+      rolesOffered: ['Farm Assistant', 'Organic Crop Technician'],
+      jobAvailability: 'Available from Aug 2025',
+      payBenefits: '$29/hour + super + organic produce allowance',
+      facilities: 'Shared accommodation on-farm, Meals provided, Equipment training',
+      profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png'
+    },
+    '5': {
+      id: '5',
+      name: 'Coastal Breeze Resort',
+      employerName: 'Marcus Thompson',
+      description: 'Premier beachfront resort on the Gold Coast offering exceptional hospitality experiences and career development opportunities',
+      location: 'Coolangatta, QLD 4225',
+      industry: 'Hospitality and Tourism',
+      rolesOffered: ['Barista', 'Front Desk Associate', 'Housekeeping Supervisor'],
+      jobAvailability: 'Available from Sep 2025',
+      payBenefits: '$27/hour + super + tips + staff discounts',
+      facilities: 'Staff accommodation available, Meal allowances, Staff gym access',
+      profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png'
+    },
+    '6': {
+      id: '6',
+      name: 'Gotall Estates',
+      employerName: 'Robert Williams',
+      description: 'Family-owned dairy farm operation on the Sunshine Coast, combining traditional farming values with modern dairy technology',
+      location: 'Sunshine Coast, QLD 4019',
+      industry: 'Dairy Farm',
+      rolesOffered: ['Farm Maintenance', 'Dairy Hand', 'Livestock Technician'],
+      jobAvailability: 'Available from Oct 2025',
+      payBenefits: '$30/hour + super + dairy products allowance',
+      facilities: 'On-site cottage accommodation, Meals included, Equipment certification training',
+      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png'
     }
   };
 
