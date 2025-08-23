@@ -94,7 +94,7 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     if (fromPage === 'matches') {
-      navigate(`/matches?tab=${tab || 'mutualLikes'}`);
+      navigate(`/employer-matches?tab=${tab || 'matches'}`);
     } else {
       navigate('/browse-candidates');
     }
