@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const WHVLogin: React.FC = () => {
@@ -40,6 +40,10 @@ const WHVLogin: React.FC = () => {
     navigate('/lets-begin');
   };
 
+  const handleBack = () => {
+    navigate('/lets-begin');
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -50,9 +54,22 @@ const WHVLogin: React.FC = () => {
           
           {/* Main content container */}
           <div className="w-full h-full flex flex-col relative">
+            
+            {/* Header with back button */}
+            <div className="flex items-center justify-between px-6 pt-16 pb-4">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 bg-white rounded-2xl shadow-sm"
+                onClick={handleBack}
+              >
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
+              </Button>
+              <div className="flex-1"></div>
+            </div>
 
             {/* Content */}
-            <div className="flex-1 flex items-center justify-center px-6 pt-16">
+            <div className="flex-1 flex items-center justify-center px-6 pt-4">
               <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-lg">
                 
                 {/* Logo */}
