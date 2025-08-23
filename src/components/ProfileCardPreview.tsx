@@ -24,16 +24,16 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-lg">
                 
                 {/* Header with Name */}
-                <div className="bg-orange-500 text-white text-center py-3 rounded-xl mb-6">
-                  <h2 className="text-lg font-bold">PETER PARKER</h2>
+                <div className="bg-orange-500 text-white text-center py-4 rounded-xl mb-6">
+                  <h2 className="text-xl font-bold">PETER</h2>
                 </div>
 
                 {/* Profile Photo */}
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-6">
                   <img
                     src="/lovable-uploads/7911e593-bbbd-462d-9d13-95b476c84a6f.png"
-                    alt="Peter Parker"
-                    className="w-24 h-24 rounded-full object-cover border-4 border-orange-500"
+                    alt="Peter"
+                    className="w-32 h-32 rounded-full object-cover border-4 border-gray-800"
                   />
                 </div>
 
@@ -43,7 +43,7 @@ const ProfileCardPreview: React.FC = () => {
                 </p>
 
                 {/* Details */}
-                <div className="space-y-2 text-sm mb-6">
+                <div className="space-y-3 text-sm mb-6">
                   <div>
                     <span className="font-semibold text-gray-900">Nationality: </span>
                     <span className="text-gray-700">Argentina</span>
@@ -51,7 +51,17 @@ const ProfileCardPreview: React.FC = () => {
 
                   <div>
                     <span className="font-semibold text-gray-900">Location (Current / Preferred): </span>
-                    <span className="text-gray-700">Brisbane</span>
+                    <span className="text-gray-700">Brisbane, QLD 4000</span>
+                  </div>
+
+                  <div>
+                    <span className="font-semibold text-gray-900">Willing to Relocate: </span>
+                    <span className="text-gray-700">Yes, anywhere in QLD/NSW</span>
+                  </div>
+
+                  <div>
+                    <span className="font-semibold text-gray-900">Visa Type & Expiry: </span>
+                    <span className="text-gray-700">417 (Working Holiday) - Expires Sep 2026</span>
                   </div>
 
                   <div>
@@ -61,21 +71,26 @@ const ProfileCardPreview: React.FC = () => {
 
                   <div>
                     <span className="font-semibold text-gray-900">Experience / Skills:</span>
-                    <div className="mt-1 text-gray-700 leading-tight">
-                      2020-2025 - Farm Attendant - VillaFarm<br />
-                      2010-2020 - Marketing Head - Workspot<br />
-                      2007-2010 - Winery Assistant - BodegaWinery
+                    <div className="mt-1 text-gray-700 leading-tight space-y-1">
+                      <div>2020-2025: Farm Attendant - VillaFarm</div>
+                      <div>2019-2020: Marketing Head - Workspace</div>
+                      <div>2007-2019: Winery Assistant - BodegaWinery</div>
                     </div>
                   </div>
 
                   <div>
                     <span className="font-semibold text-gray-900">Licenses / Certificates: </span>
-                    <span className="text-gray-700">N/A</span>
+                    <span className="text-gray-700">Driver's License, First Aid</span>
                   </div>
 
                   <div>
                     <span className="font-semibold text-gray-900">Availability (date, duration): </span>
-                    <span className="text-gray-700">Sep 2025</span>
+                    <span className="text-gray-700">Sep 2025 (8 months)</span>
+                  </div>
+
+                  <div>
+                    <span className="font-semibold text-gray-900">Languages: </span>
+                    <span className="text-gray-700">Spanish (Native), English (Fluent)</span>
                   </div>
                 </div>
 
@@ -86,11 +101,13 @@ const ProfileCardPreview: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Like to Match Button */}
+                {/* Heart to Match Button */}
                 <div className="text-center">
-                  <div className="inline-flex items-center gap-2 text-blue-600 font-medium">
-                    <span>Like to Match</span>
-                    <Heart size={20} className="text-red-500" />
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-gray-800 px-8 py-3 rounded-full text-white font-medium">
+                    <span>Heart to Match</span>
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                      <Heart size={16} className="text-white fill-white" />
+                    </div>
                   </div>
                 </div>
               </div>
