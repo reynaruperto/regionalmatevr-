@@ -120,7 +120,7 @@ const BrowseCandidates: React.FC = () => {
             </div>
           
             {/* Content */}
-            <div className="flex-1 px-6 overflow-y-auto pb-24">
+            <div className="flex-1 px-6 overflow-y-auto" style={{ paddingBottom: '100px' }}>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Browse Candidates</h2>
               
               {/* Search Bar */}
@@ -211,9 +211,9 @@ const BrowseCandidates: React.FC = () => {
             </div>
 
           </div>
-
-          {/* Bottom Navigation - Fixed */}
-          <div className="bg-white border-t border-gray-200 flex-shrink-0 rounded-b-[48px]">
+          
+          {/* Bottom Navigation - Fixed at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 rounded-b-[48px]">
             <BottomNavigation />
           </div>
 
