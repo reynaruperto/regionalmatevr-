@@ -226,8 +226,10 @@ const CandidateFullProfileCard: React.FC = () => {
   const handleBack = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
-    if (fromPage === 'matches') {
+    if (fromPage === 'whv-matches') {
       navigate(`/whv/matches?tab=${tab || 'matches'}`);
+    } else if (fromPage === 'matches') {
+      navigate(`/employer/matches?tab=${tab || 'matches'}`);
     } else {
       navigate('/whv/matches');
     }
