@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 
@@ -19,84 +19,95 @@ interface MatchCandidate {
 const EmployerMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'topMatches' | 'mutualLikes'>('topMatches');
+  const [activeTab, setActiveTab] = useState<'topRecommended' | 'matches'>('matches');
 
   // Check URL parameters to set initial tab
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get('tab');
-    if (tab === 'mutualLikes' || tab === 'topMatches') {
-      setActiveTab(tab as 'topMatches' | 'mutualLikes');
+    if (tab === 'matches' || tab === 'topRecommended') {
+      setActiveTab(tab as 'topRecommended' | 'matches');
     }
   }, [location.search]);
 
-  // Mock data for top candidate matches
-  const topMatches: MatchCandidate[] = [
+  // Mock data for top recommended profiles
+  const topRecommended: MatchCandidate[] = [
     {
       id: '1',
-      name: 'Sarah Johnson',
-      skills: ['Agriculture & Farming', 'Fruit Picker'],
-      country: 'Canada',
-      location: 'Currently in Brisbane, QLD',
-      availability: 'Available from Sep 2025',
+      name: 'Thomas',
+      skills: ['Agriculture', 'Hospitality'],
+      country: 'United States of America',
+      location: 'Gold Coast, 4221',
+      availability: 'Available from Aug 2025',
       matchPercentage: 95,
-      profileImage: '/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png'
+      profileImage: '/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png',
+      isMutualMatch: true
     },
     {
       id: '2',
-      name: 'Marcus Thompson',
-      skills: ['Wine Production', 'Farm Supervisor'],
-      country: 'UK',
-      location: 'Currently in Sydney, NSW',
-      availability: 'Available from Oct 2025',
+      name: 'Emma',
+      skills: ['Maintenance', 'Farming'],
+      country: 'Canada',
+      location: 'N/A',
+      availability: 'Available from Sep 2025',
       matchPercentage: 91,
-      profileImage: '/lovable-uploads/533b9faf-8093-4e1d-b089-759120f751e1.png'
+      profileImage: '/lovable-uploads/533b9faf-8093-4e1d-b089-759120f751e1.png',
+      isMutualMatch: true
     },
     {
       id: '3',
-      name: 'Emma Wilson',
-      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
-      country: 'Germany',
-      location: 'Currently in Melbourne, VIC',
-      availability: 'Available from Oct 2025',
+      name: 'Megan',
+      skills: ['Farming', 'Marketing'],
+      country: 'Sweden',
+      location: 'Moreton Bay, 4020',
+      availability: 'Available from Aug 2025',
       matchPercentage: 88,
-      profileImage: '/lovable-uploads/ea247b49-500a-47aa-9cce-591ae45a83cb.png'
+      profileImage: '/lovable-uploads/ea247b49-500a-47aa-9cce-591ae45a83cb.png',
+      isMutualMatch: true
     }
   ];
 
-  // Mock data for mutual likes
-  const mutualLikes: MatchCandidate[] = [
+  // Mock data for matches
+  const matches: MatchCandidate[] = [
     {
       id: '4',
-      name: 'Jake Miller',
-      skills: ['Agriculture & Farming', 'Farm Assistant'],
-      country: 'USA',
-      location: 'Currently in Gold Coast, QLD',
-      availability: 'Available from Aug 2025',
-      matchPercentage: 97,
-      profileImage: '/lovable-uploads/26827d2b-5f93-4b4e-9f49-77007dda53ca.png',
-      isMutualMatch: true
+      name: 'Peter',
+      skills: ['Agriculture', 'Marketing'],
+      country: 'Argentina',
+      location: 'Brisbane, 4000',
+      availability: 'Available from Sep 2025',
+      matchPercentage: 92,
+      profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
     },
     {
       id: '5',
-      name: 'Luna Rodriguez',
-      skills: ['Hospitality and Tourism', 'Barista'],
-      country: 'Spain',
-      location: 'Currently in Perth, WA',
+      name: 'Daniel',
+      skills: ['Construction', 'Agriculture'],
+      country: 'Germany',
+      location: 'Sunshine Coast, 4551',
+      availability: 'Available from Oct 2025',
+      matchPercentage: 88,
+      profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
+    },
+    {
+      id: '6',
+      name: 'Hannah',
+      skills: ['Hospitality', 'Agriculture'],
+      country: 'United Kingdom',
+      location: 'Gold Coast, 4224',
       availability: 'Available from Sep 2025',
-      matchPercentage: 93,
-      profileImage: '/lovable-uploads/c250e98e-db6b-418e-a60f-e42559ce2ef4.png',
-      isMutualMatch: true
+      matchPercentage: 86,
+      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
     }
   ];
 
   const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/mutual-match-profile/${candidateId}` : `/candidate-profile/${candidateId}`;
-    const tab = isMutualMatch ? 'mutualLikes' : activeTab;
+    const route = isMutualMatch ? `/mutual-match-profile/${candidateId}` : `/full-candidate-profile/${candidateId}`;
+    const tab = isMutualMatch ? 'topRecommended' : activeTab;
     navigate(`${route}?from=matches&tab=${tab}`);
   };
 
-  const currentCandidates = activeTab === 'topMatches' ? topMatches : mutualLikes;
+  const currentCandidates = activeTab === 'topRecommended' ? topRecommended : matches;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -122,24 +133,24 @@ const EmployerMatches: React.FC = () => {
           <div className="px-4 py-4 flex-shrink-0">
             <div className="flex bg-gray-100 rounded-full p-1">
               <button
-                onClick={() => setActiveTab('mutualLikes')}
+                onClick={() => setActiveTab('matches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                  activeTab === 'mutualLikes'
+                  activeTab === 'matches'
                     ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Mutual Likes
+                Matches
               </button>
               <button
-                onClick={() => setActiveTab('topMatches')}
+                onClick={() => setActiveTab('topRecommended')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                  activeTab === 'topMatches'
+                  activeTab === 'topRecommended'
                     ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Top Matches
+                Top Recommended Profiles
               </button>
             </div>
           </div>
@@ -148,7 +159,12 @@ const EmployerMatches: React.FC = () => {
           <div className="flex-1 overflow-y-auto px-4 pb-20">
             <div className="space-y-4">
               {currentCandidates.map((candidate) => (
-                <div key={candidate.id} className="bg-white rounded-lg p-4 shadow-sm border">
+                <div 
+                  key={candidate.id} 
+                  className={`bg-white rounded-lg p-4 shadow-sm border-2 ${
+                    activeTab === 'matches' ? 'border-blue-300' : 'border-gray-200'
+                  }`}
+                >
                   <div className="flex items-start gap-3">
                     <img
                       src={candidate.profileImage}
@@ -162,6 +178,7 @@ const EmployerMatches: React.FC = () => {
                           <p className="text-sm text-gray-600">
                             {candidate.skills.join(', ')}
                           </p>
+                          <p className="text-sm text-gray-600">{candidate.country}</p>
                           <p className="text-sm text-gray-600">{candidate.location}</p>
                           <p className="text-sm text-gray-600">{candidate.availability}</p>
                         </div>
@@ -169,7 +186,7 @@ const EmployerMatches: React.FC = () => {
                           {candidate.isMutualMatch ? (
                             <div className="text-right">
                               <div className="text-lg font-bold text-orange-500">
-                                It's a
+                                It{"'"}s a
                               </div>
                               <div className="text-lg font-bold text-orange-500">
                                 Match!
@@ -191,13 +208,13 @@ const EmployerMatches: React.FC = () => {
                       <div className="flex items-center gap-2 mt-3">
                         <Button
                           onClick={() => handleViewProfile(candidate.id, candidate.isMutualMatch)}
-                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-full"
+                          className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-sm h-10 rounded-full"
                         >
                           {candidate.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
                         </Button>
                         {!candidate.isMutualMatch && (
                           <button className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm">
-                            <ThumbsUp size={16} className="text-white" />
+                            <Heart size={16} className="text-white" />
                           </button>
                         )}
                       </div>
