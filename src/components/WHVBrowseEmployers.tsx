@@ -76,7 +76,7 @@ const WHVBrowseEmployers: React.FC = () => {
   };
 
   const handleViewProfile = (employerId: string) => {
-    navigate(`/whv-employer-short-profile/${employerId}`);
+    navigate(`/whv/employer/profile/${employerId}?from=whv-browse-employers`);
   };
 
   const handleCloseLikeModal = () => {
