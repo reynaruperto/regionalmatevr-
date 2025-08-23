@@ -111,11 +111,15 @@ const WHVMatches: React.FC = () => {
   };
 
   const handleLikeEmployer = (employerId: string) => {
+    console.log('Heart clicked for employer:', employerId);
     const allEmployers = [...topRecommendedEmployers, ...matches];
     const employer = allEmployers.find(e => e.id === employerId);
     if (employer) {
+      console.log('Found employer:', employer.name);
       setLikedEmployerName(employer.name);
       setShowLikeModal(true);
+    } else {
+      console.log('Employer not found');
     }
   };
 

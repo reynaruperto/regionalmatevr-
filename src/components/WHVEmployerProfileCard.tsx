@@ -86,11 +86,15 @@ const WHVEmployerProfileCard: React.FC = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     
+    console.log('Back navigation - fromPage:', fromPage, 'tab:', tab);
+    
     if (fromPage === 'whv-matches' || fromPage === 'matches') {
-      navigate(`/whv/matches?tab=${tab || 'matches'}`);
+      console.log('Navigating back to WHV matches with tab:', tab);
+      navigate(`/whv/matches?tab=${tab || 'topRecommended'}`);
     } else if (fromPage === 'whv-employer-jobs') {
       navigate(`/whv/employer/jobs/${employer.id}?from=whv-browse-employers&tab=${tab || ''}`);
     } else {
+      console.log('Navigating back to WHV browse employers');
       navigate('/whv/browse-employers');
     }
   };
