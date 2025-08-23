@@ -69,14 +69,14 @@ const WHVPhotoUpload: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-work-experience')}
+                onClick={() => navigate('/whv-about-you')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">5/5</span>
+                <span className="text-sm font-medium text-gray-600">6/6</span>
               </div>
             </div>
           </div>
