@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import BottomNavigation from '@/components/BottomNavigation';
 
 interface MatchCandidate {
@@ -19,6 +20,7 @@ interface MatchCandidate {
 const EmployerMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'topRecommended' | 'matches'>('matches');
 
   // Check URL parameters to set initial tab
@@ -105,6 +107,13 @@ const EmployerMatches: React.FC = () => {
     const route = isMutualMatch ? `/mutual-match-profile/${candidateId}` : `/full-candidate-profile/${candidateId}`;
     const tab = isMutualMatch ? 'matches' : 'topRecommended';
     navigate(`${route}?from=matches&tab=${tab}`);
+  };
+
+  const handleHeartClick = (candidateName: string) => {
+    toast({
+      title: "Profile Hearted!",
+      description: `You hearted ${candidateName}'s profile! They'll be notified, and if they heart you back, you'll unlock full profile access.`,
+    });
   };
 
   const currentCandidates = activeTab === 'topRecommended' ? topRecommended : matches;
@@ -213,7 +222,10 @@ const EmployerMatches: React.FC = () => {
                           {candidate.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
                         </Button>
                         {!candidate.isMutualMatch && (
-                          <button className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm">
+                          <button 
+                            onClick={() => handleHeartClick(candidate.name)}
+                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm"
+                          >
                             <Heart size={16} className="text-white" />
                           </button>
                         )}
