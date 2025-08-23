@@ -18,13 +18,19 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     postcode: '',
     industry: '',
     jobType: '',
+    seasonalTiming: '',
+    workDuration: '',
     accommodationProvided: false,
     mealsProvided: false,
     transportProvided: false,
-    startDate: '',
+    trainingProvided: false,
+    equipmentProvided: false,
     payRateMin: '',
     payRateMax: '',
     experienceRequired: '',
+    physicalWork: '',
+    workEnvironment: '',
+    farmSize: '',
     acceptsWHV417: false,
     acceptsWHV462: false,
     acceptsStudentVisa: false,
@@ -91,17 +97,44 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     '3+ Years Required'
   ];
 
-  const startDateOptions = [
-    'Immediately',
-    'September 2025',
-    'October 2025',
-    'November 2025',
-    'December 2025',
-    'January 2026',
-    'February 2026',
-    'March 2026',
-    'April 2026',
-    'Flexible'
+  const seasonalTimingOptions = [
+    'Spring (Sep-Nov)',
+    'Summer (Dec-Feb)', 
+    'Autumn (Mar-May)',
+    'Winter (Jun-Aug)',
+    'Year Round',
+    'Peak Season Only',
+    'Off Season Only'
+  ];
+
+  const workDurationOptions = [
+    '1-2 weeks',
+    '1 month',
+    '2-3 months', 
+    '3-6 months',
+    '6+ months',
+    'Ongoing'
+  ];
+
+  const physicalWorkLevels = [
+    'Light Physical Work',
+    'Moderate Physical Work',
+    'Heavy Physical Work',
+    'No Preference'
+  ];
+
+  const workEnvironmentOptions = [
+    'Indoor Only',
+    'Outdoor Only', 
+    'Mixed Indoor/Outdoor',
+    'No Preference'
+  ];
+
+  const farmSizeOptions = [
+    'Family Farm (Small)',
+    'Medium Commercial Farm',
+    'Large Corporate Farm',
+    'No Preference'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -234,12 +267,20 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               placeholder="Select job type"
             />
 
-            {/* Start Date */}
+            {/* Seasonal Timing */}
             <DropdownSection 
-              title="Start Date" 
-              items={startDateOptions} 
-              category="startDate" 
-              placeholder="Select start date"
+              title="Seasonal Timing" 
+              items={seasonalTimingOptions} 
+              category="seasonalTiming" 
+              placeholder="Select season"
+            />
+
+            {/* Work Duration */}
+            <DropdownSection 
+              title="Work Duration" 
+              items={workDurationOptions} 
+              category="workDuration" 
+              placeholder="Select duration"
             />
 
             {/* Experience Required */}
@@ -248,6 +289,30 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               items={experienceRequiredLevels} 
               category="experienceRequired" 
               placeholder="Select experience level"
+            />
+
+            {/* Physical Work Level */}
+            <DropdownSection 
+              title="Physical Work Level" 
+              items={physicalWorkLevels} 
+              category="physicalWork" 
+              placeholder="Select physical level"
+            />
+
+            {/* Work Environment */}
+            <DropdownSection 
+              title="Work Environment" 
+              items={workEnvironmentOptions} 
+              category="workEnvironment" 
+              placeholder="Select environment"
+            />
+
+            {/* Farm Size */}
+            <DropdownSection 
+              title="Farm Size" 
+              items={farmSizeOptions} 
+              category="farmSize" 
+              placeholder="Select farm size"
             />
 
             {/* Pay Rate Range */}
@@ -309,6 +374,26 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                   />
                   <Label htmlFor="transport" className="text-sm text-gray-700">
                     Transport Provided
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="training"
+                    checked={selectedFilters.trainingProvided}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('trainingProvided', checked as boolean)}
+                  />
+                  <Label htmlFor="training" className="text-sm text-gray-700">
+                    Training Provided
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="equipment"
+                    checked={selectedFilters.equipmentProvided}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('equipmentProvided', checked as boolean)}
+                  />
+                  <Label htmlFor="equipment" className="text-sm text-gray-700">
+                    Equipment/Tools Provided
                   </Label>
                 </div>
               </div>
