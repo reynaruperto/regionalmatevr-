@@ -73,7 +73,7 @@ const LetsBeginScreen: React.FC = () => {
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
                 onClick={() => navigate('/whv/onboarding')}
               >
-                I am a Working Holiday Visa Holder
+                I want to get hired
               </Button>
             </div>
 
