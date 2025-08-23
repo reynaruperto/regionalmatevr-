@@ -90,7 +90,7 @@ const ProfileCardPreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate('/edit-profile')}
+                onClick={() => navigate('/employer-edit-profile')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>

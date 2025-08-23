@@ -62,7 +62,7 @@ const EmployerEditProfile: React.FC = () => {
   };
 
   const handlePreviewProfile = () => {
-    navigate('/employer-profile');
+    navigate('/profile-card-preview');
   };
 
   return (
@@ -81,14 +81,14 @@ const EmployerEditProfile: React.FC = () => {
               <div className="flex items-center justify-between">
                 <button 
                   onClick={handleCancel}
-                  className="text-base font-medium text-orange-500 underline"
+                  className="text-base font-medium text-[#1E293B] underline"
                 >
                   Cancel
                 </button>
                 <h1 className="text-base font-semibold text-gray-900">{name}</h1>
                 <button 
                   onClick={handleSave}
-                  className="flex items-center text-base font-medium text-orange-500 underline"
+                  className="flex items-center text-base font-medium text-[#1E293B] underline"
                 >
                   <Check size={16} className="mr-1" />
                   Save
