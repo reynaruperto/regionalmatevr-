@@ -97,11 +97,11 @@ const App = () => (
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
           <Route path="/employer-profile/:id" element={<EmployerProfile />} />
-          <Route path="/mutual-match-profile/:id" element={<MutualMatchProfile />} />
+          <Route path="/full-candidate-profile/:id" element={<MutualMatchProfile />} />
           <Route path="/employer-jobs/:employerId" element={<EmployerJobs />} />
           <Route path="/job-details/:employerId/:jobId" element={<JobDetails />} />
           <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
-          <Route path="/full-candidate-profile/:id" element={<FullCandidateProfile />} />
+          <Route path="/short-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/employer-matches" element={<EmployerMatches />} />

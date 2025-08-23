@@ -105,7 +105,7 @@ const EmployerMatches: React.FC = () => {
   ];
 
   const handleViewProfile = (candidateId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/mutual-match-profile/${candidateId}` : `/full-candidate-profile/${candidateId}`;
+    const route = isMutualMatch ? `/full-candidate-profile/${candidateId}` : `/short-candidate-profile/${candidateId}`;
     const tab = isMutualMatch ? 'matches' : 'topRecommended';
     navigate(`${route}?from=matches&tab=${tab}`);
   };

@@ -76,7 +76,7 @@ const BrowseCandidates: React.FC = () => {
   };
 
   const handleViewProfile = (candidateId: string) => {
-    navigate(`/full-candidate-profile/${candidateId}`);
+    navigate(`/short-candidate-profile/${candidateId}`);
   };
 
   const handleCloseLikeModal = () => {
