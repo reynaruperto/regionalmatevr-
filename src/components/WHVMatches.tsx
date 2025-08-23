@@ -108,8 +108,11 @@ const WHVMatches: React.FC = () => {
     console.log('handleViewProfile called:', { employerId, isMutualMatch, activeTab });
     const route = isMutualMatch ? `/whv/employer/full-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
     const tab = isMutualMatch ? 'matches' : activeTab;
-    console.log('Navigating to:', `${route}?from=whv-matches&tab=${tab}`);
-    navigate(`${route}?from=whv-matches&tab=${tab}`);
+    const fullUrl = `${route}?from=whv-matches&tab=${tab}`;
+    console.log('Navigating to:', fullUrl);
+    
+    // Force navigation by using replace to avoid any navigation issues
+    navigate(fullUrl, { replace: true });
   };
 
   const handleLikeEmployer = (employerId: string) => {

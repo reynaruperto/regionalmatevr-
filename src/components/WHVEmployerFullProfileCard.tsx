@@ -92,6 +92,8 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
   const employer = employerProfiles[id || '1'];
 
+  console.log('WHVEmployerFullProfileCard - ID:', id, 'Employer found:', !!employer, 'All IDs:', Object.keys(employerProfiles));
+
   const handleBackNavigation = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
