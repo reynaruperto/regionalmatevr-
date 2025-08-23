@@ -14,13 +14,19 @@ import { useToast } from '@/hooks/use-toast';
 const formSchema = z.object({
   businessName: z.string().min(2, { message: "Business name must be at least 2 characters." }),
   abn: z.string().min(11, { message: "Please enter a valid ABN." }),
-  phoneNumber: z.string().min(10, { message: "Please enter a valid phone number." }),
-  businessDescription: z.string().min(10, { message: "Description must be at least 10 characters." }),
-  website: z.string().optional().or(z.literal("")),
   industryType: z.string().min(1, { message: "Please select an industry type." }),
-  addressLine1: z.string().min(5, { message: "Please enter a valid address." }),
-  regionalArea: z.string().min(1, { message: "Please select a regional area." }),
-  postCode: z.string().min(4, { message: "Please enter a valid post code." })
+  businessPhone: z.string().min(10, { message: "Please enter a valid phone number." }),
+  website: z.string().optional().or(z.literal("")),
+  businessDescription: z.string().min(10, { message: "Please describe your business (minimum 10 characters)." }),
+  yearsInBusiness: z.string().min(1, { message: "Please specify years in business." }),
+  businessSize: z.string().min(1, { message: "Please select your business size." }),
+  employeeQualities: z.string().min(10, { message: "Please describe what you look for in employees (minimum 10 characters)." }),
+  addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
+  addressLine2: z.string().optional(),
+  suburb: z.string().min(2, { message: "Suburb is required." }),
+  city: z.string().min(2, { message: "City is required." }),
+  state: z.string().min(1, { message: "Please select a state." }),
+  postCode: z.string().min(4, { message: "Please enter a valid post code." }).max(4, { message: "Post code must be 4 digits." })
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -56,38 +62,16 @@ const INDUSTRY_OPTIONS = [
   "Other Eligible Industries"
 ];
 
-// Regional areas recognized by Department of Home Affairs for Working Holiday visa
-const REGIONAL_AREAS = [
-  // Queensland Regional Areas
-  'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
-  'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
-  'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
-  
-  // New South Wales Regional Areas  
-  'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
-  'NSW - Dubbo', 'NSW - Goulburn', 'NSW - Grafton', 'NSW - Orange',
-  'NSW - Port Macquarie', 'NSW - Tamworth', 'NSW - Wagga Wagga',
-  
-  // Victoria Regional Areas
-  'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
-  'VIC - Latrobe Valley', 'VIC - Mildura', 'VIC - Shepparton', 'VIC - Warrnambool',
-  
-  // Western Australia Regional Areas
-  'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
-  'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
-  'WA - Port Hedland',
-  
-  // South Australia Regional Areas
-  'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
-  
-  // Tasmania (All Areas Regional)
-  'TAS - Burnie', 'TAS - Devonport', 'TAS - Hobart', 'TAS - Launceston',
-  
-  // Northern Territory (All Areas Regional)
-  'NT - Alice Springs', 'NT - Darwin', 'NT - Katherine',
-  
-  // Australian Capital Territory
-  'ACT - Canberra (Limited Regional Work)'
+// Australian states and territories  
+const AUSTRALIAN_STATES = [
+  'Australian Capital Territory',
+  'New South Wales', 
+  'Northern Territory',
+  'Queensland',
+  'South Australia',
+  'Tasmania',
+  'Victoria',
+  'Western Australia'
 ];
 
 const EditBusinessProfile: React.FC = () => {
@@ -104,13 +88,19 @@ const EditBusinessProfile: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       businessName: "Kangafarm",
-      abn: "11 222 333 444",
-      phoneNumber: "+61 491 222 333",
-      businessDescription: "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing",
-      website: "www.kangafarm.com",
+      abn: "11 222 333 444", 
       industryType: "Agriculture & Farming",
+      businessPhone: "+61 491 222 333",
+      website: "www.kangafarm.com",
+      businessDescription: "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing",
+      yearsInBusiness: "5 years",
+      businessSize: "1-10",
+      employeeQualities: "We value hardworking individuals with a positive attitude, willingness to learn, and ability to work in a team environment",
       addressLine1: "11 Apple St.",
-      regionalArea: "QLD - Bundaberg",
+      addressLine2: "",
+      suburb: "Spring Hill", 
+      city: "Brisbane",
+      state: "Queensland",
       postCode: "4019"
     }
   });
@@ -165,85 +155,46 @@ const EditBusinessProfile: React.FC = () => {
                 
                 {/* Business Name */}
                 <div>
-                  <Label htmlFor="businessName" className="text-gray-600 mb-2 block">Business Name</Label>
+                  <Label htmlFor="businessName" className="text-gray-600 mb-2 block text-sm">Business Name</Label>
                   <Input
                     id="businessName"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
                     {...register("businessName")}
                   />
                   {errors.businessName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.businessName.message}</p>
+                    <p className="text-red-500 text-xs mt-1">{errors.businessName.message}</p>
                   )}
                 </div>
 
                 {/* ABN */}
                 <div>
-                  <Label htmlFor="abn" className="text-gray-600 mb-2 block">ABN</Label>
+                  <Label htmlFor="abn" className="text-gray-600 mb-2 block text-sm">ABN</Label>
                   <Input
                     id="abn"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
                     {...register("abn")}
                   />
                   {errors.abn && (
-                    <p className="text-red-500 text-sm mt-1">{errors.abn.message}</p>
-                  )}
-                </div>
-
-                {/* Phone Number */}
-                <div>
-                  <Label htmlFor="phoneNumber" className="text-gray-600 mb-2 block">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                    {...register("phoneNumber")}
-                  />
-                  {errors.phoneNumber && (
-                    <p className="text-red-500 text-sm mt-1">{errors.phoneNumber.message}</p>
-                  )}
-                </div>
-
-                {/* Add Business Description */}
-                <div>
-                  <Label htmlFor="businessDescription" className="text-gray-600 mb-2 block">Add Business Description</Label>
-                  <Textarea
-                    id="businessDescription"
-                    className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none"
-                    {...register("businessDescription")}
-                  />
-                  {errors.businessDescription && (
-                    <p className="text-red-500 text-sm mt-1">{errors.businessDescription.message}</p>
-                  )}
-                </div>
-
-                {/* Website */}
-                <div>
-                  <Label htmlFor="website" className="text-gray-600 mb-2 block">Website</Label>
-                  <Input
-                    id="website"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                    {...register("website")}
-                  />
-                  {errors.website && (
-                    <p className="text-red-500 text-sm mt-1">{errors.website.message}</p>
+                    <p className="text-red-500 text-xs mt-1">{errors.abn.message}</p>
                   )}
                 </div>
 
                 {/* Industry Type */}
                 <div>
-                  <Label htmlFor="industryType" className="text-gray-600 mb-2 block">Industry Type</Label>
+                  <Label htmlFor="industryType" className="text-gray-600 mb-2 block text-sm">Industry Type</Label>
                   <Select 
                     onValueChange={(value) => setValue("industryType", value, { shouldValidate: true })}
                     defaultValue="Agriculture & Farming"
                   >
-                    <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                      <SelectValue placeholder="Agriculture & Farming" />
+                    <SelectTrigger className="h-11 rounded-xl border-gray-200 bg-white text-sm">
+                      <SelectValue placeholder="Select industry" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-[300px] overflow-y-auto">
                       {INDUSTRY_OPTIONS.map((industry) => (
                         <SelectItem 
                           key={industry} 
                           value={industry}
-                          className="py-3 px-4 hover:bg-gray-50 cursor-pointer"
+                          className="py-2 px-3 hover:bg-gray-50 cursor-pointer text-sm"
                         >
                           {industry}
                         </SelectItem>
@@ -251,64 +202,183 @@ const EditBusinessProfile: React.FC = () => {
                     </SelectContent>
                   </Select>
                   {errors.industryType && (
-                    <p className="text-red-500 text-sm mt-1">{errors.industryType.message}</p>
+                    <p className="text-red-500 text-xs mt-1">{errors.industryType.message}</p>
+                  )}
+                </div>
+
+                {/* Business Phone Number */}
+                <div>
+                  <Label htmlFor="businessPhone" className="text-gray-600 mb-2 block text-sm">Business Phone Number</Label>
+                  <Input
+                    id="businessPhone"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("businessPhone")}
+                  />
+                  {errors.businessPhone && (
+                    <p className="text-red-500 text-xs mt-1">{errors.businessPhone.message}</p>
+                  )}
+                </div>
+
+                {/* Website */}
+                <div>
+                  <Label htmlFor="website" className="text-gray-600 mb-2 block text-sm">Website</Label>
+                  <Input
+                    id="website"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("website")}
+                  />
+                  {errors.website && (
+                    <p className="text-red-500 text-xs mt-1">{errors.website.message}</p>
+                  )}
+                </div>
+
+                {/* Business Description */}
+                <div>
+                  <Label htmlFor="businessDescription" className="text-gray-600 mb-2 block text-sm">What does your business do?</Label>
+                  <Textarea
+                    id="businessDescription"
+                    className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none text-sm"
+                    {...register("businessDescription")}
+                  />
+                  {errors.businessDescription && (
+                    <p className="text-red-500 text-xs mt-1">{errors.businessDescription.message}</p>
+                  )}
+                </div>
+
+                {/* Years in Business */}
+                <div>
+                  <Label htmlFor="yearsInBusiness" className="text-gray-600 mb-2 block text-sm">How many years of trajectory does your business have?</Label>
+                  <Input
+                    id="yearsInBusiness"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("yearsInBusiness")}
+                  />
+                  {errors.yearsInBusiness && (
+                    <p className="text-red-500 text-xs mt-1">{errors.yearsInBusiness.message}</p>
+                  )}
+                </div>
+
+                {/* Business Size */}
+                <div>
+                  <Label htmlFor="businessSize" className="text-gray-600 mb-2 block text-sm">How many employees do you currently have?</Label>
+                  <Input
+                    id="businessSize"
+                    placeholder="1-10, 11-50, 51-100, 100+"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("businessSize")}
+                  />
+                  {errors.businessSize && (
+                    <p className="text-red-500 text-xs mt-1">{errors.businessSize.message}</p>
+                  )}
+                </div>
+
+                {/* Employee Qualities */}
+                <div>
+                  <Label htmlFor="employeeQualities" className="text-gray-600 mb-2 block text-sm">What are you looking for as employee material?</Label>
+                  <Textarea
+                    id="employeeQualities"
+                    className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none text-sm"
+                    {...register("employeeQualities")}
+                  />
+                  {errors.employeeQualities && (
+                    <p className="text-red-500 text-xs mt-1">{errors.employeeQualities.message}</p>
                   )}
                 </div>
 
                 {/* Business Address Line 1 */}
                 <div>
-                  <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">Business Address Line 1</Label>
+                  <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block text-sm">Business Address Line 1</Label>
                   <Input
                     id="addressLine1"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
                     {...register("addressLine1")}
                   />
                   {errors.addressLine1 && (
-                    <p className="text-red-500 text-sm mt-1">{errors.addressLine1.message}</p>
+                    <p className="text-red-500 text-xs mt-1">{errors.addressLine1.message}</p>
                   )}
                 </div>
 
-                {/* Regional Area */}
+                {/* Business Address Line 2 */}
                 <div>
-                  <Label htmlFor="regionalArea" className="text-gray-600 mb-2 block">Regional Area</Label>
+                  <Label htmlFor="addressLine2" className="text-gray-600 mb-2 block text-sm">Street Address Line 2 (if applicable)</Label>
+                  <Input
+                    id="addressLine2"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("addressLine2")}
+                  />
+                  {errors.addressLine2 && (
+                    <p className="text-red-500 text-xs mt-1">{errors.addressLine2.message}</p>
+                  )}
+                </div>
+
+                {/* Suburb */}
+                <div>
+                  <Label htmlFor="suburb" className="text-gray-600 mb-2 block text-sm">Suburb</Label>
+                  <Input
+                    id="suburb"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("suburb")}
+                  />
+                  {errors.suburb && (
+                    <p className="text-red-500 text-xs mt-1">{errors.suburb.message}</p>
+                  )}
+                </div>
+
+                {/* City */}
+                <div>
+                  <Label htmlFor="city" className="text-gray-600 mb-2 block text-sm">City</Label>
+                  <Input
+                    id="city"
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
+                    {...register("city")}
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-xs mt-1">{errors.city.message}</p>
+                  )}
+                </div>
+
+                {/* State */}
+                <div>
+                  <Label htmlFor="state" className="text-gray-600 mb-2 block text-sm">State</Label>
                   <Select 
-                    onValueChange={(value) => setValue("regionalArea", value, { shouldValidate: true })}
-                    defaultValue="QLD - Bundaberg"
+                    onValueChange={(value) => setValue("state", value, { shouldValidate: true })}
+                    defaultValue="Queensland"
                   >
-                    <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                      <SelectValue placeholder="QLD - Bundaberg" />
+                    <SelectTrigger className="h-11 rounded-xl border-gray-200 bg-white text-sm">
+                      <SelectValue placeholder="Select state" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-[300px] overflow-y-auto">
-                      {REGIONAL_AREAS.map((area) => (
+                      {AUSTRALIAN_STATES.map((state) => (
                         <SelectItem 
-                          key={area} 
-                          value={area}
-                          className="py-3 px-4 hover:bg-gray-50 cursor-pointer"
+                          key={state} 
+                          value={state}
+                          className="py-2 px-3 hover:bg-gray-50 cursor-pointer text-sm"
                         >
-                          {area}
+                          {state}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.regionalArea && (
-                    <p className="text-red-500 text-sm mt-1">{errors.regionalArea.message}</p>
+                  {errors.state && (
+                    <p className="text-red-500 text-xs mt-1">{errors.state.message}</p>
                   )}
                 </div>
 
                 {/* Post Code */}
                 <div>
-                  <Label htmlFor="postCode" className="text-gray-600 mb-2 block">Post Code</Label>
+                  <Label htmlFor="postCode" className="text-gray-600 mb-2 block text-sm">Post Code</Label>
                   <Input
                     id="postCode"
-                    className="h-12 rounded-xl border-gray-200 bg-white"
+                    maxLength={4}
+                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
                     {...register("postCode")}
                   />
                   {errors.postCode && (
-                    <p className="text-red-500 text-sm mt-1">{errors.postCode.message}</p>
+                    <p className="text-red-500 text-xs mt-1">{errors.postCode.message}</p>
                   )}
                 </div>
 
-                <div className="h-20"></div>
+                <div className="h-6"></div>
               </form>
             </div>
           </div>
