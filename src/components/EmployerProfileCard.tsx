@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface EmployerProfile {
@@ -115,15 +115,14 @@ const EmployerProfileCard: React.FC = () => {
             {/* Profile Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               {/* Header */}
-              <div className="bg-orange-500 text-white p-4 text-center relative">
+              <div className="bg-gray-800 text-white p-4 text-center">
                 <h1 className="text-xl font-bold">{employer.name}</h1>
                 <p className="text-sm opacity-90">Employer: {employer.employerName}</p>
-                <div className="h-4"></div> {/* Extra space for overlapping image */}
               </div>
 
               {/* Profile Image */}
-              <div className="flex justify-center -mt-12 mb-6 relative z-10">
-                <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
+              <div className="flex justify-center mt-6 mb-6">
+                <div className="w-24 h-24 rounded-full border-4 border-gray-800 overflow-hidden bg-white shadow-lg">
                   <img
                     src={employer.profileImage}
                     alt={employer.name}
@@ -184,10 +183,10 @@ const EmployerProfileCard: React.FC = () => {
                 </Button>
                 <button
                   onClick={handleLikeEmployer}
-                  className="flex items-center gap-2 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg hover:border-orange-500 transition-colors"
+                  className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg hover:from-orange-500 hover:to-orange-700 transition-all shadow-md"
                 >
-                  <span className="text-gray-700 font-medium">Like to Match</span>
-                  <ThumbsUp size={20} className="text-gray-700" />
+                  <span className="font-medium">Heart to Match</span>
+                  <Heart size={20} className="text-white" />
                 </button>
               </div>
             </div>
