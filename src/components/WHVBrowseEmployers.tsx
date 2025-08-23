@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Filter, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Search, Filter, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BottomNavigation from '@/components/BottomNavigation';
@@ -76,7 +76,7 @@ const WHVBrowseEmployers: React.FC = () => {
   };
 
   const handleViewProfile = (employerId: string) => {
-    navigate(`/employer/profile/${employerId}`);
+    navigate(`/whv-employer-short-profile/${employerId}`);
   };
 
   const handleCloseLikeModal = () => {
@@ -191,7 +191,7 @@ const WHVBrowseEmployers: React.FC = () => {
                           onClick={() => handleLikeEmployer(employer.id)}
                           className="h-7 w-7 flex-shrink-0 bg-slate-800 rounded-md flex items-center justify-center hover:bg-slate-900 transition-all duration-200 shadow-sm"
                         >
-                          <ThumbsUp size={14} className="text-white" />
+                          <Heart size={14} className="text-white" />
                         </button>
                       </div>
                     </div>

@@ -124,6 +124,7 @@ const App = () => (
         <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
         <Route path="/whv/login" element={<WHVLogin />} />
         <Route path="/whv/account-confirmation" element={<WHVAccountConfirmation />} />
+          <Route path="/whv-employer-short-profile/:id" element={<EmployerProfile />} />
           <Route path="/whv/browse-employers" element={<WHVBrowseEmployers />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
