@@ -35,7 +35,7 @@ const EmployerProfileCard: React.FC = () => {
       jobAvailability: 'Ongoing, September 2025',
       payBenefits: '$28/hour + super',
       facilities: 'Meals included, Accommodation available on discounted price',
-      profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
+      profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
     },
     '2': {
       id: '2',

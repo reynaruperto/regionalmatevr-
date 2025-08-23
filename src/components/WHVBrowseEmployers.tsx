@@ -39,7 +39,7 @@ const WHVBrowseEmployers: React.FC = () => {
       location: 'Clontarf, QLD, 4017',
       availability: 'Start Date from Sep 2025',
       matchPercentage: 92,
-      profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
+      profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
     },
     {
       id: '2',
@@ -104,7 +104,7 @@ const WHVBrowseEmployers: React.FC = () => {
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <div className="text-center mb-4">
-              <p className="text-gray-600 text-sm">Search for candidates.</p>
+              <p className="text-gray-600 text-sm">Browse for employers</p>
             </div>
             
             <div className="flex items-center gap-3 mb-6">
@@ -118,7 +118,7 @@ const WHVBrowseEmployers: React.FC = () => {
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <Input
-                placeholder="Search for candidates."
+                placeholder="Browse for employers"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-12 h-10"
