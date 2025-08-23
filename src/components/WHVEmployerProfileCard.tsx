@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,17 @@ const WHVEmployerProfileCard: React.FC = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const [showLikeModal, setShowLikeModal] = useState(false);
+
+  // Redirect mutual matches to full profile
+  React.useEffect(() => {
+    const isMutualMatch = ['4', '5', '6'].includes(id || '');
+    if (isMutualMatch) {
+      const fromPage = searchParams.get('from');
+      const tab = searchParams.get('tab');
+      navigate(`/whv/employer/full-profile/${id}?from=${fromPage}&tab=${tab}`, { replace: true });
+      return;
+    }
+  }, [id, navigate, searchParams]);
 
   // Mock employer data - in real app this would come from API
   const employerProfiles: { [key: string]: EmployerProfile } = {
