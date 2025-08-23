@@ -41,11 +41,11 @@ const EmployerPhotoUpload: React.FC = () => {
       title: "Profile completed!",
       description: "Your business account has been created successfully",
     });
-    navigate('/employer-account-confirmation');
+    navigate('/employer/account-confirmation');
   };
 
   const handleSkip = () => {
-    navigate('/employer-account-confirmation');
+    navigate('/employer/account-confirmation');
   };
 
   return (

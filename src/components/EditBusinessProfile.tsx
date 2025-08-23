@@ -111,11 +111,11 @@ const EditBusinessProfile: React.FC = () => {
       title: "Business Profile Updated",
       description: "Your business profile has been successfully updated",
     });
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   const handleCancel = () => {
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   return (

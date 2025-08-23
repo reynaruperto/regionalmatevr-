@@ -72,23 +72,23 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/lets-begin" element={<LetsBegin />} />
-          <Route path="/employer-onboarding" element={<EmployerOnboarding />} />
-          <Route path="/employer-email-confirmation" element={<EmployerEmailConfirmation />} />
-          <Route path="/employer-about-business" element={<EmployerAboutBusiness />} />
+          <Route path="/employer/onboarding" element={<EmployerOnboarding />} />
+          <Route path="/employer/email-confirmation" element={<EmployerEmailConfirmation />} />
+          <Route path="/employer/about-business" element={<EmployerAboutBusiness />} />
           <Route path="/profile-completion" element={<ProfileCompletion />} />
-          <Route path="/employer-sign-in" element={<EmployerSignIn />} />
+          <Route path="/employer/sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/business-address" element={<BusinessAddress />} />
-          <Route path="/employer-photo-upload" element={<EmployerPhotoUpload />} />
-          <Route path="/employer-account-confirmation" element={<EmployerAccountConfirmation />} />
+          <Route path="/employer/photo-upload" element={<EmployerPhotoUpload />} />
+          <Route path="/employer/account-confirmation" element={<EmployerAccountConfirmation />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
-          <Route path="/employer-dashboard" element={<EmployerDashboard />} />
-          <Route path="/whv-dashboard" element={<WHVDashboard />} />
-          <Route path="/whv-profile-edit" element={<EditProfile />} />
-          <Route path="/employer-edit-profile" element={<EmployerEditProfile />} />
-          <Route path="/whv-edit-profile" element={<WHVEditProfile />} />
-          <Route path="/whv-profile-preview" element={<ProfileCardPreview />} />
-          <Route path="/employer-profile-preview" element={<ProfileCardPreview />} />
+          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          <Route path="/whv/dashboard" element={<WHVDashboard />} />
+          <Route path="/whv/profile-edit" element={<EditProfile />} />
+          <Route path="/employer/edit-profile" element={<EmployerEditProfile />} />
+          <Route path="/whv/edit-profile" element={<WHVEditProfile />} />
+          <Route path="/whv/profile-preview" element={<ProfileCardPreview />} />
+          <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
           <Route path="/edit-business-profile" element={<EditBusinessProfile />} />
           <Route path="/notifications" element={<Notifications />} />
@@ -97,34 +97,34 @@ const App = () => (
           <Route path="/terms-policies" element={<TermsPolicies />} />
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
-          <Route path="/employer-profile/:id" element={<EmployerProfile />} />
+          <Route path="/employer/profile/:id" element={<EmployerProfile />} />
           <Route path="/full-candidate-profile/:id" element={<MutualMatchProfile />} />
-          <Route path="/employer-jobs/:employerId" element={<EmployerJobs />} />
+          <Route path="/employer/jobs/:employerId" element={<EmployerJobs />} />
           <Route path="/job-details/:employerId/:jobId" element={<JobDetails />} />
           <Route path="/candidate-profile/:id" element={<CandidateProfile />} />
           <Route path="/short-candidate-profile/:id" element={<FullCandidateProfile />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/employer-matches" element={<EmployerMatches />} />
-          <Route path="/employer-messages" element={<EmployerMessages />} />
-          <Route path="/employer-notifications" element={<EmployerNotifications />} />
-          <Route path="/employer-privacy" element={<EmployerPrivacy />} />
-          <Route path="/employer-help-support" element={<EmployerHelpSupport />} />
-          <Route path="/whv-matches" element={<WHVMatches />} />
-          <Route path="/whv-messages" element={<WHVMessages />} />
-          <Route path="/whv-notifications" element={<WHVNotifications />} />
-          <Route path="/whv-privacy" element={<WHVPrivacy />} />
-          <Route path="/whv-help-support" element={<WHVHelpSupport />} />
-          <Route path="/whv-onboarding" element={<WHVOnboarding />} />
-          <Route path="/whv-email-confirmation" element={<WHVEmailConfirmation />} />
-          <Route path="/whv-about-you" element={<WHVAboutYou />} />
-        <Route path="/whv-profile-setup" element={<WHVProfileSetup />} />
-        <Route path="/whv-current-address" element={<WHVCurrentAddress />} />
-        <Route path="/whv-work-experience" element={<WHVWorkExperience />} />
-        <Route path="/whv-photo-upload" element={<WHVPhotoUpload />} />
-        <Route path="/whv-login" element={<WHVLogin />} />
-        <Route path="/whv-account-confirmation" element={<WHVAccountConfirmation />} />
-          <Route path="/whv-browse-employers" element={<WHVBrowseEmployers />} />
+          <Route path="/employer/matches" element={<EmployerMatches />} />
+          <Route path="/employer/messages" element={<EmployerMessages />} />
+          <Route path="/employer/notifications" element={<EmployerNotifications />} />
+          <Route path="/employer/privacy" element={<EmployerPrivacy />} />
+          <Route path="/employer/help-support" element={<EmployerHelpSupport />} />
+          <Route path="/whv/matches" element={<WHVMatches />} />
+          <Route path="/whv/messages" element={<WHVMessages />} />
+          <Route path="/whv/notifications" element={<WHVNotifications />} />
+          <Route path="/whv/privacy" element={<WHVPrivacy />} />
+          <Route path="/whv/help-support" element={<WHVHelpSupport />} />
+          <Route path="/whv/onboarding" element={<WHVOnboarding />} />
+          <Route path="/whv/email-confirmation" element={<WHVEmailConfirmation />} />
+          <Route path="/whv/about-you" element={<WHVAboutYou />} />
+        <Route path="/whv/profile-setup" element={<WHVProfileSetup />} />
+        <Route path="/whv/current-address" element={<WHVCurrentAddress />} />
+        <Route path="/whv/work-experience" element={<WHVWorkExperience />} />
+        <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
+        <Route path="/whv/login" element={<WHVLogin />} />
+        <Route path="/whv/account-confirmation" element={<WHVAccountConfirmation />} />
+          <Route path="/whv/browse-employers" element={<WHVBrowseEmployers />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

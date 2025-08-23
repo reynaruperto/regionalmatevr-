@@ -27,7 +27,7 @@ const EmployerEmailConfirmation: React.FC = () => {
       title: "Email confirmed!",
       description: "Your account has been verified successfully",
     });
-    navigate('/employer-about-business');
+    navigate('/employer/about-business');
   };
 
   const handleResendCode = async () => {
@@ -60,7 +60,7 @@ const EmployerEmailConfirmation: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer-onboarding')}
+                  onClick={() => navigate('/employer/onboarding')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>

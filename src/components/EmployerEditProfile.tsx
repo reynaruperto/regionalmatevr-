@@ -54,15 +54,15 @@ const EmployerEditProfile: React.FC = () => {
       title: "Profile Updated",
       description: "Your employer profile has been successfully updated",
     });
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   const handleCancel = () => {
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   const handlePreviewProfile = () => {
-    navigate('/employer-profile-preview');
+    navigate('/employer/profile-preview');
   };
 
   return (

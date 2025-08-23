@@ -53,7 +53,7 @@ const BusinessAddressForm: React.FC = () => {
       title: "Business address saved!",
       description: "Proceeding to final step",
     });
-    navigate('/employer-photo-upload');
+    navigate('/employer/photo-upload');
   };
 
   return (
@@ -74,7 +74,7 @@ const BusinessAddressForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer-about-business')}
+                  onClick={() => navigate('/employer/about-business')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>

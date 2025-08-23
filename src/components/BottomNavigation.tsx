@@ -13,17 +13,17 @@ const BottomNavigation: React.FC = () => {
                          location.pathname.startsWith('/employer');
   
   const employerNavItems = [
-    { id: 'profile', label: 'Profile', icon: User, path: '/employer-dashboard' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/employer/dashboard' },
     { id: 'post-jobs', label: 'Post Jobs', icon: Briefcase, path: '/post-jobs' },
     { id: 'browse', label: 'Browse Candidates', icon: Users, path: '/browse-candidates' },
-    { id: 'matches', label: 'Matches', icon: Heart, path: '/employer-matches' },
-    { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/employer-messages' },
+    { id: 'matches', label: 'Matches', icon: Heart, path: '/employer/matches' },
+    { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/employer/messages' },
   ];
 
   const whvNavItems = [
-    { id: 'profile', label: 'Profile', icon: User, path: '/whv-dashboard' },
-    { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/whv-browse-employers' },
-    { id: 'matches', label: 'Matches', icon: Heart, path: '/whv-matches' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/whv/dashboard' },
+    { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/whv/browse-employers' },
+    { id: 'matches', label: 'Matches', icon: Heart, path: '/whv/matches' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
   ];
 

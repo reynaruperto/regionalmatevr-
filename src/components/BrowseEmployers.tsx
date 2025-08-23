@@ -76,7 +76,7 @@ const BrowseEmployers: React.FC = () => {
   };
 
   const handleViewProfile = (employerId: string) => {
-    navigate(`/employer-profile/${employerId}`);
+    navigate(`/employer/profile/${employerId}`);
   };
 
   const handleCloseLikeModal = () => {

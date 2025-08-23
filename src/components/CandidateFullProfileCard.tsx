@@ -227,9 +227,9 @@ const CandidateFullProfileCard: React.FC = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     if (fromPage === 'matches') {
-      navigate(`/employer-matches?tab=${tab || 'matches'}`);
+      navigate(`/employer/matches?tab=${tab || 'matches'}`);
     } else {
-      navigate('/employer-matches');
+      navigate('/employer/matches');
     }
   };
 

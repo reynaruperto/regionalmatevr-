@@ -7,7 +7,7 @@ const ProfileCardPreview: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const isEmployerPreview = location.pathname === '/employer-profile-preview';
+  const isEmployerPreview = location.pathname === '/employer/profile-preview';
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
@@ -110,7 +110,7 @@ const ProfileCardPreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate(isEmployerPreview ? '/employer-edit-profile' : '/whv-profile-edit')}
+                onClick={() => navigate(isEmployerPreview ? '/employer/edit-profile' : '/whv/profile-edit')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>

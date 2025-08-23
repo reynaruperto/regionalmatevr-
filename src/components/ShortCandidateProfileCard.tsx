@@ -158,7 +158,7 @@ const ShortCandidateProfileCard: React.FC<ShortCandidateProfileCardProps> = ({ c
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     if (fromPage === 'matches') {
-      navigate(`/employer-matches?tab=${tab || 'matches'}`);
+      navigate(`/employer/matches?tab=${tab || 'matches'}`);
     } else {
       navigate('/browse-candidates');
     }

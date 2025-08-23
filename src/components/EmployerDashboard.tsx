@@ -19,9 +19,9 @@ const EmployerDashboard: React.FC = () => {
   const settingsItems = [
     { icon: FileText, label: 'Edit Business Profile', color: 'text-gray-600', action: () => navigate('/edit-business-profile') },
     { icon: Settings, label: 'Security', color: 'text-gray-600', action: () => navigate('/security') },
-    { icon: Bell, label: 'Notifications', color: 'text-gray-600', action: () => navigate('/employer-notifications') },
-    { icon: Lock, label: 'Privacy', color: 'text-gray-600', action: () => navigate('/employer-privacy') },
-    { icon: HelpCircle, label: 'Help & Support', color: 'text-gray-600', action: () => navigate('/employer-help-support') },
+    { icon: Bell, label: 'Notifications', color: 'text-gray-600', action: () => navigate('/employer/notifications') },
+    { icon: Lock, label: 'Privacy', color: 'text-gray-600', action: () => navigate('/employer/privacy') },
+    { icon: HelpCircle, label: 'Help & Support', color: 'text-gray-600', action: () => navigate('/employer/help-support') },
     { icon: Info, label: 'Terms and Policies', color: 'text-gray-600', action: () => navigate('/terms-policies') },
     { icon: LogOut, label: 'Log out', color: 'text-red-500', action: () => navigate('/') },
   ];
@@ -71,7 +71,7 @@ const EmployerDashboard: React.FC = () => {
                 
                 {/* Edit Profile Button */}
                 <Button
-                  onClick={() => navigate('/employer-edit-profile')}
+                  onClick={() => navigate('/employer/edit-profile')}
                   variant="outline"
                   className="mb-8 bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                 >

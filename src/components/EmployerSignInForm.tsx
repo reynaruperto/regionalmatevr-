@@ -33,7 +33,7 @@ const EmployerSignInForm: React.FC = () => {
     });
     
     // Navigate to dashboard
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   const handleForgotPassword = () => {

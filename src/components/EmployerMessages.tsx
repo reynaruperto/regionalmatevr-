@@ -8,7 +8,7 @@ const EmployerMessages: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate('/employer-dashboard');
+    navigate('/employer/dashboard');
   };
 
   return (

@@ -12,7 +12,7 @@ const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleEmployerSignIn = () => {
-    navigate('/employer-sign-in');
+    navigate('/employer/sign-in');
   };
 
   const handleWHVSignIn = () => {

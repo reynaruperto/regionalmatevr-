@@ -47,7 +47,7 @@ const EmployerOnboardingForm: React.FC = () => {
       title: "Account created successfully!",
       description: "Welcome to Regional Mate",
     });
-    navigate('/employer-email-confirmation');
+    navigate('/employer/email-confirmation');
   };
 
   return (

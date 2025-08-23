@@ -85,7 +85,7 @@ const JobDetails: React.FC = () => {
   const job = jobDetails[employerId || '1']?.[jobId || '1'];
 
   const handleViewEmployerProfile = () => {
-    navigate(`/employer-profile/${employerId}`);
+    navigate(`/employer/profile/${employerId}`);
   };
 
   if (!job) {
