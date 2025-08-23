@@ -19,32 +19,32 @@ interface MatchEmployer {
 const WHVMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'topMatches' | 'mutualLikes'>('topMatches');
+  const [activeTab, setActiveTab] = useState<'topRecommended' | 'matches'>('topRecommended');
 
   // Check URL parameters to set initial tab
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get('tab');
-    if (tab === 'mutualLikes' || tab === 'topMatches') {
-      setActiveTab(tab as 'topMatches' | 'mutualLikes');
+    if (tab === 'matches' || tab === 'topRecommended') {
+      setActiveTab(tab as 'topRecommended' | 'matches');
     }
   }, [location.search]);
 
-  // Mock data for top matches
-  const topMatches: MatchEmployer[] = [
+  // Mock data for top recommended employers (same as browse employers)
+  const topRecommendedEmployers: MatchEmployer[] = [
     {
       id: '1',
-      name: 'Kangafarm',
+      name: 'KANGAFARM',
       skills: ['Agriculture & Farming', 'Fruit Picker'],
       country: 'Australia',
       location: 'Clontarf, QLD, 4017',
       availability: 'Start Date from Sep 2025',
       matchPercentage: 92,
-      profileImage: '/lovable-uploads/b479a041-9b25-499f-b024-69aeaa75a882.png'
+      profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
     },
     {
       id: '2',
-      name: 'Sunny Wines',
+      name: 'SUNNY WINES',
       skills: ['Wine Production', 'Farm Supervisor'],
       country: 'Australia',
       location: 'Sunshine Coast, 4551',
@@ -54,7 +54,7 @@ const WHVMatches: React.FC = () => {
     },
     {
       id: '3',
-      name: 'Oakridge Farm',
+      name: 'OAKRIDGE FARM',
       skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
       country: 'Australia',
       location: 'Toowoomba, 4350',
@@ -64,8 +64,8 @@ const WHVMatches: React.FC = () => {
     }
   ];
 
-  // Mock data for mutual likes
-  const mutualLikes: MatchEmployer[] = [
+  // Mock data for matches
+  const matches: MatchEmployer[] = [
     {
       id: '4',
       name: 'Green Harvest Farms',
@@ -102,12 +102,12 @@ const WHVMatches: React.FC = () => {
   ];
 
   const handleViewProfile = (employerId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/employer-profile/${employerId}`;
-    const tab = isMutualMatch ? 'mutualLikes' : activeTab;
+    const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/whv-employer-short-profile/${employerId}`;
+    const tab = isMutualMatch ? 'matches' : activeTab;
     navigate(`${route}?from=matches&tab=${tab}`);
   };
 
-  const currentEmployers = activeTab === 'topMatches' ? topMatches : mutualLikes;
+  const currentEmployers = activeTab === 'topRecommended' ? topRecommendedEmployers : matches;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -120,11 +120,11 @@ const WHVMatches: React.FC = () => {
           {/* Header - Fixed */}
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/whv-dashboard')}>
+              <button onClick={() => navigate('/whv/dashboard')}>
                 <ArrowLeft size={24} className="text-gray-600" />
               </button>
               <h1 className="text-sm font-medium text-gray-700 text-center flex-1 pr-6">
-                Explore your top Match and Mutual Likes with Regional Employers
+                Explore your Matches and Top Recommended Employers
               </h1>
             </div>
           </div>
@@ -133,24 +133,24 @@ const WHVMatches: React.FC = () => {
           <div className="px-4 py-4 flex-shrink-0">
             <div className="flex bg-gray-100 rounded-full p-1">
               <button
-                onClick={() => setActiveTab('mutualLikes')}
+                onClick={() => setActiveTab('matches')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                  activeTab === 'mutualLikes'
+                  activeTab === 'matches'
                     ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Mutual Likes
+                Matches
               </button>
               <button
-                onClick={() => setActiveTab('topMatches')}
+                onClick={() => setActiveTab('topRecommended')}
                 className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                  activeTab === 'topMatches'
+                  activeTab === 'topRecommended'
                     ? 'bg-slate-800 text-white'
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                Top Matches
+                Top Recommended
               </button>
             </div>
           </div>
