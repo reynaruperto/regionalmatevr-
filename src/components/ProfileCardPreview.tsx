@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ const ProfileCardPreview: React.FC = () => {
                 {/* Profile Photo */}
                 <div className="flex justify-center mb-4">
                   <img
-                    src="/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png"
+                    src="/lovable-uploads/7911e593-bbbd-462d-9d13-95b476c84a6f.png"
                     alt="Peter Parker"
                     className="w-24 h-24 rounded-full object-cover border-4 border-orange-500"
                   />
@@ -88,10 +88,10 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Like to Match Button */}
                 <div className="text-center">
-                  <button className="inline-flex items-center gap-2 text-blue-600 font-medium">
+                  <div className="inline-flex items-center gap-2 text-blue-600 font-medium">
                     <span>Like to Match</span>
-                    <ThumbsUp size={20} className="text-orange-500" />
-                  </button>
+                    <Heart size={20} className="text-red-500" />
+                  </div>
                 </div>
               </div>
 
