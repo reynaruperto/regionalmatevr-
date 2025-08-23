@@ -17,8 +17,20 @@ const ProfileCardPreview: React.FC = () => {
           {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-100">
             
-            {/* Content */}
-            <div className="flex-1 px-6 pt-16 pb-20 flex flex-col items-center justify-center">
+            {/* Header */}
+            <div className="px-4 py-3 border-b bg-white flex-shrink-0">
+              <div className="flex items-center gap-3">
+                <button onClick={() => navigate('/whv-edit-profile')}>
+                  <ArrowLeft size={24} className="text-gray-600" />
+                </button>
+                <h1 className="text-lg font-medium text-gray-900">
+                  Profile Preview
+                </h1>
+              </div>
+            </div>
+            
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col items-center">
               
               {/* Profile Card */}
               <div className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-lg">
@@ -112,18 +124,6 @@ const ProfileCardPreview: React.FC = () => {
                 </div>
               </div>
 
-            </div>
-
-            {/* Back Button */}
-            <div className="absolute bottom-8 left-6">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="w-10 h-10 bg-transparent"
-                onClick={() => navigate('/whv-edit-profile')}
-              >
-                <ArrowLeft className="w-6 h-6 text-gray-700" />
-              </Button>
             </div>
 
           </div>
