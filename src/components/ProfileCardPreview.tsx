@@ -64,16 +64,16 @@ const ProfileCardPreview: React.FC = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
+                <div className="space-y-3">
+                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
                     Message
                   </Button>
-                  <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
-                    <span className="text-orange-500 font-medium text-sm">Heart to Match</span>
+                  <Button className="w-full bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 justify-center">
+                    <span className="font-semibold">Heart to Match</span>
                     <div className="bg-orange-500 rounded-full p-2">
-                      <Heart size={16} className="text-white fill-white" />
+                      <Heart size={20} className="text-white fill-white" />
                     </div>
-                  </button>
+                  </Button>
                 </div>
               </div>
 
