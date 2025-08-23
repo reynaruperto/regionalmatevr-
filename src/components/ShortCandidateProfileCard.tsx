@@ -180,7 +180,8 @@ const ShortCandidateProfileCard: React.FC<ShortCandidateProfileCardProps> = ({ c
               
               {/* Header with name */}
               <div className="bg-slate-800 rounded-2xl p-4 mb-6 text-center">
-                <h1 className="text-xl font-bold text-white">{candidate.name.toUpperCase()}</h1>
+                <h1 className="text-xl font-bold text-white">SHORT CANDIDATE PROFILE CARD</h1>
+                <p className="text-sm text-orange-300 mt-1">{candidate.name.toUpperCase()}</p>
               </div>
 
               {/* Profile Image */}
