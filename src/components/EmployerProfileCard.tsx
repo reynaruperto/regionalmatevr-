@@ -25,7 +25,7 @@ const EmployerProfileCard: React.FC = () => {
   const [showLikeModal, setShowLikeModal] = useState(false);
 
   // Determine if this is being accessed from WHV or employer context
-  const isWHVContext = location.pathname.includes('whv-employer-short-profile');
+  const isWHVContext = location.pathname.includes('whv-employer-short-profile') || location.pathname.includes('/whv/employer/profile');
 
   // Mock employer data - in real app this would come from API
   const employerProfiles: { [key: string]: EmployerProfile } = {
@@ -83,7 +83,12 @@ const EmployerProfileCard: React.FC = () => {
   const handleViewJobs = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
-    navigate(`/employer/jobs/${employer.id}?from=${fromPage || 'profile'}&tab=${tab || ''}`);
+    
+    if (isWHVContext) {
+      navigate(`/whv/employer/jobs/${employer.id}?from=whv-employer-profile&tab=${tab || ''}`);
+    } else {
+      navigate(`/employer/jobs/${employer.id}?from=${fromPage || 'profile'}&tab=${tab || ''}`);
+    }
   };
 
   const handleBackNavigation = () => {

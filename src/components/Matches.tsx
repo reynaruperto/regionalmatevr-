@@ -102,9 +102,9 @@ const Matches: React.FC = () => {
   ];
 
   const handleViewProfile = (employerId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/whv-employer-short-profile/${employerId}`;
+    const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
     const tab = isMutualMatch ? 'matches' : activeTab;
-    navigate(`${route}?from=matches&tab=${tab}`);
+    navigate(`${route}?from=whv-matches&tab=${tab}`);
   };
 
   const currentEmployers = activeTab === 'topRecommended' ? topRecommendedEmployers : matches;
