@@ -200,10 +200,10 @@ const EmployerProfileCard: React.FC = () => {
                   <div className="text-orange-500 text-xl">⚡</div>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  You liked {employer.name}'s profile!
+                  You hearted {employer.name}'s profile!
                 </h3>
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                  They'll be notified, and if they like you back, you'll unlock full profile access.
+                  They'll be notified, and if they heart you back, you'll unlock full profile access.
                 </p>
                 <Button
                   onClick={handleCloseLikeModal}
