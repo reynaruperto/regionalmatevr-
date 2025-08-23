@@ -53,12 +53,12 @@ const EmployerSignInForm: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-gradient-to-b from-gray-200 to-gray-300 rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-50">
+          <div className="w-full h-full flex flex-col relative">
             
             {/* Header with back button */}
             <div className="flex items-center justify-between px-6 pt-16 pb-4">
@@ -73,25 +73,23 @@ const EmployerSignInForm: React.FC = () => {
               <div className="flex-1"></div>
             </div>
 
-            {/* Logo section */}
-            <div className="px-6 pt-4 pb-12">
-              <div className="flex justify-center">
-                <div className="bg-white p-6 rounded-3xl shadow-lg">
-                  <AustraliaIcon className="w-[108px] h-[108px]" />
-                </div>
-              </div>
-            </div>
-
             {/* Content */}
-            <div className="flex-1 flex items-center justify-center px-6">
+            <div className="flex-1 flex items-center justify-center px-6 pt-4">
               <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-lg">
+                
+                {/* Logo */}
+                <div className="flex justify-center mb-12">
+                  <div className="bg-white p-6 rounded-3xl shadow-lg">
+                    <AustraliaIcon className="w-[108px] h-[108px]" />
+                  </div>
+                </div>
 
-                {/* Sign In Form */}
+                {/* Login Form */}
                 <form onSubmit={handleSignIn} className="space-y-6">
-                  {/* Email Field */}
+                  {/* Email */}
                   <div>
                     <Input
-                      id="email"
+                      name="email"
                       type="email"
                       placeholder="Enter your email"
                       value={email}
@@ -101,10 +99,10 @@ const EmployerSignInForm: React.FC = () => {
                     />
                   </div>
 
-                  {/* Password Field */}
+                  {/* Password */}
                   <div className="relative">
                     <Input
-                      id="password"
+                      name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       value={password}
@@ -135,10 +133,11 @@ const EmployerSignInForm: React.FC = () => {
                 {/* Forgot Password */}
                 <div className="mt-6 text-center">
                   <button
+                    type="button"
                     onClick={handleForgotPassword}
                     className="text-base text-blue-500 hover:text-blue-700 underline font-medium"
                   >
-                    Forgot Password?
+                    Forgot password?
                   </button>
                 </div>
 
