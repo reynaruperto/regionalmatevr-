@@ -81,7 +81,9 @@ const EmployerProfileCard: React.FC = () => {
   };
 
   const handleViewJobs = () => {
-    navigate(`/employer/jobs/${employer.id}`);
+    const fromPage = searchParams.get('from');
+    const tab = searchParams.get('tab');
+    navigate(`/employer/jobs/${employer.id}?from=${fromPage || 'profile'}&tab=${tab || ''}`);
   };
 
   const handleBackNavigation = () => {
