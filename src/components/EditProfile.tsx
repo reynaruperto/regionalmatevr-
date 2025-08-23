@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,8 +15,31 @@ const EditProfile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profilePhoto, setProfilePhoto] = useState<string>('/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png');
   const [profileVisible, setProfileVisible] = useState(true);
-  const [name, setName] = useState('Peter Parker');
+  
+  // Basic Info
+  const [givenName, setGivenName] = useState('Peter');
+  const [familyName, setFamilyName] = useState('Parker');
   const [email, setEmail] = useState('peterparker@gmail.com');
+  
+  // Address Info
+  const [addressLine1, setAddressLine1] = useState('22 Valley St');
+  const [suburb, setSuburb] = useState('Spring Hill');
+  const [city, setCity] = useState('Brisbane');
+  const [state, setState] = useState('Queensland');
+  const [postCode, setPostCode] = useState('4000');
+  
+  // Work Info
+  const [willingToRelocate, setWillingToRelocate] = useState('Yes, anywhere in QLD/NSW');
+  const [availableStartDate, setAvailableStartDate] = useState('Sep 2025');
+  const [preferredIndustry, setPreferredIndustry] = useState('Agriculture and Farming');
+  const [licenses, setLicenses] = useState("Driver's License, First Aid");
+  const [workExperiences, setWorkExperiences] = useState('2020-2025: Farm Attendant - VillaFarm\n2019-2020: Marketing Head - Workspace\n2007-2019: Winery Assistant - BodegaWinery');
+  
+  // Personal Info
+  const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
+  const [nationality, setNationality] = useState('Argentina');
+  const [visaType, setVisaType] = useState('417 (Working Holiday)');
+  const [visaExpiry, setVisaExpiry] = useState('Sep 2026');
 
   useEffect(() => {
     // Load profile photo from localStorage
@@ -85,7 +110,7 @@ const EditProfile: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <h1 className="text-lg font-semibold text-gray-900">{name}</h1>
+                <h1 className="text-lg font-semibold text-gray-900">{givenName} {familyName}</h1>
                 <button 
                   onClick={handleSave}
                   className="flex items-center text-orange-500 font-medium underline"
@@ -160,28 +185,207 @@ const EditProfile: React.FC = () => {
               </div>
 
               {/* Form Fields */}
-              <div className="space-y-4">
-                {/* Name */}
-                <div>
-                  <Label htmlFor="name" className="text-gray-600 mb-2 block">Name</Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
+              <div className="space-y-6">
+                {/* Basic Information Section */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-gray-900 mb-4">Basic Information</h3>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="givenName" className="text-gray-600 mb-2 block">Given Name</Label>
+                        <Input
+                          id="givenName"
+                          value={givenName}
+                          onChange={(e) => setGivenName(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="familyName" className="text-gray-600 mb-2 block">Family Name</Label>
+                        <Input
+                          id="familyName"
+                          value={familyName}
+                          onChange={(e) => setFamilyName(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="email" className="text-gray-600 mb-2 block">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="h-12 rounded-xl border-gray-200 bg-white"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="nationality" className="text-gray-600 mb-2 block">Nationality</Label>
+                        <Input
+                          id="nationality"
+                          value={nationality}
+                          onChange={(e) => setNationality(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="languages" className="text-gray-600 mb-2 block">Languages</Label>
+                        <Input
+                          id="languages"
+                          value={languages}
+                          onChange={(e) => setLanguages(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Email */}
-                <div>
-                  <Label htmlFor="email" className="text-gray-600 mb-2 block">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 rounded-xl border-gray-200 bg-white"
-                  />
+                {/* Location Information Section */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-gray-900 mb-4">Current Location</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">Address Line 1</Label>
+                      <Input
+                        id="addressLine1"
+                        value={addressLine1}
+                        onChange={(e) => setAddressLine1(e.target.value)}
+                        className="h-12 rounded-xl border-gray-200 bg-white"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="suburb" className="text-gray-600 mb-2 block">Suburb</Label>
+                        <Input
+                          id="suburb"
+                          value={suburb}
+                          onChange={(e) => setSuburb(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="city" className="text-gray-600 mb-2 block">City</Label>
+                        <Input
+                          id="city"
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="state" className="text-gray-600 mb-2 block">State</Label>
+                        <Input
+                          id="state"
+                          value={state}
+                          onChange={(e) => setState(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="postCode" className="text-gray-600 mb-2 block">Post Code</Label>
+                        <Input
+                          id="postCode"
+                          value={postCode}
+                          onChange={(e) => setPostCode(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visa Information Section */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-gray-900 mb-4">Visa Information</h3>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="visaType" className="text-gray-600 mb-2 block">Visa Type</Label>
+                        <Input
+                          id="visaType"
+                          value={visaType}
+                          onChange={(e) => setVisaType(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="visaExpiry" className="text-gray-600 mb-2 block">Visa Expiry</Label>
+                        <Input
+                          id="visaExpiry"
+                          value={visaExpiry}
+                          onChange={(e) => setVisaExpiry(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Work Information Section */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-gray-900 mb-4">Work Information</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="willingToRelocate" className="text-gray-600 mb-2 block">Willing to Relocate</Label>
+                      <Input
+                        id="willingToRelocate"
+                        value={willingToRelocate}
+                        onChange={(e) => setWillingToRelocate(e.target.value)}
+                        className="h-12 rounded-xl border-gray-200 bg-white"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="availableStartDate" className="text-gray-600 mb-2 block">Available Start Date</Label>
+                        <Input
+                          id="availableStartDate"
+                          value={availableStartDate}
+                          onChange={(e) => setAvailableStartDate(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="preferredIndustry" className="text-gray-600 mb-2 block">Preferred Industry</Label>
+                        <Input
+                          id="preferredIndustry"
+                          value={preferredIndustry}
+                          onChange={(e) => setPreferredIndustry(e.target.value)}
+                          className="h-12 rounded-xl border-gray-200 bg-white"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="licenses" className="text-gray-600 mb-2 block">Licenses / Certificates</Label>
+                      <Input
+                        id="licenses"
+                        value={licenses}
+                        onChange={(e) => setLicenses(e.target.value)}
+                        className="h-12 rounded-xl border-gray-200 bg-white"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="workExperiences" className="text-gray-600 mb-2 block">Work Experience</Label>
+                      <Textarea
+                        id="workExperiences"
+                        value={workExperiences}
+                        onChange={(e) => setWorkExperiences(e.target.value)}
+                        className="min-h-24 rounded-xl border-gray-200 bg-white resize-none"
+                        placeholder="List your work experience..."
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
