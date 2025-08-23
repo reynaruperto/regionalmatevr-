@@ -58,6 +58,9 @@ import WHVPhotoUpload from "./pages/WHVPhotoUpload";
 import WHVLogin from "./pages/WHVLogin";
 import WHVAccountConfirmation from "./pages/WHVAccountConfirmation";
 import WHVBrowseEmployers from "./pages/WHVBrowseEmployers";
+import WHVEmployerProfile from "./pages/WHVEmployerProfile";
+import WHVEmployerJobs from "./pages/WHVEmployerJobs";
+import WHVJobDetails from "./pages/WHVJobDetails";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
 
@@ -123,7 +126,9 @@ const App = () => (
         <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
         <Route path="/whv/login" element={<WHVLogin />} />
         <Route path="/whv/account-confirmation" element={<WHVAccountConfirmation />} />
-          <Route path="/whv-employer-short-profile/:id" element={<EmployerProfile />} />
+          <Route path="/whv/employer/profile/:id" element={<WHVEmployerProfile />} />
+          <Route path="/whv/employer/jobs/:employerId" element={<WHVEmployerJobs />} />
+          <Route path="/whv/job-details/:employerId/:jobId" element={<WHVJobDetails />} />
           <Route path="/whv/browse-employers" element={<WHVBrowseEmployers />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
