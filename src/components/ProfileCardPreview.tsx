@@ -24,13 +24,13 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
-                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
+                <div className="bg-orange-500 text-white text-center py-4 rounded-2xl mb-6">
                   <h2 className="text-xl font-bold">PETER</h2>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
                     <img 
                       src="/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png" 
                       alt="Profile" 
@@ -74,9 +74,6 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
-                    Message
-                  </Button>
                   <Button className="w-full bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 justify-center">
                     <span className="font-semibold">Heart to Match</span>
                     <div className="bg-orange-500 rounded-full p-2">
