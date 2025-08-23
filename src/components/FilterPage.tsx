@@ -354,7 +354,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
           <div className="bg-white border-t p-4 flex-shrink-0 rounded-b-[48px]">
             <Button
               onClick={applyFilters}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
             >
               Confirm
             </Button>
