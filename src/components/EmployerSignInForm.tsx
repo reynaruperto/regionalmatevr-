@@ -13,6 +13,7 @@ const EmployerSignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,10 +38,7 @@ const EmployerSignInForm: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    toast({
-      title: "Password Reset Email Sent",
-      description: "Please check your email for password reset instructions",
-    });
+    setShowForgotPasswordModal(true);
   };
 
   const handleGetStarted = () => {
@@ -137,6 +135,33 @@ const EmployerSignInForm: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Forgot Password Modal */}
+            {showForgotPasswordModal && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6">
+                <div className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4 shadow-xl">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Password Reset Email Sent
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-6">
+                      Please check your email for password reset instructions
+                    </p>
+                    <Button 
+                      onClick={() => setShowForgotPasswordModal(false)}
+                      className="w-full h-12 rounded-xl bg-slate-800 hover:bg-slate-900 text-white"
+                    >
+                      OK
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
 
           </div>
         </div>
