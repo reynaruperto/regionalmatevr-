@@ -1,7 +1,7 @@
-import MutualMatchProfile from '@/components/MutualMatchProfile';
+import CandidateFullProfileCard from '@/components/CandidateFullProfileCard';
 
 const MutualMatchProfilePage = () => {
-  return <MutualMatchProfile />;
+  return <CandidateFullProfileCard />;
 };
 
 export default MutualMatchProfilePage;

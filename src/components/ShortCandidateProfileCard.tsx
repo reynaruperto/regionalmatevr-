@@ -3,11 +3,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
-interface FullCandidateProfileProps {
+
+interface ShortCandidateProfileCardProps {
   candidateId: string;
 }
 
-const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId }) => {
+const ShortCandidateProfileCard: React.FC<ShortCandidateProfileCardProps> = ({ candidateId }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [showLikeModal, setShowLikeModal] = useState(false);
@@ -287,4 +288,4 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
   );
 };
 
-export default FullCandidateProfile;
+export default ShortCandidateProfileCard;

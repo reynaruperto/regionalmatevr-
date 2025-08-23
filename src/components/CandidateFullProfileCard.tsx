@@ -40,7 +40,7 @@ interface MutualMatchCandidate {
   };
 }
 
-const MutualMatchProfile: React.FC = () => {
+const CandidateFullProfileCard: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -50,56 +50,57 @@ const MutualMatchProfile: React.FC = () => {
     '4': {
       id: '4',
       name: 'Thomas',
-      profileImage: '/lovable-uploads/140ed1a1-12da-4d98-8f41-9aed46049366.png',
-      quote: '"I\'m a motivated WHV holder who enjoys outdoor work and connecting with people. Looking to gain hands-on experience in agriculture while also working in hospitality to meet new people and learn Australian culture."',
-      nationality: 'United States of America',
-      location: 'Gold Coast, QLD 4221',
-      willingToRelocate: 'Yes',
-      industry: 'Agriculture and Farming, Hospitality',
-      visa: '462',
-      visaExpiry: '02/02/2026',
+      profileImage: '/lovable-uploads/31ab3bd8-4685-4b36-b627-12afe6cdafd6.png',
+      quote: '"Ready to work hard and experience the real Australia! I bring European farming expertise and enthusiasm for learning new agricultural techniques."',
+      nationality: 'France',
+      location: 'Cairns, QLD 4870',
+      willingToRelocate: 'Yes, anywhere in QLD/NT',
+      industry: 'Agriculture and Farming, Construction',
+      visa: '417',
+      visaExpiry: 'Aug 2026',
       experience: [
         {
-          startDate: '01/2022',
-          endDate: '12/2025',
-          position: 'Hotel Assistant',
-          company: 'Milton Group',
-          location: 'Gold Coast, QLD'
-        },
-        {
-          startDate: '03/2019',
-          endDate: '11/2024',
+          startDate: '03/2020',
+          endDate: '12/2024',
           position: 'Farm Supervisor',
-          company: '360 Farmers',
-          location: 'Toowoomba, QLD'
+          company: 'Bordeaux Organic Farms',
+          location: 'Bordeaux, France'
         },
         {
-          startDate: '05/2011',
-          endDate: '02/2015',
-          position: 'Agronomist',
-          company: '360 Farmers',
-          location: 'Toowoomba, QLD'
+          startDate: '06/2019',
+          endDate: '02/2020',
+          position: 'Vineyard Worker',
+          company: 'Château Margaux',
+          location: 'Margaux, France'
+        },
+        {
+          startDate: '04/2018',
+          endDate: '05/2019',
+          position: 'Construction Assistant',
+          company: 'Rural Construction Co.',
+          location: 'Lyon, France'
         }
       ],
       licenses: [
+        'French Driver\'s License (International)',
         'Forklift License',
-        'Driver\'s License'
+        'Organic Farming Certificate'
       ],
-      availability: 'August 2025 (6 months)',
-      stayDuration: '6 months',
-      languages: ['English', 'Spanish'],
-      workExperience: 'I have 8+ years of experience in hospitality and agriculture. Started as a hotel assistant and worked my way up to farm supervisor managing teams of 15+ people.',
-      skillsInterests: 'Strong leadership skills, equipment operation, guest services, team management, problem-solving, and outdoor activities.',
-      whyAustralia: 'I chose Australia for its amazing agricultural opportunities and multicultural environment. I want to learn sustainable farming practices and experience the unique Australian work culture.',
-      workPreferences: 'Farm work, hospitality management, equipment operation',
+      availability: 'February 2025 (18 months)',
+      stayDuration: '18 months',
+      languages: ['French (Native)', 'English (Fluent)', 'Spanish (Basic)'],
+      workExperience: 'I have 4 years of experience working in organic farms and vineyards in France. I started as a seasonal worker and became a team supervisor. I also have construction experience helping with farm building projects and maintenance. I love working with my hands and being outdoors.',
+      skillsInterests: 'Organic farming, vineyard maintenance, basic construction, equipment operation, team leadership, outdoor work, learning new agricultural techniques, and experiencing different farming methods.',
+      whyAustralia: 'I chose Australia because of its reputation for innovative farming techniques and diverse agricultural opportunities. I want to learn about Australian farming methods, work in different climates, and experience the multicultural work environment while contributing my European farming knowledge.',
+      workPreferences: 'Agriculture & Farming, Construction',
       contactDetails: {
-        email: 'tomasedison@hotmail.com',
-        phone: '+61 400 123 456'
+        email: 'thomas.dubois@email.com',
+        phone: '+61 456 789 012'
       },
       jobReference: {
-        name: 'Charles Ratmcelor - HR Manager (360 Farmers)',
-        contact: 'charles@360farm.com',
-        phone: '+1222 333 4444'
+        name: 'Marie Dubois - Farm Manager (Bordeaux Organic Farms)',
+        contact: 'marie.dubois@bordeauxfarms.fr',
+        phone: '+33 5 56 00 00 00'
       }
     },
     '5': {
@@ -408,4 +409,4 @@ const MutualMatchProfile: React.FC = () => {
   );
 };
 
-export default MutualMatchProfile;
+export default CandidateFullProfileCard;
