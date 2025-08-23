@@ -21,6 +21,24 @@ interface EmployerFullProfile {
   establishedYear: string;
   certifications: string[];
   workEnvironment: string;
+  // Job details
+  abn: string;
+  jobOpenings: {
+    title: string;
+    status: string;
+    period?: string;
+  }[];
+  visaAcceptance: string[];
+  experienceSkills: string[];
+  licenses: string[];
+  salary: {
+    hourlyRate: string;
+    overtimeRate: string;
+    inclusions: string[];
+  };
+  employmentType: string;
+  duration: string;
+  extensions: string;
 }
 
 const WHVEmployerFullProfileCard: React.FC = () => {
@@ -48,7 +66,33 @@ const WHVEmployerFullProfileCard: React.FC = () => {
       companySize: '25-40 employees',
       establishedYear: '2010',
       certifications: ['Organic Certification Australia', 'Sustainable Agriculture Initiative', 'Fair Work Standards'],
-      workEnvironment: 'Outdoor sustainable farming in beautiful northern NSW. Modern equipment and techniques with focus on environmental responsibility and worker wellbeing.'
+      workEnvironment: 'Outdoor sustainable farming in beautiful northern NSW. Modern equipment and techniques with focus on environmental responsibility and worker wellbeing.',
+      abn: '22 333 444 555',
+      jobOpenings: [
+        { title: 'Farm Assistant', status: 'Current Opening' },
+        { title: 'Seasonal Harvest Workers', status: 'September-December', period: 'September-December' },
+        { title: 'Packing & Sorting Operators', status: 'Available' }
+      ],
+      visaAcceptance: ['WHV (subclass 417 & 462) accepted'],
+      experienceSkills: [
+        'Prior farm or outdoor work (preferred, not required)',
+        'Physically fit for manual labor',
+        'Team-oriented, punctual, safety-conscious'
+      ],
+      licenses: ['Forklift License (advantage)', 'Drivers License (advantage)'],
+      salary: {
+        hourlyRate: 'AUD $28.26 (per Fair Work casual rate, Agriculture Award)',
+        overtimeRate: 'Overtime & Penalty Rates: Paid as per Fair Work standards',
+        inclusions: [
+          'Accommodation available on-site at discounted rates',
+          'Weekly transport to town provided',
+          'Farm safety training included',
+          'Eligible work for 2nd & 3rd year WHV extension'
+        ]
+      },
+      employmentType: 'Seasonal, Full-time (6 months)',
+      duration: 'Extensions possible based on performance and farm needs',
+      extensions: 'Extensions possible based on performance and farm needs'
     },
     '5': {
       id: '5',
@@ -67,7 +111,34 @@ const WHVEmployerFullProfileCard: React.FC = () => {
       companySize: '80-120 employees',
       establishedYear: '2005',
       certifications: ['Tourism Industry Council', 'Hospitality Excellence Award', 'Green Tourism Certification'],
-      workEnvironment: 'Dynamic beachfront resort environment with international guests. Modern facilities and professional team culture focused on service excellence.'
+      workEnvironment: 'Dynamic beachfront resort environment with international guests. Modern facilities and professional team culture focused on service excellence.',
+      abn: '33 444 555 666',
+      jobOpenings: [
+        { title: 'Barista', status: 'Current Opening' },
+        { title: 'Front Desk Associate', status: 'Available' },
+        { title: 'Housekeeping Supervisor', status: 'Current Opening' }
+      ],
+      visaAcceptance: ['WHV (subclass 417 & 462) accepted'],
+      experienceSkills: [
+        'Hospitality experience preferred',
+        'Excellent English communication',
+        'Customer service focused',
+        'Professional presentation'
+      ],
+      licenses: ['RSA Certificate (Required)', 'Food Safety Certificate (advantage)'],
+      salary: {
+        hourlyRate: 'AUD $27.50 (per Hospitality Award)',
+        overtimeRate: 'Penalty rates apply for weekends and public holidays',
+        inclusions: [
+          'Staff accommodation available',
+          'Meal allowances during shifts',
+          'Staff gym and facilities access',
+          'Professional development programs'
+        ]
+      },
+      employmentType: 'Full-time, Permanent',
+      duration: 'Minimum 6 months commitment',
+      extensions: 'Career progression opportunities available'
     },
     '6': {
       id: '6',
@@ -86,14 +157,38 @@ const WHVEmployerFullProfileCard: React.FC = () => {
       companySize: '12-18 employees',
       establishedYear: '1987',
       certifications: ['Australian Dairy Standards', 'Animal Welfare Certification', 'Sustainable Farming Practices'],
-      workEnvironment: 'Traditional dairy farm with modern equipment on beautiful Sunshine Coast. Close-knit team environment with focus on quality dairy production and animal welfare.'
+      workEnvironment: 'Traditional dairy farm with modern equipment on beautiful Sunshine Coast. Close-knit team environment with focus on quality dairy production and animal welfare.',
+      abn: '44 555 666 777',
+      jobOpenings: [
+        { title: 'Dairy Hand', status: 'Current Opening' },
+        { title: 'Farm Maintenance', status: 'Available' },
+        { title: 'Livestock Technician', status: 'Current Opening' }
+      ],
+      visaAcceptance: ['WHV (subclass 417 & 462) accepted'],
+      experienceSkills: [
+        'Farm work experience preferred',
+        'Early morning availability (4:30 AM starts)',
+        'Animal handling experience (advantage)',
+        'Mechanical aptitude helpful'
+      ],
+      licenses: ['Drivers License (Required)', 'Chemical Handling Certificate (provided)'],
+      salary: {
+        hourlyRate: 'AUD $30.15 (per Pastoral Award)',
+        overtimeRate: 'Overtime rates apply after 38 hours per week',
+        inclusions: [
+          'On-site cottage accommodation',
+          'Fresh dairy products included',
+          'Equipment operation training',
+          'Eligible for 2nd year visa extension'
+        ]
+      },
+      employmentType: 'Full-time, Ongoing',
+      duration: '12 months minimum commitment',
+      extensions: 'Long-term opportunities for suitable candidates'
     }
   };
 
   const employer = employerProfiles[id || '1'];
-
-  console.log('WHVEmployerFullProfileCard - ID:', id, 'Employer found:', !!employer, 'All IDs:', Object.keys(employerProfiles));
-  console.log('Current URL should be:', window.location.pathname);
 
   const handleBackNavigation = () => {
     const fromPage = searchParams.get('from');
@@ -104,21 +199,6 @@ const WHVEmployerFullProfileCard: React.FC = () => {
     } else {
       navigate('/whv/matches?tab=matches');
     }
-  };
-
-  const handleContactEmployer = (method: 'email' | 'phone' | 'message') => {
-    if (method === 'email') {
-      window.location.href = `mailto:${employer.contactEmail}`;
-    } else if (method === 'phone') {
-      window.location.href = `tel:${employer.contactPhone}`;
-    } else {
-      // Handle messaging functionality
-      console.log('Open messaging with employer');
-    }
-  };
-
-  const handleViewJobs = () => {
-    navigate(`/whv/employer/jobs/${id}?from=whv-full-profile&tab=matches`);
   };
 
   if (!employer) {
@@ -234,14 +314,81 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                 </div>
               </div>
 
-              {/* View Jobs Button */}
-              <div className="px-4 mb-4">
-                <Button
-                  onClick={handleViewJobs}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2"
-                >
-                  View Available Jobs
-                </Button>
+              {/* Job Details Section */}
+              <div className="px-4 mb-6 bg-blue-50 rounded-lg p-4 mx-4">
+                <h3 className="font-semibold text-gray-900 mb-3 text-center">Available Job Positions</h3>
+                
+                {/* ABN */}
+                <div className="mb-3">
+                  <span className="font-semibold text-gray-900">ABN: </span>
+                  <span className="text-gray-700">{employer.abn}</span>
+                </div>
+
+                {/* Job Openings */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Job Openings / Roles:</h4>
+                  <ul className="space-y-1">
+                    {employer.jobOpenings.map((opening, index) => (
+                      <li key={index} className="text-sm text-gray-700">
+                        • {opening.title} ({opening.status}){opening.period && ` - ${opening.period}`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Visa Acceptance */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Visa Acceptance:</h4>
+                  <ul className="space-y-1">
+                    {employer.visaAcceptance.map((visa, index) => (
+                      <li key={index} className="text-sm text-gray-700">• {visa}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Experience / Skills */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Experience Preferred / Skills Sought:</h4>
+                  <ul className="space-y-1">
+                    {employer.experienceSkills.map((skill, index) => (
+                      <li key={index} className="text-sm text-gray-700">• {skill}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Licenses */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Licenses / Certificates (Preferred):</h4>
+                  <ul className="space-y-1">
+                    {employer.licenses.map((license, index) => (
+                      <li key={index} className="text-sm text-gray-700">• {license}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Salary & Inclusions */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Salary & Inclusions:</h4>
+                  <div className="space-y-1 text-sm text-gray-700">
+                    <div>• <span className="font-medium">Hourly Rate:</span> {employer.salary.hourlyRate}</div>
+                    <div>• {employer.salary.overtimeRate}</div>
+                    <div>• <span className="font-medium">Inclusions:</span></div>
+                    <ul className="ml-4 space-y-1">
+                      {employer.salary.inclusions.map((inclusion, index) => (
+                        <li key={index}>• {inclusion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Employment Type */}
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-2">Employment Type / Duration:</h4>
+                  <div className="space-y-1 text-sm text-gray-700">
+                    <div>• {employer.employmentType}</div>
+                    <div>• {employer.extensions}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
