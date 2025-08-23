@@ -62,7 +62,7 @@ const EmployerEditProfile: React.FC = () => {
   };
 
   const handlePreviewProfile = () => {
-    navigate('/profile-card-preview');
+    navigate('/profile-preview');
   };
 
   return (
