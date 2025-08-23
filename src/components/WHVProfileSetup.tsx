@@ -13,7 +13,6 @@ const WHVProfileSetup: React.FC = () => {
     nationality: '',
     visaType: '',
     visaExpiryDate: '',
-    countryCode: '',
     phoneNumber: ''
   });
 
@@ -35,46 +34,6 @@ const WHVProfileSetup: React.FC = () => {
     '462 Second Year Extension',
     '417 Third Year Extension',
     '462 Third Year Extension'
-  ];
-
-  // Country codes for phone numbers
-  const countryCodes = [
-    { code: '+61', country: 'Australia', flag: '🇦🇺' },
-    { code: '+1', country: 'United States', flag: '🇺🇸' },
-    { code: '+1', country: 'Canada', flag: '🇨🇦' },
-    { code: '+44', country: 'United Kingdom', flag: '🇬🇧' },
-    { code: '+33', country: 'France', flag: '🇫🇷' },
-    { code: '+49', country: 'Germany', flag: '🇩🇪' },
-    { code: '+81', country: 'Japan', flag: '🇯🇵' },
-    { code: '+82', country: 'South Korea', flag: '🇰🇷' },
-    { code: '+54', country: 'Argentina', flag: '🇦🇷' },
-    { code: '+43', country: 'Austria', flag: '🇦🇹' },
-    { code: '+32', country: 'Belgium', flag: '🇧🇪' },
-    { code: '+56', country: 'Chile', flag: '🇨🇱' },
-    { code: '+420', country: 'Czech Republic', flag: '🇨🇿' },
-    { code: '+45', country: 'Denmark', flag: '🇩🇰' },
-    { code: '+372', country: 'Estonia', flag: '🇪🇪' },
-    { code: '+358', country: 'Finland', flag: '🇫🇮' },
-    { code: '+852', country: 'Hong Kong', flag: '🇭🇰' },
-    { code: '+36', country: 'Hungary', flag: '🇭🇺' },
-    { code: '+353', country: 'Ireland', flag: '🇮🇪' },
-    { code: '+972', country: 'Israel', flag: '🇮🇱' },
-    { code: '+39', country: 'Italy', flag: '🇮🇹' },
-    { code: '+371', country: 'Latvia', flag: '🇱🇻' },
-    { code: '+370', country: 'Lithuania', flag: '🇱🇹' },
-    { code: '+352', country: 'Luxembourg', flag: '🇱🇺' },
-    { code: '+356', country: 'Malta', flag: '🇲🇹' },
-    { code: '+31', country: 'Netherlands', flag: '🇳🇱' },
-    { code: '+47', country: 'Norway', flag: '🇳🇴' },
-    { code: '+48', country: 'Poland', flag: '🇵🇱' },
-    { code: '+351', country: 'Portugal', flag: '🇵🇹' },
-    { code: '+421', country: 'Slovakia', flag: '🇸🇰' },
-    { code: '+386', country: 'Slovenia', flag: '🇸🇮' },
-    { code: '+34', country: 'Spain', flag: '🇪🇸' },
-    { code: '+46', country: 'Sweden', flag: '🇸🇪' },
-    { code: '+886', country: 'Taiwan', flag: '🇹🇼' },
-    { code: '+90', country: 'Turkey', flag: '🇹🇷' },
-    { code: '+598', country: 'Uruguay', flag: '🇺🇾' }
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,14 +69,14 @@ const WHVProfileSetup: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-email-confirmation')}
+                onClick={() => navigate('/whv-onboarding')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">3/6</span>
+                <span className="text-sm font-medium text-gray-600">2/5</span>
               </div>
             </div>
           </div>
@@ -197,30 +156,16 @@ const WHVProfileSetup: React.FC = () => {
                 <Label htmlFor="phoneNumber" className="text-base font-medium text-gray-700">
                   Phone Number
                 </Label>
-                <div className="flex gap-2">
-                  <Select onValueChange={(value) => handleSelectChange('countryCode', value)}>
-                    <SelectTrigger className="w-32 h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="+61 🇦🇺" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {countryCodes.map((item) => (
-                        <SelectItem key={`${item.code}-${item.country}`} value={item.code} className="hover:bg-gray-100">
-                          {item.code} {item.flag}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    type="tel"
-                    required
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    className="flex-1 h-12 bg-gray-100 border-0 text-gray-900"
-                    placeholder="492 333 444"
-                  />
-                </div>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  required
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="+61 492 333 444"
+                />
               </div>
 
               <div className="pt-8">

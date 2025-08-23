@@ -28,11 +28,7 @@ const WHVAboutYou: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('WHV About You:', formData);
-    navigate('/whv-photo-upload');
-  };
-
-  const handleSkip = () => {
-    navigate('/whv-photo-upload');
+    navigate('/whv-profile-setup');
   };
 
   return (
@@ -47,14 +43,14 @@ const WHVAboutYou: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-current-address')}
+                onClick={() => navigate('/whv-onboarding')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">About You</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">5/6</span>
+                <span className="text-sm font-medium text-gray-600">2/5</span>
               </div>
             </div>
           </div>
@@ -156,20 +152,12 @@ const WHVAboutYou: React.FC = () => {
                 />
               </div>
 
-              <div className="pt-8 space-y-3">
+              <div className="pt-8">
                 <Button 
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
                   Continue →
-                </Button>
-                <Button 
-                  type="button"
-                  onClick={handleSkip}
-                  variant="ghost"
-                  className="w-full h-12 text-gray-600 hover:text-gray-800"
-                >
-                  Skip for now
                 </Button>
               </div>
             </form>

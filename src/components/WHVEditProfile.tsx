@@ -276,17 +276,6 @@ const WHVEditProfile: React.FC = () => {
                 </div>
               </div>
 
-              {/* Preview Profile Card Button */}
-              <div className="mt-6 mb-6">
-                <Button 
-                  onClick={() => navigate('/profile-preview')}
-                  variant="outline"
-                  className="w-full h-12 rounded-xl border-orange-500 text-orange-500 hover:bg-orange-50"
-                >
-                  Preview Profile Card
-                </Button>
-              </div>
-
               <div className="h-20"></div>
             </div>
           </div>
