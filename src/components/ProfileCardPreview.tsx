@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,115 +15,85 @@ const ProfileCardPreview: React.FC = () => {
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-100">
+          <div className="w-full h-full flex flex-col relative bg-gray-200">
             
-            {/* Header */}
-            <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <button onClick={() => navigate('/whv-edit-profile')}>
-                  <ArrowLeft size={24} className="text-gray-600" />
-                </button>
-                <h1 className="text-lg font-medium text-gray-900">
-                  Profile Preview
-                </h1>
-              </div>
-            </div>
-            
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col items-center">
+            {/* Content */}
+            <div className="flex-1 px-6 pt-16 flex flex-col items-center justify-center">
               
               {/* Profile Card */}
-              <div className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-lg">
+              <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg">
                 
-                {/* Header with Name */}
-                <div className="bg-orange-500 text-white text-center py-4 rounded-xl mb-6">
+                {/* WHV Header */}
+                <div className="bg-orange-500 text-white text-center py-4 rounded-2xl mb-6">
                   <h2 className="text-xl font-bold">PETER</h2>
+                  <p className="text-sm opacity-90">Working Holiday Visa</p>
                 </div>
 
-                {/* Profile Photo */}
+                {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <img
-                    src="/lovable-uploads/7911e593-bbbd-462d-9d13-95b476c84a6f.png"
-                    alt="Peter"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-gray-800"
-                  />
+                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
+                    <img 
+                      src="/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png" 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-800 text-center mb-6 leading-relaxed">
-                  Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD
-                </p>
-
-                {/* Details */}
-                <div className="space-y-3 text-sm mb-6">
-                  <div>
-                    <span className="font-semibold text-gray-900">Nationality: </span>
-                    <span className="text-gray-700">Argentina</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Location (Current / Preferred): </span>
-                    <span className="text-gray-700">Brisbane, QLD 4000</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Willing to Relocate: </span>
-                    <span className="text-gray-700">Yes, anywhere in QLD/NSW</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Visa Type & Expiry: </span>
-                    <span className="text-gray-700">417 (Working Holiday) - Expires Sep 2026</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Industry: </span>
-                    <span className="text-gray-700">Agriculture and Farming</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Experience / Skills:</span>
-                    <div className="mt-1 text-gray-700 leading-tight space-y-1">
-                      <div>2020-2025: Farm Attendant - VillaFarm</div>
-                      <div>2019-2020: Marketing Head - Workspace</div>
-                      <div>2007-2019: Winery Assistant - BodegaWinery</div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Licenses / Certificates: </span>
-                    <span className="text-gray-700">Driver's License, First Aid</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Availability (date, duration): </span>
-                    <span className="text-gray-700">Sep 2025 (8 months)</span>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-gray-900">Languages: </span>
-                    <span className="text-gray-700">Spanish (Native), English (Fluent)</span>
-                  </div>
-                </div>
-
-                {/* Premium Content Teaser */}
-                <div className="bg-gray-200 rounded-xl p-4 text-center mb-6">
-                  <p className="text-sm text-gray-600 font-medium">
-                    Full Details Unlocked if you both Match
+                <div className="text-center mb-6">
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    Experienced farm worker from Argentina<br />
+                    seeking opportunities in agriculture<br />
+                    and outdoor work
                   </p>
                 </div>
 
-                {/* Heart to Match Button */}
-                <div className="text-center">
-                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-gray-800 px-8 py-3 rounded-full text-white font-medium">
-                    <span>Heart to Match</span>
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                      <Heart size={16} className="text-white fill-white" />
+                {/* Details */}
+                <div className="space-y-2 text-sm mb-6">
+                  <div><span className="font-semibold">Nationality:</span> Argentina</div>
+                  <div><span className="font-semibold">Visa:</span> 462 (expires 01/01/2026)</div>
+                  <div><span className="font-semibold">Available from:</span> 10/10/2025</div>
+                  <div><span className="font-semibold">Location:</span> Brisbane, QLD</div>
+                  <div><span className="font-semibold">Industry Interest:</span> Agriculture & Farming</div>
+                  <div><span className="font-semibold">Willing to Relocate:</span> Yes</div>
+                </div>
+
+                {/* Locked Message */}
+                <div className="bg-gray-200 text-center py-3 rounded-xl mb-4">
+                  <p className="text-gray-600 text-sm">Full Profile Unlocked if you both Match</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
+                    View Profile
+                  </Button>
+                  <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
+                    <span className="text-orange-500 font-medium text-sm">Like to Match</span>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src="/lovable-uploads/e71624ef-9964-4e25-bd6d-239d2fc301b9.png" 
+                        alt="Like to Match" 
+                        className="w-8 h-10 object-contain"
+                      />
                     </div>
-                  </div>
+                  </button>
                 </div>
               </div>
 
+            </div>
+
+            {/* Back Button */}
+            <div className="absolute bottom-8 left-6">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 bg-white rounded-xl shadow-sm"
+                onClick={() => navigate('/whv-edit-profile')}
+              >
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
+              </Button>
             </div>
 
           </div>
