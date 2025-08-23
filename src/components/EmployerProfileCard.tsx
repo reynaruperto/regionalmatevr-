@@ -183,10 +183,10 @@ const EmployerProfileCard: React.FC = () => {
                 </Button>
                 <button
                   onClick={handleLikeEmployer}
-                  className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-900 to-orange-500 text-white rounded-lg hover:from-blue-800 hover:to-orange-600 transition-all shadow-md"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-800 to-orange-500 text-white rounded-full hover:from-slate-700 hover:to-orange-600 transition-all shadow-lg min-w-[160px] justify-center"
                 >
                   <span className="font-medium">Heart to Match</span>
-                  <Heart size={20} className="text-white" />
+                  <Heart size={20} className="text-white fill-white" />
                 </button>
               </div>
             </div>
