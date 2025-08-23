@@ -232,10 +232,11 @@ const WHVMatches: React.FC = () => {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              console.log('Heart button clicked!');
+                              console.log('MATCHES PAGE Heart button clicked for employer:', employer.id);
                               handleLikeEmployer(employer.id);
                             }}
-                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm relative z-10"
+                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-slate-700 to-slate-900 rounded-lg flex items-center justify-center hover:from-slate-600 hover:to-slate-800 transition-all duration-200 shadow-lg relative z-50 cursor-pointer"
+                            style={{ pointerEvents: 'auto' }}
                           >
                             <ThumbsUp size={16} className="text-white" />
                           </button>
