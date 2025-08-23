@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // Fixed ThumbsUp import
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
