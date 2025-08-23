@@ -228,44 +228,12 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
                 </div>
 
                 <div>
-                  <span className="font-semibold text-slate-800">Tell us about yourself:</span>
-                  <div className="mt-1 text-gray-700 text-sm">
-                    {candidate.workExperience}
-                  </div>
+                  <span className="font-semibold text-slate-800">Key Licenses:</span>
+                  <span className="text-gray-700 ml-1">{candidate.licenses.split(', ').slice(0, 2).join(', ')}</span>
                 </div>
 
                 <div>
-                  <span className="font-semibold text-slate-800">Skills & Interests:</span>
-                  <div className="mt-1 text-gray-700 text-sm">
-                    {candidate.skillsInterests}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Why Australia:</span>
-                  <div className="mt-1 text-gray-700 text-sm">
-                    {candidate.whyAustralia}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Work Experience:</span>
-                  <div className="mt-1 space-y-1">
-                    {candidate.experience.map((exp, index) => (
-                      <div key={index} className="text-gray-700 text-sm">
-                        • {exp.startDate} - {exp.endDate}: {exp.position} - {exp.company} - {exp.location}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Licenses / Certificates:</span>
-                  <span className="text-gray-700 ml-1">{candidate.licenses}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Availability (date, duration):</span>
+                  <span className="font-semibold text-slate-800">Availability:</span>
                   <span className="text-gray-700 ml-1">{candidate.availability}</span>
                 </div>
 
