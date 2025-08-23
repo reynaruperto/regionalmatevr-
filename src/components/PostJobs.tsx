@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import PostJobForm from '@/components/PostJobForm';
@@ -210,17 +211,19 @@ const PostJobs: React.FC = () => {
                       {/* Status and Actions */}
                       <div className="flex flex-col items-end gap-3">
                         
-                        {/* Status Toggle Button */}
-                        <button
-                          onClick={() => toggleJobStatus(job.id)}
-                          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                            job.status === 'Active' 
-                              ? 'bg-green-500 text-white hover:bg-green-600' 
-                              : 'bg-gray-400 text-white hover:bg-gray-500'
-                          }`}
-                        >
-                          {job.status}
-                        </button>
+                        {/* Status Toggle Switch */}
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${
+                            job.status === 'Active' ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {job.status}
+                          </span>
+                          <Switch
+                            checked={job.status === 'Active'}
+                            onCheckedChange={() => toggleJobStatus(job.id)}
+                            className="data-[state=checked]:bg-green-500"
+                          />
+                        </div>
 
                         {/* Action Buttons */}
                         <div className="flex gap-2">
