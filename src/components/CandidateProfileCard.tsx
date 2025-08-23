@@ -57,12 +57,12 @@ const CandidateProfileCard: React.FC<CandidateProfileCardProps> = ({ candidateId
   const handleCloseLikeModal = () => {
     setShowLikeModal(false);
     const fromPage = searchParams.get('from');
-    navigate(fromPage === 'matches' ? '/matches' : '/browse-candidates');
+    navigate(fromPage === 'matches' ? '/whv/matches' : '/browse-candidates');
   };
 
   const handleBackToBrowse = () => {
     const fromPage = searchParams.get('from');
-    navigate(fromPage === 'matches' ? '/matches' : '/browse-candidates');
+    navigate(fromPage === 'matches' ? '/whv/matches' : '/browse-candidates');
   };
 
   return (

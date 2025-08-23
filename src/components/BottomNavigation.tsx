@@ -24,7 +24,7 @@ const BottomNavigation: React.FC = () => {
     { id: 'profile', label: 'Profile', icon: User, path: '/whv/dashboard' },
     { id: 'browse', label: 'Browse Employers', icon: Briefcase, path: '/whv/browse-employers' },
     { id: 'matches', label: 'Matches', icon: Heart, path: '/whv/matches' },
-    { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
+    { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/whv/messages' },
   ];
 
   const navItems = isEmployerPage ? employerNavItems : whvNavItems;

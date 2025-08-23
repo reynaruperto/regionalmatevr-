@@ -93,7 +93,7 @@ const EmployerProfileCard: React.FC = () => {
           
           {/* Header */}
           <div className="px-4 py-3 flex-shrink-0">
-            <button onClick={() => navigate('/matches')}>
+            <button onClick={() => navigate('/employer/matches')}>
               <ArrowLeft size={24} className="text-gray-600" />
             </button>
           </div>
