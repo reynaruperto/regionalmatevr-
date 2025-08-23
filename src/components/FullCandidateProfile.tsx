@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-
+import { ArrowLeft, ThumbsUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 interface FullCandidateProfileProps {
   candidateId: string;
 }
@@ -9,6 +10,7 @@ interface FullCandidateProfileProps {
 const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [showLikeModal, setShowLikeModal] = useState(false);
 
   // Mock candidate data based on ID
   const getCandidateData = (id: string) => {
@@ -17,96 +19,49 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
         id: '1',
         name: 'Peter',
         profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png',
-        quote: '"I\'m passionate about agriculture and marketing, bringing experience from Argentina to help Australian farms grow their business and reach new markets."',
+        description: 'Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD',
         nationality: 'Argentina',
-        location: 'QLD - Bundaberg',
-        willingToRelocate: 'Yes',
-        industry: 'Agriculture, Marketing',
-        visa: '417 (Working Holiday)',
-        visaExpiry: '15/09/2026',
+        location: 'Brisbane, QLD 4000',
+        industry: 'Agriculture and Farming',
         experience: [
-          '2021-2024: Marketing Coordinator - AgriVentures Argentina',
-          '2020-2021: Farm Assistant - Mendoza Vineyards',
-          '2019-2020: Sales Representative - Buenos Aires Markets'
+          '2020-2025: Farm Attendant - VillaFarm',
+          '2019-2020: Marketing Head - Workspace',
+          '2007-2019: Winery Assistant - BodegaWinery'
         ],
-        licenses: [
-          'Driver\'s License',
-          'First Aid Certificate'
-        ],
-        availability: 'Available from Sep 2025 (8 months)',
-        contactDetails: {
-          email: 'peter.martinez@gmail.com',
-          phone: '+61 456 789 123'
-        },
-        jobReference: {
-          name: 'Carlos Rodriguez - Farm Manager (Mendoza Vineyards)',
-          contact: 'carlos@mendozavineyards.com.ar',
-          phone: '+54 9 261 123 4567'
-        }
+        licenses: 'N/A',
+        availability: 'Sep 2025'
       },
       '2': {
         id: '2',
         name: 'Daniel',
         profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png',
-        quote: '"German engineering meets Australian agriculture! I bring technical skills and strong work ethic to help build and maintain farm infrastructure."',
+        description: 'German backpacker with construction and agriculture experience, currently in Tamworth, NSW',
         nationality: 'Germany',
-        location: 'NSW - Tamworth',
-        willingToRelocate: 'Yes, within NSW/QLD',
+        location: 'Tamworth, NSW 2340',
         industry: 'Construction, Agriculture',
-        visa: '462 (Work and Holiday)',
-        visaExpiry: '22/10/2026',
         experience: [
-          '2020-2024: Construction Worker - Berlin Infrastructure GmbH',
+          '2020-2024: Construction Worker - Berlin Infrastructure',
           '2019-2020: Farm Equipment Technician - Bavaria Farms',
           '2018-2019: Apprentice Carpenter - Munich Construction'
         ],
-        licenses: [
-          'Driver\'s License',
-          'White Card (Construction)',
-          'Forklift License'
-        ],
-        availability: 'Available from Oct 2025 (12 months)',
-        contactDetails: {
-          email: 'daniel.mueller@gmail.com',
-          phone: '+61 423 567 890'
-        },
-        jobReference: {
-          name: 'Hans Weber - Site Supervisor (Berlin Infrastructure)',
-          contact: 'hans.weber@berlininfra.de',
-          phone: '+49 30 123 45678'
-        }
+        licenses: 'White Card, Forklift License',
+        availability: 'Oct 2025'
       },
       '3': {
         id: '3',
         name: 'Hannah',
         profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png',
-        quote: '"British hospitality expertise meets Australian agriculture! I love working with people and am excited to learn about farming while sharing great customer service."',
+        description: 'British hospitality professional exploring agriculture opportunities, currently in Mildura, VIC',
         nationality: 'United Kingdom',
-        location: 'VIC - Mildura',
-        willingToRelocate: 'Yes',
+        location: 'Mildura, VIC 3500',
         industry: 'Hospitality, Agriculture',
-        visa: '417 (Working Holiday)',
-        visaExpiry: '08/11/2026',
         experience: [
           '2021-2024: Restaurant Supervisor - London Bistro Chain',
           '2020-2021: Barista - Edinburgh Coffee House',
           '2019-2020: Hotel Receptionist - Manchester Grand Hotel'
         ],
-        licenses: [
-          'RSA (Responsible Service of Alcohol)',
-          'Food Safety Certificate',
-          'Driver\'s License'
-        ],
-        availability: 'Available from Nov 2025 (10 months)',
-        contactDetails: {
-          email: 'hannah.smith@hotmail.co.uk',
-          phone: '+61 467 123 456'
-        },
-        jobReference: {
-          name: 'James Thompson - Manager (London Bistro Chain)',
-          contact: 'j.thompson@londonbistro.co.uk',
-          phone: '+44 20 7123 4567'
-        }
+        licenses: 'RSA, Food Safety Certificate',
+        availability: 'Nov 2025'
       }
     };
     
@@ -114,6 +69,14 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
   };
 
   const candidate = getCandidateData(candidateId);
+
+  const handleLikeCandidate = () => {
+    setShowLikeModal(true);
+  };
+
+  const handleCloseLikeModal = () => {
+    setShowLikeModal(false);
+  };
 
   const handleBack = () => {
     const fromPage = searchParams.get('from');
@@ -126,129 +89,119 @@ const FullCandidateProfile: React.FC<FullCandidateProfileProps> = ({ candidateId
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      {/* iPhone 16 Pro Max Frame - Fixed dimensions */}
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Header - Fixed */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <button onClick={handleBack}>
-                <ArrowLeft size={24} className="text-gray-600" />
+          {/* Main content container */}
+          <div className="w-full h-full flex flex-col relative bg-gray-50">
+            
+            {/* Content */}
+            <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
+              
+              {/* Header with name */}
+              <div className="bg-slate-800 rounded-2xl p-4 mb-6 text-center">
+                <h1 className="text-xl font-bold text-white">{candidate.name.toUpperCase()}</h1>
+              </div>
+
+              {/* Profile Image */}
+              <div className="flex justify-center mb-6">
+                <div className="w-40 h-40 rounded-full border-4 border-slate-800 overflow-hidden">
+                  <img
+                    src={candidate.profileImage}
+                    alt={candidate.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Description */}
+              <div className="text-center mb-6">
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  {candidate.description}
+                </p>
+              </div>
+
+              {/* Details */}
+              <div className="space-y-4 text-sm mb-8">
+                <div>
+                  <span className="font-semibold text-slate-800">Nationality:</span>
+                  <span className="text-gray-700 ml-1">{candidate.nationality}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Location (Current / Preferred):</span>
+                  <span className="text-gray-700 ml-1">{candidate.location}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Industry:</span>
+                  <span className="text-gray-700 ml-1">{candidate.industry}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Experience / Skills:</span>
+                  <div className="mt-1 space-y-1">
+                    {candidate.experience.map((exp, index) => (
+                      <div key={index} className="text-gray-700 text-sm">
+                        {exp}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Licenses / Certificates:</span>
+                  <span className="text-gray-700 ml-1">{candidate.licenses}</span>
+                </div>
+
+                <div>
+                  <span className="font-semibold text-slate-800">Availability (date, duration):</span>
+                  <span className="text-gray-700 ml-1">{candidate.availability}</span>
+                </div>
+              </div>
+
+              {/* Full Details Message */}
+              <div className="bg-gray-200 rounded-2xl p-4 mb-6 text-center">
+                <p className="text-gray-600 text-sm">
+                  Full Details Unlocked if you both Match
+                </p>
+              </div>
+
+              {/* Like to Match Button */}
+              <div className="text-center mb-6">
+                <Button
+                  onClick={handleLikeCandidate}
+                  className="bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 mx-auto"
+                >
+                  <span className="font-semibold">Like to Match</span>
+                  <div className="bg-orange-500 rounded-full p-2">
+                    <ThumbsUp size={20} className="text-white" />
+                  </div>
+                </Button>
+              </div>
+            </div>
+
+            {/* Back Button */}
+            <div className="absolute bottom-8 left-6">
+              <button
+                onClick={handleBack}
+                className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center"
+              >
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
               </button>
-              <div className="flex items-center gap-3 flex-1">
-                <img
-                  src={candidate.profileImage}
-                  alt={candidate.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div className="bg-slate-800 text-white px-4 py-2 rounded-lg">
-                  <div className="text-sm font-medium">It's a Match</div>
-                  <div className="text-sm font-medium">with {candidate.name}</div>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-4">
-            {/* Quote */}
-            <div className="text-center mb-6">
-              <p className="text-sm text-gray-700 italic leading-relaxed">
-                {candidate.quote}
-              </p>
-            </div>
-
-            {/* Details */}
-            <div className="space-y-4 text-sm">
-              <div>
-                <span className="font-semibold text-gray-900">Nationality:</span>
-                <span className="text-gray-700 ml-1">{candidate.nationality}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Location (Current / Preferred):</span>
-                <span className="text-gray-700 ml-1">{candidate.location}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Willing to Relocate:</span>
-                <span className="text-gray-700 ml-1">{candidate.willingToRelocate}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Industry:</span>
-                <span className="text-gray-700 ml-1">{candidate.industry}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Visa:</span>
-                <span className="text-gray-700 ml-1">{candidate.visa}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Visa Expiry:</span>
-                <span className="text-gray-700 ml-1">{candidate.visaExpiry}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Experience / Skills:</span>
-                <div className="mt-1 space-y-1">
-                  {candidate.experience.map((exp, index) => (
-                    <div key={index} className="text-gray-700 text-sm ml-1">
-                      • {exp}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Licenses / Certificates:</span>
-                <div className="mt-1 space-y-1">
-                  {candidate.licenses.map((license, index) => (
-                    <div key={index} className="text-gray-700 text-sm ml-1">
-                      • {license}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Availability (date, duration):</span>
-                <span className="text-gray-700 ml-1">{candidate.availability}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-900">Contact Details (Unlocked):</span>
-                <div className="mt-1 space-y-1">
-                  <div className="text-gray-700 text-sm ml-1">
-                    Email: {candidate.contactDetails.email}
-                  </div>
-                  <div className="text-gray-700 text-sm ml-1">
-                    Phone: {candidate.contactDetails.phone}
-                  </div>
-                </div>
-              </div>
-
-              <div className="pb-4">
-                <span className="font-semibold text-gray-900">Job Reference:</span>
-                <div className="mt-1 space-y-1">
-                  <div className="text-gray-700 text-sm ml-1">
-                    {candidate.jobReference.name}
-                  </div>
-                  <div className="text-gray-700 text-sm ml-1">
-                    {candidate.jobReference.contact}
-                  </div>
-                  <div className="text-gray-700 text-sm ml-1">
-                    {candidate.jobReference.phone}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Like Confirmation Modal */}
+          <LikeConfirmationModal
+            candidateName={candidate.name}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>
