@@ -86,7 +86,7 @@ const WHVEmployerProfileCard: React.FC = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
     
-    if (fromPage === 'whv-matches') {
+    if (fromPage === 'whv-matches' || fromPage === 'matches') {
       navigate(`/whv/matches?tab=${tab || 'matches'}`);
     } else if (fromPage === 'whv-employer-jobs') {
       navigate(`/whv/employer/jobs/${employer.id}?from=whv-browse-employers&tab=${tab || ''}`);

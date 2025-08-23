@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
+import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface MatchEmployer {
   id: string;
@@ -20,6 +21,8 @@ const WHVMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<'topRecommended' | 'matches'>('topRecommended');
+  const [showLikeModal, setShowLikeModal] = useState(false);
+  const [likedEmployerName, setLikedEmployerName] = useState('');
 
   // Check URL parameters to set initial tab
   useEffect(() => {
@@ -105,6 +108,20 @@ const WHVMatches: React.FC = () => {
     const route = isMutualMatch ? `/full-candidate-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
     const tab = isMutualMatch ? 'matches' : activeTab;
     navigate(`${route}?from=whv-matches&tab=${tab}`);
+  };
+
+  const handleLikeEmployer = (employerId: string) => {
+    const allEmployers = [...topRecommendedEmployers, ...matches];
+    const employer = allEmployers.find(e => e.id === employerId);
+    if (employer) {
+      setLikedEmployerName(employer.name);
+      setShowLikeModal(true);
+    }
+  };
+
+  const handleCloseLikeModal = () => {
+    setShowLikeModal(false);
+    setLikedEmployerName('');
   };
 
   const currentEmployers = activeTab === 'topRecommended' ? topRecommendedEmployers : matches;
@@ -207,7 +224,10 @@ const WHVMatches: React.FC = () => {
                           {employer.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
                         </Button>
                         {!employer.isMutualMatch && (
-                          <button className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm">
+                          <button 
+                            onClick={() => handleLikeEmployer(employer.id)}
+                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-orange-400 to-slate-800 rounded-md flex items-center justify-center hover:from-orange-500 hover:to-slate-900 transition-all duration-200 shadow-sm"
+                          >
                             <ThumbsUp size={16} className="text-white" />
                           </button>
                         )}
@@ -223,6 +243,13 @@ const WHVMatches: React.FC = () => {
           <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
             <BottomNavigation />
           </div>
+
+          {/* Like Confirmation Modal */}
+          <LikeConfirmationModal
+            candidateName={likedEmployerName}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>
