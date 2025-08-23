@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import AustraliaIcon from './AustraliaIcon';
 
 const WHVLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -74,12 +75,8 @@ const WHVLogin: React.FC = () => {
                 
                 {/* Logo */}
                 <div className="flex justify-center mb-12">
-                  <div className="w-20 h-20 bg-white rounded-2xl shadow-sm flex items-center justify-center">
-                    <img 
-                      src="/lovable-uploads/26827d2b-5f93-4b4e-9f49-77007dda53ca.png" 
-                      alt="Regional Mate Logo" 
-                      className="w-10 h-10 object-contain"
-                    />
+                  <div className="bg-white p-6 rounded-3xl shadow-lg">
+                    <AustraliaIcon className="w-[108px] h-[108px]" />
                   </div>
                 </div>
 
