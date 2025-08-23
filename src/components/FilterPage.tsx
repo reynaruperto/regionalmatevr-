@@ -17,154 +17,151 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     experience: '',
     license: '',
     availability: '',
-    whvHolders: false,
+    whv417: false,
+    whv462: false,
+    studentVisa: false,
+    otherVisas: false,
     willingToRelocate: false,
   });
 
   const locations = [
-    // Queensland Regional Areas
-    'QLD - Bundaberg', 'QLD - Cairns', 'QLD - Charleville', 'QLD - Emerald',
-    'QLD - Gladstone', 'QLD - Mackay', 'QLD - Maryborough', 'QLD - Mount Isa',
-    'QLD - Rockhampton', 'QLD - Toowoomba', 'QLD - Townsville', 'QLD - Warwick',
+    // Queensland
+    'QLD - Brisbane', 'QLD - Gold Coast', 'QLD - Sunshine Coast', 'QLD - Cairns', 
+    'QLD - Townsville', 'QLD - Toowoomba', 'QLD - Mackay', 'QLD - Rockhampton',
+    'QLD - Bundaberg', 'QLD - Hervey Bay', 'QLD - Gladstone', 'QLD - Mount Isa',
+    'QLD - Emerald', 'QLD - Charleville', 'QLD - Maryborough', 'QLD - Warwick',
     
-    // New South Wales Regional Areas  
-    'NSW - Albury', 'NSW - Armidale', 'NSW - Bathurst', 'NSW - Broken Hill',
-    'NSW - Dubbo', 'NSW - Goulburn', 'NSW - Grafton', 'NSW - Orange',
-    'NSW - Port Macquarie', 'NSW - Tamworth', 'NSW - Wagga Wagga',
+    // New South Wales
+    'NSW - Sydney', 'NSW - Newcastle', 'NSW - Central Coast', 'NSW - Wollongong',
+    'NSW - Albury', 'NSW - Tamworth', 'NSW - Wagga Wagga', 'NSW - Orange',
+    'NSW - Bathurst', 'NSW - Dubbo', 'NSW - Armidale', 'NSW - Broken Hill',
+    'NSW - Port Macquarie', 'NSW - Coffs Harbour', 'NSW - Grafton', 'NSW - Goulburn',
     
-    // Victoria Regional Areas
-    'VIC - Ballarat', 'VIC - Bendigo', 'VIC - Geelong', 'VIC - Horsham',
-    'VIC - Latrobe Valley', 'VIC - Mildura', 'VIC - Shepparton', 'VIC - Warrnambool',
+    // Victoria
+    'VIC - Melbourne', 'VIC - Geelong', 'VIC - Ballarat', 'VIC - Bendigo',
+    'VIC - Shepparton', 'VIC - Mildura', 'VIC - Warrnambool', 'VIC - Horsham',
+    'VIC - Latrobe Valley', 'VIC - Sale', 'VIC - Wodonga',
     
-    // Western Australia Regional Areas
-    'WA - Albany', 'WA - Broome', 'WA - Bunbury', 'WA - Carnarvon',
-    'WA - Esperance', 'WA - Geraldton', 'WA - Kalgoorlie', 'WA - Karratha',
-    'WA - Port Hedland',
+    // Western Australia
+    'WA - Perth', 'WA - Mandurah', 'WA - Bunbury', 'WA - Kalgoorlie',
+    'WA - Geraldton', 'WA - Albany', 'WA - Broome', 'WA - Port Hedland',
+    'WA - Karratha', 'WA - Carnarvon', 'WA - Esperance',
     
-    // South Australia Regional Areas
-    'SA - Mount Gambier', 'SA - Port Augusta', 'SA - Port Lincoln', 'SA - Whyalla',
+    // South Australia
+    'SA - Adelaide', 'SA - Mount Gambier', 'SA - Whyalla', 'SA - Port Augusta',
+    'SA - Port Lincoln', 'SA - Murray Bridge',
     
-    // Tasmania (All Areas Regional)
-    'TAS - Burnie', 'TAS - Devonport', 'TAS - Hobart', 'TAS - Launceston',
+    // Tasmania
+    'TAS - Hobart', 'TAS - Launceston', 'TAS - Devonport', 'TAS - Burnie',
     
-    // Northern Territory (All Areas Regional)
-    'NT - Alice Springs', 'NT - Darwin', 'NT - Katherine',
+    // Northern Territory
+    'NT - Darwin', 'NT - Alice Springs', 'NT - Katherine',
     
     // Australian Capital Territory
-    'ACT - Canberra (Limited Regional Work)'
+    'ACT - Canberra'
   ];
 
   const industries = [
     // Agriculture and Food Production
-    'Agriculture, Animal Husbandry, Fishing, Pearling',
-    'Farming (Crop/Livestock)',
-    'Fruit and Vegetable Picking/Packing',
-    'Dairy Farming',
-    'Beef Cattle Farming',
-    'Sheep and Goat Farming',
-    'Poultry Farming',
-    'Aquaculture',
-    'Forestry and Logging',
+    'Agriculture & Farming',
+    'Horticulture & Fruit Picking', 
+    'Livestock & Dairy Farming',
+    'Viticulture & Wine Production',
+    'Aquaculture & Fishing',
+    'Forestry & Logging',
     
-    // Mining and Resources
-    'Mining and Construction',
-    'Coal Mining',
-    'Iron Ore Mining',
-    'Gold Mining',
-    'Oil and Gas Extraction',
+    // Hospitality & Tourism
+    'Hospitality & Food Service',
+    'Accommodation & Tourism',
+    'Event Management',
+    'Entertainment & Recreation',
     
-    // Tourism and Hospitality
-    'Tourism and Hospitality',
-    'Accommodation Services',
-    'Food and Beverage Services',
-    'Travel and Tour Arrangement',
+    // Construction & Infrastructure
+    'Construction & Building',
+    'Road Construction & Maintenance',
+    'Plumbing & Electrical',
+    'Landscaping & Gardening',
     
-    // Other Specified Work
-    'Bushfire Recovery',
-    'COVID-19 Critical Work',
-    'Plant and Machine Operation',
-    'Construction and Infrastructure',
-    'Healthcare and Medical',
-    'Aged Care and Disability Services'
+    // Mining & Resources
+    'Mining Operations',
+    'Oil & Gas',
+    'Resource Processing',
+    
+    // Healthcare & Community
+    'Healthcare & Medical',
+    'Aged Care & Disability Services',
+    'Childcare & Education',
+    
+    // Manufacturing & Production
+    'Food Processing & Manufacturing',
+    'Industrial Manufacturing',
+    'Packaging & Warehousing',
+    
+    // Transport & Logistics
+    'Transport & Delivery',
+    'Warehousing & Distribution',
+    'Freight & Logistics',
+    
+    // Retail & Sales
+    'Retail & Customer Service',
+    'Sales & Marketing',
+    
+    // Other
+    'Cleaning Services',
+    'Administration & Office',
+    'General Labour'
   ];
 
   const experienceLevels = [
-    'No Experience', '1-2 Years', '3-5 years', '6-10 years'
+    'No Experience Required', 'Entry Level (0-1 years)', '1-2 Years Experience', 
+    '3-5 Years Experience', '5+ Years Experience', 'Senior Level (10+ years)'
   ];
 
   const licenseTypes = [
     'No License/Tickets Required',
     
-    // Construction & Safety
-    'White Card (Construction Induction)',
-    'Blue Card (Working with Children)',
-    'Yellow Card (Mining Induction)',
-    
-    // First Aid & Safety
-    'First Aid Certificate',
-    'CPR Certificate',
-    'Senior First Aid',
-    'Occupational First Aid',
-    
-    // Hospitality & Food Safety
-    'RSA (Responsible Service of Alcohol)',
-    'RCG (Responsible Conduct of Gambling)',
-    'Food Safety Supervisor Certificate',
-    'Food Handling Certificate',
-    
-    // Driving & Heavy Machinery
-    'Car License (Class C)',
+    // Driving & Transport
+    'Driver\'s License (Car)',
     'Heavy Rigid (HR) License',
     'Heavy Combination (HC) License',
     'Multi Combination (MC) License',
-    'Forklift License (LF)',
-    'High Risk Work License - Forklift',
-    'Excavator License',
-    'Bobcat/Skid Steer License',
-    'Crane License (High Risk)',
-    'EWP (Elevated Work Platform) License',
+    'Motorcycle License',
+    'Forklift License',
+    
+    // Construction & Safety
+    'White Card (Construction)',
+    'Working at Heights',
+    'Confined Space Entry',
+    'First Aid Certificate',
+    'CPR Certificate',
+    
+    // Hospitality & Food
+    'RSA (Responsible Service of Alcohol)',
+    'Food Safety Certificate',
+    'Food Handling Certificate',
     
     // Agriculture Specific
     'ChemCert (Chemical Application)',
-    'AusChem Accreditation',
-    'Tractor Operation License',
+    'Tractor Operation',
     'Farm Machinery Operation',
     
-    // Working at Heights & Confined Spaces
-    'Working at Heights Certificate',
-    'Confined Space Entry',
-    'Fall Protection Certificate',
-    'Rope Access (IRATA)',
-    
-    // Welding & Trade Skills
+    // Trade & Technical
     'Welding Certificate',
-    'Basic Welding',
-    'Advanced Welding (Coded)',
     'Electrical License',
     'Plumbing License',
+    'Crane License',
+    'Excavator License',
     
-    // Security & Crowd Control
+    // Security & Other
     'Security License',
-    'Crowd Control License',
-    'Armed Guard License',
-    
-    // Marine & Water Safety
-    'Boat License',
-    'Marine Radio Operator License',
-    'Swim Safety Certificate',
-    'Bronze Medallion (Surf Life Saving)',
-    
-    // Specialized Certifications
-    'Manual Handling Certificate',
-    'Asbestos Awareness',
-    'Dangerous Goods Handling',
-    'Explosive Ordnance License',
-    'Train the Trainer Certificate'
+    'Blue Card (Working with Children)',
+    'Manual Handling Certificate'
   ];
 
   const availabilityOptions = [
-    'Available From: August 2025', 'Immediately',
-    'Next 3 Months', 'Next 6 Months', 'Next 9 Months', 'Next 12 Months'
+    'Immediately Available', 'Within 1 Month', 'Within 3 Months', 
+    'Within 6 Months', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025',
+    'Jan 2026', 'Feb 2026', 'Mar 2026', 'Flexible Start Date'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -272,18 +269,50 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               placeholder="Select availability"
             />
 
-            {/* WHV Holders */}
+            {/* Visa Type */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">WHV Holders</h3>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="whv-holders"
-                  checked={selectedFilters.whvHolders}
-                  onCheckedChange={(checked) => handleBooleanFilterChange('whvHolders', checked as boolean)}
-                />
-                <Label htmlFor="whv-holders" className="text-sm text-gray-700">
-                  Only show WHV holders
-                </Label>
+              <h3 className="font-semibold text-gray-900 mb-3">Visa Type</h3>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="whv-417"
+                    checked={selectedFilters.whv417 || false}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('whv417', checked as boolean)}
+                  />
+                  <Label htmlFor="whv-417" className="text-sm text-gray-700">
+                    Subclass 417 (Working Holiday)
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="whv-462"
+                    checked={selectedFilters.whv462 || false}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('whv462', checked as boolean)}
+                  />
+                  <Label htmlFor="whv-462" className="text-sm text-gray-700">
+                    Subclass 462 (Work and Holiday)
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="student-visa"
+                    checked={selectedFilters.studentVisa || false}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('studentVisa', checked as boolean)}
+                  />
+                  <Label htmlFor="student-visa" className="text-sm text-gray-700">
+                    Student Visa (Subclass 500)
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="other-visas"
+                    checked={selectedFilters.otherVisas || false}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('otherVisas', checked as boolean)}
+                  />
+                  <Label htmlFor="other-visas" className="text-sm text-gray-700">
+                    Other Work Visas
+                  </Label>
+                </div>
               </div>
             </div>
 
