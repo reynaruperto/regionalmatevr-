@@ -15,15 +15,7 @@ const WHVWorkExperience: React.FC = () => {
     preferredIndustry: '',
     jobReferences: '',
     licenses: '',
-    workExperiences: [
-      {
-        startDate: '',
-        endDate: '',
-        position: '',
-        company: '',
-        location: ''
-      }
-    ]
+    workExperiences: ''
   });
 
   // Industry options
@@ -51,39 +43,6 @@ const WHVWorkExperience: React.FC = () => {
     setFormData({
       ...formData,
       [name]: value
-    });
-  };
-
-  const addWorkExperience = () => {
-    setFormData({
-      ...formData,
-      workExperiences: [
-        ...formData.workExperiences,
-        {
-          startDate: '',
-          endDate: '',
-          position: '',
-          company: '',
-          location: ''
-        }
-      ]
-    });
-  };
-
-  const removeWorkExperience = (index: number) => {
-    setFormData({
-      ...formData,
-      workExperiences: formData.workExperiences.filter((_, i) => i !== index)
-    });
-  };
-
-  const handleWorkExperienceChange = (index: number, field: string, value: string) => {
-    const updated = formData.workExperiences.map((exp, i) => 
-      i === index ? { ...exp, [field]: value } : exp
-    );
-    setFormData({
-      ...formData,
-      workExperiences: updated
     });
   };
 
@@ -246,96 +205,18 @@ const WHVWorkExperience: React.FC = () => {
               </div>
 
               {/* Work Experiences */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium text-gray-700">
-                    Work Experiences
-                  </Label>
-                  <Button
-                    type="button"
-                    onClick={addWorkExperience}
-                    variant="outline"
-                    size="sm"
-                    className="text-orange-600 border-orange-600 hover:bg-orange-50"
-                  >
-                    + Add Experience
-                  </Button>
-                </div>
-                
-                {formData.workExperiences.map((experience, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-lg space-y-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">Experience {index + 1}</span>
-                      {formData.workExperiences.length > 1 && (
-                        <Button
-                          type="button"
-                          onClick={() => removeWorkExperience(index)}
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          Remove
-                        </Button>
-                      )}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label className="text-sm font-medium text-gray-600">Start Date</Label>
-                        <Input
-                          type="text"
-                          value={experience.startDate}
-                          onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)}
-                          className="h-10 bg-white border border-gray-300"
-                          placeholder="MM/YYYY"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-600">End Date</Label>
-                        <Input
-                          type="text"
-                          value={experience.endDate}
-                          onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)}
-                          className="h-10 bg-white border border-gray-300"
-                          placeholder="MM/YYYY or Present"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label className="text-sm font-medium text-gray-600">Position</Label>
-                      <Input
-                        type="text"
-                        value={experience.position}
-                        onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
-                        className="h-10 bg-white border border-gray-300"
-                        placeholder="Job title"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label className="text-sm font-medium text-gray-600">Company</Label>
-                      <Input
-                        type="text"
-                        value={experience.company}
-                        onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
-                        className="h-10 bg-white border border-gray-300"
-                        placeholder="Company name"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label className="text-sm font-medium text-gray-600">Location</Label>
-                      <Input
-                        type="text"
-                        value={experience.location}
-                        onChange={(e) => handleWorkExperienceChange(index, 'location', e.target.value)}
-                        className="h-10 bg-white border border-gray-300"
-                        placeholder="City, Country"
-                      />
-                    </div>
-                  </div>
-                ))}
+              <div className="space-y-2">
+                <Label htmlFor="workExperiences" className="text-base font-medium text-gray-700">
+                  Work Experiences
+                </Label>
+                <Textarea
+                  id="workExperiences"
+                  name="workExperiences"
+                  value={formData.workExperiences}
+                  onChange={handleInputChange}
+                  className="min-h-[80px] bg-gray-100 border-0 text-gray-900 resize-none"
+                  placeholder="2010-2020 - Marketing head - Workspot&#10;2007-2010 - Farm Assistant- Winery"
+                />
               </div>
 
               <div className="pt-8">

@@ -22,51 +22,24 @@ const EditProfile: React.FC = () => {
   const [email, setEmail] = useState('peterparker@gmail.com');
   
   // Address Info
-  const [isInAustralia, setIsInAustralia] = useState(true);
   const [addressLine1, setAddressLine1] = useState('22 Valley St');
   const [suburb, setSuburb] = useState('Spring Hill');
   const [city, setCity] = useState('Brisbane');
   const [state, setState] = useState('Queensland');
   const [postCode, setPostCode] = useState('4000');
   
-  // Personal Info - Tell us about yourself
-  const [workExperienceDescription, setWorkExperienceDescription] = useState('I have experience in hospitality, worked as a barista for 2 years, and have some construction experience...');
-  const [skillsInterests, setSkillsInterests] = useState("I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities...");
-  const [whyAustralia, setWhyAustralia] = useState("I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture...");
-  const [workPreferences, setWorkPreferences] = useState('Farm work, hospitality, construction');
-  const [availabilityDuration, setAvailabilityDuration] = useState('12 months, flexible');
-  const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
-  const [nationality, setNationality] = useState('Argentina');
-  const [visaType, setVisaType] = useState('417 (Working Holiday)');
-  const [visaExpiry, setVisaExpiry] = useState('Sep 2026');
   // Work Info
   const [willingToRelocate, setWillingToRelocate] = useState('Yes, anywhere in QLD/NSW');
   const [availableStartDate, setAvailableStartDate] = useState('Sep 2025');
   const [preferredIndustry, setPreferredIndustry] = useState('Agriculture and Farming');
   const [licenses, setLicenses] = useState("Driver's License, First Aid");
-  const [workExperiences, setWorkExperiences] = useState([
-    {
-      startDate: '2020',
-      endDate: '2025',
-      position: 'Farm Attendant',
-      company: 'VillaFarm',
-      location: 'Queensland, Australia'
-    },
-    {
-      startDate: '2019',
-      endDate: '2020',
-      position: 'Marketing Head',
-      company: 'Workspace',
-      location: 'Buenos Aires, Argentina'
-    },
-    {
-      startDate: '2007',
-      endDate: '2019',
-      position: 'Winery Assistant',
-      company: 'BodegaWinery',
-      location: 'Mendoza, Argentina'
-    }
-  ]);
+  const [workExperiences, setWorkExperiences] = useState('2020-2025: Farm Attendant - VillaFarm\n2019-2020: Marketing Head - Workspace\n2007-2019: Winery Assistant - BodegaWinery');
+  
+  // Personal Info
+  const [languages, setLanguages] = useState('Spanish (Native), English (Fluent)');
+  const [nationality, setNationality] = useState('Argentina');
+  const [visaType, setVisaType] = useState('417 (Working Holiday)');
+  const [visaExpiry, setVisaExpiry] = useState('Sep 2026');
 
   useEffect(() => {
     // Load profile photo from localStorage
@@ -260,9 +233,9 @@ const EditProfile: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="languagesBasic" className="text-gray-600 mb-2 block">Languages</Label>
+                        <Label htmlFor="languages" className="text-gray-600 mb-2 block">Languages</Label>
                         <Input
-                          id="languagesBasic"
+                          id="languages"
                           value={languages}
                           onChange={(e) => setLanguages(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
@@ -272,140 +245,28 @@ const EditProfile: React.FC = () => {
                   </div>
                 </div>
 
-                {/* About You Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-2">Tell us about yourself</h3>
-                  <p className="text-gray-600 text-sm mb-4">This helps us match you with the right employers and opportunities.</p>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="workExperienceDescription" className="text-gray-600 mb-2 block">What work experience do you have?</Label>
-                      <Textarea
-                        id="workExperienceDescription"
-                        value={workExperienceDescription}
-                        onChange={(e) => setWorkExperienceDescription(e.target.value)}
-                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
-                        placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="skillsInterests" className="text-gray-600 mb-2 block">What are your main skills and interests?</Label>
-                      <Textarea
-                        id="skillsInterests"
-                        value={skillsInterests}
-                        onChange={(e) => setSkillsInterests(e.target.value)}
-                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
-                        placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills..."
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="whyAustralia" className="text-gray-600 mb-2 block">Why did you choose Australia for your working holiday?</Label>
-                      <Textarea
-                        id="whyAustralia"
-                        value={whyAustralia}
-                        onChange={(e) => setWhyAustralia(e.target.value)}
-                        className="min-h-20 rounded-xl border-gray-200 bg-white resize-none"
-                        placeholder="I've always wanted to experience Australian culture, explore the outback..."
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label htmlFor="workPreferences" className="text-gray-600 mb-2 block">What type of work are you most interested in?</Label>
-                        <Input
-                          id="workPreferences"
-                          value={workPreferences}
-                          onChange={(e) => setWorkPreferences(e.target.value)}
-                          className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder="Farm work, hospitality, construction..."
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="availabilityDuration" className="text-gray-600 mb-2 block">How long are you planning to stay in Australia?</Label>
-                        <Input
-                          id="availabilityDuration"
-                          value={availabilityDuration}
-                          onChange={(e) => setAvailabilityDuration(e.target.value)}
-                          className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder="12 months, 2 years, flexible..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Location Information Section */}
                 <div className="bg-white rounded-2xl p-4 shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-4">Current Location</h3>
-                  
-                  {/* Location Toggle */}
-                  <div className="mb-6 space-y-4">
-                    <div className="flex gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setIsInAustralia(true)}
-                        className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
-                          isInAustralia 
-                            ? 'border-orange-500 bg-orange-50' 
-                            : 'border-gray-200 bg-white'
-                        }`}
-                      >
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">🇦🇺</div>
-                          <div className="font-medium text-gray-900">I'm in Australia</div>
-                        </div>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsInAustralia(false)}
-                        className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
-                          !isInAustralia 
-                            ? 'border-orange-500 bg-orange-50' 
-                            : 'border-gray-200 bg-white'
-                        }`}
-                      >
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">🌍</div>
-                          <div className="font-medium text-gray-900">I'm overseas</div>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-
-                  {!isInAustralia && (
-                    <div className="mb-6 p-4 bg-blue-50 rounded-xl">
-                      <p className="text-blue-800 text-sm">
-                        No worries! You can update your Australian address later when you arrive.
-                      </p>
-                    </div>
-                  )}
-                  
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">
-                        {isInAustralia ? 'Current Address Line 1' : 'Address Line 1'}
-                      </Label>
+                      <Label htmlFor="addressLine1" className="text-gray-600 mb-2 block">Address Line 1</Label>
                       <Input
                         id="addressLine1"
                         value={addressLine1}
                         onChange={(e) => setAddressLine1(e.target.value)}
                         className="h-12 rounded-xl border-gray-200 bg-white"
-                        placeholder={isInAustralia ? "22 Valley St." : "Your current address"}
                       />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="suburb" className="text-gray-600 mb-2 block">
-                          {isInAustralia ? 'Suburb' : 'District/Area'}
-                        </Label>
+                        <Label htmlFor="suburb" className="text-gray-600 mb-2 block">Suburb</Label>
                         <Input
                           id="suburb"
                           value={suburb}
                           onChange={(e) => setSuburb(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder={isInAustralia ? "Spring Hill" : "Your area/district"}
                         />
                       </div>
                       <div>
@@ -415,34 +276,27 @@ const EditProfile: React.FC = () => {
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder={isInAustralia ? "Brisbane" : "Your city"}
                         />
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="state" className="text-gray-600 mb-2 block">
-                          {isInAustralia ? 'State' : 'State/Province/Country'}
-                        </Label>
+                        <Label htmlFor="state" className="text-gray-600 mb-2 block">State</Label>
                         <Input
                           id="state"
                           value={state}
                           onChange={(e) => setState(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder={isInAustralia ? "Queensland" : "Your state/province/country"}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="postCode" className="text-gray-600 mb-2 block">
-                          {isInAustralia ? 'Post Code' : 'Postal/Zip Code'}
-                        </Label>
+                        <Label htmlFor="postCode" className="text-gray-600 mb-2 block">Post Code</Label>
                         <Input
                           id="postCode"
                           value={postCode}
                           onChange={(e) => setPostCode(e.target.value)}
                           className="h-12 rounded-xl border-gray-200 bg-white"
-                          placeholder={isInAustralia ? "4000" : "Your postal/zip code"}
                         />
                       </div>
                     </div>
@@ -522,118 +376,14 @@ const EditProfile: React.FC = () => {
                     </div>
                     
                     <div>
-                      <Label className="text-gray-600 mb-3 block">Work Experience</Label>
-                      <div className="space-y-4">
-                        {workExperiences.map((experience, index) => (
-                          <div key={index} className="border border-gray-200 rounded-xl p-4 space-y-3">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-gray-900">Experience {index + 1}</h4>
-                              {workExperiences.length > 1 && (
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    const newExperiences = workExperiences.filter((_, i) => i !== index);
-                                    setWorkExperiences(newExperiences);
-                                  }}
-                                  className="text-red-500 hover:text-red-700 h-8 px-2"
-                                >
-                                  Remove
-                                </Button>
-                              )}
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-3">
-                              <div>
-                                <Label className="text-sm text-gray-600">Start Date</Label>
-                                <Input
-                                  value={experience.startDate}
-                                  onChange={(e) => {
-                                    const newExperiences = [...workExperiences];
-                                    newExperiences[index].startDate = e.target.value;
-                                    setWorkExperiences(newExperiences);
-                                  }}
-                                  className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                                  placeholder="2020"
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-sm text-gray-600">End Date</Label>
-                                <Input
-                                  value={experience.endDate}
-                                  onChange={(e) => {
-                                    const newExperiences = [...workExperiences];
-                                    newExperiences[index].endDate = e.target.value;
-                                    setWorkExperiences(newExperiences);
-                                  }}
-                                  className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                                  placeholder="2025 or Present"
-                                />
-                              </div>
-                            </div>
-                            
-                            <div>
-                              <Label className="text-sm text-gray-600">Position</Label>
-                              <Input
-                                value={experience.position}
-                                onChange={(e) => {
-                                  const newExperiences = [...workExperiences];
-                                  newExperiences[index].position = e.target.value;
-                                  setWorkExperiences(newExperiences);
-                                }}
-                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                                placeholder="Farm Attendant"
-                              />
-                            </div>
-                            
-                            <div>
-                              <Label className="text-sm text-gray-600">Company</Label>
-                              <Input
-                                value={experience.company}
-                                onChange={(e) => {
-                                  const newExperiences = [...workExperiences];
-                                  newExperiences[index].company = e.target.value;
-                                  setWorkExperiences(newExperiences);
-                                }}
-                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                                placeholder="VillaFarm"
-                              />
-                            </div>
-                            
-                            <div>
-                              <Label className="text-sm text-gray-600">Location</Label>
-                              <Input
-                                value={experience.location}
-                                onChange={(e) => {
-                                  const newExperiences = [...workExperiences];
-                                  newExperiences[index].location = e.target.value;
-                                  setWorkExperiences(newExperiences);
-                                }}
-                                className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                                placeholder="Queensland, Australia"
-                              />
-                            </div>
-                          </div>
-                        ))}
-                        
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => {
-                            setWorkExperiences([...workExperiences, {
-                              startDate: '',
-                              endDate: '',
-                              position: '',
-                              company: '',
-                              location: ''
-                            }]);
-                          }}
-                          className="w-full h-10 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500"
-                        >
-                          + Add Work Experience
-                        </Button>
-                      </div>
+                      <Label htmlFor="workExperiences" className="text-gray-600 mb-2 block">Work Experience</Label>
+                      <Textarea
+                        id="workExperiences"
+                        value={workExperiences}
+                        onChange={(e) => setWorkExperiences(e.target.value)}
+                        className="min-h-24 rounded-xl border-gray-200 bg-white resize-none"
+                        placeholder="List your work experience..."
+                      />
                     </div>
                   </div>
                 </div>
