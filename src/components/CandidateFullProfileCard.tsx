@@ -262,8 +262,8 @@ const CandidateFullProfileCard: React.FC = () => {
                     className="w-12 h-12 rounded-full object-cover border-2 border-slate-800"
                   />
                   <div className="bg-slate-800 text-white px-4 py-2 rounded-xl">
-                    <div className="text-sm font-medium">CANDIDATE FULL PROFILE CARD</div>
-                    <div className="text-sm font-medium">Match with {candidate.name}</div>
+                    <div className="text-sm font-medium">It's a Match</div>
+                    <div className="text-sm font-medium">with {candidate.name}</div>
                   </div>
                 </div>
               </div>
