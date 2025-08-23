@@ -24,14 +24,13 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
-                <div className="bg-orange-500 text-white text-center py-4 rounded-2xl mb-6">
-                  <h2 className="text-xl font-bold">PETER PARKER</h2>
-                  <p className="text-sm opacity-90">WHV Backpacker</p>
+                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
+                  <h2 className="text-xl font-bold">PETER</h2>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
                     <img 
                       src="/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png" 
                       alt="Profile" 
@@ -51,11 +50,21 @@ const ProfileCardPreview: React.FC = () => {
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
                   <div><span className="font-semibold">Nationality:</span> Argentina</div>
-                  <div><span className="font-semibold">Location (Current / Preferred):</span> Brisbane QLD 4000</div>
+                  <div><span className="font-semibold">Location (Current / Preferred):</span> Brisbane, QLD 4000</div>
+                  <div><span className="font-semibold">Willing to Relocate:</span> Yes, anywhere in QLD/NSW</div>
+                  <div><span className="font-semibold">Visa Type & Expiry:</span> 417 (Working Holiday) - Expires Sep 2026</div>
                   <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
-                  <div><span className="font-semibold">Experience / Skills:</span> Farm Work, Hospitality</div>
-                  <div><span className="font-semibold">Licenses / Certificates:</span> N/A</div>
-                  <div><span className="font-semibold">Availability (date, duration):</span> Sep 2025</div>
+                  <div>
+                    <span className="font-semibold">Experience / Skills:</span>
+                    <div className="mt-1 space-y-1 text-xs">
+                      <div>2020-2025: Farm Attendant - VillaFarm</div>
+                      <div>2019-2020: Marketing Head - Workspace</div>
+                      <div>2007-2019: Winery Assistant - BodegaWinery</div>
+                    </div>
+                  </div>
+                  <div><span className="font-semibold">Licenses / Certificates:</span> Driver's License, First Aid</div>
+                  <div><span className="font-semibold">Availability (date, duration):</span> Sep 2025 (8 months)</div>
+                  <div><span className="font-semibold">Languages:</span> Spanish (Native), English (Fluent)</div>
                 </div>
 
                 {/* Locked Message */}
