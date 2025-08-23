@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,12 +50,12 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Age:</span> 24</div>
-                  <div><span className="font-semibold">From:</span> Argentina</div>
-                  <div><span className="font-semibold">Visa:</span> Working Holiday Visa</div>
-                  <div><span className="font-semibold">Experience:</span> Farm Work, Hospitality</div>
-                  <div><span className="font-semibold">Languages:</span> Spanish, English</div>
-                  <div><span className="font-semibold">Availability:</span> Immediate</div>
+                  <div><span className="font-semibold">Nationality:</span> Argentina</div>
+                  <div><span className="font-semibold">Location (Current / Preferred):</span> Brisbane QLD 4000</div>
+                  <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
+                  <div><span className="font-semibold">Experience / Skills:</span> Farm Work, Hospitality</div>
+                  <div><span className="font-semibold">Licenses / Certificates:</span> N/A</div>
+                  <div><span className="font-semibold">Availability (date, duration):</span> Sep 2025</div>
                 </div>
 
                 {/* Locked Message */}
@@ -69,13 +69,9 @@ const ProfileCardPreview: React.FC = () => {
                     Message
                   </Button>
                   <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
-                    <span className="text-orange-500 font-medium text-sm">Like to Match</span>
-                    <div className="flex items-center justify-center">
-                      <img 
-                        src="/lovable-uploads/e71624ef-9964-4e25-bd6d-239d2fc301b9.png" 
-                        alt="Like to Match" 
-                        className="w-8 h-10 object-contain"
-                      />
+                    <span className="text-orange-500 font-medium text-sm">Heart to Match</span>
+                    <div className="bg-orange-500 rounded-full p-2">
+                      <Heart size={16} className="text-white fill-white" />
                     </div>
                   </button>
                 </div>
