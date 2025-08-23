@@ -31,43 +31,62 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
   // Mock employer data with full details for mutual matches
   const employerProfiles: { [key: string]: EmployerFullProfile } = {
-    '1': {
-      id: '1',
-      name: 'KANGAFARM',
-      employerName: 'John Doe',
-      description: 'Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing. We pride ourselves on creating a supportive work environment for international workers.',
-      location: 'Clontarf, QLD 4017',
-      industry: 'Agriculture and Farming',
-      rolesOffered: ['Fruit Picking', 'Farm Hand', 'Tractor Driver'],
-      jobAvailability: 'Ongoing, September 2025',
-      payBenefits: '$28/hour + super + performance bonuses',
-      facilities: 'Meals included, On-site accommodation available, Transportation provided',
-      profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png',
-      contactEmail: 'john@kangafarm.com.au',
-      contactPhone: '+61 7 3123 4567',
-      companySize: '15-30 employees',
-      establishedYear: '1995',
-      certifications: ['Organic Certification', 'Fair Trade Certified'],
-      workEnvironment: 'Outdoor work in beautiful rural Queensland. We provide all necessary equipment and training.'
+    '4': {
+      id: '4',
+      name: 'Green Harvest Farms',
+      employerName: 'Sarah Mitchell',
+      description: 'Sustainable organic farm in northern NSW, specializing in diverse crop production and eco-friendly farming practices. We offer hands-on experience in modern sustainable agriculture with opportunities for skill development and organic certification training.',
+      location: 'Northrivers, NSW 2470',
+      industry: 'Agriculture & Farming',
+      rolesOffered: ['Farm Assistant', 'Organic Crop Technician', 'Equipment Operator', 'Quality Control Inspector'],
+      jobAvailability: 'Available from Aug 2025 - March 2026',
+      payBenefits: '$29/hour + super + organic produce allowance + overtime rates',
+      facilities: 'Shared accommodation on-farm, Meals provided, Equipment training, Transport to town weekly',
+      profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png',
+      contactEmail: 'sarah@greenharvest.com.au',
+      contactPhone: '+61 2 6687 5432',
+      companySize: '25-40 employees',
+      establishedYear: '2010',
+      certifications: ['Organic Certification Australia', 'Sustainable Agriculture Initiative', 'Fair Work Standards'],
+      workEnvironment: 'Outdoor sustainable farming in beautiful northern NSW. Modern equipment and techniques with focus on environmental responsibility and worker wellbeing.'
     },
-    '2': {
-      id: '2',
-      name: 'SUNNY WINES',
-      employerName: 'Maria Santos',
-      description: 'Boutique winery on the Sunshine Coast, offering wine production and farm supervision roles. Join our passionate team in creating premium wines.',
-      location: 'Sunshine Coast, 4551',
-      industry: 'Wine Production',
-      rolesOffered: ['Farm Supervisor', 'Wine Production Assistant', 'Cellar Hand'],
-      jobAvailability: 'Seasonal, October 2025',
-      payBenefits: '$26/hour + super + wine allowance',
-      facilities: 'Accommodation provided, Training included, Wine tasting experience',
-      profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png',
-      contactEmail: 'maria@sunnywines.com.au',
-      contactPhone: '+61 7 5432 1098',
-      companySize: '8-12 employees',
-      establishedYear: '2008',
-      certifications: ['Sustainable Winegrowing Certification'],
-      workEnvironment: 'Beautiful vineyard setting with modern facilities and equipment.'
+    '5': {
+      id: '5',
+      name: 'Coastal Breeze Resort',
+      employerName: 'Marcus Thompson',
+      description: 'Premier beachfront resort on the Gold Coast offering exceptional hospitality experiences. We provide comprehensive training in hospitality service excellence and career development opportunities in a luxury tourism environment.',
+      location: 'Coolangatta, QLD 4225',
+      industry: 'Hospitality and Tourism',
+      rolesOffered: ['Barista', 'Front Desk Associate', 'Housekeeping Supervisor', 'Food Service Attendant', 'Event Coordinator'],
+      jobAvailability: 'Available from Sep 2025 - May 2026',
+      payBenefits: '$27/hour + super + tips + staff discounts + performance bonuses',
+      facilities: 'Staff accommodation available, Meal allowances, Staff gym access, Professional development programs',
+      profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
+      contactEmail: 'marcus@coastalbreeze.com.au',
+      contactPhone: '+61 7 5536 8901',
+      companySize: '80-120 employees',
+      establishedYear: '2005',
+      certifications: ['Tourism Industry Council', 'Hospitality Excellence Award', 'Green Tourism Certification'],
+      workEnvironment: 'Dynamic beachfront resort environment with international guests. Modern facilities and professional team culture focused on service excellence.'
+    },
+    '6': {
+      id: '6',
+      name: 'Gotall Estates',
+      employerName: 'Robert Williams',
+      description: 'Family-owned dairy farm operation on the Sunshine Coast, combining traditional farming values with modern dairy technology. We offer comprehensive dairy farming experience with opportunities to learn cutting-edge agricultural techniques.',
+      location: 'Sunshine Coast, QLD 4019',
+      industry: 'Dairy Farm',
+      rolesOffered: ['Farm Maintenance', 'Dairy Hand', 'Livestock Technician', 'Equipment Operator', 'Quality Assurance'],
+      jobAvailability: 'Available from Oct 2025 - September 2026',
+      payBenefits: '$30/hour + super + dairy products allowance + skill development bonuses',
+      facilities: 'On-site cottage accommodation, Meals included, Equipment certification training, Transport provided',
+      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
+      contactEmail: 'robert@gotallestates.com.au',
+      contactPhone: '+61 7 5494 7234',
+      companySize: '12-18 employees',
+      establishedYear: '1987',
+      certifications: ['Australian Dairy Standards', 'Animal Welfare Certification', 'Sustainable Farming Practices'],
+      workEnvironment: 'Traditional dairy farm with modern equipment on beautiful Sunshine Coast. Close-knit team environment with focus on quality dairy production and animal welfare.'
     }
   };
 
@@ -93,6 +112,10 @@ const WHVEmployerFullProfileCard: React.FC = () => {
       // Handle messaging functionality
       console.log('Open messaging with employer');
     }
+  };
+
+  const handleViewJobs = () => {
+    navigate(`/whv/employer/jobs/${id}?from=whv-matches&tab=matches`);
   };
 
   if (!employer) {
@@ -206,6 +229,16 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                     <span className="text-blue-600">{employer.contactPhone}</span>
                   </div>
                 </div>
+              </div>
+
+              {/* View Jobs Button */}
+              <div className="px-4 mb-4">
+                <Button
+                  onClick={handleViewJobs}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2"
+                >
+                  View Available Jobs
+                </Button>
               </div>
 
               {/* Contact Action Buttons */}
