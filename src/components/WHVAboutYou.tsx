@@ -31,6 +31,10 @@ const WHVAboutYou: React.FC = () => {
     navigate('/whv-photo-upload');
   };
 
+  const handleSkip = () => {
+    navigate('/whv-photo-upload');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -152,12 +156,20 @@ const WHVAboutYou: React.FC = () => {
                 />
               </div>
 
-              <div className="pt-8">
+              <div className="pt-8 space-y-3">
                 <Button 
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
                   Continue →
+                </Button>
+                <Button 
+                  type="button"
+                  onClick={handleSkip}
+                  variant="ghost"
+                  className="w-full h-12 text-gray-600 hover:text-gray-800"
+                >
+                  Skip for now
                 </Button>
               </div>
             </form>

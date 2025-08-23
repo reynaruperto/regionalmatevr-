@@ -57,6 +57,10 @@ const WHVPhotoUpload: React.FC = () => {
     }
   };
 
+  const handleSkip = () => {
+    navigate('/whv-account-confirmation');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -132,12 +136,19 @@ const WHVPhotoUpload: React.FC = () => {
           </div>
 
           {/* Continue button */}
-          <div className="px-4 pb-8">
+          <div className="px-4 pb-8 space-y-3">
             <Button 
               onClick={handleSubmit}
               className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
             >
               Continue →
+            </Button>
+            <Button 
+              onClick={handleSkip}
+              variant="ghost"
+              className="w-full h-12 text-gray-600 hover:text-gray-800"
+            >
+              Skip for now
             </Button>
           </div>
         </div>
