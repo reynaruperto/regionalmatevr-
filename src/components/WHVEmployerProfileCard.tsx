@@ -69,6 +69,7 @@ const WHVEmployerProfileCard: React.FC = () => {
   const employer = employerProfiles[id || '1'];
 
   const handleLikeEmployer = () => {
+    console.log('Heart to Match clicked!');
     setShowLikeModal(true);
   };
 
@@ -79,7 +80,13 @@ const WHVEmployerProfileCard: React.FC = () => {
   const handleViewJobs = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
-    navigate(`/whv/employer/jobs/${employer.id}?from=whv-employer-profile&tab=${tab || ''}`);
+    
+    // If we came from matches (indicated by tab=topRecommended or tab=matches), preserve that info
+    if (tab === 'topRecommended' || tab === 'matches') {
+      navigate(`/whv/employer/jobs/${employer.id}?from=whv-employer-profile&originalFrom=whv-matches&tab=${tab}`);
+    } else {
+      navigate(`/whv/employer/jobs/${employer.id}?from=whv-employer-profile&tab=${tab || ''}`);
+    }
   };
 
   const handleBackNavigation = () => {
@@ -88,11 +95,17 @@ const WHVEmployerProfileCard: React.FC = () => {
     
     console.log('Back navigation - fromPage:', fromPage, 'tab:', tab);
     
-    if (fromPage === 'whv-matches' || fromPage === 'matches') {
+    // If tab indicates we came from matches, go back to matches regardless of fromPage
+    if (tab === 'topRecommended' || tab === 'matches' || fromPage === 'whv-matches') {
       console.log('Navigating back to WHV matches with tab:', tab);
       navigate(`/whv/matches?tab=${tab || 'topRecommended'}`);
     } else if (fromPage === 'whv-employer-jobs') {
-      navigate(`/whv/employer/jobs/${employer.id}?from=whv-browse-employers&tab=${tab || ''}`);
+      const originalFrom = searchParams.get('originalFrom');
+      if (originalFrom === 'whv-matches') {
+        navigate(`/whv/matches?tab=${tab || 'topRecommended'}`);
+      } else {
+        navigate(`/whv/employer/jobs/${employer.id}?from=whv-browse-employers&tab=${tab || ''}`);
+      }
     } else {
       console.log('Navigating back to WHV browse employers');
       navigate('/whv/browse-employers');
@@ -215,9 +228,9 @@ const WHVEmployerProfileCard: React.FC = () => {
                 </p>
                 <Button
                   onClick={handleCloseLikeModal}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12"
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white rounded-lg h-12 font-medium"
                 >
-                  Got it
+                  Got It
                 </Button>
               </div>
             </div>

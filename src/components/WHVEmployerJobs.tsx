@@ -62,9 +62,12 @@ const WHVEmployerJobs: React.FC = () => {
 
   const handleBack = () => {
     const fromPage = searchParams.get('from');
+    const originalFrom = searchParams.get('originalFrom');
     const tab = searchParams.get('tab');
     
-    if (fromPage === 'whv-employer-profile') {
+    if (originalFrom === 'whv-matches' || tab === 'topRecommended' || tab === 'matches') {
+      navigate(`/whv/employer/profile/${employerId}?from=whv-matches&tab=${tab || 'topRecommended'}`);
+    } else if (fromPage === 'whv-employer-profile') {
       navigate(`/whv/employer/profile/${employerId}?from=whv-browse-employers&tab=${tab || ''}`);
     } else {
       navigate('/whv/browse-employers');
