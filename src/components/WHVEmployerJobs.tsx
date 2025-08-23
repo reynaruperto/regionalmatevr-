@@ -120,15 +120,6 @@ const WHVEmployerJobs: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="mt-3">
-                    <Button
-                      onClick={() => handleViewJob(job.id)}
-                      disabled={job.status === 'Closed'}
-                      className={`w-full rounded-full text-white text-sm h-10 ${getButtonColor(job.status)}`}
-                    >
-                      {job.status === 'Active' ? 'View Job' : 'View Job'}
-                    </Button>
-                  </div>
                 </div>
               ))}
             </div>
