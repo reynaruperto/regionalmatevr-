@@ -81,14 +81,14 @@ const EmployerEditProfile: React.FC = () => {
               <div className="flex items-center justify-between">
                 <button 
                   onClick={handleCancel}
-                  className="text-lg font-medium text-gray-900 underline"
+                  className="text-lg font-medium text-orange-500 underline"
                 >
                   Cancel
                 </button>
                 <h1 className="text-lg font-semibold text-gray-900">{name}</h1>
                 <button 
                   onClick={handleSave}
-                  className="flex items-center text-lg font-medium text-gray-900 underline"
+                  className="flex items-center text-lg font-medium text-orange-500 underline"
                 >
                   <Check size={20} className="mr-1" />
                   Save
@@ -102,18 +102,18 @@ const EmployerEditProfile: React.FC = () => {
               {/* Profile Visibility */}
               <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Profile Visibility</h3>
-                    <p className="text-sm text-gray-500">Your profile is currently visible to all RegionalMate users</p>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Profile Visibility</h3>
+                  <p className="text-sm text-gray-500">Your profile is currently visible to all employers</p>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-lg font-medium text-gray-900 mr-3">ON</span>
-                    <Switch 
-                      checked={profileVisible}
-                      onCheckedChange={setProfileVisible}
-                      className="data-[state=checked]:bg-green-500 scale-125"
-                    />
-                  </div>
+                <div className="flex items-center">
+                  <span className="text-lg font-medium text-gray-900 mr-3">ON</span>
+                  <Switch 
+                    checked={profileVisible}
+                    onCheckedChange={setProfileVisible}
+                    className="data-[state=checked]:bg-blue-600 scale-125"
+                  />
+                </div>
                 </div>
               </div>
 
@@ -123,7 +123,7 @@ const EmployerEditProfile: React.FC = () => {
                   <h3 className="text-lg font-semibold text-gray-900">Preview Profile card</h3>
                   <Button 
                     onClick={handlePreviewProfile}
-                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full text-lg font-medium"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg font-medium"
                   >
                     VIEW
                   </Button>
@@ -136,7 +136,7 @@ const EmployerEditProfile: React.FC = () => {
                 <div className="relative w-32 h-32">
                   <button 
                     onClick={handlePhotoClick}
-                    className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-800 hover:opacity-80 transition-opacity"
+                    className="w-32 h-32 rounded-full overflow-hidden border-4 border-orange-500 hover:opacity-80 transition-opacity"
                   >
                     <img 
                       src={profilePhoto} 
@@ -144,7 +144,7 @@ const EmployerEditProfile: React.FC = () => {
                       className="w-full h-full object-cover"
                     />
                   </button>
-                  <div className="absolute bottom-2 right-2 w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center pointer-events-none">
+                  <div className="absolute bottom-2 right-2 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center pointer-events-none">
                     <Camera size={20} className="text-white" />
                   </div>
                 </div>
