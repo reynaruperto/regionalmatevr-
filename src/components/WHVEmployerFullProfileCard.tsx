@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Heart, MessageCircle, Phone, Mail } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface EmployerFullProfile {
@@ -238,31 +238,6 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2"
                 >
                   View Available Jobs
-                </Button>
-              </div>
-
-              {/* Contact Action Buttons */}
-              <div className="px-4 pb-6 space-y-3">
-                <Button
-                  onClick={() => handleContactEmployer('email')}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg h-12 flex items-center justify-center gap-2"
-                >
-                  <Mail size={20} />
-                  Send Email
-                </Button>
-                <Button
-                  onClick={() => handleContactEmployer('phone')}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg h-12 flex items-center justify-center gap-2"
-                >
-                  <Phone size={20} />
-                  Call Now
-                </Button>
-                <Button
-                  onClick={() => handleContactEmployer('message')}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2"
-                >
-                  <MessageCircle size={20} />
-                  Send Message
                 </Button>
               </div>
             </div>

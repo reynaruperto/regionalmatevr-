@@ -61,6 +61,7 @@ import WHVBrowseEmployers from "./pages/WHVBrowseEmployers";
 import WHVEmployerProfile from "./pages/WHVEmployerProfile";
 import WHVEmployerFullProfile from "./pages/WHVEmployerFullProfile";
 import WHVEmployerJobs from "./pages/WHVEmployerJobs";
+import WHVEmployerJobDetails from "./pages/WHVEmployerJobDetails";
 import WHVJobDetails from "./pages/WHVJobDetails";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
@@ -131,6 +132,7 @@ const App = () => (
           <Route path="/whv/employer/profile/:id" element={<WHVEmployerProfile />} />
           <Route path="/whv/employer/full-profile/:id" element={<WHVEmployerFullProfile />} />
           <Route path="/whv/employer/jobs/:employerId" element={<WHVEmployerJobs />} />
+          <Route path="/whv/employer/jobs/:id" element={<WHVEmployerJobDetails />} />
           <Route path="/whv/job-details/:employerId/:jobId" element={<WHVJobDetails />} />
           <Route path="/whv/browse-employers" element={<WHVBrowseEmployers />} />
           <Route path="/account-confirmation" element={<AccountConfirmation />} />
