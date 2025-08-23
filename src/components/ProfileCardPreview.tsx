@@ -15,70 +15,85 @@ const ProfileCardPreview: React.FC = () => {
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-200">
+          <div className="w-full h-full flex flex-col relative bg-gray-50">
             
             {/* Content */}
             <div className="flex-1 px-6 pt-16 flex flex-col items-center justify-center">
               
               {/* Profile Card */}
-              <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg">
+              <div className="w-full max-w-sm">
                 
-                {/* WHV Header */}
-                <div className="bg-orange-500 text-white text-center py-4 rounded-2xl mb-6">
-                  <h2 className="text-xl font-bold">PETER</h2>
-                  <p className="text-sm opacity-90">Working Holiday Visa</p>
+                {/* Header with Name */}
+                <div className="bg-orange-500 text-white text-center py-4 rounded-t-2xl mb-0">
+                  <h2 className="text-xl font-bold">PETER PARKER</h2>
                 </div>
 
-                {/* Profile Picture */}
-                <div className="flex justify-center mb-6">
-                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
-                    <img 
-                      src="/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png" 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
+                {/* Profile Content */}
+                <div className="bg-white border border-gray-200 rounded-b-2xl p-6 shadow-lg">
+                  {/* Profile Photo */}
+                  <div className="flex justify-center mb-4">
+                    <img
+                      src="/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png"
+                      alt="Peter Parker"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-orange-200"
                     />
                   </div>
-                </div>
 
-                {/* Description */}
-                <div className="text-center mb-6">
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    Experienced farm worker from Argentina<br />
-                    seeking opportunities in agriculture<br />
-                    and outdoor work
+                  {/* Description */}
+                  <p className="text-sm text-gray-700 text-center mb-6">
+                    Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD
                   </p>
-                </div>
 
-                {/* Details */}
-                <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Nationality:</span> Argentina</div>
-                  <div><span className="font-semibold">Visa:</span> 462 (expires 01/01/2026)</div>
-                  <div><span className="font-semibold">Available from:</span> 10/10/2025</div>
-                  <div><span className="font-semibold">Location:</span> Brisbane, QLD</div>
-                  <div><span className="font-semibold">Industry Interest:</span> Agriculture & Farming</div>
-                  <div><span className="font-semibold">Willing to Relocate:</span> Yes</div>
-                </div>
-
-                {/* Locked Message */}
-                <div className="bg-gray-200 text-center py-3 rounded-xl mb-4">
-                  <p className="text-gray-600 text-sm">Full Profile Unlocked if you both Match</p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12">
-                    View Profile
-                  </Button>
-                  <button className="bg-white rounded-xl p-3 shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 h-12">
-                    <span className="text-orange-500 font-medium text-sm">Like to Match</span>
-                    <div className="flex items-center justify-center">
-                      <img 
-                        src="/lovable-uploads/e71624ef-9964-4e25-bd6d-239d2fc301b9.png" 
-                        alt="Like to Match" 
-                        className="w-8 h-10 object-contain"
-                      />
+                  {/* Details */}
+                  <div className="space-y-3 text-sm">
+                    <div>
+                      <span className="font-semibold text-gray-900">Nationality:</span>
+                      <span className="text-gray-700 ml-1">Argentina</span>
                     </div>
-                  </button>
+
+                    <div>
+                      <span className="font-semibold text-gray-900">Location (Current / Preferred):</span>
+                      <span className="text-gray-700 ml-1">Brisbane QLD 4000</span>
+                    </div>
+
+                    <div>
+                      <span className="font-semibold text-gray-900">Industry:</span>
+                      <span className="text-gray-700 ml-1">Agriculture and Farming</span>
+                    </div>
+
+                    <div>
+                      <span className="font-semibold text-gray-900">Experience / Skills:</span>
+                      <div className="mt-1 space-y-1">
+                        <div className="text-gray-700 text-xs ml-1">2020-2025 - Farm Attendant - Villafarm</div>
+                        <div className="text-gray-700 text-xs ml-1">2010-2020 - Marketing Head - Worksport</div>
+                        <div className="text-gray-700 text-xs ml-1">2007-2010 - Winery Assistant - Bodegawinery</div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="font-semibold text-gray-900">Licenses / Certificates:</span>
+                      <span className="text-gray-700 ml-1">N/A</span>
+                    </div>
+
+                    <div>
+                      <span className="font-semibold text-gray-900">Availability (date, duration):</span>
+                      <span className="text-gray-700 ml-1">Sep 2025</span>
+                    </div>
+                  </div>
+
+                  {/* Premium Content Teaser */}
+                  <div className="mt-6 bg-gray-100 rounded-lg p-4 text-center">
+                    <p className="text-sm text-gray-600 font-medium">
+                      Full Details Unlocked if you both Match
+                    </p>
+                  </div>
+
+                  {/* Like to Match Button */}
+                  <div className="mt-6 text-center">
+                    <button className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-orange-400 to-orange-600 rounded-lg text-white font-medium hover:from-orange-500 hover:to-orange-700 transition-all duration-200 shadow-sm">
+                      <span>Like to Match</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
