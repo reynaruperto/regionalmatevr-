@@ -66,6 +66,20 @@ const PostJobs: React.FC = () => {
     });
   };
 
+  const toggleJobStatus = (jobId: string) => {
+    setJobs(prev => prev.map(job => 
+      job.id === jobId 
+        ? { ...job, status: job.status === 'Active' ? 'Closed' : 'Active' }
+        : job
+    ));
+    const job = jobs.find(j => j.id === jobId);
+    const newStatus = job?.status === 'Active' ? 'Closed' : 'Active';
+    toast({
+      title: `Job ${newStatus}`,
+      description: `Job has been ${newStatus.toLowerCase()}`,
+    });
+  };
+
   const filteredJobs = jobs.filter(job => {
     if (filter === 'active') return job.status === 'Active';
     if (filter === 'closed') return job.status === 'Closed';
@@ -196,14 +210,17 @@ const PostJobs: React.FC = () => {
                       {/* Status and Actions */}
                       <div className="flex flex-col items-end gap-3">
                         
-                        {/* Status Badge */}
-                        <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                          job.status === 'Active' 
-                            ? 'bg-green-500 text-white' 
-                            : 'bg-gray-400 text-white'
-                        }`}>
+                        {/* Status Toggle Button */}
+                        <button
+                          onClick={() => toggleJobStatus(job.id)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                            job.status === 'Active' 
+                              ? 'bg-green-500 text-white hover:bg-green-600' 
+                              : 'bg-gray-400 text-white hover:bg-gray-500'
+                          }`}
+                        >
                           {job.status}
-                        </span>
+                        </button>
 
                         {/* Action Buttons */}
                         <div className="flex gap-2">
