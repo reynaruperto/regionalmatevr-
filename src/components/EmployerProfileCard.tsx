@@ -88,9 +88,24 @@ const EmployerProfileCard: React.FC = () => {
 
   const handleBackNavigation = () => {
     const fromPage = searchParams.get('from');
-    if (isWHVContext) {
+    const employerIdParam = searchParams.get('employerId');
+    const originalFrom = searchParams.get('originalFrom');
+    const tab = searchParams.get('tab');
+    
+    if (fromPage === 'job-details') {
+      // Go back to job details, then ultimately to the original page
+      navigate(-1);
+    } else if (fromPage === 'employer-jobs') {
+      navigate(`/employer/jobs/${employerIdParam}?from=${originalFrom || 'whv-browse-employers'}&tab=${tab || ''}`);
+    } else if (isWHVContext) {
       // Navigate based on the 'from' parameter
       navigate(fromPage === 'matches' ? '/whv/matches' : '/whv/browse-employers');
+    } else if (fromPage === 'whv-browse-employers' || originalFrom === 'whv-browse-employers') {
+      navigate('/whv/browse-employers');
+    } else if (fromPage === 'employer-matches') {
+      navigate(`/employer/matches?tab=${tab || 'matches'}`);
+    } else if (fromPage === 'whv-matches') {
+      navigate(`/whv/matches?tab=${tab || 'matches'}`);
     } else {
       navigate('/employer/matches');
     }

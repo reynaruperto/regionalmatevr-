@@ -159,8 +159,10 @@ const JobDetails: React.FC = () => {
 
   const handleViewEmployerProfile = () => {
     const fromPage = searchParams.get('from');
+    const employerIdParam = searchParams.get('employerId');
+    const originalFrom = searchParams.get('originalFrom');
     const tab = searchParams.get('tab');
-    navigate(`/employer/profile/${employerId}?from=${fromPage || 'job-details'}&tab=${tab || ''}`);
+    navigate(`/employer/profile/${employerId}?from=${fromPage || 'job-details'}&employerId=${employerIdParam || employerId}&originalFrom=${originalFrom || 'whv-browse-employers'}&tab=${tab || ''}`);
   };
 
   if (!job) {

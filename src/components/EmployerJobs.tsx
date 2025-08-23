@@ -57,7 +57,7 @@ const EmployerJobs: React.FC = () => {
   const handleViewJob = (jobId: string) => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
-    navigate(`/job-details/${employerId}/${jobId}?from=${fromPage || 'employer-profile'}&tab=${tab || ''}`);
+    navigate(`/job-details/${employerId}/${jobId}?from=employer-jobs&employerId=${employerId}&originalFrom=${fromPage || 'whv-browse-employers'}&tab=${tab || ''}`);
   };
 
   const getStatusColor = (status: string) => {
