@@ -111,15 +111,17 @@ const WHVMatches: React.FC = () => {
   };
 
   const handleLikeEmployer = (employerId: string) => {
-    console.log('Heart clicked for employer:', employerId);
+    console.log('handleLikeEmployer called with ID:', employerId);
     const allEmployers = [...topRecommendedEmployers, ...matches];
     const employer = allEmployers.find(e => e.id === employerId);
+    console.log('Found employer:', employer);
     if (employer) {
-      console.log('Found employer:', employer.name);
+      console.log('Setting modal for employer:', employer.name);
       setLikedEmployerName(employer.name);
       setShowLikeModal(true);
+      console.log('Modal state set to true');
     } else {
-      console.log('Employer not found');
+      console.log('ERROR: Employer not found with ID:', employerId);
     }
   };
 
@@ -228,18 +230,15 @@ const WHVMatches: React.FC = () => {
                           {employer.isMutualMatch ? 'View Full Profile Card' : 'View Profile Card'}
                         </Button>
                         {!employer.isMutualMatch && (
-                          <button 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              console.log('MATCHES PAGE Heart button clicked for employer:', employer.id);
+                          <div 
+                            onClick={() => {
+                              console.log('HEART CLICKED ON MATCHES PAGE for:', employer.id, employer.name);
                               handleLikeEmployer(employer.id);
                             }}
-                            className="h-10 w-10 flex-shrink-0 bg-gradient-to-b from-slate-700 to-slate-900 rounded-lg flex items-center justify-center hover:from-slate-600 hover:to-slate-800 transition-all duration-200 shadow-lg relative z-50 cursor-pointer"
-                            style={{ pointerEvents: 'auto' }}
+                            className="h-10 w-10 flex-shrink-0 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700 transition-all duration-200 shadow-lg cursor-pointer border-2 border-white"
                           >
                             <ThumbsUp size={16} className="text-white" />
-                          </button>
+                          </div>
                         )}
                       </div>
                     </div>
