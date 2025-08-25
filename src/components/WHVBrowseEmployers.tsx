@@ -4,7 +4,7 @@ import { ArrowLeft, Search, Filter, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BottomNavigation from '@/components/BottomNavigation';
-import FilterPage from '@/components/FilterPage';
+import WHVFilterPage from '@/components/WHVFilterPage';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface Employer {
@@ -90,7 +90,7 @@ const WHVBrowseEmployers: React.FC = () => {
   };
 
   if (showFilters) {
-    return <FilterPage onClose={() => setShowFilters(false)} onApplyFilters={handleApplyFilters} />;
+    return <WHVFilterPage onClose={() => setShowFilters(false)} onApplyFilters={handleApplyFilters} />;
   }
 
   return (
