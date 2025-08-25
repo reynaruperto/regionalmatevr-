@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import AustraliaIcon from './AustraliaIcon';
 
 const WHVOnboardingForm: React.FC = () => {
@@ -18,16 +19,82 @@ const WHVOnboardingForm: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+
+  const validatePassword = (password: string, confirmPassword: string) => {
+    const newErrors: {[key: string]: string} = {};
+    
+    if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters long';
+    }
+    
+    // Check if password contains name or birth date (basic check)
+    const lowerPassword = password.toLowerCase();
+    const lowerGivenName = formData.givenName.toLowerCase();
+    const lowerFamilyName = formData.familyName.toLowerCase();
+    
+    if (lowerGivenName && lowerPassword.includes(lowerGivenName)) {
+      newErrors.password = 'Password cannot contain your name';
+    }
+    if (lowerFamilyName && lowerPassword.includes(lowerFamilyName)) {
+      newErrors.password = 'Password cannot contain your name';
+    }
+    
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    
+    return newErrors;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    
+    // Clear errors when user starts typing
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+    
+    // Real-time password validation
+    if (name === 'password' || name === 'confirmPassword') {
+      const password = name === 'password' ? value : formData.password;
+      const confirmPassword = name === 'confirmPassword' ? value : formData.confirmPassword;
+      const passwordErrors = validatePassword(password, confirmPassword);
+      setErrors({
+        ...errors,
+        ...passwordErrors
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate passwords
+    const passwordErrors = validatePassword(formData.password, formData.confirmPassword);
+    
+    // Check terms agreement
+    if (!agreeToTerms) {
+      setErrors({
+        ...passwordErrors,
+        terms: 'You must agree to the Terms and Conditions'
+      });
+      return;
+    }
+    
+    if (Object.keys(passwordErrors).length > 0) {
+      setErrors(passwordErrors);
+      return;
+    }
+    
     console.log('WHV Registration:', formData);
     // Future: Handle WHV registration logic
     navigate('/whv/email-confirmation');
@@ -100,7 +167,7 @@ const WHVOnboardingForm: React.FC = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="familyName" className="text-base font-medium text-gray-700">
-                  Family Name
+                  Family Name(s)
                 </Label>
                 <Input
                   id="familyName"
@@ -142,9 +209,12 @@ const WHVOnboardingForm: React.FC = () => {
                     required
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.password ? 'border-red-500' : ''}`}
                     placeholder="••••••••••••••••••••"
                   />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                  )}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -167,9 +237,12 @@ const WHVOnboardingForm: React.FC = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
                     placeholder="••••••••••••••••••••"
                   />
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                  )}
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -179,6 +252,29 @@ const WHVOnboardingForm: React.FC = () => {
                   </button>
                 </div>
               </div>
+
+              {/* Terms and Conditions */}
+              <div className="flex items-start space-x-3 pt-4">
+                <Checkbox 
+                  id="terms"
+                  checked={agreeToTerms}
+                  onCheckedChange={(checked) => setAgreeToTerms(checked === true)}
+                  className="mt-0.5"
+                />
+                <label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
+                  I agree to the{' '}
+                  <button type="button" className="text-orange-500 underline hover:text-orange-600">
+                    Terms and Conditions
+                  </button>
+                  {' '}and{' '}
+                  <button type="button" className="text-orange-500 underline hover:text-orange-600">
+                    Privacy Policy
+                  </button>
+                </label>
+              </div>
+              {errors.terms && (
+                <p className="text-red-500 text-sm">{errors.terms}</p>
+              )}
 
               <div className="pt-8">
                 <Button 

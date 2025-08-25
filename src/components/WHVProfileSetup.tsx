@@ -16,6 +16,7 @@ const WHVProfileSetup: React.FC = () => {
     countryCode: '',
     phoneNumber: ''
   });
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   // WHV eligible countries
   const whvCountries = [
@@ -77,11 +78,78 @@ const WHVProfileSetup: React.FC = () => {
     { code: '+598', country: 'Uruguay', flag: '🇺🇾' }
   ];
 
+  // Validation functions
+  const validateDateFormat = (date: string) => {
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return dateRegex.test(date);
+  };
+
+  const validateAge = (date: string) => {
+    if (!validateDateFormat(date)) return false;
+    const [day, month, year] = date.split('/').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      return (age - 1) >= 18;
+    }
+    return age >= 18;
+  };
+
+  const validateVisaExpiry = (date: string) => {
+    if (!validateDateFormat(date)) return false;
+    const [day, month, year] = date.split('/').map(Number);
+    const expiryDate = new Date(year, month - 1, day);
+    const today = new Date();
+    return expiryDate > today;
+  };
+
+  const formatDateInput = (value: string) => {
+    // Remove all non-digits
+    const numbers = value.replace(/\D/g, '');
+    
+    // Add slashes at appropriate positions
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 4) {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+    } else {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+    }
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digits
+    return value.replace(/\D/g, '');
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+    
+    // Format date inputs
+    if (name === 'dateOfBirth' || name === 'visaExpiryDate') {
+      formattedValue = formatDateInput(value);
+    }
+    
+    // Format phone number
+    if (name === 'phoneNumber') {
+      formattedValue = formatPhoneNumber(value);
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: formattedValue
     });
+    
+    // Clear errors when user starts typing
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -93,8 +161,34 @@ const WHVProfileSetup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const newErrors: {[key: string]: string} = {};
+    
+    // Validate date of birth
+    if (!validateDateFormat(formData.dateOfBirth)) {
+      newErrors.dateOfBirth = 'Please enter date in DD/MM/YYYY format';
+    } else if (!validateAge(formData.dateOfBirth)) {
+      newErrors.dateOfBirth = 'You must be at least 18 years old';
+    }
+    
+    // Validate visa expiry date
+    if (!validateDateFormat(formData.visaExpiryDate)) {
+      newErrors.visaExpiryDate = 'Please enter date in DD/MM/YYYY format';
+    } else if (!validateVisaExpiry(formData.visaExpiryDate)) {
+      newErrors.visaExpiryDate = 'Visa expiry date cannot be in the past';
+    }
+    
+    // Validate phone number
+    if (formData.phoneNumber && formData.phoneNumber.length < 8) {
+      newErrors.phoneNumber = 'Please enter a valid phone number';
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
     console.log('WHV Profile Setup:', formData);
-    // Navigate to next step
     navigate('/whv/current-address');
   };
 
@@ -134,11 +228,16 @@ const WHVProfileSetup: React.FC = () => {
                   id="dateOfBirth"
                   name="dateOfBirth"
                   type="text"
+                  required
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.dateOfBirth ? 'border-red-500' : ''}`}
                   placeholder="01/01/1990"
+                  maxLength={10}
                 />
+                {errors.dateOfBirth && (
+                  <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -188,9 +287,13 @@ const WHVProfileSetup: React.FC = () => {
                   required
                   value={formData.visaExpiryDate}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.visaExpiryDate ? 'border-red-500' : ''}`}
                   placeholder="01/01/2026"
+                  maxLength={10}
                 />
+                {errors.visaExpiryDate && (
+                  <p className="text-red-500 text-sm mt-1">{errors.visaExpiryDate}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -217,10 +320,13 @@ const WHVProfileSetup: React.FC = () => {
                     required
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="flex-1 h-12 bg-gray-100 border-0 text-gray-900"
+                    className={`flex-1 h-12 bg-gray-100 border-0 text-gray-900 ${errors.phoneNumber ? 'border-red-500' : ''}`}
                     placeholder="492 333 444"
                   />
                 </div>
+                {errors.phoneNumber && (
+                  <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                )}
               </div>
 
               <div className="pt-8">

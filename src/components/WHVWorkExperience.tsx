@@ -32,10 +32,32 @@ const WHVWorkExperience: React.FC = () => {
     'Other'
   ];
 
+  const formatDateInput = (value: string) => {
+    // Remove all non-digits
+    const numbers = value.replace(/\D/g, '');
+    
+    // Add slashes at appropriate positions
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 4) {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+    } else {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+    
+    // Format date input
+    if (name === 'availableStartDate') {
+      formattedValue = formatDateInput(value);
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: formattedValue
     });
   };
 
@@ -152,6 +174,7 @@ const WHVWorkExperience: React.FC = () => {
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   placeholder="09/09/2025"
+                  maxLength={10}
                 />
               </div>
 
