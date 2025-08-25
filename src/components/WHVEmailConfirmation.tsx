@@ -27,7 +27,7 @@ const WHVEmailConfirmation: React.FC = () => {
       title: "Email confirmed!",
       description: "Your account has been verified successfully",
     });
-    navigate('/whv-profile-setup');
+    navigate('/whv/profile-setup');
   };
 
   const handleResendCode = async () => {
@@ -54,7 +54,7 @@ const WHVEmailConfirmation: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-onboarding')}
+                onClick={() => navigate('/whv/onboarding')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
