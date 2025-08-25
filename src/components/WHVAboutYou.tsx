@@ -28,11 +28,11 @@ const WHVAboutYou: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('WHV About You:', formData);
-    navigate('/whv-photo-upload');
+    navigate('/whv/photo-upload');
   };
 
   const handleSkip = () => {
-    navigate('/whv-photo-upload');
+    navigate('/whv/photo-upload');
   };
 
   return (
@@ -47,7 +47,7 @@ const WHVAboutYou: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-current-address')}
+                onClick={() => navigate('/whv/current-address')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />

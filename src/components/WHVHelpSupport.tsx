@@ -67,7 +67,7 @@ const WHVHelpSupport: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-white rounded-xl shadow-sm mr-4"
-                  onClick={() => navigate('/whv-dashboard')}
+                  onClick={() => navigate('/whv/dashboard')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>

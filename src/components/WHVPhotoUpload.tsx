@@ -47,7 +47,7 @@ const WHVPhotoUpload: React.FC = () => {
       // Store the uploaded photo in localStorage
       localStorage.setItem('whvProfilePhoto', selectedImage);
       console.log('WHV Photo uploaded:', selectedFile);
-      navigate('/whv-account-confirmation');
+      navigate('/whv/account-confirmation');
     } else {
       toast({
         title: "Please upload a photo",
@@ -58,7 +58,7 @@ const WHVPhotoUpload: React.FC = () => {
   };
 
   const handleSkip = () => {
-    navigate('/whv-account-confirmation');
+    navigate('/whv/account-confirmation');
   };
 
   return (
@@ -73,7 +73,7 @@ const WHVPhotoUpload: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-about-you')}
+                onClick={() => navigate('/whv/about-you')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />

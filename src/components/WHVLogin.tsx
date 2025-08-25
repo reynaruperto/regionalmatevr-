@@ -30,7 +30,7 @@ const WHVLogin: React.FC = () => {
       title: "Welcome back!",
       description: "Successfully signed in to Regional Mate",
     });
-    navigate('/whv-dashboard');
+    navigate('/whv/dashboard');
   };
 
   const handleForgotPassword = () => {

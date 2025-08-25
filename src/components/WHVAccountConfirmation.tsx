@@ -7,7 +7,7 @@ const WHVAccountConfirmation: React.FC = () => {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    navigate('/whv-login');
+    navigate('/whv/login');
   };
 
   return (

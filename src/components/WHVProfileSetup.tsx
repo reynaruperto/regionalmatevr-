@@ -95,7 +95,7 @@ const WHVProfileSetup: React.FC = () => {
     e.preventDefault();
     console.log('WHV Profile Setup:', formData);
     // Navigate to next step
-    navigate('/whv-current-address');
+    navigate('/whv/current-address');
   };
 
   return (
@@ -110,7 +110,7 @@ const WHVProfileSetup: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv-email-confirmation')}
+                onClick={() => navigate('/whv/email-confirmation')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />

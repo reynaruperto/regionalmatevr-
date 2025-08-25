@@ -148,11 +148,11 @@ const WHVEditProfile: React.FC = () => {
       title: "Profile Updated",
       description: "Your WHV profile has been successfully updated",
     });
-    navigate('/whv-dashboard');
+    navigate('/whv/dashboard');
   };
 
   const handleCancel = () => {
-    navigate('/whv-dashboard');
+    navigate('/whv/dashboard');
   };
 
   return (

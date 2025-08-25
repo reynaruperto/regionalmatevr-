@@ -15,7 +15,7 @@ const WHVSuccessModal: React.FC<WHVSuccessModalProps> = ({ isOpen, onClose }) =>
 
   const handleSignIn = () => {
     onClose();
-    navigate('/whv-login');
+    navigate('/whv/login');
   };
 
   return (
