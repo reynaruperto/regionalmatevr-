@@ -16,24 +16,24 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     state: '',
     citySuburb: '',
     postcode: '',
-    industry: '',
-    jobType: '',
-    seasonalTiming: '',
-    workDuration: '',
-    accommodationProvided: false,
-    mealsProvided: false,
-    transportProvided: false,
-    trainingProvided: false,
-    equipmentProvided: false,
+    candidateIndustryExperience: '',
+    candidateAvailability: '',
+    candidateWorkDuration: '',
+    candidateExperienceLevel: '',
+    candidatePhysicalWorkLevel: '',
+    candidateWorkEnvironmentPreference: '',
+    candidateVisaType: '',
+    candidateNationality: '',
+    candidateAge: '',
+    candidateGender: '',
+    candidateLanguages: '',
+    willingToProvideAccommodation: false,
+    willingToProvideMeals: false,
+    willingToProvideTransport: false,
+    willingToProvideTraining: false,
+    willingToProvideEquipment: false,
     payRateMin: '',
     payRateMax: '',
-    experienceRequired: '',
-    physicalWork: '',
-    workEnvironment: '',
-    farmSize: '',
-    acceptsWHV417: false,
-    acceptsWHV462: false,
-    acceptsStudentVisa: false,
   });
 
   const states = [
@@ -47,7 +47,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     'Australian Capital Territory (ACT)'
   ];
 
-  const industries = [
+  const candidateIndustryExperience = [
     'Agriculture & Farming',
     'Horticulture & Fruit Picking', 
     'Livestock & Dairy Farming',
@@ -81,60 +81,95 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     'General Labour'
   ];
 
-  const jobTypes = [
-    'Casual / Seasonal',
-    'Part-time',
-    'Full-time',
-    'Contract',
-    'Temporary'
+  const candidateAvailabilityOptions = [
+    'Available Now',
+    'Available in 1 Month',
+    'Available in 2-3 Months',
+    'Available in 4-6 Months',
+    'Available Next Year',
+    'Flexible Start Date'
   ];
 
-  const experienceRequiredLevels = [
-    'No Experience Required',
-    'Some Experience Preferred',
-    '1+ Years Required',
-    '2+ Years Required',
-    '3+ Years Required'
-  ];
-
-  const seasonalTimingOptions = [
-    'Spring (Sep-Nov)',
-    'Summer (Dec-Feb)', 
-    'Autumn (Mar-May)',
-    'Winter (Jun-Aug)',
-    'Year Round',
-    'Peak Season Only',
-    'Off Season Only'
-  ];
-
-  const workDurationOptions = [
+  const candidateWorkDurationOptions = [
     '1-2 weeks',
     '1 month',
     '2-3 months', 
     '3-6 months',
     '6+ months',
-    'Ongoing'
+    'Long-term / Ongoing'
   ];
 
-  const physicalWorkLevels = [
-    'Light Physical Work',
+  const candidateExperienceLevels = [
+    'No Experience',
+    'Some Experience',
+    '1-2 Years Experience',
+    '3-5 Years Experience',
+    '5+ Years Experience'
+  ];
+
+  const candidatePhysicalWorkLevels = [
+    'Light Physical Work Only',
     'Moderate Physical Work',
     'Heavy Physical Work',
-    'No Preference'
+    'Any Physical Level'
   ];
 
-  const workEnvironmentOptions = [
-    'Indoor Only',
-    'Outdoor Only', 
+  const candidateWorkEnvironmentPreferences = [
+    'Indoor Work Only',
+    'Outdoor Work Only', 
     'Mixed Indoor/Outdoor',
-    'No Preference'
+    'Any Environment'
   ];
 
-  const farmSizeOptions = [
-    'Family Farm (Small)',
-    'Medium Commercial Farm',
-    'Large Corporate Farm',
-    'No Preference'
+  const candidateVisaTypes = [
+    'Subclass 417 (Working Holiday)',
+    'Subclass 462 (Work and Holiday)'
+  ];
+
+  const candidateNationalities = [
+    'United Kingdom',
+    'Germany',
+    'France',
+    'Ireland',
+    'Canada',
+    'South Korea',
+    'Japan',
+    'Taiwan',
+    'Hong Kong',
+    'Belgium',
+    'Denmark',
+    'Estonia',
+    'Finland',
+    'Italy',
+    'Netherlands',
+    'Norway',
+    'Sweden',
+    'Chile',
+    'Argentina',
+    'Uruguay',
+    'Other'
+  ];
+
+  const candidateAgeRanges = [
+    '18-20 years',
+    '21-25 years',
+    '26-30 years',
+    'Any age'
+  ];
+
+  const candidateGenderOptions = [
+    'Male',
+    'Female',
+    'Any'
+  ];
+
+  const candidateLanguageOptions = [
+    'English (Native)',
+    'English (Fluent)',
+    'English (Conversational)',
+    'English (Basic)',
+    'Multiple Languages',
+    'Any Level'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -196,25 +231,25 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               <button onClick={onClose}>
                 <ArrowLeft size={24} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Filters</h1>
+              <h1 className="text-lg font-medium text-gray-900">Candidate Filters</h1>
             </div>
           </div>
 
           {/* Scrollable Content */}
           <div className="flex-1 px-4 py-4 overflow-y-auto">
-            {/* Location Filters */}
+            {/* Candidate Location Preferences */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Candidate Location</h3>
               
               {/* State Selection */}
               <div className="mb-3">
-                <Label className="text-sm text-gray-600 mb-2 block">State</Label>
+                <Label className="text-sm text-gray-600 mb-2 block">Preferred State</Label>
                 <Select 
                   value={selectedFilters.state} 
                   onValueChange={(value) => handleSelectChange('state', value)}
                 >
                   <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
-                    <SelectValue placeholder="Select state (optional)" />
+                    <SelectValue placeholder="Any state" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
                     {states.map((state) => (
@@ -228,7 +263,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
 
               {/* City/Suburb Search */}
               <div className="mb-3">
-                <Label className="text-sm text-gray-600 mb-2 block">City or Suburb</Label>
+                <Label className="text-sm text-gray-600 mb-2 block">City or Area</Label>
                 <Input
                   type="text"
                   placeholder="e.g., Brisbane, Tamworth, Mildura..."
@@ -251,73 +286,97 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               </div>
             </div>
 
-            {/* Industry */}
+            {/* Candidate Industry Experience */}
             <DropdownSection 
-              title="Industry" 
-              items={industries} 
-              category="industry" 
-              placeholder="Select industry"
+              title="Candidate Industry Experience" 
+              items={candidateIndustryExperience} 
+              category="candidateIndustryExperience" 
+              placeholder="Any industry experience"
             />
 
-            {/* Job Type */}
+            {/* Candidate Availability */}
             <DropdownSection 
-              title="Job Type" 
-              items={jobTypes} 
-              category="jobType" 
-              placeholder="Select job type"
+              title="Candidate Availability" 
+              items={candidateAvailabilityOptions} 
+              category="candidateAvailability" 
+              placeholder="Any availability"
             />
 
-            {/* Seasonal Timing */}
+            {/* Candidate Work Duration */}
             <DropdownSection 
-              title="Seasonal Timing" 
-              items={seasonalTimingOptions} 
-              category="seasonalTiming" 
-              placeholder="Select season"
+              title="Candidate Work Duration" 
+              items={candidateWorkDurationOptions} 
+              category="candidateWorkDuration" 
+              placeholder="Any duration"
             />
 
-            {/* Work Duration */}
+            {/* Candidate Experience Level */}
             <DropdownSection 
-              title="Work Duration" 
-              items={workDurationOptions} 
-              category="workDuration" 
-              placeholder="Select duration"
+              title="Candidate Experience Level" 
+              items={candidateExperienceLevels} 
+              category="candidateExperienceLevel" 
+              placeholder="Any experience level"
             />
 
-            {/* Experience Required */}
+            {/* Candidate Physical Work Level */}
             <DropdownSection 
-              title="Experience Required" 
-              items={experienceRequiredLevels} 
-              category="experienceRequired" 
-              placeholder="Select experience level"
+              title="Candidate Physical Work Ability" 
+              items={candidatePhysicalWorkLevels} 
+              category="candidatePhysicalWorkLevel" 
+              placeholder="Any physical level"
             />
 
-            {/* Physical Work Level */}
+            {/* Candidate Work Environment */}
             <DropdownSection 
-              title="Physical Work Level" 
-              items={physicalWorkLevels} 
-              category="physicalWork" 
-              placeholder="Select physical level"
+              title="Candidate Work Environment Preference" 
+              items={candidateWorkEnvironmentPreferences} 
+              category="candidateWorkEnvironmentPreference" 
+              placeholder="Any environment"
             />
 
-            {/* Work Environment */}
+            {/* Candidate Visa Type */}
             <DropdownSection 
-              title="Work Environment" 
-              items={workEnvironmentOptions} 
-              category="workEnvironment" 
-              placeholder="Select environment"
+              title="Candidate Visa Type" 
+              items={candidateVisaTypes} 
+              category="candidateVisaType" 
+              placeholder="Any working holiday visa"
             />
 
-            {/* Farm Size */}
+            {/* Candidate Nationality */}
             <DropdownSection 
-              title="Farm Size" 
-              items={farmSizeOptions} 
-              category="farmSize" 
-              placeholder="Select farm size"
+              title="Candidate Nationality" 
+              items={candidateNationalities} 
+              category="candidateNationality" 
+              placeholder="Any nationality"
+            />
+
+            {/* Candidate Age */}
+            <DropdownSection 
+              title="Candidate Age Range" 
+              items={candidateAgeRanges} 
+              category="candidateAge" 
+              placeholder="Any age"
+            />
+
+            {/* Candidate Gender */}
+            <DropdownSection 
+              title="Candidate Gender" 
+              items={candidateGenderOptions} 
+              category="candidateGender" 
+              placeholder="Any gender"
+            />
+
+            {/* Candidate Languages */}
+            <DropdownSection 
+              title="Candidate Language Skills" 
+              items={candidateLanguageOptions} 
+              category="candidateLanguages" 
+              placeholder="Any language level"
             />
 
             {/* Pay Rate Range */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Pay Rate (per hour)</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Pay Rate Offering (per hour)</h3>
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <Label className="text-sm text-gray-600 mb-2 block">Min $</Label>
@@ -342,95 +401,58 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               </div>
             </div>
 
-            {/* Benefits & Facilities */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Benefits & Facilities</h3>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="accommodation"
-                    checked={selectedFilters.accommodationProvided}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('accommodationProvided', checked as boolean)}
-                  />
-                  <Label htmlFor="accommodation" className="text-sm text-gray-700">
-                    Accommodation Provided
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="meals"
-                    checked={selectedFilters.mealsProvided}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('mealsProvided', checked as boolean)}
-                  />
-                  <Label htmlFor="meals" className="text-sm text-gray-700">
-                    Meals Provided
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="transport"
-                    checked={selectedFilters.transportProvided}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('transportProvided', checked as boolean)}
-                  />
-                  <Label htmlFor="transport" className="text-sm text-gray-700">
-                    Transport Provided
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="training"
-                    checked={selectedFilters.trainingProvided}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('trainingProvided', checked as boolean)}
-                  />
-                  <Label htmlFor="training" className="text-sm text-gray-700">
-                    Training Provided
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="equipment"
-                    checked={selectedFilters.equipmentProvided}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('equipmentProvided', checked as boolean)}
-                  />
-                  <Label htmlFor="equipment" className="text-sm text-gray-700">
-                    Equipment/Tools Provided
-                  </Label>
-                </div>
-              </div>
-            </div>
-
-            {/* Visa Types Accepted */}
+            {/* What We Can Provide */}
             <div className="mb-20">
-              <h3 className="font-semibold text-gray-900 mb-3">Accepts My Visa Type</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">What We Can Provide</h3>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id="whv-417"
-                    checked={selectedFilters.acceptsWHV417}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsWHV417', checked as boolean)}
+                    id="willing-accommodation"
+                    checked={selectedFilters.willingToProvideAccommodation}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideAccommodation', checked as boolean)}
                   />
-                  <Label htmlFor="whv-417" className="text-sm text-gray-700">
-                    Subclass 417 (Working Holiday)
+                  <Label htmlFor="willing-accommodation" className="text-sm text-gray-700">
+                    We Can Provide Accommodation
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id="whv-462"
-                    checked={selectedFilters.acceptsWHV462}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsWHV462', checked as boolean)}
+                    id="willing-meals"
+                    checked={selectedFilters.willingToProvideMeals}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideMeals', checked as boolean)}
                   />
-                  <Label htmlFor="whv-462" className="text-sm text-gray-700">
-                    Subclass 462 (Work and Holiday)
+                  <Label htmlFor="willing-meals" className="text-sm text-gray-700">
+                    We Can Provide Meals
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id="student-visa"
-                    checked={selectedFilters.acceptsStudentVisa}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('acceptsStudentVisa', checked as boolean)}
+                    id="willing-transport"
+                    checked={selectedFilters.willingToProvideTransport}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTransport', checked as boolean)}
                   />
-                  <Label htmlFor="student-visa" className="text-sm text-gray-700">
-                    Student Visa (Subclass 500)
+                  <Label htmlFor="willing-transport" className="text-sm text-gray-700">
+                    We Can Provide Transport
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="willing-training"
+                    checked={selectedFilters.willingToProvideTraining}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTraining', checked as boolean)}
+                  />
+                  <Label htmlFor="willing-training" className="text-sm text-gray-700">
+                    We Can Provide Training
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="willing-equipment"
+                    checked={selectedFilters.willingToProvideEquipment}
+                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideEquipment', checked as boolean)}
+                  />
+                  <Label htmlFor="willing-equipment" className="text-sm text-gray-700">
+                    We Can Provide Equipment/Tools
                   </Label>
                 </div>
               </div>
@@ -443,7 +465,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               onClick={applyFilters}
               className="w-full bg-orange-500 hover:bg-orange-600 text-white"
             >
-              Confirm
+              Find Candidates
             </Button>
           </div>
         </div>

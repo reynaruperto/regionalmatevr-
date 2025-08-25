@@ -137,9 +137,7 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
 
   const visaTypes = [
     'Subclass 417 (Working Holiday)',
-    'Subclass 462 (Work and Holiday)',
-    'Student Visa (Subclass 500)',
-    'Other'
+    'Subclass 462 (Work and Holiday)'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
