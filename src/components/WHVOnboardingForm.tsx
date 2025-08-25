@@ -18,16 +18,76 @@ const WHVOnboardingForm: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+
+  const validatePassword = (password: string, givenName: string, familyName: string) => {
+    const errors = [];
+    
+    if (password.length < 8) {
+      errors.push('Password must be at least 8 characters long');
+    }
+    
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      errors.push('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+    }
+    
+    // Check if password contains name parts
+    const nameRegex = new RegExp(givenName.toLowerCase(), 'i');
+    const familyRegex = new RegExp(familyName.toLowerCase(), 'i');
+    if (givenName && nameRegex.test(password)) {
+      errors.push('Password cannot contain your given name');
+    }
+    if (familyName && familyRegex.test(password)) {
+      errors.push('Password cannot contain your family name');
+    }
+    
+    return errors;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    
+    // Clear errors for this field
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const newErrors: {[key: string]: string} = {};
+    
+    // Password validation
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    
+    const passwordErrors = validatePassword(formData.password, formData.givenName, formData.familyName);
+    if (passwordErrors.length > 0) {
+      newErrors.password = passwordErrors[0];
+    }
+    
+    // Required field validation
+    if (!formData.givenName.trim()) newErrors.givenName = 'Given name is required';
+    if (!formData.familyName.trim()) newErrors.familyName = 'Family name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    if (!formData.password.trim()) newErrors.password = 'Password is required';
+    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = 'Password confirmation is required';
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
     console.log('WHV Registration:', formData);
     // Future: Handle WHV registration logic
     navigate('/whv/email-confirmation');
@@ -78,9 +138,10 @@ const WHVOnboardingForm: React.FC = () => {
                   required
                   value={formData.givenName}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.givenName ? 'border-red-500' : ''}`}
                   placeholder="Peter"
                 />
+                {errors.givenName && <p className="text-red-500 text-sm">{errors.givenName}</p>}
               </div>
 
               <div className="space-y-2">
@@ -100,7 +161,7 @@ const WHVOnboardingForm: React.FC = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="familyName" className="text-base font-medium text-gray-700">
-                  Family Name
+                  Family Name(s)
                 </Label>
                 <Input
                   id="familyName"
@@ -109,9 +170,10 @@ const WHVOnboardingForm: React.FC = () => {
                   required
                   value={formData.familyName}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.familyName ? 'border-red-500' : ''}`}
                   placeholder="Parker"
                 />
+                {errors.familyName && <p className="text-red-500 text-sm">{errors.familyName}</p>}
               </div>
 
               <div className="space-y-2">
@@ -125,9 +187,10 @@ const WHVOnboardingForm: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.email ? 'border-red-500' : ''}`}
                   placeholder="peterparker@gmail.com"
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
 
               <div className="space-y-2">
@@ -142,7 +205,7 @@ const WHVOnboardingForm: React.FC = () => {
                     required
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.password ? 'border-red-500' : ''}`}
                     placeholder="••••••••••••••••••••"
                   />
                   <button
@@ -153,6 +216,7 @@ const WHVOnboardingForm: React.FC = () => {
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
 
               <div className="space-y-2">
@@ -167,7 +231,7 @@ const WHVOnboardingForm: React.FC = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className="h-12 bg-gray-100 border-0 text-gray-900 pr-12"
+                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
                     placeholder="••••••••••••••••••••"
                   />
                   <button
@@ -178,6 +242,7 @@ const WHVOnboardingForm: React.FC = () => {
                     {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+                {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
               </div>
 
               <div className="pt-8">

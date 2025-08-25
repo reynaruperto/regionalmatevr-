@@ -17,7 +17,7 @@ const WHVCurrentAddress: React.FC = () => {
     postCode: '',
     isInAustralia: true
   });
-
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [showSkipOption, setShowSkipOption] = useState(false);
 
 
@@ -34,10 +34,26 @@ const WHVCurrentAddress: React.FC = () => {
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+    
+    // Format postcode (numbers only)
+    if (name === 'postCode') {
+      formattedValue = value.replace(/\D/g, '');
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: formattedValue
     });
+    
+    // Clear errors for this field
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -49,8 +65,28 @@ const WHVCurrentAddress: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const newErrors: {[key: string]: string} = {};
+    
+    // Only validate if in Australia
+    if (formData.isInAustralia) {
+      if (!formData.addressLine1.trim()) newErrors.addressLine1 = 'Address line 1 is required';
+      if (!formData.suburb.trim()) newErrors.suburb = 'Suburb is required';
+      if (!formData.city.trim()) newErrors.city = 'City is required';
+      if (!formData.state) newErrors.state = 'State is required';
+      if (!formData.postCode.trim()) {
+        newErrors.postCode = 'Post code is required';
+      } else if (formData.postCode.length !== 4) {
+        newErrors.postCode = 'Australian post code must be 4 digits';
+      }
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
     console.log('Current Address:', formData);
-    // Navigate to next step
     navigate('/whv/about-you');
   };
 
@@ -145,9 +181,10 @@ const WHVCurrentAddress: React.FC = () => {
                   required={formData.isInAustralia}
                   value={formData.addressLine1}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.addressLine1 ? 'border-red-500' : ''}`}
                   placeholder={formData.isInAustralia ? "22 Valley St." : "Your current address"}
                 />
+                {errors.addressLine1 && <p className="text-red-500 text-sm">{errors.addressLine1}</p>}
               </div>
 
               <div className="space-y-2">
@@ -176,9 +213,10 @@ const WHVCurrentAddress: React.FC = () => {
                   required={formData.isInAustralia}
                   value={formData.suburb}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.suburb ? 'border-red-500' : ''}`}
                   placeholder={formData.isInAustralia ? "Spring Hill" : "Your area/district"}
                 />
+                {errors.suburb && <p className="text-red-500 text-sm">{errors.suburb}</p>}
               </div>
 
               <div className="space-y-2">
@@ -192,9 +230,10 @@ const WHVCurrentAddress: React.FC = () => {
                   required={formData.isInAustralia}
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.city ? 'border-red-500' : ''}`}
                   placeholder={formData.isInAustralia ? "Brisbane" : "Your city"}
                 />
+                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
               </div>
 
               {formData.isInAustralia ? (
@@ -203,7 +242,7 @@ const WHVCurrentAddress: React.FC = () => {
                     State
                   </Label>
                   <Select onValueChange={(value) => handleSelectChange('state', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                    <SelectTrigger className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.state ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="Queensland" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
@@ -214,6 +253,7 @@ const WHVCurrentAddress: React.FC = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -243,9 +283,11 @@ const WHVCurrentAddress: React.FC = () => {
                   required={formData.isInAustralia}
                   value={formData.postCode}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.postCode ? 'border-red-500' : ''}`}
                   placeholder={formData.isInAustralia ? "4000" : "Your postal/zip code"}
+                  maxLength={formData.isInAustralia ? 4 : undefined}
                 />
+                {errors.postCode && <p className="text-red-500 text-sm">{errors.postCode}</p>}
               </div>
 
               <div className="pt-8 space-y-3">

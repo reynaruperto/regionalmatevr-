@@ -16,6 +16,7 @@ const WHVProfileSetup: React.FC = () => {
     countryCode: '',
     phoneNumber: ''
   });
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   // WHV eligible countries
   const whvCountries = [
@@ -77,11 +78,87 @@ const WHVProfileSetup: React.FC = () => {
     { code: '+598', country: 'Uruguay', flag: '🇺🇾' }
   ];
 
+  const formatDateInput = (value: string) => {
+    // Remove all non-numeric characters
+    const numericValue = value.replace(/\D/g, '');
+    
+    // Format as DD/MM/YYYY
+    if (numericValue.length <= 2) {
+      return numericValue;
+    } else if (numericValue.length <= 4) {
+      return `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
+    } else {
+      return `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;
+    }
+  };
+
+  const validateDate = (dateStr: string, isDateOfBirth = false) => {
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!dateRegex.test(dateStr)) {
+      return 'Please enter date in DD/MM/YYYY format';
+    }
+
+    const [day, month, year] = dateStr.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    
+    if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
+      return 'Please enter a valid date';
+    }
+
+    if (isDateOfBirth) {
+      const today = new Date();
+      const age = today.getFullYear() - year;
+      const monthDiff = today.getMonth() - (month - 1);
+      const dayDiff = today.getDate() - day;
+      
+      if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+        return 'You must be at least 18 years old';
+      }
+    } else {
+      // Visa expiry date validation
+      const today = new Date();
+      if (date <= today) {
+        return 'Visa expiry date must be in the future';
+      }
+    }
+
+    return '';
+  };
+
+  const validatePhoneNumber = (phone: string) => {
+    const numericPhone = phone.replace(/\D/g, '');
+    if (numericPhone.length < 7 || numericPhone.length > 15) {
+      return 'Please enter a valid phone number';
+    }
+    return '';
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+    
+    // Format date inputs
+    if (name === 'dateOfBirth' || name === 'visaExpiryDate') {
+      formattedValue = formatDateInput(value);
+    }
+    
+    // Format phone number (numbers only)
+    if (name === 'phoneNumber') {
+      formattedValue = value.replace(/\D/g, '');
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: formattedValue
     });
+    
+    // Clear errors for this field
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -93,8 +170,44 @@ const WHVProfileSetup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const newErrors: {[key: string]: string} = {};
+    
+    // Validate date of birth
+    if (!formData.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date of birth is required';
+    } else {
+      const dobError = validateDate(formData.dateOfBirth, true);
+      if (dobError) newErrors.dateOfBirth = dobError;
+    }
+    
+    // Validate visa expiry date
+    if (!formData.visaExpiryDate) {
+      newErrors.visaExpiryDate = 'Visa expiry date is required';
+    } else {
+      const visaError = validateDate(formData.visaExpiryDate, false);
+      if (visaError) newErrors.visaExpiryDate = visaError;
+    }
+    
+    // Validate phone number
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = 'Phone number is required';
+    } else {
+      const phoneError = validatePhoneNumber(formData.phoneNumber);
+      if (phoneError) newErrors.phoneNumber = phoneError;
+    }
+    
+    // Validate other required fields
+    if (!formData.nationality) newErrors.nationality = 'Nationality is required';
+    if (!formData.visaType) newErrors.visaType = 'Visa type is required';
+    if (!formData.countryCode) newErrors.countryCode = 'Country code is required';
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
     console.log('WHV Profile Setup:', formData);
-    // Navigate to next step
     navigate('/whv/current-address');
   };
 
@@ -134,11 +247,14 @@ const WHVProfileSetup: React.FC = () => {
                   id="dateOfBirth"
                   name="dateOfBirth"
                   type="text"
+                  required
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.dateOfBirth ? 'border-red-500' : ''}`}
                   placeholder="01/01/1990"
+                  maxLength={10}
                 />
+                {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
               </div>
 
               <div className="space-y-2">
@@ -146,7 +262,7 @@ const WHVProfileSetup: React.FC = () => {
                   Nationality (Country of Passport)
                 </Label>
                 <Select onValueChange={(value) => handleSelectChange('nationality', value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                  <SelectTrigger className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.nationality ? 'border-red-500' : ''}`}>
                     <SelectValue placeholder="Argentina" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto">
@@ -157,6 +273,7 @@ const WHVProfileSetup: React.FC = () => {
                     ))}
                   </SelectContent>
                 </Select>
+                {errors.nationality && <p className="text-red-500 text-sm">{errors.nationality}</p>}
               </div>
 
               <div className="space-y-2">
@@ -164,7 +281,7 @@ const WHVProfileSetup: React.FC = () => {
                   Visa Type
                 </Label>
                 <Select onValueChange={(value) => handleSelectChange('visaType', value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                  <SelectTrigger className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.visaType ? 'border-red-500' : ''}`}>
                     <SelectValue placeholder="462" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto">
@@ -175,6 +292,7 @@ const WHVProfileSetup: React.FC = () => {
                     ))}
                   </SelectContent>
                 </Select>
+                {errors.visaType && <p className="text-red-500 text-sm">{errors.visaType}</p>}
               </div>
 
               <div className="space-y-2">
@@ -188,9 +306,11 @@ const WHVProfileSetup: React.FC = () => {
                   required
                   value={formData.visaExpiryDate}
                   onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.visaExpiryDate ? 'border-red-500' : ''}`}
                   placeholder="01/01/2026"
+                  maxLength={10}
                 />
+                {errors.visaExpiryDate && <p className="text-red-500 text-sm">{errors.visaExpiryDate}</p>}
               </div>
 
               <div className="space-y-2">
@@ -199,7 +319,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <div className="flex gap-2">
                   <Select onValueChange={(value) => handleSelectChange('countryCode', value)}>
-                    <SelectTrigger className="w-32 h-12 bg-gray-100 border-0 text-gray-900">
+                    <SelectTrigger className={`w-32 h-12 bg-gray-100 border-0 text-gray-900 ${errors.countryCode ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="+61 🇦🇺" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
@@ -217,10 +337,13 @@ const WHVProfileSetup: React.FC = () => {
                     required
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="flex-1 h-12 bg-gray-100 border-0 text-gray-900"
+                    className={`flex-1 h-12 bg-gray-100 border-0 text-gray-900 ${errors.phoneNumber ? 'border-red-500' : ''}`}
                     placeholder="492 333 444"
                   />
                 </div>
+                {(errors.countryCode || errors.phoneNumber) && (
+                  <p className="text-red-500 text-sm">{errors.countryCode || errors.phoneNumber}</p>
+                )}
               </div>
 
               <div className="pt-8">
