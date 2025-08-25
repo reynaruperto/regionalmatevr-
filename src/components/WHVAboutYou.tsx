@@ -10,9 +10,10 @@ import { useState } from 'react';
 const WHVAboutYou: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    tagline: '',
     workExperience: '',
     skillsInterests: '',
-    whyAustralia: '',
+    futurePlans: '',
     workPreferences: '',
     availabilityDuration: '',
     languages: ''
@@ -70,17 +71,20 @@ const WHVAboutYou: React.FC = () => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6 pb-20">
               <div className="space-y-2">
-                <Label htmlFor="workExperience" className="text-base font-medium text-gray-700">
-                  What work experience do you have?
+                <Label htmlFor="tagline" className="text-base font-medium text-gray-700">
+                  Profile Tagline
                 </Label>
-                <Textarea
-                  id="workExperience"
-                  name="workExperience"
-                  value={formData.workExperience}
+                <Input
+                  id="tagline"
+                  name="tagline"
+                  type="text"
+                  value={formData.tagline}
                   onChange={handleInputChange}
-                  className="min-h-24 bg-gray-100 border-0 text-gray-900 resize-none"
-                  placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                  placeholder="Hardworking farm enthusiast ready for adventure"
+                  maxLength={60}
                 />
+                <p className="text-xs text-gray-500">This will appear under your profile photo (max 60 characters)</p>
               </div>
 
               <div className="space-y-2">
@@ -94,50 +98,22 @@ const WHVAboutYou: React.FC = () => {
                   onChange={handleInputChange}
                   className="min-h-24 bg-gray-100 border-0 text-gray-900 resize-none"
                   placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities..."
+                  maxLength={500}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="whyAustralia" className="text-base font-medium text-gray-700">
-                  Why did you choose Australia for your working holiday?
+                <Label htmlFor="futurePlans" className="text-base font-medium text-gray-700">
+                  What are your future plans in terms of work?
                 </Label>
                 <Textarea
-                  id="whyAustralia"
-                  name="whyAustralia"
-                  value={formData.whyAustralia}
+                  id="futurePlans"
+                  name="futurePlans"
+                  value={formData.futurePlans}
                   onChange={handleInputChange}
                   className="min-h-24 bg-gray-100 border-0 text-gray-900 resize-none"
-                  placeholder="I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture..."
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="workPreferences" className="text-base font-medium text-gray-700">
-                  What type of work are you most interested in?
-                </Label>
-                <Input
-                  id="workPreferences"
-                  name="workPreferences"
-                  type="text"
-                  value={formData.workPreferences}
-                  onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="Farm work, hospitality, construction, etc."
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="availabilityDuration" className="text-base font-medium text-gray-700">
-                  How long are you planning to stay in Australia?
-                </Label>
-                <Input
-                  id="availabilityDuration"
-                  name="availabilityDuration"
-                  type="text"
-                  value={formData.availabilityDuration}
-                  onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
-                  placeholder="12 months, 2 years, flexible, etc."
+                  placeholder="I plan to gain experience in agricultural work, then potentially move into farm management or start my own business..."
+                  maxLength={500}
                 />
               </div>
 
@@ -153,6 +129,7 @@ const WHVAboutYou: React.FC = () => {
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   placeholder="English (fluent), Spanish (native), French (basic)"
+                  maxLength={100}
                 />
               </div>
 
