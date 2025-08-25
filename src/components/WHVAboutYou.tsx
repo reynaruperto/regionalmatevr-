@@ -29,11 +29,11 @@ const WHVAboutYou: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('WHV About You:', formData);
-    navigate('/whv/photo-upload');
+    navigate('/whv/work-preferences');
   };
 
   const handleSkip = () => {
-    navigate('/whv/photo-upload');
+    navigate('/whv/work-preferences');
   };
 
   return (

@@ -29,36 +29,6 @@ const WHVWorkExperience: React.FC = () => {
   const navigate = useNavigate();
   const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([]);
   const [jobReferences, setJobReferences] = useState<JobReference[]>([]);
-  const [workPreferences, setWorkPreferences] = useState({
-    availableStartDate: '',
-    preferredIndustry: '',
-    stayDuration: '',
-    willingToRelocate: '',
-    licenses: ''
-  });
-
-  // Industry options
-  const industries = [
-    'Agriculture & Farming',
-    'Construction',
-    'Hospitality & Tourism',
-    'Healthcare',
-    'Retail',
-    'Manufacturing',
-    'Mining',
-    'Education',
-    'Transport & Logistics',
-    'Other'
-  ];
-
-  const stayDurations = [
-    '3 months',
-    '6 months',
-    '12 months',
-    '18 months',
-    '2 years',
-    'Flexible'
-  ];
 
   // Date validation
   const validateDate = (dateStr: string): boolean => {
@@ -129,26 +99,9 @@ const WHVWorkExperience: React.FC = () => {
     setJobReferences(jobReferences.filter(ref => ref.id !== id));
   };
 
-  const handleWorkPreferenceChange = (field: string, value: string) => {
-    let processedValue = value;
-    if (field === 'availableStartDate') {
-      processedValue = formatDateInput(value);
-    }
-    setWorkPreferences({
-      ...workPreferences,
-      [field]: processedValue
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate dates
-    if (workPreferences.availableStartDate && !validateDate(workPreferences.availableStartDate)) {
-      alert('Please enter a valid start date in DD/MM/YYYY format');
-      return;
-    }
-
     // Validate work experience dates
     for (const exp of workExperiences) {
       if (exp.startDate && !validateDate(exp.startDate)) {
@@ -161,7 +114,6 @@ const WHVWorkExperience: React.FC = () => {
       }
     }
 
-    console.log('Work Preferences:', workPreferences);
     console.log('Work Experiences:', workExperiences);
     console.log('Job References:', jobReferences);
     navigate('/whv/photo-upload');
@@ -179,14 +131,14 @@ const WHVWorkExperience: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv/current-address')}
+                onClick={() => navigate('/whv/work-preferences')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
+              <h1 className="text-lg font-medium text-gray-900">Work Experience</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">4/5</span>
+                <span className="text-sm font-medium text-gray-600">6/7</span>
               </div>
             </div>
           </div>
@@ -195,128 +147,6 @@ const WHVWorkExperience: React.FC = () => {
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8 pb-20">
               
-              {/* Work Preferences Section */}
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold text-gray-900">Work Preferences</h2>
-                
-                {/* Available Start Date */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Available Start Date (DD/MM/YYYY)
-                  </Label>
-                  <Input
-                    type="text"
-                    value={workPreferences.availableStartDate}
-                    onChange={(e) => handleWorkPreferenceChange('availableStartDate', e.target.value)}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                    placeholder="10/10/2025"
-                    maxLength={10}
-                  />
-                </div>
-
-                {/* Industry Interested In */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Industry Interested in
-                  </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('preferredIndustry', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="Agriculture & Farming" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {industries.map((industry) => (
-                        <SelectItem key={industry} value={industry} className="hover:bg-gray-100">
-                          {industry}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* How long staying in Australia */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    How long are you planning to stay in Australia?
-                  </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('stayDuration', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="12 months" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {stayDurations.map((duration) => (
-                        <SelectItem key={duration} value={duration} className="hover:bg-gray-100">
-                          {duration}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Willing to Relocate */}
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-gray-700">
-                    Willing to Relocate?
-                  </Label>
-                  <div className="flex gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'yes')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
-                        workPreferences.willingToRelocate === 'yes' 
-                          ? 'border-orange-500 bg-orange-50' 
-                          : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        workPreferences.willingToRelocate === 'yes' 
-                          ? 'border-orange-500 bg-orange-500' 
-                          : 'border-gray-300'
-                      }`}>
-                        {workPreferences.willingToRelocate === 'yes' && (
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="text-gray-700">Yes</span>
-                    </button>
-                    
-                    <button
-                      type="button"
-                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'no')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
-                        workPreferences.willingToRelocate === 'no' 
-                          ? 'border-orange-500 bg-orange-50' 
-                          : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        workPreferences.willingToRelocate === 'no' 
-                          ? 'border-orange-500 bg-orange-500' 
-                          : 'border-gray-300'
-                      }`}>
-                        {workPreferences.willingToRelocate === 'no' && (
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="text-gray-700">No</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Licenses/Tickets */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Licenses/Tickets
-                  </Label>
-                  <Textarea
-                    value={workPreferences.licenses}
-                    onChange={(e) => handleWorkPreferenceChange('licenses', e.target.value)}
-                    className="min-h-[60px] bg-gray-100 border-0 text-gray-900 resize-none"
-                    placeholder="N/A"
-                    maxLength={200}
-                  />
-                </div>
-              </div>
-
               {/* Work Experience Details Section */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
