@@ -29,11 +29,11 @@ const WHVAboutYou: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('WHV About You:', formData);
-    navigate('/whv/work-preferences');
+    navigate('/whv/work-experience');
   };
 
   const handleSkip = () => {
-    navigate('/whv/work-preferences');
+    navigate('/whv/work-experience');
   };
 
   return (

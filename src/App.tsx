@@ -53,7 +53,6 @@ import WHVAboutYou from "./pages/WHVAboutYou";
 import WHVOnboarding from "./pages/WHVOnboarding";
 import WHVProfileSetup from "./pages/WHVProfileSetup";
 import WHVCurrentAddress from "./pages/WHVCurrentAddress";
-import WHVWorkPreferences from "./pages/WHVWorkPreferences";
 import WHVWorkExperience from "./pages/WHVWorkExperience";
 import WHVPhotoUpload from "./pages/WHVPhotoUpload";
 import WHVLogin from "./pages/WHVLogin";
@@ -125,7 +124,6 @@ const App = () => (
           <Route path="/whv/about-you" element={<WHVAboutYou />} />
         <Route path="/whv/profile-setup" element={<WHVProfileSetup />} />
         <Route path="/whv/current-address" element={<WHVCurrentAddress />} />
-        <Route path="/whv/work-preferences" element={<WHVWorkPreferences />} />
         <Route path="/whv/work-experience" element={<WHVWorkExperience />} />
         <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
         <Route path="/whv/login" element={<WHVLogin />} />
