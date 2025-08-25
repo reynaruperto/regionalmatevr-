@@ -34,17 +34,9 @@ const WHVCurrentAddress: React.FC = () => {
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    let formattedValue = value;
-    
-    // Format post code - only numbers
-    if (name === 'postCode') {
-      formattedValue = value.replace(/\D/g, '');
-    }
-    
     setFormData({
       ...formData,
-      [name]: formattedValue
+      [e.target.name]: e.target.value
     });
   };
 

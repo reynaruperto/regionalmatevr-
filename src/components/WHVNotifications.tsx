@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Heart, UserCheck, Award, Calendar, Settings, MessageSquare } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,6 @@ interface NotificationItem {
   type: string;
   message: string;
   isRead: boolean;
-  icon: React.ReactNode;
 }
 
 const WHVNotifications: React.FC = () => {
@@ -20,43 +19,37 @@ const WHVNotifications: React.FC = () => {
       id: '1',
       type: 'Match and Like Activity',
       message: 'Outback Winery liked your profile.',
-      isRead: false,
-      icon: <Heart className="w-5 h-5 text-red-500" />
+      isRead: false
     },
     {
       id: '2', 
       type: 'Match and Like Activity',
       message: 'Kangafarm liked you back — it\'s a match',
-      isRead: false,
-      icon: <UserCheck className="w-5 h-5 text-green-500" />
+      isRead: false
     },
     {
       id: '3',
       type: 'Like Milestone',
       message: 'You\'ve received 5 likes — keep it going.',
-      isRead: false,
-      icon: <Award className="w-5 h-5 text-yellow-500" />
+      isRead: false
     },
     {
       id: '4',
       type: 'Visa Expiry Reminder',
       message: 'Your WHV visa is expiring in 30 days. Update your details if renewed.',
-      isRead: true,
-      icon: <Calendar className="w-5 h-5 text-blue-500" />
+      isRead: true
     },
     {
       id: '5',
       type: 'Profile Updated', 
       message: 'Your WHV profile has been successfully updated.',
-      isRead: true,
-      icon: <Settings className="w-5 h-5 text-gray-500" />
+      isRead: true
     },
     {
       id: '6',
       type: 'Welcome Message',
       message: 'Welcome to RegionalMate! Complete your profile and start connecting with Regional Employers.',
-      isRead: true,
-      icon: <MessageSquare className="w-5 h-5 text-purple-500" />
+      isRead: true
     }
   ]);
 
@@ -82,7 +75,7 @@ const WHVNotifications: React.FC = () => {
           <div className="w-full h-full flex flex-col relative bg-gray-200">
             
             {/* Header */}
-              <div className="px-6 pt-16 pb-4">
+            <div className="px-6 pt-16 pb-4">
               <div className="flex items-center">
                 <Button 
                   variant="ghost" 
@@ -92,7 +85,7 @@ const WHVNotifications: React.FC = () => {
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
-                <h1 className="text-lg font-semibold text-gray-900">Turn Notifications On/Off</h1>
+                <h1 className="text-lg font-semibold text-gray-900">Notifications</h1>
               </div>
             </div>
 
@@ -126,10 +119,10 @@ const WHVNotifications: React.FC = () => {
                     className="w-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow text-left"
                   >
                     <div className="flex items-start">
-                      {/* Icon */}
-                      <div className="mr-4 mt-1 flex-shrink-0">
-                        {notification.icon}
-                      </div>
+                      {/* Status Dot */}
+                      <div className={`w-3 h-3 rounded-full mr-4 mt-1 flex-shrink-0 ${
+                        notification.isRead ? 'bg-gray-400' : 'bg-orange-500'
+                      }`}></div>
                       
                       {/* Content */}
                       <div className="flex-1">
@@ -140,11 +133,6 @@ const WHVNotifications: React.FC = () => {
                           {notification.message}
                         </p>
                       </div>
-                      
-                      {/* Status Dot */}
-                      <div className={`w-3 h-3 rounded-full ml-2 mt-1 flex-shrink-0 ${
-                        notification.isRead ? 'bg-gray-400' : 'bg-orange-500'
-                      }`}></div>
                     </div>
                   </button>
                 ))}
