@@ -31,7 +31,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     physicalWorkPreference: '',
     workEnvironmentPreference: '',
     farmSizePreference: '',
-    myVisaType: '',
   });
 
   const states = [
@@ -133,11 +132,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     'Medium Commercial Farm',
     'Large Corporate Farm',
     'No Preference'
-  ];
-
-  const visaTypes = [
-    'Subclass 417 (Working Holiday)',
-    'Subclass 462 (Work and Holiday)'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -394,26 +388,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
                   </Label>
                 </div>
               </div>
-            </div>
-
-            {/* My Visa Type */}
-            <div className="mb-20">
-              <h3 className="font-semibold text-gray-900 mb-3">My Visa Type</h3>
-              <Select 
-                value={selectedFilters.myVisaType} 
-                onValueChange={(value) => handleSelectChange('myVisaType', value)}
-              >
-                <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
-                  <SelectValue placeholder="Select your visa type" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
-                  {visaTypes.map((visa) => (
-                    <SelectItem key={visa} value={visa} className="hover:bg-gray-100">
-                      {visa}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
           </div>
 

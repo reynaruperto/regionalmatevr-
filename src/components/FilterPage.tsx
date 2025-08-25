@@ -122,8 +122,12 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   ];
 
   const candidateVisaTypes = [
-    'Subclass 417 (Working Holiday)',
-    'Subclass 462 (Work and Holiday)'
+    '417 (Working Holiday Visa)',
+    '462 (Work and Holiday Visa)',
+    '417 Second Year Extension',
+    '462 Second Year Extension',
+    '417 Third Year Extension',
+    '462 Third Year Extension'
   ];
 
   const candidateNationalities = [
