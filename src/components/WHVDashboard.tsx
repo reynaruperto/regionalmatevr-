@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
               {/* Edit Profile Button */}
               <div className="flex justify-center mb-8">
                 <button 
-                  onClick={() => navigate('/whv/edit-profile')}
+                  onClick={() => navigate('/whv/profile-edit')}
                   className="flex items-center bg-gray-200 px-6 py-3 rounded-2xl hover:bg-gray-300 transition-colors"
                 >
                   <Edit size={16} className="mr-2 text-gray-700" />
@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
                           if (item.label === 'Security') {
                             navigate('/security');
                           } else if (item.label === 'Edit WHV Profile') {
-                            navigate('/whv/edit-profile');
+                            navigate('/whv/profile-edit');
                           } else if (item.label === 'Notifications') {
                             navigate('/notifications');
                           } else if (item.label === 'Privacy') {
