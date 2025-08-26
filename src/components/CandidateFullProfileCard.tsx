@@ -239,171 +239,150 @@ const CandidateFullProfileCard: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-50">
+          <div className="w-full h-full flex flex-col relative bg-gray-200">
             
-            {/* Header */}
-            <div className="px-6 pt-16 pb-4">
-              <div className="flex items-center gap-3">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                  onClick={handleBack}
-                >
-                  <ArrowLeft className="w-6 h-6 text-gray-700" />
-                </Button>
-                <div className="flex items-center gap-3 flex-1">
-                  <img
-                    src={candidate.profileImage}
-                    alt={candidate.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-slate-800"
-                  />
-                  <div className="bg-slate-800 text-white px-4 py-2 rounded-xl">
-                    <div className="text-sm font-medium">It's a Match</div>
-                    <div className="text-sm font-medium">with {candidate.name}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 px-6 overflow-y-auto pb-6">
+            {/* Scrollable Content */}
+            <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
               
-              {/* Quote */}
-              <div className="text-center mb-6">
-                <p className="text-sm text-gray-700 italic leading-relaxed">
-                  {candidate.quote}
-                </p>
-              </div>
-
-              {/* Details */}
-              <div className="space-y-4 text-sm">
-                <div>
-                  <span className="font-semibold text-gray-900">Nationality:</span>
-                  <span className="text-gray-700 ml-1">{candidate.nationality}</span>
+              {/* Profile Card */}
+              <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
+                
+                {/* Match Header */}
+                <div className="bg-green-500 text-white text-center py-4 rounded-2xl mb-6">
+                  <h2 className="text-xl font-bold">🎉 IT'S A MATCH! 🎉</h2>
+                  <p className="text-sm mt-1">with {candidate.name.toUpperCase()}</p>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Location (Current / Preferred):</span>
-                  <span className="text-gray-700 ml-1">{candidate.location}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Willing to Relocate:</span>
-                  <span className="text-gray-700 ml-1">{candidate.willingToRelocate}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Industry:</span>
-                  <span className="text-gray-700 ml-1">{candidate.industry}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Visa:</span>
-                  <span className="text-gray-700 ml-1">{candidate.visa}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Visa Expiry:</span>
-                  <span className="text-gray-700 ml-1">{candidate.visaExpiry}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Tell us about yourself:</span>
-                  <div className="mt-1 text-gray-700 text-sm ml-1">
-                    {candidate.workExperience}
+                {/* Profile Picture */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-32 h-32 rounded-full border-4 border-green-500 overflow-hidden">
+                    <img 
+                      src={candidate.profileImage}
+                      alt={candidate.name} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Skills & Interests:</span>
-                  <div className="mt-1 text-gray-700 text-sm ml-1">
-                    {candidate.skillsInterests}
-                  </div>
+                {/* Quote */}
+                <div className="text-center mb-6 bg-gray-50 rounded-2xl p-4">
+                  <p className="text-gray-700 text-sm italic leading-relaxed">
+                    {candidate.quote}
+                  </p>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Why Australia:</span>
-                  <div className="mt-1 text-gray-700 text-sm ml-1">
-                    {candidate.whyAustralia}
-                  </div>
+                {/* Profile Details */}
+                <div className="space-y-3 text-sm mb-6">
+                  <div><span className="font-semibold">Nationality:</span> {candidate.nationality}</div>
+                  <div><span className="font-semibold">Location (Current / Preferred):</span> {candidate.location}</div>
+                  <div><span className="font-semibold">Willing to Relocate:</span> {candidate.willingToRelocate}</div>
+                  <div><span className="font-semibold">Visa Type & Expiry:</span> {candidate.visa} - Expires {candidate.visaExpiry}</div>
+                  <div><span className="font-semibold">Industry:</span> {candidate.industry}</div>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Work Experience:</span>
-                  <div className="mt-1 space-y-1">
+                {/* Work Experience */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-2">Work Experience:</h3>
+                  <div className="space-y-2 text-xs bg-gray-50 rounded-xl p-3">
                     {candidate.experience.map((exp, index) => (
-                      <div key={index} className="text-gray-700 text-sm ml-1">
-                        • {exp.startDate} - {exp.endDate}: {exp.position} - {exp.company} - {exp.location}
+                      <div key={index} className="text-gray-700">
+                        <div className="font-medium">{exp.startDate} - {exp.endDate}</div>
+                        <div>{exp.position} - {exp.company}</div>
+                        <div className="text-gray-500">{exp.location}</div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Licenses / Certificates:</span>
-                  <div className="mt-1 space-y-1">
+                {/* Licenses */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-900 mb-2">Licenses / Certificates:</h3>
+                  <div className="space-y-1 text-sm">
                     {candidate.licenses.map((license, index) => (
-                      <div key={index} className="text-gray-700 text-sm ml-1">
-                        • {license}
-                      </div>
+                      <div key={index} className="text-gray-700">• {license}</div>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-gray-900">Languages:</span>
-                  <span className="text-gray-700 ml-1">{candidate.languages.join(', ')}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Preferred Work Types:</span>
-                  <span className="text-gray-700 ml-1">{candidate.workPreferences}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Stay Duration:</span>
-                  <span className="text-gray-700 ml-1">{candidate.stayDuration}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Availability (date, duration):</span>
-                  <span className="text-gray-700 ml-1">{candidate.availability}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-gray-900">Contact Details (Unlocked):</span>
-                  <div className="mt-1 space-y-1">
-                    <div className="text-gray-700 text-sm ml-1">
-                      Email: {candidate.contactDetails.email}
+                {/* About Sections */}
+                <div className="space-y-4 mb-6 text-sm">
+                  <div>
+                    <span className="font-semibold">Tell us about yourself:</span>
+                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
+                      {candidate.workExperience}
                     </div>
-                    <div className="text-gray-700 text-sm ml-1">
-                      Phone: {candidate.contactDetails.phone}
+                  </div>
+
+                  <div>
+                    <span className="font-semibold">Skills & Interests:</span>
+                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
+                      {candidate.skillsInterests}
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="font-semibold">Why Australia:</span>
+                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
+                      {candidate.whyAustralia}
                     </div>
                   </div>
                 </div>
 
-                <div className="pb-4">
-                  <span className="font-semibold text-gray-900">Job Reference:</span>
-                  <div className="mt-1 space-y-1">
-                    <div className="text-gray-700 text-sm ml-1">
-                      {candidate.jobReference.name}
+                {/* Additional Details */}
+                <div className="space-y-2 text-sm mb-6">
+                  <div><span className="font-semibold">Preferred Work Types:</span> {candidate.workPreferences}</div>
+                  <div><span className="font-semibold">Stay Duration:</span> {candidate.stayDuration}</div>
+                  <div><span className="font-semibold">Availability:</span> {candidate.availability}</div>
+                </div>
+
+                {/* Job Reference */}
+                <div className="mb-6 bg-blue-50 rounded-xl p-4">
+                  <h3 className="font-semibold text-blue-900 mb-2">Job Reference:</h3>
+                  <div className="space-y-1 text-sm text-blue-800">
+                    <div>{candidate.jobReference.name}</div>
+                    <div>{candidate.jobReference.contact}</div>
+                    <div>{candidate.jobReference.phone}</div>
+                  </div>
+                </div>
+
+                {/* Contact Details - Highlighted */}
+                <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-2xl p-6 text-center">
+                  <h3 className="font-bold text-lg mb-3">🎉 Contact Details Unlocked! 🎉</h3>
+                  <div className="space-y-2">
+                    <div className="bg-white/20 rounded-xl p-3">
+                      <div className="font-semibold">Email:</div>
+                      <div className="text-lg">{candidate.contactDetails.email}</div>
                     </div>
-                    <div className="text-gray-700 text-sm ml-1">
-                      {candidate.jobReference.contact}
-                    </div>
-                    <div className="text-gray-700 text-sm ml-1">
-                      {candidate.jobReference.phone}
+                    <div className="bg-white/20 rounded-xl p-3">
+                      <div className="font-semibold">Phone:</div>
+                      <div className="text-lg">{candidate.contactDetails.phone}</div>
                     </div>
                   </div>
+                  <p className="mt-3 text-sm text-white/90">
+                    You can now contact {candidate.name} directly!
+                  </p>
                 </div>
               </div>
+
             </div>
+
+            {/* Back Button - Fixed at bottom */}
+            <div className="absolute bottom-8 left-6">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="w-12 h-12 bg-white rounded-xl shadow-sm"
+                onClick={handleBack}
+              >
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
+              </Button>
+            </div>
+
           </div>
         </div>
       </div>
