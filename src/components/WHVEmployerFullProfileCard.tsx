@@ -235,7 +235,7 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="relative bg-orange-500 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
+              <div className="relative bg-gradient-to-r from-orange-500 to-blue-900 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
                 <div className="text-center">
                   <div className="text-sm font-semibold">It's a Match</div>
                   <div className="text-sm font-semibold">with</div>
@@ -243,7 +243,7 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                 </div>
                 {/* Speech bubble tail */}
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
-                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-orange-500"></div>
+                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-900"></div>
                 </div>
               </div>
             </div>
@@ -306,18 +306,21 @@ const WHVEmployerFullProfileCard: React.FC = () => {
               </div>
 
               {/* Contact Information - Available because it's a match */}
-              <div className="px-4 mb-6 bg-green-50 rounded-lg p-4 mx-4">
-                <h3 className="font-semibold text-gray-900 mb-3 text-center">Contact Information</h3>
-                <div className="space-y-2 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-900">Email: </span>
-                    <span className="text-blue-600">{employer.contactEmail}</span>
+              <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white rounded-2xl p-6 mx-4 mb-6 text-center">
+                <h3 className="font-bold text-lg mb-3">🎉 Contact Details Unlocked! 🎉</h3>
+                <div className="space-y-2">
+                  <div className="bg-white/20 rounded-xl p-3">
+                    <div className="font-semibold">Email:</div>
+                    <div className="text-lg">{employer.contactEmail}</div>
                   </div>
-                  <div>
-                    <span className="font-medium text-gray-900">Phone: </span>
-                    <span className="text-blue-600">{employer.contactPhone}</span>
+                  <div className="bg-white/20 rounded-xl p-3">
+                    <div className="font-semibold">Phone:</div>
+                    <div className="text-lg">{employer.contactPhone}</div>
                   </div>
                 </div>
+                <p className="mt-3 text-sm text-white/90">
+                  You can now contact {employer.name} directly!
+                </p>
               </div>
 
               {/* View Jobs Button */}
