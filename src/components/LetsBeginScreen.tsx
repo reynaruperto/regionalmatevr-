@@ -1,27 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import AustraliaIcon from './AustraliaIcon';
+import SignInAsModal from './SignInAsModal';
 
 const LetsBeginScreen: React.FC = () => {
   const navigate = useNavigate();
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
-  const handleEmployerSignUp = () => {
-    navigate('/employer/sign-up');
-  };
-
-  const handleEmployerSignIn = () => {
-    navigate('/employer/sign-in-clerk');
-  };
-
-  const handleWHVSignUp = () => {
-    navigate('/whv/sign-up');
-  };
-
-  const handleWHVSignIn = () => {
-    navigate('/whv/sign-in-clerk');
-  };
+  if (showSignInModal) {
+    return <SignInAsModal onClose={() => setShowSignInModal(false)} />;
+  }
   
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
@@ -72,7 +62,7 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                onClick={handleEmployerSignUp}
+                onClick={() => navigate('/employer/onboarding')}
               >
                 I want to hire
               </Button>
@@ -81,31 +71,23 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={handleWHVSignUp}
+                onClick={() => navigate('/whv/onboarding')}
               >
                 I want to get hired
               </Button>
             </div>
 
-            {/* Sign in links */}
+            {/* Sign in link */}
             <div className="px-6 pb-12 text-center">
-              <p className="text-brand-secondary-text mb-4">
-                Already have an account?
+              <p className="text-brand-secondary-text">
+                Already have an account? 
+                <button 
+                  onClick={() => setShowSignInModal(true)}
+                  className="text-brand-text font-medium ml-1 hover:underline"
+                >
+                  Sign in
+                </button>
               </p>
-              <div className="space-y-2">
-                <button 
-                  onClick={handleEmployerSignIn}
-                  className="block w-full text-brand-text font-medium hover:underline"
-                >
-                  Sign in as Employer
-                </button>
-                <button 
-                  onClick={handleWHVSignIn}
-                  className="block w-full text-brand-text font-medium hover:underline"
-                >
-                  Sign in as WHV
-                </button>
-              </div>
             </div>
 
           </div>
