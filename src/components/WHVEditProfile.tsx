@@ -1,125 +1,100 @@
 import React, { useState, useRef } from 'react';
-import { Check } from 'lucide-react';
+import { Camera, Check, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Textarea } from '@/components/ui/textarea';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+
+interface WorkExperience {
+  id: string;
+  startDate: string;
+  endDate: string;
+  position: string;
+  company: string;
+  location: string;
+}
+
+interface JobReference {
+  id: string;
+  name: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  role: string;
+}
 
 const WHVEditProfile: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Profile photo
+  const [profilePhoto, setProfilePhoto] = useState<string>('/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png');
   
-  // Form state
-  const [dateOfBirth, setDateOfBirth] = useState('15/03/1995');
-  const [availableStartDate, setAvailableStartDate] = useState('10/10/2025');
-  const [nationality, setNationality] = useState('Argentina');
-  const [visa, setVisa] = useState('462');
-  const [visaExpiryDate, setVisaExpiryDate] = useState('01/01/2026');
-  const [countryCode, setCountryCode] = useState('+61');
-  const [phoneNumber, setPhoneNumber] = useState('492 333 444');
-  
-  // Address fields
-  const [inAustralia, setInAustralia] = useState(true);
-  const [addressLine1, setAddressLine1] = useState('22 Valley St.');
-  const [suburbCity, setSuburbCity] = useState('Brisbane');
-  const [state, setState] = useState('Queensland');
-  const [postCode, setPostCode] = useState('4000');
-  const [country, setCountry] = useState('Australia');
-  
-  // Work preferences
-  const [industryInterested, setIndustryInterested] = useState('Agriculture & Farming');
-  const [willingToRelocate, setWillingToRelocate] = useState('yes');
-  const [stayDuration, setStayDuration] = useState('12 months');
-  const [licenses, setLicenses] = useState('N/A');
-  
-  // About sections
-  const [workExperienceText, setWorkExperienceText] = useState('I have experience in hospitality, worked as a barista for 2 years, and have some construction experience...');
-  const [skillsInterests, setSkillsInterests] = useState("I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities...");
-  const [whyAustralia, setWhyAustralia] = useState("I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture...");
-  const [languages, setLanguages] = useState('Spanish (native), English (fluent)');
-  
-  // Structured work experiences
-  const [workExperiences, setWorkExperiences] = useState([
+  // Work Preferences (mirroring WHVWorkExperience)
+  const [workPreferences, setWorkPreferences] = useState({
+    availableStartDate: '10/10/2025',
+    preferredIndustry: 'Agriculture & Farming',
+    stayDuration: '12 months',
+    willingToRelocate: 'yes',
+    licenses: 'N/A'
+  });
+
+  // Work Experience Details (mirroring WHVWorkExperience)
+  const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([
     {
+      id: '1',
+      startDate: '01/2020',
+      endDate: '12/2024',
       position: 'Farm Attendant',
       company: 'Villa Farm',
-      location: 'Mendoza, Argentina',
-      startDate: '01/2020',
-      endDate: '12/2024'
+      location: 'Mendoza, Argentina'
     },
     {
+      id: '2',
+      startDate: '03/2015',
+      endDate: '12/2019',
       position: 'Marketing Head',
       company: 'Workspot',
-      location: 'Buenos Aires, Argentina',
-      startDate: '03/2015',
-      endDate: '12/2019'
+      location: 'Buenos Aires, Argentina'
     }
   ]);
-  
-  const [jobReferences, setJobReferences] = useState('Elaine Smith- Head of HR (Villa Farm)\nelaineHR@workmail.com\n+61499888000');
 
-  const countries = [
-    'Argentina', 'Belgium', 'Canada', 'Chile', 'Cyprus', 'Czech Republic', 'Denmark',
-    'Estonia', 'Finland', 'France', 'Germany', 'Hong Kong', 'Ireland', 'Italy',
-    'Japan', 'Malaysia', 'Malta', 'Netherlands', 'Norway', 'Poland', 'Portugal',
-    'Slovakia', 'Slovenia', 'South Korea', 'Spain', 'Sweden', 'Taiwan', 'Thailand',
-    'Turkey', 'United Kingdom', 'Uruguay'
-  ];
+  // Job References (mirroring WHVWorkExperience)
+  const [jobReferences, setJobReferences] = useState<JobReference[]>([
+    {
+      id: '1',
+      name: 'Elaine Smith',
+      businessName: 'Villa Farm Pty Ltd',
+      email: 'elaine.smith@villafarm.com',
+      phone: '61499888000',
+      role: 'Head of HR'
+    }
+  ]);
 
-  const visaTypes = ['417', '462'];
-  
+  // Data arrays (same as WHVWorkExperience)
   const industries = [
-    'Agriculture & Farming', 'Hospitality & Tourism', 'Construction', 'Healthcare',
-    'Education', 'Retail', 'Transportation', 'Manufacturing', 'Mining', 'Other'
-  ];
-
-  const australianStates = [
-    'New South Wales', 'Victoria', 'Queensland', 'Western Australia',
-    'South Australia', 'Tasmania', 'Northern Territory', 'Australian Capital Territory'
-  ];
-
-  const countryCodes = [
-    { code: '+61', country: 'Australia', flag: '🇦🇺' },
-    { code: '+54', country: 'Argentina', flag: '🇦🇷' },
-    { code: '+32', country: 'Belgium', flag: '🇧🇪' },
-    { code: '+1', country: 'Canada', flag: '🇨🇦' },
-    { code: '+56', country: 'Chile', flag: '🇨🇱' },
-    { code: '+357', country: 'Cyprus', flag: '🇨🇾' },
-    { code: '+420', country: 'Czech Republic', flag: '🇨🇿' },
-    { code: '+45', country: 'Denmark', flag: '🇩🇰' },
-    { code: '+372', country: 'Estonia', flag: '🇪🇪' },
-    { code: '+358', country: 'Finland', flag: '🇫🇮' },
-    { code: '+33', country: 'France', flag: '🇫🇷' },
-    { code: '+49', country: 'Germany', flag: '🇩🇪' },
-    { code: '+852', country: 'Hong Kong', flag: '🇭🇰' },
-    { code: '+353', country: 'Ireland', flag: '🇮🇪' },
-    { code: '+39', country: 'Italy', flag: '🇮🇹' },
-    { code: '+81', country: 'Japan', flag: '🇯🇵' },
-    { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
-    { code: '+356', country: 'Malta', flag: '🇲🇹' },
-    { code: '+31', country: 'Netherlands', flag: '🇳🇱' },
-    { code: '+47', country: 'Norway', flag: '🇳🇴' },
-    { code: '+48', country: 'Poland', flag: '🇵🇱' },
-    { code: '+351', country: 'Portugal', flag: '🇵🇹' },
-    { code: '+421', country: 'Slovakia', flag: '🇸🇰' },
-    { code: '+386', country: 'Slovenia', flag: '🇸🇮' },
-    { code: '+82', country: 'South Korea', flag: '🇰🇷' },
-    { code: '+34', country: 'Spain', flag: '🇪🇸' },
-    { code: '+46', country: 'Sweden', flag: '🇸🇪' },
-    { code: '+886', country: 'Taiwan', flag: '🇹🇼' },
-    { code: '+66', country: 'Thailand', flag: '🇹🇭' },
-    { code: '+90', country: 'Turkey', flag: '🇹🇷' },
-    { code: '+44', country: 'United Kingdom', flag: '🇬🇧' },
-    { code: '+598', country: 'Uruguay', flag: '🇺🇾' }
+    'Agriculture & Farming',
+    'Construction',
+    'Hospitality & Tourism',
+    'Healthcare',
+    'Retail',
+    'Manufacturing',
+    'Mining',
+    'Education',
+    'Transport & Logistics',
+    'Other'
   ];
 
   const stayDurations = [
-    '6 months', '12 months', '18 months', '2 years', 'Flexible'
+    '3 months',
+    '6 months',
+    '12 months',
+    '18 months',
+    '2 years',
+    'Flexible'
   ];
 
   const licenseOptions = [
@@ -138,28 +113,142 @@ const WHVEditProfile: React.FC = () => {
     'Other'
   ];
 
+  // Date validation and formatting (same as WHVWorkExperience)
+  const validateDate = (dateStr: string): boolean => {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!regex.test(dateStr)) return false;
+    
+    const [day, month, year] = dateStr.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+  };
+
+  const formatDateInput = (value: string): string => {
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length <= 2) return numbers;
+    if (numbers.length <= 4) return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+    return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+  };
+
+  // Work Experience handlers (same as WHVWorkExperience)
   const addWorkExperience = () => {
-    setWorkExperiences([...workExperiences, {
-      position: '',
-      company: '',
-      location: '',
-      startDate: '',
-      endDate: ''
-    }]);
+    if (workExperiences.length < 8) {
+      setWorkExperiences([...workExperiences, {
+        id: Date.now().toString(),
+        startDate: '',
+        endDate: '',
+        position: '',
+        company: '',
+        location: ''
+      }]);
+    }
   };
 
-  const updateWorkExperience = (index: number, field: string, value: string) => {
-    const updated = workExperiences.map((exp, i) => 
-      i === index ? { ...exp, [field]: value } : exp
-    );
-    setWorkExperiences(updated);
+  const updateWorkExperience = (id: string, field: string, value: string) => {
+    setWorkExperiences(workExperiences.map(exp => 
+      exp.id === id ? { ...exp, [field]: field.includes('Date') ? formatDateInput(value) : value } : exp
+    ));
   };
 
-  const removeWorkExperience = (index: number) => {
-    setWorkExperiences(workExperiences.filter((_, i) => i !== index));
+  const removeWorkExperience = (id: string) => {
+    setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
+  };
+
+  // Job Reference handlers (same as WHVWorkExperience)
+  const addJobReference = () => {
+    if (jobReferences.length < 5) {
+      setJobReferences([...jobReferences, {
+        id: Date.now().toString(),
+        name: '',
+        businessName: '',
+        email: '',
+        phone: '',
+        role: ''
+      }]);
+    }
+  };
+
+  const updateJobReference = (id: string, field: string, value: string) => {
+    let processedValue = value;
+    if (field === 'phone') {
+      processedValue = value.replace(/\D/g, '');
+    }
+    setJobReferences(jobReferences.map(ref => 
+      ref.id === id ? { ...ref, [field]: processedValue } : ref
+    ));
+  };
+
+  const removeJobReference = (id: string) => {
+    setJobReferences(jobReferences.filter(ref => ref.id !== id));
+  };
+
+  const handleWorkPreferenceChange = (field: string, value: string) => {
+    let processedValue = value;
+    if (field === 'availableStartDate') {
+      processedValue = formatDateInput(value);
+    }
+    setWorkPreferences({
+      ...workPreferences,
+      [field]: processedValue
+    });
+  };
+
+  // Profile photo handlers
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          setProfilePhoto(result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file",
+          variant: "destructive"
+        });
+      }
+    }
+  };
+
+  const handlePhotoClick = () => {
+    fileInputRef.current?.click();
   };
 
   const handleSave = () => {
+    // Validate dates
+    if (workPreferences.availableStartDate && !validateDate(workPreferences.availableStartDate)) {
+      toast({
+        title: "Invalid Date",
+        description: "Please enter a valid start date in DD/MM/YYYY format",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate work experience dates
+    for (const exp of workExperiences) {
+      if (exp.startDate && !validateDate(exp.startDate)) {
+        toast({
+          title: "Invalid Date",
+          description: "Please enter valid start dates in DD/MM/YYYY format",
+          variant: "destructive"
+        });
+        return;
+      }
+      if (exp.endDate && !validateDate(exp.endDate)) {
+        toast({
+          title: "Invalid Date",
+          description: "Please enter valid end dates in DD/MM/YYYY format",
+          variant: "destructive"
+        });
+        return;
+      }
+    }
+
     toast({
       title: "Profile Updated",
       description: "Your WHV profile has been successfully updated",
@@ -172,458 +261,399 @@ const WHVEditProfile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
           
-          {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-100">
-            
-            {/* Header */}
-            <div className="px-6 pt-16 pb-4">
-              <div className="flex items-center justify-between">
-                <button 
-                  onClick={handleCancel}
-                  className="text-orange-500 font-medium underline"
-                >
-                  Cancel
-                </button>
-                <h1 className="text-lg font-semibold text-gray-900">WHV Profile Details</h1>
-                <button 
-                  onClick={handleSave}
-                  className="flex items-center text-orange-500 font-medium underline"
-                >
-                  <Check size={16} className="mr-1" />
-                  Save
-                </button>
-              </div>
+          {/* Header - Fixed */}
+          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <button 
+                onClick={handleCancel}
+                className="text-orange-500 font-medium underline"
+              >
+                Cancel
+              </button>
+              <h1 className="text-lg font-medium text-gray-900">Edit Profile</h1>
+              <button 
+                onClick={handleSave}
+                className="flex items-center text-orange-500 font-medium underline"
+              >
+                <Check size={16} className="mr-1" />
+                Save
+              </button>
             </div>
+          </div>
 
-            {/* Content */}
-            <div className="flex-1 px-6 overflow-y-auto">
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-4 py-6">
+            <div className="space-y-8 pb-20">
               
-              {/* Form Fields */}
+              {/* Profile Picture Section */}
               <div className="space-y-4">
-                {/* Personal Information Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Personal Information</h3>
-                  
-                  {/* Date of Birth */}
-                  <div className="mb-4">
-                    <Label htmlFor="dob" className="text-gray-600 mb-2 block">Date of Birth (DD/MM/YYYY)</Label>
-                    <Input
-                      id="dob"
-                      value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
-                      placeholder="DD/MM/YYYY"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
+                <h2 className="text-xl font-semibold text-gray-900">Profile Picture</h2>
+                <div className="flex justify-center">
+                  <div className="relative w-28 h-28">
+                    <button 
+                      onClick={handlePhotoClick}
+                      className="w-28 h-28 rounded-full overflow-hidden border-4 border-orange-500 hover:opacity-80 transition-opacity"
+                    >
+                      <img 
+                        src={profilePhoto} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                    <div className="absolute bottom-1 right-1 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center pointer-events-none">
+                      <Camera size={16} className="text-white" />
+                    </div>
                   </div>
+                </div>
+                
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+              </div>
 
-                  {/* Nationality */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-2 block">Nationality (Country of Passport)</Label>
-                    <Select value={nationality} onValueChange={setNationality}>
-                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
-                        {countries.map((country) => (
-                          <SelectItem key={country} value={country}>{country}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+              {/* Work Preferences Section (mirroring WHVWorkExperience) */}
+              <div className="space-y-6">
+                <h2 className="text-xl font-semibold text-gray-900">Work Preferences</h2>
+                
+                {/* Available Start Date */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    Available Start Date (DD/MM/YYYY)
+                  </Label>
+                  <Input
+                    type="text"
+                    value={workPreferences.availableStartDate}
+                    onChange={(e) => handleWorkPreferenceChange('availableStartDate', e.target.value)}
+                    className="h-12 bg-gray-100 border-0 text-gray-900"
+                    placeholder="10/10/2025"
+                    maxLength={10}
+                  />
+                </div>
+
+                {/* Industry Interested In */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    Industry Interested in
+                  </Label>
+                  <Select value={workPreferences.preferredIndustry} onValueChange={(value) => handleWorkPreferenceChange('preferredIndustry', value)}>
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                      <SelectValue placeholder="Agriculture & Farming" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                      {industries.map((industry) => (
+                        <SelectItem key={industry} value={industry} className="hover:bg-gray-100">
+                          {industry}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* How long staying in Australia */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    How long are you planning to stay in Australia?
+                  </Label>
+                  <Select value={workPreferences.stayDuration} onValueChange={(value) => handleWorkPreferenceChange('stayDuration', value)}>
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                      <SelectValue placeholder="12 months" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                      {stayDurations.map((duration) => (
+                        <SelectItem key={duration} value={duration} className="hover:bg-gray-100">
+                          {duration}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Willing to Relocate */}
+                <div className="space-y-3">
+                  <Label className="text-base font-medium text-gray-700">
+                    Willing to Relocate?
+                  </Label>
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'yes')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
+                        workPreferences.willingToRelocate === 'yes' 
+                          ? 'border-orange-500 bg-orange-50' 
+                          : 'border-gray-300 bg-white'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                        workPreferences.willingToRelocate === 'yes' 
+                          ? 'border-orange-500 bg-orange-500' 
+                          : 'border-gray-300'
+                      }`}>
+                        {workPreferences.willingToRelocate === 'yes' && (
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        )}
+                      </div>
+                      <span className="text-gray-700">Yes</span>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'no')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
+                        workPreferences.willingToRelocate === 'no' 
+                          ? 'border-orange-500 bg-orange-50' 
+                          : 'border-gray-300 bg-white'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                        workPreferences.willingToRelocate === 'no' 
+                          ? 'border-orange-500 bg-orange-500' 
+                          : 'border-gray-300'
+                      }`}>
+                        {workPreferences.willingToRelocate === 'no' && (
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        )}
+                      </div>
+                      <span className="text-gray-700">No</span>
+                    </button>
                   </div>
+                </div>
 
-                  {/* Phone Number with Country Code */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-2 block">Phone Number</Label>
-                    <div className="flex gap-2">
-                      <Select value={countryCode} onValueChange={setCountryCode}>
-                        <SelectTrigger className="w-24 h-12 rounded-xl border-gray-200 bg-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white z-50">
-                          {countryCodes.map((cc) => (
-                            <SelectItem key={cc.code} value={cc.code}>
-                              {cc.flag} {cc.code}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                {/* Licenses/Tickets */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    Licenses/Tickets
+                  </Label>
+                  <Select value={workPreferences.licenses} onValueChange={(value) => handleWorkPreferenceChange('licenses', value)}>
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                      <SelectValue placeholder="N/A" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                      {licenseOptions.map((license) => (
+                        <SelectItem key={license} value={license} className="hover:bg-gray-100">
+                          {license}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Work Experience Details Section (mirroring WHVWorkExperience) */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900">Work Experience Details</h2>
+                  <Button
+                    type="button"
+                    onClick={addWorkExperience}
+                    disabled={workExperiences.length >= 8}
+                    className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Experience
+                  </Button>
+                </div>
+
+                {workExperiences.map((experience, index) => (
+                  <div key={experience.id} className="border border-gray-200 rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-gray-900">Experience {index + 1}</h3>
+                      <Button
+                        type="button"
+                        onClick={() => removeWorkExperience(experience.id)}
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-700 p-1"
+                      >
+                        <X className="w-4 h-4" />
+                        Remove
+                      </Button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Start Date</Label>
+                        <Input
+                          type="text"
+                          value={experience.startDate}
+                          onChange={(e) => updateWorkExperience(experience.id, 'startDate', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="01/2020"
+                          maxLength={10}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">End Date</Label>
+                        <Input
+                          type="text"
+                          value={experience.endDate}
+                          onChange={(e) => updateWorkExperience(experience.id, 'endDate', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="12/2024"
+                          maxLength={10}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Position</Label>
                       <Input
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="flex-1 h-12 rounded-xl border-gray-200 bg-white"
-                        placeholder="Phone number"
+                        type="text"
+                        value={experience.position}
+                        onChange={(e) => updateWorkExperience(experience.id, 'position', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        placeholder="Farm Attendant"
+                        maxLength={50}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Company</Label>
+                      <Input
+                        type="text"
+                        value={experience.company}
+                        onChange={(e) => updateWorkExperience(experience.id, 'company', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        placeholder="Villa Farm"
+                        maxLength={50}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Location</Label>
+                      <Input
+                        type="text"
+                        value={experience.location}
+                        onChange={(e) => updateWorkExperience(experience.id, 'location', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        placeholder="Mendoza, Argentina"
+                        maxLength={50}
                       />
                     </div>
                   </div>
+                ))}
 
-                  {/* Languages */}
-                  <div>
-                    <Label htmlFor="languages" className="text-gray-600 mb-2 block">Languages</Label>
-                    <Input
-                      id="languages"
-                      value={languages}
-                      onChange={(e) => setLanguages(e.target.value)}
-                      placeholder="e.g., Spanish (native), English (fluent)"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
+                {workExperiences.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No work experiences added yet.</p>
+                    <p className="text-sm">Click "Add Experience" to get started.</p>
                   </div>
-                </div>
-
-                {/* Visa Information Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Visa Information</h3>
-                  
-                  {/* Visa */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-2 block">Visa Type</Label>
-                    <Select value={visa} onValueChange={setVisa}>
-                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
-                        {visaTypes.map((type) => (
-                          <SelectItem key={type} value={type}>{type}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Visa Expiry Date */}
-                  <div>
-                    <Label htmlFor="visaExpiry" className="text-gray-600 mb-2 block">Visa Expiry Date (DD/MM/YYYY)</Label>
-                    <Input
-                      id="visaExpiry"
-                      value={visaExpiryDate}
-                      onChange={(e) => setVisaExpiryDate(e.target.value)}
-                      placeholder="DD/MM/YYYY"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-                </div>
-
-                {/* Address Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Current Address</h3>
-                  
-                  {/* Location toggle */}
-                  <div className="mb-4">
-                    <div className="flex gap-4">
-                      <button
-                        onClick={() => setInAustralia(true)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium ${
-                          inAustralia 
-                            ? 'bg-orange-500 text-white' 
-                            : 'bg-gray-100 text-gray-600'
-                        }`}
-                      >
-                        In Australia
-                      </button>
-                      <button
-                        onClick={() => setInAustralia(false)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium ${
-                          !inAustralia 
-                            ? 'bg-orange-500 text-white' 
-                            : 'bg-gray-100 text-gray-600'
-                        }`}
-                      >
-                        Overseas
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Address Line 1 */}
-                  <div className="mb-4">
-                    <Label htmlFor="address" className="text-gray-600 mb-2 block">Address Line 1</Label>
-                    <Input
-                      id="address"
-                      value={addressLine1}
-                      onChange={(e) => setAddressLine1(e.target.value)}
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-
-                  {/* Suburb/City */}
-                  <div className="mb-4">
-                    <Label htmlFor="suburb" className="text-gray-600 mb-2 block">Suburb/City</Label>
-                    <Input
-                      id="suburb"
-                      value={suburbCity}
-                      onChange={(e) => setSuburbCity(e.target.value)}
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-
-                  {inAustralia ? (
-                    <>
-                      {/* State */}
-                      <div className="mb-4">
-                        <Label className="text-gray-600 mb-2 block">State</Label>
-                        <Select value={state} onValueChange={setState}>
-                          <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white z-50">
-                            {australianStates.map((state) => (
-                              <SelectItem key={state} value={state}>{state}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      {/* Post Code */}
-                      <div>
-                        <Label htmlFor="postcode" className="text-gray-600 mb-2 block">Post Code</Label>
-                        <Input
-                          id="postcode"
-                          value={postCode}
-                          onChange={(e) => setPostCode(e.target.value)}
-                          className="h-12 rounded-xl border-gray-200 bg-white"
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div>
-                      <Label className="text-gray-600 mb-2 block">Country</Label>
-                      <Select value={country} onValueChange={setCountry}>
-                        <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white z-50">
-                          {countries.map((country) => (
-                            <SelectItem key={country} value={country}>{country}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-                </div>
-
-                {/* Work Preferences Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Work Preferences</h3>
-                  
-                  {/* Available Start Date */}
-                  <div className="mb-4">
-                    <Label htmlFor="startDate" className="text-gray-600 mb-2 block">Available Start Date (DD/MM/YYYY)</Label>
-                    <Input
-                      id="startDate"
-                      value={availableStartDate}
-                      onChange={(e) => setAvailableStartDate(e.target.value)}
-                      placeholder="DD/MM/YYYY"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
-                  </div>
-
-                  {/* Industry Interested */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-2 block">Industry Interested in</Label>
-                    <Select value={industryInterested} onValueChange={setIndustryInterested}>
-                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
-                        {industries.map((industry) => (
-                          <SelectItem key={industry} value={industry}>{industry}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Stay Duration */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-2 block">How long are you planning to stay in Australia?</Label>
-                    <Select value={stayDuration} onValueChange={setStayDuration}>
-                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
-                        {stayDurations.map((duration) => (
-                          <SelectItem key={duration} value={duration}>{duration}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Willing to Relocate */}
-                  <div className="mb-4">
-                    <Label className="text-gray-600 mb-3 block">Willing to Relocate?</Label>
-                    <RadioGroup value={willingToRelocate} onValueChange={setWillingToRelocate} className="flex gap-6">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="yes" id="yes" className="border-orange-500 text-orange-500" />
-                        <Label htmlFor="yes">Yes</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="no" id="no" className="border-orange-500 text-orange-500" />
-                        <Label htmlFor="no">No</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  {/* Licenses/Tickets */}
-                  <div>
-                    <Label className="text-gray-600 mb-2 block">Licenses/Tickets</Label>
-                    <Select value={licenses} onValueChange={setLicenses}>
-                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                        {licenseOptions.map((license) => (
-                          <SelectItem key={license} value={license} className="hover:bg-gray-100">
-                            {license}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Tell us about yourself Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-2">Tell us about yourself</h3>
-                  <p className="text-sm text-gray-500 mb-4">This helps us match you with the right employers and opportunities.</p>
-                  
-                  {/* Work Experience */}
-                  <div className="mb-4">
-                    <Label htmlFor="workExperienceText" className="text-gray-600 mb-2 block">What work experience do you have?</Label>
-                    <Textarea
-                      id="workExperienceText"
-                      value={workExperienceText}
-                      onChange={(e) => setWorkExperienceText(e.target.value)}
-                      placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
-                      className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none"
-                    />
-                  </div>
-
-                  {/* Skills and Interests */}
-                  <div className="mb-4">
-                    <Label htmlFor="skillsInterests" className="text-gray-600 mb-2 block">What are your main skills and interests?</Label>
-                    <Textarea
-                      id="skillsInterests"
-                      value={skillsInterests}
-                      onChange={(e) => setSkillsInterests(e.target.value)}
-                      placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities..."
-                      className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none"
-                    />
-                  </div>
-
-                  {/* Why Australia */}
-                  <div>
-                    <Label htmlFor="whyAustralia" className="text-gray-600 mb-2 block">Why did you choose Australia for your working holiday?</Label>
-                    <Textarea
-                      id="whyAustralia"
-                      value={whyAustralia}
-                      onChange={(e) => setWhyAustralia(e.target.value)}
-                      placeholder="I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture..."
-                      className="min-h-[80px] rounded-xl border-gray-200 bg-white resize-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Structured Work Experience Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-900">Work Experience Details</h3>
-                    <Button 
-                      onClick={addWorkExperience}
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-sm"
-                    >
-                      + Add Experience
-                    </Button>
-                  </div>
-                  
-                  {workExperiences.map((exp, index) => (
-                    <div key={index} className="border border-gray-200 rounded-xl p-4 mb-4 last:mb-0">
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="font-medium text-gray-700">Experience {index + 1}</h4>
-                        {workExperiences.length > 1 && (
-                          <Button 
-                            onClick={() => removeWorkExperience(index)}
-                            variant="ghost"
-                            className="text-red-500 hover:bg-red-50 p-1 h-auto"
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3 mb-3">
-                        <div>
-                          <Label className="text-gray-600 mb-1 block text-sm">Start Date</Label>
-                          <Input
-                            value={exp.startDate}
-                            onChange={(e) => updateWorkExperience(index, 'startDate', e.target.value)}
-                            placeholder="MM/YYYY"
-                            className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-gray-600 mb-1 block text-sm">End Date</Label>
-                          <Input
-                            value={exp.endDate}
-                            onChange={(e) => updateWorkExperience(index, 'endDate', e.target.value)}
-                            placeholder="MM/YYYY or Present"
-                            className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="mb-3">
-                        <Label className="text-gray-600 mb-1 block text-sm">Position</Label>
-                        <Input
-                          value={exp.position}
-                          onChange={(e) => updateWorkExperience(index, 'position', e.target.value)}
-                          placeholder="e.g., Farm Worker, Barista, Construction Helper"
-                          className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                        />
-                      </div>
-                      
-                      <div className="mb-3">
-                        <Label className="text-gray-600 mb-1 block text-sm">Company</Label>
-                        <Input
-                          value={exp.company}
-                          onChange={(e) => updateWorkExperience(index, 'company', e.target.value)}
-                          placeholder="Company name"
-                          className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label className="text-gray-600 mb-1 block text-sm">Location</Label>
-                        <Input
-                          value={exp.location}
-                          onChange={(e) => updateWorkExperience(index, 'location', e.target.value)}
-                          placeholder="City, Country"
-                          className="h-10 rounded-lg border-gray-200 bg-white text-sm"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Job References Section */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 mb-4">Job References</h3>
-                  <div>
-                    <Label htmlFor="references" className="text-gray-600 mb-2 block">Contact details for previous employers or supervisors</Label>
-                    <Textarea
-                      id="references"
-                      value={jobReferences}
-                      onChange={(e) => setJobReferences(e.target.value)}
-                      placeholder="Name - Position (Company)&#10;Email&#10;Phone&#10;&#10;[Add multiple references separated by blank lines]"
-                      className="min-h-[100px] rounded-xl border-gray-200 bg-white resize-none"
-                    />
-                  </div>
-                </div>
+                )}
               </div>
 
-              <div className="h-20"></div>
+              {/* Job References Section (mirroring WHVWorkExperience) */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900">Job References</h2>
+                  <Button
+                    type="button"
+                    onClick={addJobReference}
+                    disabled={jobReferences.length >= 5}
+                    className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Reference
+                  </Button>
+                </div>
+
+                {jobReferences.map((reference, index) => (
+                  <div key={reference.id} className="border border-gray-200 rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-gray-900">Reference {index + 1}</h3>
+                      <Button
+                        type="button"
+                        onClick={() => removeJobReference(reference.id)}
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-700 p-1"
+                      >
+                        <X className="w-4 h-4" />
+                        Remove
+                      </Button>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Name</Label>
+                        <Input
+                          type="text"
+                          value={reference.name}
+                          onChange={(e) => updateJobReference(reference.id, 'name', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="Elaine Smith"
+                          maxLength={50}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Business Name</Label>
+                        <Input
+                          type="text"
+                          value={reference.businessName}
+                          onChange={(e) => updateJobReference(reference.id, 'businessName', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="Villa Farm Pty Ltd"
+                          maxLength={50}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Email</Label>
+                        <Input
+                          type="email"
+                          value={reference.email}
+                          onChange={(e) => updateJobReference(reference.id, 'email', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="elaine.smith@villafarm.com"
+                          maxLength={100}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Phone Number</Label>
+                        <Input
+                          type="text"
+                          value={reference.phone}
+                          onChange={(e) => updateJobReference(reference.id, 'phone', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="61499888000"
+                          maxLength={15}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Role</Label>
+                        <Input
+                          type="text"
+                          value={reference.role}
+                          onChange={(e) => updateJobReference(reference.id, 'role', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          placeholder="Head of HR"
+                          maxLength={50}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {jobReferences.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No job references added yet.</p>
+                    <p className="text-sm">Click "Add Reference" to get started.</p>
+                  </div>
+                )}
+              </div>
+
             </div>
           </div>
         </div>
