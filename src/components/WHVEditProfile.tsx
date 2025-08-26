@@ -122,6 +122,22 @@ const WHVEditProfile: React.FC = () => {
     '6 months', '12 months', '18 months', '2 years', 'Flexible'
   ];
 
+  const licenseOptions = [
+    'N/A',
+    'Driver\'s License',
+    'Forklift License',
+    'Working at Heights',
+    'White Card (Construction)',
+    'RSA (Responsible Service of Alcohol)',
+    'RCG (Responsible Conduct of Gambling)',
+    'Food Safety Certificate',
+    'First Aid Certificate',
+    'Heavy Vehicle License',
+    'Crane License',
+    'Electrical License',
+    'Other'
+  ];
+
   const addWorkExperience = () => {
     setWorkExperiences([...workExperiences, {
       position: '',
@@ -452,14 +468,19 @@ const WHVEditProfile: React.FC = () => {
 
                   {/* Licenses/Tickets */}
                   <div>
-                    <Label htmlFor="licenses" className="text-gray-600 mb-2 block">Licenses/Tickets</Label>
-                    <Input
-                      id="licenses"
-                      value={licenses}
-                      onChange={(e) => setLicenses(e.target.value)}
-                      placeholder="e.g., Driver's License, Forklift License, RSA"
-                      className="h-12 rounded-xl border-gray-200 bg-white"
-                    />
+                    <Label className="text-gray-600 mb-2 block">Licenses/Tickets</Label>
+                    <Select value={licenses} onValueChange={setLicenses}>
+                      <SelectTrigger className="h-12 rounded-xl border-gray-200 bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                        {licenseOptions.map((license) => (
+                          <SelectItem key={license} value={license} className="hover:bg-gray-100">
+                            {license}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
