@@ -253,14 +253,14 @@ const CandidateFullProfileCard: React.FC = () => {
               <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Match Header */}
-                <div className="bg-green-500 text-white text-center py-4 rounded-2xl mb-6">
+                <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white text-center py-4 rounded-2xl mb-6">
                   <h2 className="text-xl font-bold">🎉 IT'S A MATCH! 🎉</h2>
                   <p className="text-sm mt-1">with {candidate.name.toUpperCase()}</p>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-32 h-32 rounded-full border-4 border-green-500 overflow-hidden">
+                  <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
                     <img 
                       src={candidate.profileImage}
                       alt={candidate.name} 
