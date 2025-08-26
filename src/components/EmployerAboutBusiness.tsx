@@ -138,7 +138,7 @@ const EmployerAboutBusiness: React.FC = () => {
       title: "Business setup complete!",
       description: "Your employer profile has been created successfully",
     });
-    navigate('/employer/account-confirmation');
+    navigate('/employer/photo-upload');
   };
 
   const handleSkip = () => {
@@ -146,7 +146,7 @@ const EmployerAboutBusiness: React.FC = () => {
       title: "Step skipped",
       description: "You can complete this later in your profile settings",
     });
-    navigate('/employer/account-confirmation');
+    navigate('/employer/photo-upload');
   };
 
   return (
@@ -179,7 +179,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">4/4</span>
+                    <span className="text-sm font-medium text-gray-600">4/5</span>
                   </div>
                 </div>
               </div>
