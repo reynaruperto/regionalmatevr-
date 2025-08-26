@@ -14,8 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 const formSchema = z.object({
   businessTagline: z.string().min(10, { message: "Please describe what your business does (minimum 10 characters)." }).max(200, { message: "Business tagline must be 200 characters or less." }),
   yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
-  employeeCount: z.string().min(1, { message: "Please select number of employees." }),
-  employeeQualities: z.string().min(10, { message: "Please describe what you look for in employees (minimum 10 characters)." })
+  employeeCount: z.string().min(1, { message: "Please select number of employees." })
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -181,30 +180,13 @@ const EmployerAboutBusiness: React.FC = () => {
                   )}
                 </div>
 
-                {/* Employee Qualities */}
-                <div>
-                  <Label htmlFor="employeeQualities" className="text-base font-medium text-gray-900 mb-2 block">
-                    What are you looking for as employee material? *
-                  </Label>
-                  <Textarea
-                    id="employeeQualities"
-                    placeholder="We value hardworking individuals with a positive attitude, willingness to learn, and ability to work in a team environment..."
-                    className="min-h-24 text-base bg-gray-100 border-0 rounded-xl resize-none"
-                    {...register("employeeQualities")}
-                  />
-                  <p className="text-sm text-gray-500 mt-1">Keywords will be extracted for better matching</p>
-                  {errors.employeeQualities && (
-                    <p className="text-red-500 text-sm mt-1">{errors.employeeQualities.message}</p>
-                  )}
-                </div>
-
                 {/* Continue button */}
                 <div className="pt-8 space-y-4">
                   <Button 
                     type="submit"
                     className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                   >
-                    Continue to Photo Upload
+                    Continue
                   </Button>
                   
                   {/* Skip for now link */}
