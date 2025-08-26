@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ArrowLeft } from 'lucide-react';
 
-const WHVWorkExperience: React.FC = () => {
+const WHVWorkExperience = () => {
   const navigate = useNavigate();
   
   // Form state - matching the edit profile structure
@@ -116,7 +116,7 @@ const WHVWorkExperience: React.FC = () => {
     'Other'
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     navigate('/whv/photo-upload');
   };
