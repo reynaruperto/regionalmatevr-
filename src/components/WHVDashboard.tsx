@@ -6,12 +6,19 @@ import BottomNavigation from './BottomNavigation';
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [profileTagline, setProfileTagline] = useState<string>('Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD');
 
   useEffect(() => {
     // Retrieve the uploaded photo from localStorage
     const storedPhoto = localStorage.getItem('userProfilePhoto');
     if (storedPhoto) {
       setProfilePhoto(storedPhoto);
+    }
+
+    // Retrieve the profile tagline from localStorage
+    const storedTagline = localStorage.getItem('profileTagline');
+    if (storedTagline) {
+      setProfileTagline(storedTagline);
     }
   }, []);
 
@@ -63,7 +70,7 @@ const Dashboard: React.FC = () => {
               {/* Profile Description */}
               <div className="text-center mb-6">
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD
+                  {profileTagline}
                 </p>
               </div>
 

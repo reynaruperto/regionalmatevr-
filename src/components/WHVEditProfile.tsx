@@ -277,6 +277,9 @@ const WHVEditProfile: React.FC = () => {
       jobReferences
     });
     
+    // Save the profile tagline to localStorage
+    localStorage.setItem('profileTagline', aboutYourself.tagline);
+    
     toast({
       title: "Profile Updated",
       description: "Your WHV profile has been successfully updated",
