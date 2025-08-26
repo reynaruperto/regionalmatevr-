@@ -12,11 +12,10 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  businessDescription: z.string().min(10, { message: "Please describe your business (minimum 10 characters)." }),
+  businessTagline: z.string().min(10, { message: "Please describe what your business does (minimum 10 characters)." }).max(200, { message: "Business tagline must be 200 characters or less." }),
   yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
   employeeCount: z.string().min(1, { message: "Please select number of employees." }),
-  employeeQualities: z.string().min(10, { message: "Please describe what you look for in employees (minimum 10 characters)." }),
-  businessTagline: z.string().max(200, { message: "Tagline must be 200 characters or less." }).optional()
+  employeeQualities: z.string().min(10, { message: "Please describe what you look for in employees (minimum 10 characters)." })
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -104,7 +103,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">5/6</span>
+                    <span className="text-sm font-medium text-gray-600">4/6</span>
                   </div>
                 </div>
               </div>
@@ -120,26 +119,10 @@ const EmployerAboutBusiness: React.FC = () => {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Business Description */}
-                <div>
-                  <Label htmlFor="businessDescription" className="text-base font-medium text-gray-900 mb-2 block">
-                    What does your business do? *
-                  </Label>
-                  <Textarea
-                    id="businessDescription"
-                    placeholder="We are a family-owned agricultural business specializing in organic fruit production..."
-                    className="min-h-24 text-base bg-gray-100 border-0 rounded-xl resize-none"
-                    {...register("businessDescription")}
-                  />
-                  {errors.businessDescription && (
-                    <p className="text-red-500 text-sm mt-1">{errors.businessDescription.message}</p>
-                  )}
-                </div>
-
                 {/* Business Tagline */}
                 <div>
                   <Label htmlFor="businessTagline" className="text-base font-medium text-gray-900 mb-2 block">
-                    Business Tagline (Optional)
+                    Business Tagline
                   </Label>
                   <Input
                     id="businessTagline"
@@ -148,7 +131,7 @@ const EmployerAboutBusiness: React.FC = () => {
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("businessTagline")}
                   />
-                  <p className="text-sm text-gray-500 mt-1">Maximum 200 characters</p>
+                  <p className="text-sm text-gray-500 mt-1">This will appear under your profile photo (max 200 characters)</p>
                   {errors.businessTagline && (
                     <p className="text-red-500 text-sm mt-1">{errors.businessTagline.message}</p>
                   )}
