@@ -32,11 +32,23 @@ const Security: React.FC = () => {
       title: "Security Settings Updated",
       description: "Your security settings have been successfully updated",
     });
-    navigate('/whv/dashboard');
+    // Check if we're in employer or WHV context and navigate accordingly
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('employer')) {
+      navigate('/employer/dashboard');
+    } else {
+      navigate('/whv/dashboard');
+    }
   };
 
   const handleCancel = () => {
-    navigate('/whv/dashboard');
+    // Check if we're in employer or WHV context and navigate accordingly
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('employer')) {
+      navigate('/employer/dashboard');
+    } else {
+      navigate('/whv/dashboard');
+    }
   };
 
   const recentActivity = [
