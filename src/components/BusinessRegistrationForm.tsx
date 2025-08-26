@@ -20,7 +20,7 @@ const formSchema = z.object({
   businessPhone: z.string()
     .min(10, { message: "Please enter a valid phone number." })
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
-  businessEmail: z.string().email({ message: "Please enter a valid business email address." }),
+  
   addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
   addressLine2: z.string().optional(),
   suburb: z.string().min(2, { message: "Suburb is required." }),
@@ -128,7 +128,7 @@ const BusinessRegistrationForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer/onboarding')}
+                  onClick={() => navigate('/employer/email-confirmation')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -140,7 +140,7 @@ const BusinessRegistrationForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Registration</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">2/6</span>
+                    <span className="text-sm font-medium text-gray-600">3/6</span>
                   </div>
                 </div>
               </div>
@@ -262,26 +262,6 @@ const BusinessRegistrationForm: React.FC = () => {
                   />
                   {errors.businessPhone && (
                     <p className="text-red-500 text-sm mt-1">{errors.businessPhone.message}</p>
-                  )}
-                </div>
-
-                {/* Business Email */}
-                <div>
-                  <Label htmlFor="businessEmail" className="text-base font-medium text-gray-900 mb-2 block">
-                    Business Email Address *
-                  </Label>
-                  <Input
-                    id="businessEmail"
-                    type="email"
-                    placeholder="info@yourfarm.com.au"
-                    disabled={!abnVerified}
-                    className={`h-14 text-base border-0 rounded-xl ${
-                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
-                    }`}
-                    {...register("businessEmail")}
-                  />
-                  {errors.businessEmail && (
-                    <p className="text-red-500 text-sm mt-1">{errors.businessEmail.message}</p>
                   )}
                 </div>
 

@@ -127,10 +127,10 @@ const EmployerAboutBusiness: React.FC = () => {
   const onSubmit = (data: FormData) => {
     console.log('Business info submitted:', data);
     toast({
-      title: "Business information saved!",
-      description: "Let's upload your profile photo",
+      title: "Business setup complete!",
+      description: "Your employer profile has been created successfully",
     });
-    navigate('/employer/photo-upload');
+    navigate('/employer/account-confirmation');
   };
 
   const handleSkip = () => {
@@ -138,7 +138,7 @@ const EmployerAboutBusiness: React.FC = () => {
       title: "Step skipped",
       description: "You can complete this later in your profile settings",
     });
-    navigate('/employer/photo-upload');
+    navigate('/employer/account-confirmation');
   };
 
   return (
@@ -171,7 +171,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">5/6</span>
+                    <span className="text-sm font-medium text-gray-600">6/6</span>
                   </div>
                 </div>
               </div>

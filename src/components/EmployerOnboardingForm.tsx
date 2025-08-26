@@ -54,9 +54,9 @@ const EmployerOnboardingForm: React.FC = () => {
     console.log('Form submitted:', data);
     toast({
       title: "Account created successfully!",
-      description: "Welcome to Regional Mate",
+      description: "Please check your email for verification",
     });
-    navigate('/business-registration');
+    navigate('/employer/email-confirmation');
   };
 
   return (
