@@ -37,6 +37,12 @@ const WHVWorkExperience: React.FC = () => {
     licenses: ''
   });
 
+  const [aboutYourself, setAboutYourself] = useState({
+    workExperience: '',
+    skillsAndInterests: '',
+    whyAustralia: ''
+  });
+
   // Industry options
   const industries = [
     'Agriculture & Farming',
@@ -156,6 +162,13 @@ const WHVWorkExperience: React.FC = () => {
     });
   };
 
+  const handleAboutYourselfChange = (field: string, value: string) => {
+    setAboutYourself({
+      ...aboutYourself,
+      [field]: value
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -211,6 +224,56 @@ const WHVWorkExperience: React.FC = () => {
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8 pb-20">
               
+              {/* Tell us about yourself Section */}
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Tell us about yourself</h2>
+                  <p className="text-gray-600 mt-1">This helps us match you with the right employers and opportunities.</p>
+                </div>
+                
+                {/* What work experience do you have? */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    What work experience do you have?
+                  </Label>
+                  <Textarea
+                    value={aboutYourself.workExperience}
+                    onChange={(e) => handleAboutYourselfChange('workExperience', e.target.value)}
+                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
+                    placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
+                    maxLength={500}
+                  />
+                </div>
+
+                {/* What are your main skills and interests? */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    What are your main skills and interests?
+                  </Label>
+                  <Textarea
+                    value={aboutYourself.skillsAndInterests}
+                    onChange={(e) => handleAboutYourselfChange('skillsAndInterests', e.target.value)}
+                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
+                    placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities..."
+                    maxLength={500}
+                  />
+                </div>
+
+                {/* Why did you choose Australia for your working holiday? */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    Why did you choose Australia for your working holiday?
+                  </Label>
+                  <Textarea
+                    value={aboutYourself.whyAustralia}
+                    onChange={(e) => handleAboutYourselfChange('whyAustralia', e.target.value)}
+                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
+                    placeholder="I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture..."
+                    maxLength={500}
+                  />
+                </div>
+              </div>
+
               {/* Work Preferences Section */}
               <div className="space-y-6">
                 <h2 className="text-xl font-semibold text-gray-900">Work Preferences</h2>
