@@ -53,13 +53,18 @@ const EmployerSignUp = () => {
                   fallbackRedirectUrl="/employer/onboarding"
                   appearance={{
                     elements: {
-                      rootBox: "w-full",
-                      card: "shadow-none border-none bg-transparent",
+                      rootBox: "w-full max-w-sm",
+                      card: "shadow-none border-none bg-transparent w-full",
                       headerTitle: "hidden",
                       headerSubtitle: "hidden",
-                      socialButtonsBlockButton: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700",
-                      formButtonPrimary: "bg-orange-500 hover:bg-orange-600 text-white",
-                      footerActionLink: "text-orange-500 hover:text-orange-600"
+                      socialButtonsBlockButton: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm py-2",
+                      formButtonPrimary: "bg-orange-500 hover:bg-orange-600 text-white text-sm py-2",
+                      footerActionLink: "text-orange-500 hover:text-orange-600 text-sm",
+                      formFieldInput: "text-sm py-2",
+                      formFieldLabel: "text-sm",
+                      identityPreview: "text-sm",
+                      formHeaderTitle: "text-lg",
+                      formHeaderSubtitle: "text-sm"
                     }
                   }}
                 />

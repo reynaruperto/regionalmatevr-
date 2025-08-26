@@ -25,7 +25,7 @@ const WHVSignInPage = () => {
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </button>
-              <h1 className="text-lg font-semibold text-gray-900">WHV Sign In</h1>
+              <h1 className="text-lg font-semibold text-gray-900">Working Holiday Maker Sign In</h1>
               <div className="w-10"></div>
             </div>
 
@@ -42,7 +42,7 @@ const WHVSignInPage = () => {
                   Welcome Back
                 </h2>
                 <p className="text-gray-600">
-                  Sign in to your WHV account
+                  Sign in to your Working Holiday Maker account
                 </p>
               </div>
 
@@ -53,13 +53,18 @@ const WHVSignInPage = () => {
                   fallbackRedirectUrl="/whv/dashboard"
                   appearance={{
                     elements: {
-                      rootBox: "w-full",
-                      card: "shadow-none border-none bg-transparent",
+                      rootBox: "w-full max-w-sm",
+                      card: "shadow-none border-none bg-transparent w-full",
                       headerTitle: "hidden",
                       headerSubtitle: "hidden",
-                      socialButtonsBlockButton: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700",
-                      formButtonPrimary: "bg-orange-500 hover:bg-orange-600 text-white",
-                      footerActionLink: "text-orange-500 hover:text-orange-600"
+                      socialButtonsBlockButton: "bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm py-2",
+                      formButtonPrimary: "bg-orange-500 hover:bg-orange-600 text-white text-sm py-2",
+                      footerActionLink: "text-orange-500 hover:text-orange-600 text-sm",
+                      formFieldInput: "text-sm py-2",
+                      formFieldLabel: "text-sm",
+                      identityPreview: "text-sm",
+                      formHeaderTitle: "text-lg",
+                      formHeaderSubtitle: "text-sm"
                     }
                   }}
                 />
