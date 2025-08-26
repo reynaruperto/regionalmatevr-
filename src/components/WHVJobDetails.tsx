@@ -136,27 +136,6 @@ const WHVJobDetails: React.FC = () => {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 pb-6">
-            {/* Match Header with Speech Bubble Design */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-16 h-16 rounded-full border-4 border-orange-500 overflow-hidden bg-white shadow-lg flex-shrink-0">
-                <img
-                  src="/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png"
-                  alt={job.employerName}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="relative bg-gradient-to-r from-orange-500 to-blue-900 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
-                <div className="text-center">
-                  <div className="text-sm font-semibold">It's a Match</div>
-                  <div className="text-sm font-semibold">with</div>
-                  <div className="text-sm font-bold">{job.employerName}</div>
-                </div>
-                {/* Speech bubble tail */}
-                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
-                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-900"></div>
-                </div>
-              </div>
-            </div>
 
             {/* Job Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
