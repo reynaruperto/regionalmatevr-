@@ -72,7 +72,7 @@ const EmployerEmailConfirmation: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Confirm Your Email</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">1.5/4</span>
+                    <span className="text-sm font-medium text-gray-600">2/5</span>
                   </div>
                 </div>
               </div>
