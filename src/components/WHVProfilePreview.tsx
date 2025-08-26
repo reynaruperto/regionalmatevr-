@@ -11,13 +11,12 @@ const WHVProfilePreview: React.FC = () => {
     tagline: 'Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD',
     nationality: 'Argentina',
     location: 'Brisbane, QLD 4000',
-    relocation: 'Yes, anywhere in QLD/NSW',
+    relocation: 'Yes',
     visaType: '417 (Working Holiday)',
     visaExpiry: 'Sep 2026',
     industry: 'Agriculture and Farming',
     licenses: 'Driver\'s License, First Aid',
-    availability: 'Sep 2025 (8 months)',
-    languages: 'Spanish (Native), English (Fluent)'
+    availability: 'Sep 2025 (8 months)'
   });
 
   const [workExperiences, setWorkExperiences] = useState([
@@ -99,7 +98,6 @@ const WHVProfilePreview: React.FC = () => {
                   </div>
                   <div><span className="font-semibold">Licenses / Certificates:</span> {profileData.licenses}</div>
                   <div><span className="font-semibold">Availability (date, duration):</span> {profileData.availability}</div>
-                  <div><span className="font-semibold">Languages:</span> {profileData.languages}</div>
                 </div>
 
                 {/* Locked Message */}
