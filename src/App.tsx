@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
@@ -84,6 +84,7 @@ const App = () => (
           <Route path="/business-registration" element={<BusinessRegistration />} />
           <Route path="/profile-completion" element={<ProfileCompletion />} />
           <Route path="/employer/sign-in" element={<EmployerSignIn />} />
+          <Route path="/business-onboarding" element={<Navigate to="/business-address" replace />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/employer/about-business" element={<EmployerAboutBusiness />} />
           <Route path="/employer/photo-upload" element={<EmployerPhotoUpload />} />
