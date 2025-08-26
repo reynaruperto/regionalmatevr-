@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft } from 'lucide-react';
@@ -14,7 +14,12 @@ import { useToast } from '@/hooks/use-toast';
 const formSchema = z.object({
   businessTagline: z.string().min(10, { message: "Please describe what your business does (minimum 10 characters)." }).max(200, { message: "Business tagline must be 200 characters or less." }),
   yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
-  employeeCount: z.string().min(1, { message: "Please select number of employees." })
+  employeeCount: z.string().min(1, { message: "Please select number of employees." }),
+  industry: z.string().min(1, { message: "Please select an industry." }),
+  rolesOffered: z.array(z.string()).min(1, { message: "Please select at least one role." }),
+  jobAvailability: z.string().min(1, { message: "Please select job availability." }),
+  payAndBenefits: z.string().min(1, { message: "Please select pay and benefits." }),
+  facilitiesAndExtras: z.array(z.string()).min(1, { message: "Please select at least one facility or extra." })
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -46,13 +51,77 @@ const EmployerAboutBusiness: React.FC = () => {
     '100+ employees'
   ];
 
+  // Industry options
+  const industries = [
+    "Agriculture & Farming",
+    "Tourism & Hospitality", 
+    "Construction & Building",
+    "Mining & Resources",
+    "Healthcare & Aged Care",
+    "Education & Training",
+    "Retail & Sales",
+    "Manufacturing",
+    "Transport & Logistics",
+    "Other"
+  ];
+
+  // Role options
+  const roles = [
+    "Farm Worker",
+    "Fruit Picker",
+    "Kitchen Hand",
+    "Waitstaff",
+    "Cleaner",
+    "Construction Worker",
+    "Laborer",
+    "Driver",
+    "Sales Assistant",
+    "Other"
+  ];
+
+  // Job availability options
+  const jobAvailabilityOptions = [
+    "Full-time",
+    "Part-time",
+    "Casual",
+    "Seasonal",
+    "Contract"
+  ];
+
+  // Pay and benefits options
+  const payBenefitsOptions = [
+    "$20-25/hour",
+    "$25-30/hour",
+    "$30-35/hour", 
+    "$35+/hour",
+    "Competitive salary",
+    "Benefits included"
+  ];
+
+  // Facilities and extras options
+  const facilitiesExtras = [
+    "Accommodation provided",
+    "Meals included",
+    "Transport provided",
+    "Training provided",
+    "Equipment provided",
+    "Flexible hours",
+    "Career progression",
+    "Team environment"
+  ];
+
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      rolesOffered: [],
+      facilitiesAndExtras: []
+    }
   });
 
   const onSubmit = (data: FormData) => {
@@ -177,6 +246,198 @@ const EmployerAboutBusiness: React.FC = () => {
                   </Select>
                   {errors.employeeCount && (
                     <p className="text-red-500 text-sm mt-1">{errors.employeeCount.message}</p>
+                  )}
+                </div>
+
+                {/* Industry field */}
+                <div>
+                  <Label htmlFor="industry" className="text-base font-medium text-gray-900 mb-2 block">
+                    Industry *
+                  </Label>
+                  <Controller
+                    name="industry"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select your industry" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {industries.map((industry) => (
+                            <SelectItem key={industry} value={industry} className="hover:bg-gray-50">
+                              {industry}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.industry && (
+                    <p className="text-red-500 text-sm mt-1">{errors.industry.message}</p>
+                  )}
+                </div>
+
+                {/* Roles Offered field */}
+                <div>
+                  <Label htmlFor="rolesOffered" className="text-base font-medium text-gray-900 mb-2 block">
+                    Roles Offered *
+                  </Label>
+                  <Controller
+                    name="rolesOffered"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Select onValueChange={(value) => {
+                          const currentValues = field.value || [];
+                          if (!currentValues.includes(value)) {
+                            field.onChange([...currentValues, value]);
+                          }
+                        }}>
+                          <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                            <SelectValue placeholder={field.value?.length > 0 ? `${field.value.length} role(s) selected` : "Select roles offered"} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                            {roles.map((role) => (
+                              <SelectItem key={role} value={role} className="hover:bg-gray-50">
+                                {role}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {field.value?.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {field.value.map((role, index) => (
+                              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                                {role}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newValues = field.value.filter((_, i) => i !== index);
+                                    field.onChange(newValues);
+                                  }}
+                                  className="ml-2 text-blue-600 hover:text-blue-800"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  />
+                  {errors.rolesOffered && (
+                    <p className="text-red-500 text-sm mt-1">{errors.rolesOffered.message}</p>
+                  )}
+                </div>
+
+                {/* Job Availability field */}
+                <div>
+                  <Label htmlFor="jobAvailability" className="text-base font-medium text-gray-900 mb-2 block">
+                    Job Availability *
+                  </Label>
+                  <Controller
+                    name="jobAvailability"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select job availability" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {jobAvailabilityOptions.map((option) => (
+                            <SelectItem key={option} value={option} className="hover:bg-gray-50">
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.jobAvailability && (
+                    <p className="text-red-500 text-sm mt-1">{errors.jobAvailability.message}</p>
+                  )}
+                </div>
+
+                {/* Pay and Benefits field */}
+                <div>
+                  <Label htmlFor="payAndBenefits" className="text-base font-medium text-gray-900 mb-2 block">
+                    Pay & Benefits *
+                  </Label>
+                  <Controller
+                    name="payAndBenefits"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select pay and benefits" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {payBenefitsOptions.map((option) => (
+                            <SelectItem key={option} value={option} className="hover:bg-gray-50">
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.payAndBenefits && (
+                    <p className="text-red-500 text-sm mt-1">{errors.payAndBenefits.message}</p>
+                  )}
+                </div>
+
+                {/* Facilities and Extras field */}
+                <div>
+                  <Label htmlFor="facilitiesAndExtras" className="text-base font-medium text-gray-900 mb-2 block">
+                    Facilities & Extras *
+                  </Label>
+                  <Controller
+                    name="facilitiesAndExtras"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Select onValueChange={(value) => {
+                          const currentValues = field.value || [];
+                          if (!currentValues.includes(value)) {
+                            field.onChange([...currentValues, value]);
+                          }
+                        }}>
+                          <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                            <SelectValue placeholder={field.value?.length > 0 ? `${field.value.length} facility(ies) selected` : "Select facilities & extras"} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                            {facilitiesExtras.map((facility) => (
+                              <SelectItem key={facility} value={facility} className="hover:bg-gray-50">
+                                {facility}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {field.value?.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {field.value.map((facility, index) => (
+                              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                                {facility}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newValues = field.value.filter((_, i) => i !== index);
+                                    field.onChange(newValues);
+                                  }}
+                                  className="ml-2 text-green-600 hover:text-green-800"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  />
+                  {errors.facilitiesAndExtras && (
+                    <p className="text-red-500 text-sm mt-1">{errors.facilitiesAndExtras.message}</p>
                   )}
                 </div>
 
