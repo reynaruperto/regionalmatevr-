@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
+import EmployerSecurity from "./pages/EmployerSecurity";
+import EmployerTermsPolicies from "./pages/EmployerTermsPolicies";
 import EmployerSignIn from "./pages/EmployerSignIn";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import BusinessRegistration from "./pages/BusinessRegistration";
@@ -98,12 +100,16 @@ const App = () => (
           <Route path="/whv/profile-preview" element={<WHVProfilePreview />} />
           <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
+          <Route path="/whv/security" element={<Security />} />
+          <Route path="/employer/security" element={<EmployerSecurity />} />
           <Route path="/edit-business-profile" element={<Navigate to="/employer/edit-business-profile" replace />} />
           <Route path="/employer/edit-business-profile" element={<EditBusinessProfile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/help-support" element={<HelpSupport />} />
           <Route path="/terms-policies" element={<TermsPolicies />} />
+          <Route path="/whv/terms-policies" element={<TermsPolicies />} />
+          <Route path="/employer/terms-policies" element={<EmployerTermsPolicies />} />
           <Route path="/post-jobs" element={<PostJobs />} />
           <Route path="/browse-candidates" element={<BrowseCandidates />} />
           <Route path="/employer/profile/:id" element={<EmployerProfile />} />
