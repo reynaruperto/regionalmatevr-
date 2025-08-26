@@ -254,6 +254,16 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                 </p>
               </div>
 
+              {/* Key Details */}
+              <div className="space-y-3 text-sm mb-6">
+                <div><span className="font-semibold">Location:</span> {employer.location}</div>
+                <div><span className="font-semibold">Industry:</span> {employer.industry}</div>
+                <div><span className="font-semibold">Roles Offered:</span> {employer.rolesOffered.join(', ')}</div>
+                <div><span className="font-semibold">Job Availability:</span> {employer.jobAvailability}</div>
+                <div><span className="font-semibold">Pay & Benefits:</span> {employer.payBenefits}</div>
+                <div><span className="font-semibold">Facilities:</span> {employer.facilities}</div>
+              </div>
+
               {/* Contact Information - Available because it's a match */}
               <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white rounded-2xl p-6 text-center">
                 <h3 className="font-bold text-lg mb-3">🎉 Contact Details Unlocked! 🎉</h3>
