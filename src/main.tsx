@@ -11,9 +11,9 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <React.StrictMode>
       <App />
-    </ClerkProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </ClerkProvider>
 );
