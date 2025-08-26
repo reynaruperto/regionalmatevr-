@@ -98,6 +98,7 @@ const App = () => (
           <Route path="/whv/profile-preview" element={<WHVProfilePreview />} />
           <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
+          <Route path="/edit-business-profile" element={<Navigate to="/employer/edit-business-profile" replace />} />
           <Route path="/employer/edit-business-profile" element={<EditBusinessProfile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/privacy" element={<Privacy />} />
