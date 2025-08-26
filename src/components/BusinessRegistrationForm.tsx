@@ -74,28 +74,13 @@ const BusinessRegistrationForm: React.FC = () => {
       return;
     }
 
-    setIsVerifyingAbn(true);
-    
-    // Simulate ABN verification API call
-    setTimeout(() => {
-      setIsVerifyingAbn(false);
-      // Mock successful verification
-      if (abnValue === "12345678901") {
-        setBusinessName("Sample Business Pty Ltd");
-        setAbnVerified(true);
-        toast({
-          title: "ABN Verified",
-          description: "Business found: Sample Business Pty Ltd",
-        });
-      } else {
-        setBusinessName("Regional Farm Business Pty Ltd");
-        setAbnVerified(true);
-        toast({
-          title: "ABN Verified",
-          description: "Business found: Regional Farm Business Pty Ltd",
-        });
-      }
-    }, 2000);
+    // For UX testing - automatically verify any 11-digit ABN
+    setBusinessName("Sample Business Pty Ltd");
+    setAbnVerified(true);
+    toast({
+      title: "ABN Verified",
+      description: "Business found: Sample Business Pty Ltd",
+    });
   };
 
   const onSubmit = (data: FormData) => {
@@ -176,7 +161,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <div className="flex gap-3">
                     <Input
                       id="abn"
-                      placeholder="12345678901"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder="Enter 11 digits"
                       maxLength={11}
                       disabled={abnVerified}
                       className={`h-14 text-base border-0 rounded-xl flex-1 ${
