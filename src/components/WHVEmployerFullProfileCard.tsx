@@ -256,12 +256,17 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
               {/* Key Details */}
               <div className="space-y-3 text-sm mb-6">
+                <div><span className="font-semibold">ABN:</span> {employer.abn}</div>
                 <div><span className="font-semibold">Location:</span> {employer.location}</div>
                 <div><span className="font-semibold">Industry:</span> {employer.industry}</div>
+                <div><span className="font-semibold">Company Size:</span> {employer.companySize}</div>
+                <div><span className="font-semibold">Established:</span> {employer.establishedYear}</div>
                 <div><span className="font-semibold">Roles Offered:</span> {employer.rolesOffered.join(', ')}</div>
                 <div><span className="font-semibold">Job Availability:</span> {employer.jobAvailability}</div>
                 <div><span className="font-semibold">Pay & Benefits:</span> {employer.payBenefits}</div>
                 <div><span className="font-semibold">Facilities:</span> {employer.facilities}</div>
+                <div><span className="font-semibold">Certifications:</span> {employer.certifications.join(', ')}</div>
+                <div><span className="font-semibold">Work Environment:</span> {employer.workEnvironment}</div>
               </div>
 
               {/* Contact Information - Available because it's a match */}
