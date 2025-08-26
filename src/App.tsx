@@ -18,6 +18,7 @@ import EditProfile from "./pages/EditProfile";
 import EmployerEditProfile from "./pages/EmployerEditProfile";
 import WHVEditProfile from "./pages/WHVEditProfile";
 import ProfileCardPreview from "./pages/ProfileCardPreview";
+import WHVProfilePreview from "./components/WHVProfilePreview";
 import Security from "./pages/Security";
 import EditBusinessProfile from "./pages/EditBusinessProfile";
 import Notifications from "./pages/Notifications";
@@ -92,7 +93,7 @@ const App = () => (
           <Route path="/whv/profile-edit" element={<EditProfile />} />
           <Route path="/employer/edit-profile" element={<EmployerEditProfile />} />
           <Route path="/whv/edit-profile" element={<WHVEditProfile />} />
-          <Route path="/whv/profile-preview" element={<ProfileCardPreview />} />
+          <Route path="/whv/profile-preview" element={<WHVProfilePreview />} />
           <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
           <Route path="/edit-business-profile" element={<EditBusinessProfile />} />
