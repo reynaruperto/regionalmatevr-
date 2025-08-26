@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Heart, Award, Calendar, User, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useNavigate } from 'react-router-dom';
@@ -53,6 +53,33 @@ const WHVNotifications: React.FC = () => {
     }
   ]);
 
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'Match and Like Activity':
+        return <Heart className="w-5 h-5 text-red-500" />;
+      case 'Like Milestone':
+        return <Award className="w-5 h-5 text-yellow-500" />;
+      case 'Visa Expiry Reminder':
+        return <Calendar className="w-5 h-5 text-blue-500" />;
+      case 'Profile Updated':
+        return <User className="w-5 h-5 text-green-500" />;
+      case 'Welcome Message':
+        return <Users className="w-5 h-5 text-purple-500" />;
+      default:
+        return <User className="w-5 h-5 text-gray-500" />;
+    }
+  };
+
+  const getMatchPhoto = (message: string) => {
+    if (message.includes('Outback Winery')) {
+      return '/lovable-uploads/vineyard-landscape.jpg';
+    }
+    if (message.includes('Kangafarm')) {
+      return '/lovable-uploads/farming-team.jpg';
+    }
+    return null;
+  };
+
   const handleNotificationClick = (id: string) => {
     setNotifications(prev => 
       prev.map(notification => 
@@ -92,11 +119,11 @@ const WHVNotifications: React.FC = () => {
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto">
               
-              {/* Alert Notification Setting */}
+              {/* Turn Notifications On/Off Setting */}
               <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Alert Notification</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">Turn Notifications On/Off</h3>
                     <p className="text-sm text-gray-500">You will be notified for new notifications</p>
                   </div>
                   <div className="flex items-center">
@@ -119,16 +146,33 @@ const WHVNotifications: React.FC = () => {
                     className="w-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow text-left"
                   >
                     <div className="flex items-start">
-                      {/* Status Dot */}
-                      <div className={`w-3 h-3 rounded-full mr-4 mt-1 flex-shrink-0 ${
-                        notification.isRead ? 'bg-gray-400' : 'bg-orange-500'
-                      }`}></div>
+                      {/* Icon or Photo */}
+                      <div className="mr-4 mt-1 flex-shrink-0">
+                        {notification.type === 'Match and Like Activity' && getMatchPhoto(notification.message) ? (
+                          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-red-500">
+                            <img 
+                              src={getMatchPhoto(notification.message)} 
+                              alt="Match" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                            {getNotificationIcon(notification.type)}
+                          </div>
+                        )}
+                      </div>
                       
                       {/* Content */}
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">
-                          {notification.type}
-                        </h4>
+                        <div className="flex items-center mb-1">
+                          <h4 className="font-semibold text-gray-900">
+                            {notification.type}
+                          </h4>
+                          {!notification.isRead && (
+                            <div className="w-2 h-2 bg-orange-500 rounded-full ml-2"></div>
+                          )}
+                        </div>
                         <p className="text-gray-600 text-sm leading-relaxed">
                           {notification.message}
                         </p>
