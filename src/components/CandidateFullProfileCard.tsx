@@ -51,12 +51,12 @@ const CandidateFullProfileCard: React.FC = () => {
       id: '4',
       name: 'Thomas',
       profileImage: '/lovable-uploads/616bea44-f5b8-46dc-8948-70e269f076a0.png',
-      quote: '"Ready to work hard and experience the real Australia! I bring European farming expertise and enthusiasm for learning new agricultural techniques."',
-      nationality: 'France',
+      quote: 'Ready to work hard and experience the real Australia! I bring European farming expertise and enthusiasm for learning new techniques.',
+      nationality: 'United States',
       location: 'Cairns, QLD 4870',
-      willingToRelocate: 'Yes, anywhere in QLD/NT',
-      industry: 'Agriculture and Farming, Construction',
-      visa: '417',
+      willingToRelocate: 'Yes',
+      industry: 'Agriculture and Farming',
+      visa: '417 (Working Holiday)',
       visaExpiry: 'Aug 2026',
       experience: [
         {
@@ -82,13 +82,13 @@ const CandidateFullProfileCard: React.FC = () => {
         }
       ],
       licenses: [
-        'French Driver\'s License (International)',
+        'Driver\'s License',
         'Forklift License',
-        'Organic Farming Certificate'
+        'First Aid Certificate'
       ],
       availability: 'February 2025 (18 months)',
       stayDuration: '18 months',
-      languages: ['French (Native)', 'English (Fluent)', 'Spanish (Basic)'],
+      languages: ['English (Native)', 'French (Fluent)', 'Spanish (Basic)'],
       workExperience: 'I have 4 years of experience working in organic farms and vineyards in France. I started as a seasonal worker and became a team supervisor. I also have construction experience helping with farm building projects and maintenance. I love working with my hands and being outdoors.',
       skillsInterests: 'Organic farming, vineyard maintenance, basic construction, equipment operation, team leadership, outdoor work, learning new agricultural techniques, and experiencing different farming methods.',
       whyAustralia: 'I chose Australia because of its reputation for innovative farming techniques and diverse agricultural opportunities. I want to learn about Australian farming methods, work in different climates, and experience the multicultural work environment while contributing my European farming knowledge.',
@@ -283,6 +283,8 @@ const CandidateFullProfileCard: React.FC = () => {
                   <div><span className="font-semibold">Willing to Relocate:</span> {candidate.willingToRelocate}</div>
                   <div><span className="font-semibold">Visa Type & Expiry:</span> {candidate.visa} - Expires {candidate.visaExpiry}</div>
                   <div><span className="font-semibold">Industry:</span> {candidate.industry}</div>
+                  <div><span className="font-semibold">Licenses / Certificates:</span> {candidate.licenses.join(', ')}</div>
+                  <div><span className="font-semibold">Availability:</span> {candidate.availability}</div>
                 </div>
 
                 {/* Work Experience */}
@@ -299,45 +301,12 @@ const CandidateFullProfileCard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Licenses */}
+                {/* About Yourself Section */}
                 <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-2">Licenses / Certificates:</h3>
-                  <div className="space-y-1 text-sm">
-                    {candidate.licenses.map((license, index) => (
-                      <div key={index} className="text-gray-700">• {license}</div>
-                    ))}
+                  <h3 className="font-semibold text-gray-900 mb-2">Tell us about yourself:</h3>
+                  <div className="text-gray-700 bg-gray-50 rounded-xl p-3 text-sm">
+                    {candidate.workExperience}
                   </div>
-                </div>
-
-                {/* About Sections */}
-                <div className="space-y-4 mb-6 text-sm">
-                  <div>
-                    <span className="font-semibold">Tell us about yourself:</span>
-                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
-                      {candidate.workExperience}
-                    </div>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold">Skills & Interests:</span>
-                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
-                      {candidate.skillsInterests}
-                    </div>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold">Why Australia:</span>
-                    <div className="mt-1 text-gray-700 bg-gray-50 rounded-xl p-3">
-                      {candidate.whyAustralia}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Details */}
-                <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Preferred Work Types:</span> {candidate.workPreferences}</div>
-                  <div><span className="font-semibold">Stay Duration:</span> {candidate.stayDuration}</div>
-                  <div><span className="font-semibold">Availability:</span> {candidate.availability}</div>
                 </div>
 
                 {/* Job Reference */}
