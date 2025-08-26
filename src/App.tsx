@@ -86,7 +86,6 @@ const App = () => (
           <Route path="/employer/sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
           <Route path="/employer/about-business" element={<EmployerAboutBusiness />} />
-          <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/employer/photo-upload" element={<EmployerPhotoUpload />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/employer/dashboard" element={<EmployerDashboard />} />

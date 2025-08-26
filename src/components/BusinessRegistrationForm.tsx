@@ -6,6 +6,7 @@ import { ArrowLeft, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -14,13 +15,35 @@ const formSchema = z.object({
     .min(11, { message: "ABN must be 11 digits." })
     .max(11, { message: "ABN must be 11 digits." })
     .regex(/^\d+$/, { message: "ABN must contain only numbers." }),
+  companyName: z.string().min(2, { message: "Company name is required." }),
   businessPhone: z.string()
     .min(10, { message: "Please enter a valid phone number." })
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
-  businessEmail: z.string().email({ message: "Please enter a valid business email address." })
+  businessEmail: z.string().email({ message: "Please enter a valid business email address." }),
+  addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
+  addressLine2: z.string().optional(),
+  suburb: z.string().min(2, { message: "Suburb is required." }),
+  city: z.string().min(2, { message: "City is required." }),
+  state: z.string().min(1, { message: "Please select a state." }),
+  postCode: z.string()
+    .min(4, { message: "Please enter a valid post code." })
+    .max(4, { message: "Post code must be 4 digits." })
+    .regex(/^\d+$/, { message: "Post code must contain only numbers." })
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+// Australian states and territories
+const AUSTRALIAN_STATES = [
+  'Australian Capital Territory',
+  'New South Wales',
+  'Northern Territory',
+  'Queensland',
+  'South Australia',
+  'Tasmania',
+  'Victoria',
+  'Western Australia'
+];
 
 const BusinessRegistrationForm: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +56,7 @@ const BusinessRegistrationForm: React.FC = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(formSchema)
@@ -86,7 +110,7 @@ const BusinessRegistrationForm: React.FC = () => {
     
     console.log('Business registration submitted:', { ...data, businessName });
     
-    // Store business registration data
+    // Store business registration and address data
     localStorage.setItem('businessRegistration', JSON.stringify({
       ...data,
       businessName,
@@ -94,18 +118,10 @@ const BusinessRegistrationForm: React.FC = () => {
     }));
     
     toast({
-      title: "Business registration saved!",
-      description: "Let's continue with your business address",
+      title: "Business details saved!",
+      description: "Let's continue with information about your business",
     });
-    navigate('/business-address');
-  };
-
-  const handleSkip = () => {
-    toast({
-      title: "Step skipped",
-      description: "You can complete this later in your profile settings",
-    });
-    navigate('/business-address');
+    navigate('/employer/about-business');
   };
 
   return (
@@ -148,7 +164,7 @@ const BusinessRegistrationForm: React.FC = () => {
             <div className="flex-1 overflow-y-auto px-6 pb-20">
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Register your business</h2>
-                <p className="text-gray-600">We need to verify your business details and contact information.</p>
+                <p className="text-gray-600">We need to verify your business details, contact information and address.</p>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -201,6 +217,22 @@ const BusinessRegistrationForm: React.FC = () => {
                   )}
                 </div>
 
+                {/* Company Name */}
+                <div>
+                  <Label htmlFor="companyName" className="text-base font-medium text-gray-900 mb-2 block">
+                    Company Name *
+                  </Label>
+                  <Input
+                    id="companyName"
+                    placeholder="Enter your company name"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("companyName")}
+                  />
+                  {errors.companyName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.companyName.message}</p>
+                  )}
+                </div>
+
                 {/* Business Phone */}
                 <div>
                   <Label htmlFor="businessPhone" className="text-base font-medium text-gray-900 mb-2 block">
@@ -235,25 +267,125 @@ const BusinessRegistrationForm: React.FC = () => {
                   )}
                 </div>
 
+                {/* Business Address Line 1 */}
+                <div>
+                  <Label htmlFor="addressLine1" className="text-base font-medium text-gray-900 mb-2 block">
+                    Business Address Line 1 *
+                  </Label>
+                  <Input
+                    id="addressLine1"
+                    placeholder="11 Apple St."
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("addressLine1")}
+                  />
+                  {errors.addressLine1 && (
+                    <p className="text-red-500 text-sm mt-1">{errors.addressLine1.message}</p>
+                  )}
+                </div>
+
+                {/* Business Address Line 2 */}
+                <div>
+                  <Label htmlFor="addressLine2" className="text-base font-medium text-gray-900 mb-2 block">
+                    Address Line 2 (Optional)
+                  </Label>
+                  <Input
+                    id="addressLine2"
+                    placeholder="Unit 5, Building B"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("addressLine2")}
+                  />
+                  {errors.addressLine2 && (
+                    <p className="text-red-500 text-sm mt-1">{errors.addressLine2.message}</p>
+                  )}
+                </div>
+
+                {/* Suburb */}
+                <div>
+                  <Label htmlFor="suburb" className="text-base font-medium text-gray-900 mb-2 block">
+                    Suburb *
+                  </Label>
+                  <Input
+                    id="suburb"
+                    placeholder="Spring Hill"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("suburb")}
+                  />
+                  {errors.suburb && (
+                    <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>
+                  )}
+                </div>
+
+                {/* City */}
+                <div>
+                  <Label htmlFor="city" className="text-base font-medium text-gray-900 mb-2 block">
+                    City *
+                  </Label>
+                  <Input
+                    id="city"
+                    placeholder="Brisbane"
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("city")}
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+                  )}
+                </div>
+
+                {/* State */}
+                <div>
+                  <Label htmlFor="state" className="text-base font-medium text-gray-900 mb-2 block">
+                    State *
+                  </Label>
+                  <Select onValueChange={(value) => setValue("state", value)}>
+                    <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                      <SelectValue placeholder="Select a state" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-[300px] overflow-y-auto">
+                      {AUSTRALIAN_STATES.map((state) => (
+                        <SelectItem 
+                          key={state} 
+                          value={state}
+                          className="py-3 px-4 hover:bg-gray-50 cursor-pointer"
+                        >
+                          {state}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.state && (
+                    <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+                  )}
+                </div>
+
+                {/* Post Code */}
+                <div>
+                  <Label htmlFor="postCode" className="text-base font-medium text-gray-900 mb-2 block">
+                    Post Code *
+                  </Label>
+                  <Input
+                    id="postCode"
+                    placeholder="4019"
+                    maxLength={4}
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    {...register("postCode")}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, '');
+                      register("postCode").onChange(e);
+                    }}
+                  />
+                  {errors.postCode && (
+                    <p className="text-red-500 text-sm mt-1">{errors.postCode.message}</p>
+                  )}
+                </div>
+
                 {/* Continue button */}
-                <div className="pt-8 space-y-4">
+                <div className="pt-8">
                   <Button 
                     type="submit"
                     className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                   >
                     Continue
                   </Button>
-                  
-                  {/* Skip for now link */}
-                  <div className="text-center">
-                    <button
-                      type="button"
-                      onClick={handleSkip}
-                      className="text-gray-600 hover:text-gray-800 underline text-sm"
-                    >
-                      Skip for now
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>
