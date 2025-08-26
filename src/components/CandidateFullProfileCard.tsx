@@ -320,7 +320,7 @@ const CandidateFullProfileCard: React.FC = () => {
                 </div>
 
                 {/* Contact Details - Highlighted */}
-                <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-2xl p-6 text-center">
+                <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white rounded-2xl p-6 text-center">
                   <h3 className="font-bold text-lg mb-3">🎉 Contact Details Unlocked! 🎉</h3>
                   <div className="space-y-2">
                     <div className="bg-white/20 rounded-xl p-3">
