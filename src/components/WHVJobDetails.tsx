@@ -26,7 +26,7 @@ const WHVJobDetails: React.FC = () => {
   const { employerId, jobId } = useParams();
   const [searchParams] = useSearchParams();
 
-  // Mock job details data (same as JobDetails component)
+  // Mock job details data
   const jobDetails: { [key: string]: { [key: string]: JobDetail } } = {
     '1': { // Kangafarm jobs
       '1': {
@@ -80,6 +80,25 @@ const WHVJobDetails: React.FC = () => {
           hours: '40+ hours per week'
         }
       }
+    },
+    '4': { // Green Harvest Farms jobs
+      '4': {
+        id: '4',
+        employerId: '4',
+        employerName: 'Green Harvest Farms',
+        location: 'Northrivers, NSW 2470',
+        title: 'Farm Assistant',
+        description: 'Join our sustainable organic farm as a Farm Assistant. You will be involved in diverse crop production, organic farming practices, and eco-friendly agriculture. This role offers hands-on experience in modern sustainable agriculture with opportunities for skill development and organic certification training.',
+        industryType: 'Agriculture & Farming',
+        requirements: '-Must hold a valid Working Holiday Visa (417/462)\n-Interest in sustainable and organic farming\n-Physical fitness for outdoor work\n-Willingness to learn new techniques\n-Team-oriented and reliable',
+        jobDetails: {
+          type: 'Full-time / Ongoing',
+          startDate: 'August 2025',
+          endDate: 'March 2026',
+          payRate: '$29/hour + super + organic produce allowance',
+          hours: '38-42 hours per week'
+        }
+      }
     }
   };
 
@@ -117,13 +136,34 @@ const WHVJobDetails: React.FC = () => {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 pb-6">
+            {/* Match Header with Speech Bubble Design */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-16 h-16 rounded-full border-4 border-orange-500 overflow-hidden bg-white shadow-lg flex-shrink-0">
+                <img
+                  src="/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png"
+                  alt={job.employerName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="relative bg-gradient-to-r from-orange-500 to-blue-900 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
+                <div className="text-center">
+                  <div className="text-sm font-semibold">It's a Match</div>
+                  <div className="text-sm font-semibold">with</div>
+                  <div className="text-sm font-bold">{job.employerName}</div>
+                </div>
+                {/* Speech bubble tail */}
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
+                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-900"></div>
+                </div>
+              </div>
+            </div>
+
             {/* Job Card */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-              {/* Header */}
-              <div className="bg-orange-500 text-white p-4 text-center">
-                <h1 className="text-xl font-bold">{job.employerName}</h1>
-                <p className="text-sm opacity-90">{job.location}</p>
-                <p className="text-lg font-semibold mt-1">{job.title}</p>
+              {/* Job Header */}
+              <div className="px-4 pt-6 pb-2 text-center">
+                <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
+                <p className="text-sm text-gray-600">{job.location}</p>
               </div>
 
               {/* Content */}
