@@ -92,7 +92,7 @@ const EmployerAboutBusiness: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/business-address')}
+                  onClick={() => navigate('/business-registration')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
