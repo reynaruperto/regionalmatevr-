@@ -87,11 +87,11 @@ const WHVCurrentAddress: React.FC = () => {
     }
     
     console.log('Current Address:', formData);
-    navigate('/whv/about-you');
+    navigate('/whv/work-experience');
   };
 
   const handleSkip = () => {
-    navigate('/whv/about-you');
+    navigate('/whv/work-experience');
   };
 
   return (

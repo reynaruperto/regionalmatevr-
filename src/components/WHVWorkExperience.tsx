@@ -38,6 +38,7 @@ const WHVWorkExperience: React.FC = () => {
   });
 
   const [aboutYourself, setAboutYourself] = useState({
+    tagline: '',
     workExperience: '',
     skillsAndInterests: '',
     whyAustralia: ''
@@ -208,14 +209,14 @@ const WHVWorkExperience: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button 
-                onClick={() => navigate('/whv/about-you')}
+                onClick={() => navigate('/whv/current-address')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
               <h1 className="text-lg font-medium text-gray-900">Work Experience</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">5/6</span>
+                <span className="text-sm font-medium text-gray-600">4/6</span>
               </div>
             </div>
           </div>
@@ -229,6 +230,22 @@ const WHVWorkExperience: React.FC = () => {
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900">Tell us about yourself</h2>
                   <p className="text-gray-600 mt-1">This helps us match you with the right employers and opportunities.</p>
+                </div>
+                
+                {/* Profile Tagline */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium text-gray-700">
+                    Profile Tagline
+                  </Label>
+                  <Input
+                    type="text"
+                    value={aboutYourself.tagline}
+                    onChange={(e) => handleAboutYourselfChange('tagline', e.target.value)}
+                    className="h-12 bg-gray-100 border-0 text-gray-900"
+                    placeholder="Hardworking farm enthusiast ready for adventure"
+                    maxLength={60}
+                  />
+                  <p className="text-xs text-gray-500">This will appear under your profile photo (max 60 characters)</p>
                 </div>
                 
                 {/* What work experience do you have? */}
