@@ -34,14 +34,11 @@ const WHVWorkExperience: React.FC = () => {
     preferredIndustry: '',
     stayDuration: '',
     willingToRelocate: '',
-    licenses: ''
+    licenses: [] as string[]
   });
 
   const [aboutYourself, setAboutYourself] = useState({
-    tagline: '',
-    workExperience: '',
-    skillsAndInterests: '',
-    whyAustralia: ''
+    tagline: ''
   });
 
   // Industry options
@@ -153,9 +150,17 @@ const WHVWorkExperience: React.FC = () => {
   };
 
   const handleWorkPreferenceChange = (field: string, value: string) => {
-    let processedValue = value;
+    let processedValue: any = value;
     if (field === 'availableStartDate') {
       processedValue = formatDateInput(value);
+    } else if (field === 'licenses') {
+      // Handle multiple license selection
+      const currentLicenses = workPreferences.licenses;
+      if (currentLicenses.includes(value)) {
+        processedValue = currentLicenses.filter(license => license !== value);
+      } else {
+        processedValue = [...currentLicenses, value];
+      }
     }
     setWorkPreferences({
       ...workPreferences,
@@ -246,48 +251,6 @@ const WHVWorkExperience: React.FC = () => {
                     maxLength={60}
                   />
                   <p className="text-xs text-gray-500">This will appear under your profile photo (max 60 characters)</p>
-                </div>
-                
-                {/* What work experience do you have? */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    What work experience do you have?
-                  </Label>
-                  <Textarea
-                    value={aboutYourself.workExperience}
-                    onChange={(e) => handleAboutYourselfChange('workExperience', e.target.value)}
-                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
-                    placeholder="I have experience in hospitality, worked as a barista for 2 years, and have some construction experience..."
-                    maxLength={500}
-                  />
-                </div>
-
-                {/* What are your main skills and interests? */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    What are your main skills and interests?
-                  </Label>
-                  <Textarea
-                    value={aboutYourself.skillsAndInterests}
-                    onChange={(e) => handleAboutYourselfChange('skillsAndInterests', e.target.value)}
-                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
-                    placeholder="I'm good with my hands, enjoy outdoor work, love learning new skills, and have strong communication abilities..."
-                    maxLength={500}
-                  />
-                </div>
-
-                {/* Why did you choose Australia for your working holiday? */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Why did you choose Australia for your working holiday?
-                  </Label>
-                  <Textarea
-                    value={aboutYourself.whyAustralia}
-                    onChange={(e) => handleAboutYourselfChange('whyAustralia', e.target.value)}
-                    className="min-h-[100px] bg-gray-100 border-0 text-gray-900 resize-none"
-                    placeholder="I've always wanted to experience Australian culture, explore the outback, and gain work experience in agriculture..."
-                    maxLength={500}
-                  />
                 </div>
               </div>
 
@@ -401,20 +364,32 @@ const WHVWorkExperience: React.FC = () => {
                 {/* Licenses/Tickets */}
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    Licenses/Tickets
+                    Licenses/Tickets (Select all that apply)
                   </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('licenses', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="N/A" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {licenseOptions.map((license) => (
-                        <SelectItem key={license} value={license} className="hover:bg-gray-100">
+                  <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-100 rounded-lg p-3">
+                    {licenseOptions.map((license) => (
+                      <div key={license} className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          id={`license-${license}`}
+                          checked={workPreferences.licenses.includes(license)}
+                          onChange={() => handleWorkPreferenceChange('licenses', license)}
+                          className="w-4 h-4 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
+                        />
+                        <Label 
+                          htmlFor={`license-${license}`}
+                          className="text-sm text-gray-700 cursor-pointer flex-1"
+                        >
                           {license}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  {workPreferences.licenses.length > 0 && (
+                    <div className="text-sm text-gray-600">
+                      Selected: {workPreferences.licenses.join(', ')}
+                    </div>
+                  )}
                 </div>
               </div>
 
