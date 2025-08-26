@@ -92,7 +92,7 @@ const App = () => (
           <Route path="/whv/dashboard" element={<WHVDashboard />} />
           <Route path="/whv/profile-edit" element={<EditProfile />} />
           <Route path="/employer/edit-profile" element={<EmployerEditProfile />} />
-          <Route path="/whv/edit-profile" element={<WHVEditProfile />} />
+          <Route path="/whv/edit-WHVdetails" element={<WHVEditProfile />} />
           <Route path="/whv/profile-preview" element={<WHVProfilePreview />} />
           <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
           <Route path="/security" element={<Security />} />
