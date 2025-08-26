@@ -173,99 +173,78 @@ const ShortCandidateProfileCard: React.FC<ShortCandidateProfileCardProps> = ({ c
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
           {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-50">
+          <div className="w-full h-full flex flex-col relative bg-gray-200">
             
-            {/* Content */}
+            {/* Scrollable Content */}
             <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
               
-              {/* Header with name */}
-              <div className="bg-slate-800 rounded-2xl p-4 mb-6 text-center">
-                <h1 className="text-xl font-bold text-white">{candidate.name.toUpperCase()}</h1>
-              </div>
-
-              {/* Profile Image */}
-              <div className="flex justify-center mb-6">
-                <div className="w-40 h-40 rounded-full border-4 border-slate-800 overflow-hidden">
-                  <img
-                    src={candidate.profileImage}
-                    alt={candidate.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="text-center mb-6">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {candidate.description}
-                </p>
-              </div>
-
-              {/* Details */}
-              <div className="space-y-4 text-sm mb-8">
-                <div>
-                  <span className="font-semibold text-slate-800">Nationality:</span>
-                  <span className="text-gray-700 ml-1">{candidate.nationality}</span>
+              {/* Profile Card */}
+              <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
+                
+                {/* Name Header */}
+                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
+                  <h2 className="text-xl font-bold">{candidate.name.toUpperCase()}</h2>
                 </div>
 
-                <div>
-                  <span className="font-semibold text-slate-800">Location (Current / Preferred):</span>
-                  <span className="text-gray-700 ml-1">{candidate.location}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Willing to Relocate:</span>
-                  <span className="text-gray-700 ml-1">{candidate.willingToRelocate}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Visa Type & Expiry:</span>
-                  <span className="text-gray-700 ml-1">{candidate.visa} - Expires {candidate.visaExpiry}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Industry:</span>
-                  <span className="text-gray-700 ml-1">{candidate.industry}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Key Licenses:</span>
-                  <span className="text-gray-700 ml-1">{candidate.licenses.split(', ').slice(0, 2).join(', ')}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Availability:</span>
-                  <span className="text-gray-700 ml-1">{candidate.availability}</span>
-                </div>
-
-                <div>
-                  <span className="font-semibold text-slate-800">Languages:</span>
-                  <span className="text-gray-700 ml-1">{candidate.languages.join(', ')}</span>
-                </div>
-              </div>
-
-              {/* Full Details Message */}
-              <div className="bg-gray-200 rounded-2xl p-4 mb-6 text-center">
-                <p className="text-gray-600 text-sm">
-                  Full Details Unlocked if you both Match
-                </p>
-              </div>
-
-              {/* Heart to Match Button */}
-              <div className="text-center mb-6">
-                <Button
-                  onClick={handleLikeCandidate}
-                  className="bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 mx-auto"
-                >
-                  <span className="font-semibold">Heart to Match</span>
-                  <div className="bg-orange-500 rounded-full p-2">
-                    <Heart size={20} className="text-white fill-white" />
+                {/* Profile Picture */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
+                    <img 
+                      src={candidate.profileImage}
+                      alt={candidate.name} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </Button>
+                </div>
+
+                {/* Description */}
+                <div className="text-center mb-6">
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {candidate.description}
+                  </p>
+                </div>
+
+                {/* Details */}
+                <div className="space-y-2 text-sm mb-6">
+                  <div><span className="font-semibold">Nationality:</span> {candidate.nationality}</div>
+                  <div><span className="font-semibold">Location (Current / Preferred):</span> {candidate.location}</div>
+                  <div><span className="font-semibold">Willing to Relocate:</span> {candidate.willingToRelocate}</div>
+                  <div><span className="font-semibold">Visa Type & Expiry:</span> {candidate.visa} - Expires {candidate.visaExpiry}</div>
+                  <div><span className="font-semibold">Industry:</span> {candidate.industry}</div>
+                  <div>
+                    <span className="font-semibold">Experience / Skills:</span>
+                    <div className="mt-1 space-y-1 text-xs">
+                      {candidate.experience.slice(0, 3).map((exp, index) => (
+                        <div key={index}>{exp.startDate}-{exp.endDate}: {exp.position} - {exp.company}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div><span className="font-semibold">Licenses / Certificates:</span> {candidate.licenses}</div>
+                  <div><span className="font-semibold">Availability (date, duration):</span> {candidate.availability}</div>
+                </div>
+
+                {/* Locked Message */}
+                <div className="bg-gray-200 text-center py-3 rounded-xl mb-4">
+                  <p className="text-gray-600 text-sm">Full Details Unlocked if you both Match</p>
+                </div>
+
+                {/* Heart to Match Button */}
+                <div className="space-y-3">
+                  <Button
+                    onClick={handleLikeCandidate}
+                    className="w-full bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900 text-white px-8 py-3 rounded-2xl flex items-center gap-3 justify-center"
+                  >
+                    <span className="font-semibold">Heart to Match</span>
+                    <div className="bg-orange-500 rounded-full p-2">
+                      <Heart size={20} className="text-white fill-white" />
+                    </div>
+                  </Button>
+                </div>
               </div>
+
             </div>
 
-            {/* Back Button */}
+            {/* Back Button - Fixed at bottom */}
             <div className="absolute bottom-8 left-6">
               <button
                 onClick={handleBack}
