@@ -69,6 +69,10 @@ import WHVEmployerJobDetails from "./pages/WHVEmployerJobDetails";
 import WHVJobDetails from "./pages/WHVJobDetails";
 import AccountConfirmation from "./pages/AccountConfirmation";
 import NotFound from "./pages/NotFound";
+import EmployerSignUp from "./pages/EmployerSignUp";
+import WHVSignUp from "./pages/WHVSignUp";
+import EmployerSignInPage from "./pages/EmployerSignInPage";
+import WHVSignInPage from "./pages/WHVSignInPage";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +85,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/lets-begin" element={<LetsBegin />} />
+          <Route path="/employer/sign-up" element={<EmployerSignUp />} />
+          <Route path="/employer/sign-in-clerk" element={<EmployerSignInPage />} />
+          <Route path="/whv/sign-up" element={<WHVSignUp />} />
+          <Route path="/whv/sign-in-clerk" element={<WHVSignInPage />} />
           <Route path="/employer/onboarding" element={<EmployerOnboarding />} />
           <Route path="/employer/email-confirmation" element={<EmployerEmailConfirmation />} />
           <Route path="/business-registration" element={<BusinessRegistration />} />

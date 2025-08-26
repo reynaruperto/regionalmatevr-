@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignedIn, SignedOut, SignInButton, SignUpButton, useUser } from '@clerk/clerk-react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import AustraliaIcon from './AustraliaIcon';
 
 const LetsBeginScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
 
   const handleEmployerSignUp = () => {
-    // Set user role and redirect
-    if (user) {
-      // Store role in localStorage for now, will be set in user metadata later
-      localStorage.setItem('userRole', 'employer');
-      navigate('/employer/onboarding');
-    }
+    navigate('/employer/sign-up');
+  };
+
+  const handleEmployerSignIn = () => {
+    navigate('/employer/sign-in-clerk');
   };
 
   const handleWHVSignUp = () => {
-    // Set user role and redirect
-    if (user) {
-      // Store role in localStorage for now, will be set in user metadata later
-      localStorage.setItem('userRole', 'whv');
-      navigate('/whv/onboarding');
-    }
+    navigate('/whv/sign-up');
+  };
+
+  const handleWHVSignIn = () => {
+    navigate('/whv/sign-in-clerk');
   };
   
   return (
@@ -70,77 +66,47 @@ const LetsBeginScreen: React.FC = () => {
               </p>
             </div>
 
-            <SignedOut>
-              {/* Role selection buttons for signup */}
-              <div className="px-6 pb-8 space-y-4">
-                <SignUpButton 
-                  mode="modal"
-                  fallbackRedirectUrl="/lets-begin"
-                  forceRedirectUrl="/lets-begin"
-                >
-                  <Button 
-                    variant="default" 
-                    size="lg" 
-                    className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                  >
-                    I want to hire
-                  </Button>
-                </SignUpButton>
-                
-                <SignUpButton 
-                  mode="modal"
-                  fallbackRedirectUrl="/lets-begin"
-                  forceRedirectUrl="/lets-begin"
-                >
-                  <Button 
-                    variant="default" 
-                    size="lg" 
-                    className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                  >
-                    I want to get hired
-                  </Button>
-                </SignUpButton>
-              </div>
+            {/* Role selection buttons */}
+            <div className="px-6 pb-8 space-y-4">
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
+                onClick={handleEmployerSignUp}
+              >
+                I want to hire
+              </Button>
+              
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                onClick={handleWHVSignUp}
+              >
+                I want to get hired
+              </Button>
+            </div>
 
-              {/* Sign in link */}
-              <div className="px-6 pb-12 text-center">
-                <p className="text-brand-secondary-text">
-                  Already have an account? 
-                  <SignInButton 
-                    mode="modal"
-                    fallbackRedirectUrl="/lets-begin"
-                    forceRedirectUrl="/lets-begin"
-                  >
-                    <button className="text-brand-text font-medium ml-1 hover:underline">
-                      Sign in
-                    </button>
-                  </SignInButton>
-                </p>
-              </div>
-            </SignedOut>
-
-            <SignedIn>
-              {/* Role selection for authenticated users */}
-              <div className="px-6 pb-8 space-y-4">
-                <Button 
-                  variant="default" 
-                  size="lg" 
-                  className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                  onClick={handleEmployerSignUp}
+            {/* Sign in links */}
+            <div className="px-6 pb-12 text-center">
+              <p className="text-brand-secondary-text mb-4">
+                Already have an account?
+              </p>
+              <div className="space-y-2">
+                <button 
+                  onClick={handleEmployerSignIn}
+                  className="block w-full text-brand-text font-medium hover:underline"
                 >
-                  I want to hire
-                </Button>
-                
-                <Button 
-                  variant="default" 
-                  size="lg" 
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                  onClick={handleWHVSignUp}
+                  Sign in as Employer
+                </button>
+                <button 
+                  onClick={handleWHVSignIn}
+                  className="block w-full text-brand-text font-medium hover:underline"
                 >
-                  I want to get hired
-                </Button>
+                  Sign in as WHV
+                </button>
               </div>
-            </SignedIn>
+            </div>
 
           </div>
         </div>
