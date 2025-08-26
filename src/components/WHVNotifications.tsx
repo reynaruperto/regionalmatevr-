@@ -3,6 +3,8 @@ import { ArrowLeft, Heart, Award, Calendar, User, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useNavigate } from 'react-router-dom';
+import vineyardLandscape from '@/assets/vineyard-landscape.jpg';
+import farmingTeam from '@/assets/farming-team.jpg';
 
 interface NotificationItem {
   id: string;
@@ -72,10 +74,10 @@ const WHVNotifications: React.FC = () => {
 
   const getMatchPhoto = (message: string) => {
     if (message.includes('Outback Winery')) {
-      return '/lovable-uploads/vineyard-landscape.jpg';
+      return vineyardLandscape;
     }
     if (message.includes('Kangafarm')) {
-      return '/lovable-uploads/farming-team.jpg';
+      return farmingTeam;
     }
     return null;
   };
