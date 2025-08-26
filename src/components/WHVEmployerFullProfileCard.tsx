@@ -281,6 +281,16 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                   You can now contact {employer.name} directly!
                 </p>
               </div>
+
+              {/* View Jobs Button */}
+              <div className="mt-6">
+                <button
+                  onClick={handleViewJobs}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2 font-medium"
+                >
+                  View Available Jobs
+                </button>
+              </div>
             </div>
 
           </div>
