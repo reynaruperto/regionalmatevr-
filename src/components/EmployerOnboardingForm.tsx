@@ -10,11 +10,17 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  givenName: z.string().min(2, { message: "Given name must be at least 2 characters." }),
-  middleName: z.string().optional(),
-  familyName: z.string().min(2, { message: "Family name must be at least 2 characters." }),
+  givenName: z.string()
+    .min(2, { message: "Given name must be at least 2 characters." })
+    .regex(/^[a-zA-Z\s]*$/, { message: "Given name can only contain letters." }),
+  middleName: z.string()
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), { message: "Middle name can only contain letters." }),
+  familyName: z.string()
+    .min(2, { message: "Family name must be at least 2 characters." })
+    .regex(/^[a-zA-Z\s]*$/, { message: "Family name can only contain letters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  password: z.string().min(12, { message: "Password must be at least 12 characters." }),
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -97,7 +103,7 @@ const EmployerOnboardingForm: React.FC = () => {
                 {/* Given Name field */}
                 <div>
                   <Label htmlFor="givenName" className="text-base font-medium text-gray-900 mb-2 block">
-                    Given Name
+                    Given Name(s)
                   </Label>
                   <Input
                     id="givenName"
@@ -129,7 +135,7 @@ const EmployerOnboardingForm: React.FC = () => {
                 {/* Family Name field */}
                 <div>
                   <Label htmlFor="familyName" className="text-base font-medium text-gray-900 mb-2 block">
-                    Family Name
+                    Family Name(s)
                   </Label>
                   <Input
                     id="familyName"
