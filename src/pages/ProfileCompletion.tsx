@@ -1,7 +1,7 @@
-import ProfileCompletion from '@/components/ProfileCompletion';
+import ProfileCompletionComponent from '@/components/ProfileCompletion';
 
-const ProfileCompletionPage = () => {
-  return <ProfileCompletion />;
+const ProfileCompletion = () => {
+  return <ProfileCompletionComponent />;
 };
 
-export default ProfileCompletionPage;
+export default ProfileCompletion;
