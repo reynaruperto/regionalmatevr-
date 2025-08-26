@@ -20,7 +20,10 @@ const formSchema = z.object({
     .min(2, { message: "Family name must be at least 2 characters." })
     .regex(/^[a-zA-Z\s]*$/, { message: "Family name can only contain letters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(12, { message: "Password must be at least 12 characters." }),
+  password: z.string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/(?=.*[0-9])/, { message: "Password must contain at least one number." })
+    .regex(/(?=.*[!@#$%^&*])/, { message: "Password must contain at least one special character." }),
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
