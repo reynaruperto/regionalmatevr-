@@ -226,87 +226,36 @@ const WHVEmployerFullProfileCard: React.FC = () => {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-6 pb-6">
-            {/* Match Header with Speech Bubble Design */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-16 h-16 rounded-full border-4 border-orange-500 overflow-hidden bg-white shadow-lg flex-shrink-0">
-                <img
-                  src={employer.profileImage}
-                  alt={employer.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="relative bg-gradient-to-r from-orange-500 to-blue-900 text-white px-4 py-3 rounded-2xl ml-3 flex-1">
-                <div className="text-center">
-                  <div className="text-sm font-semibold">It's a Match</div>
-                  <div className="text-sm font-semibold">with</div>
-                  <div className="text-sm font-bold">{employer.name}</div>
-                </div>
-                {/* Speech bubble tail */}
-                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
-                  <div className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-900"></div>
-                </div>
-              </div>
-            </div>
-
+            
             {/* Profile Card */}
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-              {/* Description */}
-              <div className="px-4 mt-6 mb-6">
-                <p className="text-center text-gray-700 text-sm leading-relaxed">
+            <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
+              
+              {/* Match Header */}
+              <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white text-center py-4 rounded-2xl mb-6">
+                <h2 className="text-xl font-bold">🎉 IT'S A MATCH! 🎉</h2>
+                <p className="text-sm mt-1">with {employer.name.toUpperCase()}</p>
+              </div>
+
+              {/* Profile Picture */}
+              <div className="flex justify-center mb-6">
+                <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
+                  <img 
+                    src={employer.profileImage}
+                    alt={employer.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Quote/Description */}
+              <div className="text-center mb-6 bg-gray-50 rounded-2xl p-4">
+                <p className="text-gray-700 text-sm italic leading-relaxed">
                   {employer.description}
                 </p>
               </div>
 
-              {/* Full Details - Available because it's a match */}
-              <div className="px-4 space-y-3 mb-6">
-                <div>
-                  <span className="font-semibold text-gray-900">ABN: </span>
-                  <span className="text-gray-700">{employer.abn}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Location: </span>
-                  <span className="text-gray-700">{employer.location}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Industry: </span>
-                  <span className="text-gray-700">{employer.industry}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Roles Offered: </span>
-                  <span className="text-gray-700">{employer.rolesOffered.join(', ')}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Job Availability: </span>
-                  <span className="text-gray-700">{employer.jobAvailability}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Pay & Benefits: </span>
-                  <span className="text-gray-700">{employer.payBenefits}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Facilities / Extras: </span>
-                  <span className="text-gray-700">{employer.facilities}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Company Size: </span>
-                  <span className="text-gray-700">{employer.companySize}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Established: </span>
-                  <span className="text-gray-700">{employer.establishedYear}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Certifications: </span>
-                  <span className="text-gray-700">{employer.certifications.join(', ')}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Work Environment: </span>
-                  <span className="text-gray-700">{employer.workEnvironment}</span>
-                </div>
-              </div>
-
               {/* Contact Information - Available because it's a match */}
-              <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white rounded-2xl p-6 mx-4 mb-6 text-center">
+              <div className="bg-gradient-to-r from-orange-500 to-blue-900 text-white rounded-2xl p-6 text-center">
                 <h3 className="font-bold text-lg mb-3">🎉 Contact Details Unlocked! 🎉</h3>
                 <div className="space-y-2">
                   <div className="bg-white/20 rounded-xl p-3">
@@ -322,17 +271,8 @@ const WHVEmployerFullProfileCard: React.FC = () => {
                   You can now contact {employer.name} directly!
                 </p>
               </div>
-
-              {/* View Jobs Button */}
-              <div className="px-4 pb-6">
-                <button
-                  onClick={handleViewJobs}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg h-12 flex items-center justify-center gap-2 font-medium"
-                >
-                  View Available Jobs
-                </button>
-              </div>
             </div>
+
           </div>
         </div>
       </div>
