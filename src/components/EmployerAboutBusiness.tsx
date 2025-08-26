@@ -16,7 +16,9 @@ const formSchema = z.object({
   yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
   employeeCount: z.string().min(1, { message: "Please select number of employees." }),
   industry: z.string().min(1, { message: "Please select an industry." }),
+  customIndustry: z.string().optional(),
   rolesOffered: z.array(z.string()).min(1, { message: "Please select at least one role." }),
+  customRole: z.string().optional(),
   jobAvailability: z.string().min(1, { message: "Please select job availability." }),
   payAndBenefits: z.string().min(1, { message: "Please select pay and benefits." }),
   facilitiesAndExtras: z.array(z.string()).min(1, { message: "Please select at least one facility or extra." })
@@ -27,6 +29,8 @@ type FormData = z.infer<typeof formSchema>;
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedIndustry, setSelectedIndustry] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
   const yearsOptions = [
     'Less than 1 year',
@@ -115,6 +119,7 @@ const EmployerAboutBusiness: React.FC = () => {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -123,6 +128,9 @@ const EmployerAboutBusiness: React.FC = () => {
       facilitiesAndExtras: []
     }
   });
+
+  const watchedIndustry = watch("industry");
+  const watchedRoles = watch("rolesOffered");
 
   const onSubmit = (data: FormData) => {
     console.log('Business info submitted:', data);
@@ -258,7 +266,10 @@ const EmployerAboutBusiness: React.FC = () => {
                     name="industry"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelectedIndustry(value);
+                      }} value={field.value}>
                         <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
                           <SelectValue placeholder="Select your industry" />
                         </SelectTrigger>
@@ -272,6 +283,15 @@ const EmployerAboutBusiness: React.FC = () => {
                       </Select>
                     )}
                   />
+                  {watchedIndustry === "Other" && (
+                    <div className="mt-3">
+                      <Input
+                        placeholder="Please specify your industry"
+                        className="h-14 text-base bg-gray-50 border-0 rounded-xl"
+                        {...register("customIndustry")}
+                      />
+                    </div>
+                  )}
                   {errors.industry && (
                     <p className="text-red-500 text-sm mt-1">{errors.industry.message}</p>
                   )}
@@ -290,7 +310,9 @@ const EmployerAboutBusiness: React.FC = () => {
                         <Select onValueChange={(value) => {
                           const currentValues = field.value || [];
                           if (!currentValues.includes(value)) {
-                            field.onChange([...currentValues, value]);
+                            const newValues = [...currentValues, value];
+                            field.onChange(newValues);
+                            setSelectedRoles(newValues);
                           }
                         }}>
                           <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
@@ -304,6 +326,15 @@ const EmployerAboutBusiness: React.FC = () => {
                             ))}
                           </SelectContent>
                         </Select>
+                        {watchedRoles?.includes("Other") && (
+                          <div className="mt-3">
+                            <Input
+                              placeholder="Please specify the role"
+                              className="h-14 text-base bg-gray-50 border-0 rounded-xl"
+                              {...register("customRole")}
+                            />
+                          </div>
+                        )}
                         {field.value?.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-2">
                             {field.value.map((role, index) => (
@@ -314,6 +345,7 @@ const EmployerAboutBusiness: React.FC = () => {
                                   onClick={() => {
                                     const newValues = field.value.filter((_, i) => i !== index);
                                     field.onChange(newValues);
+                                    setSelectedRoles(newValues);
                                   }}
                                   className="ml-2 text-blue-600 hover:text-blue-800"
                                 >
