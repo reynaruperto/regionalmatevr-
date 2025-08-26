@@ -107,7 +107,7 @@ const BusinessRegistrationForm: React.FC = () => {
       title: "Business details saved!",
       description: "Let's continue with information about your business",
     });
-    navigate('/business-onboarding');
+    navigate('/business-address');
   };
 
   return (
@@ -140,7 +140,7 @@ const BusinessRegistrationForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Registration</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">3/6</span>
+                    <span className="text-sm font-medium text-gray-600">3/5</span>
                   </div>
                 </div>
               </div>

@@ -171,7 +171,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">6/6</span>
+                    <span className="text-sm font-medium text-gray-600">5/5</span>
                   </div>
                 </div>
               </div>

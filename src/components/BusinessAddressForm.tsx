@@ -74,7 +74,7 @@ const BusinessAddressForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/business-onboarding')}
+                  onClick={() => navigate('/business-registration')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -86,7 +86,7 @@ const BusinessAddressForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Address</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">5/6</span>
+                    <span className="text-sm font-medium text-gray-600">4/5</span>
                   </div>
                 </div>
               </div>
