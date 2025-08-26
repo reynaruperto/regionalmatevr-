@@ -92,9 +92,6 @@ const PostJobForm: React.FC<PostJobFormProps> = ({ onBack, editingJob }) => {
   const whvVisaTypes = [
     'Subclass 417 (Working Holiday)',
     'Subclass 462 (Work and Holiday)',
-    'Student Visa (Subclass 500)',
-    'Temporary Graduate (Subclass 485)',
-    'Skilled Independent (Subclass 189)',
     'Any Valid Work Visa'
   ];
 
