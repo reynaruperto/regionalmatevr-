@@ -35,8 +35,7 @@ const WHVEditProfile: React.FC = () => {
     dateOfBirth: '15/03/1995',
     nationality: 'Argentina',
     countryCode: '+61',
-    phoneNumber: '492 333 444',
-    languages: 'Spanish (native), English (fluent)'
+    phoneNumber: '492 333 444'
   });
 
   // Visa Information  
@@ -381,17 +380,6 @@ const WHVEditProfile: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Languages */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-medium text-gray-700">Languages</Label>
-                    <Input
-                      type="text"
-                      value={personalData.languages}
-                      onChange={(e) => handlePersonalDataChange('languages', e.target.value)}
-                      className="h-12 bg-gray-100 border-0 text-gray-900"
-                      placeholder="e.g., Spanish (native), English (fluent)"
-                    />
-                  </div>
                 </div>
               </div>
 
