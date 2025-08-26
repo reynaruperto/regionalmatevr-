@@ -222,7 +222,7 @@ const WHVWorkExperience: React.FC = () => {
               </button>
               <h1 className="text-lg font-medium text-gray-900">Work Experience</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">4/6</span>
+                <span className="text-sm font-medium text-gray-600">5/6</span>
               </div>
             </div>
           </div>
