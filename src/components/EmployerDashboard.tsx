@@ -17,7 +17,7 @@ const EmployerDashboard: React.FC = () => {
   }, []);
 
   const settingsItems = [
-    { icon: FileText, label: 'Edit Business Profile', color: 'text-gray-600', action: () => navigate('/edit-business-profile') },
+    { icon: FileText, label: 'Edit Business Profile', color: 'text-gray-600', action: () => navigate('/employer/edit-business-profile') },
     { icon: Settings, label: 'Security', color: 'text-gray-600', action: () => navigate('/security') },
     { icon: Bell, label: 'Notifications', color: 'text-gray-600', action: () => navigate('/employer/notifications') },
     { icon: Lock, label: 'Privacy', color: 'text-gray-600', action: () => navigate('/employer/privacy') },

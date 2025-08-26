@@ -13,7 +13,6 @@ import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   businessName: z.string().min(2, { message: "Business name must be at least 2 characters." }),
-  abn: z.string().min(11, { message: "Please enter a valid ABN." }),
   industryType: z.string().min(1, { message: "Please select an industry type." }),
   businessPhone: z.string().min(10, { message: "Please enter a valid phone number." }),
   website: z.string().optional().or(z.literal("")),
@@ -88,7 +87,6 @@ const EditBusinessProfile: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       businessName: "Kangafarm",
-      abn: "11 222 333 444", 
       industryType: "Agriculture & Farming",
       businessPhone: "+61 491 222 333",
       website: "www.kangafarm.com",
@@ -138,7 +136,7 @@ const EditBusinessProfile: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <h1 className="text-lg font-semibold text-gray-900">John Doe</h1>
+                <h1 className="text-lg font-semibold text-gray-900">Edit Business Profile</h1>
                 <button 
                   type="submit"
                   form="business-profile-form"
@@ -154,6 +152,15 @@ const EditBusinessProfile: React.FC = () => {
             <div className="flex-1 px-6 overflow-y-auto">
               <form id="business-profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 
+                {/* ABN - Display only (non-editable) */}
+                <div>
+                  <Label className="text-gray-600 mb-2 block text-sm">ABN (Cannot be edited)</Label>
+                  <div className="h-11 rounded-xl border border-gray-200 bg-gray-100 text-sm px-3 py-2 text-gray-500">
+                    11 222 333 444
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Contact support to change your ABN</p>
+                </div>
+
                 {/* Business Name */}
                 <div>
                   <Label htmlFor="businessName" className="text-gray-600 mb-2 block text-sm">Business Name</Label>
@@ -164,19 +171,6 @@ const EditBusinessProfile: React.FC = () => {
                   />
                   {errors.businessName && (
                     <p className="text-red-500 text-xs mt-1">{errors.businessName.message}</p>
-                  )}
-                </div>
-
-                {/* ABN */}
-                <div>
-                  <Label htmlFor="abn" className="text-gray-600 mb-2 block text-sm">ABN</Label>
-                  <Input
-                    id="abn"
-                    className="h-11 rounded-xl border-gray-200 bg-white text-sm"
-                    {...register("abn")}
-                  />
-                  {errors.abn && (
-                    <p className="text-red-500 text-xs mt-1">{errors.abn.message}</p>
                   )}
                 </div>
 
