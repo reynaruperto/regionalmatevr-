@@ -19,7 +19,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     interestedIndustry: '',
     lookingForJobType: '',
     availableSeasons: '',
-    workDuration: '',
     needsAccommodation: false,
     needsMeals: false,
     needsTransport: false,
@@ -27,10 +26,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     hasEquipment: false,
     minPayRate: '',
     maxPayRate: '',
-    myExperienceLevel: '',
-    physicalWorkPreference: '',
-    workEnvironmentPreference: '',
-    farmSizePreference: '',
   });
 
   const states = [
@@ -86,13 +81,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     'Temporary'
   ];
 
-  const myExperienceLevels = [
-    'No Experience',
-    'Some Experience',
-    '1+ Years Experience',
-    '2+ Years Experience',
-    '3+ Years Experience'
-  ];
 
   const availableSeasonOptions = [
     'Spring (Sep-Nov)',
@@ -102,36 +90,6 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
     'Year Round',
     'Peak Season',
     'Off Season'
-  ];
-
-  const workDurationOptions = [
-    '1-2 weeks',
-    '1 month',
-    '2-3 months', 
-    '3-6 months',
-    '6+ months',
-    'Ongoing'
-  ];
-
-  const physicalWorkPreferences = [
-    'Light Physical Work Only',
-    'Moderate Physical Work OK',
-    'Heavy Physical Work OK',
-    'Any Physical Level'
-  ];
-
-  const workEnvironmentPreferences = [
-    'Indoor Work Preferred',
-    'Outdoor Work Preferred', 
-    'Mixed Indoor/Outdoor OK',
-    'No Preference'
-  ];
-
-  const farmSizePreferences = [
-    'Family Farm (Small)',
-    'Medium Commercial Farm',
-    'Large Corporate Farm',
-    'No Preference'
   ];
 
   const handleSelectChange = (category: string, value: string) => {
@@ -264,46 +222,10 @@ const WHVFilterPage: React.FC<WHVFilterPageProps> = ({ onClose, onApplyFilters }
             />
 
             <DropdownSection 
-              title="When I'm Available" 
+              title="Season I'm Available" 
               items={availableSeasonOptions} 
               category="availableSeasons" 
               placeholder="Select season"
-            />
-
-            <DropdownSection 
-              title="How Long I Can Work" 
-              items={workDurationOptions} 
-              category="workDuration" 
-              placeholder="Select duration"
-            />
-
-            {/* My Experience & Abilities */}
-            <DropdownSection 
-              title="My Experience Level" 
-              items={myExperienceLevels} 
-              category="myExperienceLevel" 
-              placeholder="Select your experience"
-            />
-
-            <DropdownSection 
-              title="Physical Work I Can Do" 
-              items={physicalWorkPreferences} 
-              category="physicalWorkPreference" 
-              placeholder="Select physical level"
-            />
-
-            <DropdownSection 
-              title="Work Environment I Prefer" 
-              items={workEnvironmentPreferences} 
-              category="workEnvironmentPreference" 
-              placeholder="Select environment"
-            />
-
-            <DropdownSection 
-              title="Farm Size Preference" 
-              items={farmSizePreferences} 
-              category="farmSizePreference" 
-              placeholder="Select farm size"
             />
 
             {/* Pay Rate Expectations */}
