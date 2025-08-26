@@ -20,18 +20,12 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
     candidateAvailability: '',
     candidateWorkDuration: '',
     candidateExperienceLevel: '',
-    candidatePhysicalWorkLevel: '',
-    candidateWorkEnvironmentPreference: '',
     candidateVisaType: '',
     candidateNationality: '',
-    candidateAge: '',
-    candidateGender: '',
-    candidateLanguages: '',
     willingToProvideAccommodation: false,
     willingToProvideMeals: false,
     willingToProvideTransport: false,
     willingToProvideTraining: false,
-    willingToProvideEquipment: false,
     payRateMin: '',
     payRateMax: '',
   });
@@ -322,22 +316,6 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               placeholder="Any experience level"
             />
 
-            {/* Candidate Physical Work Level */}
-            <DropdownSection 
-              title="Candidate Physical Work Ability" 
-              items={candidatePhysicalWorkLevels} 
-              category="candidatePhysicalWorkLevel" 
-              placeholder="Any physical level"
-            />
-
-            {/* Candidate Work Environment */}
-            <DropdownSection 
-              title="Candidate Work Environment Preference" 
-              items={candidateWorkEnvironmentPreferences} 
-              category="candidateWorkEnvironmentPreference" 
-              placeholder="Any environment"
-            />
-
             {/* Candidate Visa Type */}
             <DropdownSection 
               title="Candidate Visa Type" 
@@ -352,30 +330,6 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               items={candidateNationalities} 
               category="candidateNationality" 
               placeholder="Any nationality"
-            />
-
-            {/* Candidate Age */}
-            <DropdownSection 
-              title="Candidate Age Range" 
-              items={candidateAgeRanges} 
-              category="candidateAge" 
-              placeholder="Any age"
-            />
-
-            {/* Candidate Gender */}
-            <DropdownSection 
-              title="Candidate Gender" 
-              items={candidateGenderOptions} 
-              category="candidateGender" 
-              placeholder="Any gender"
-            />
-
-            {/* Candidate Languages */}
-            <DropdownSection 
-              title="Candidate Language Skills" 
-              items={candidateLanguageOptions} 
-              category="candidateLanguages" 
-              placeholder="Any language level"
             />
 
             {/* Pay Rate Range */}
@@ -405,7 +359,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               </div>
             </div>
 
-            {/* What We Can Provide */}
+            {/* What We Can Provide - Simplified */}
             <div className="mb-20">
               <h3 className="font-semibold text-gray-900 mb-3">What We Can Provide</h3>
               <div className="space-y-2">
@@ -416,7 +370,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                     onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideAccommodation', checked as boolean)}
                   />
                   <Label htmlFor="willing-accommodation" className="text-sm text-gray-700">
-                    We Can Provide Accommodation
+                    Accommodation
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -426,7 +380,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                     onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideMeals', checked as boolean)}
                   />
                   <Label htmlFor="willing-meals" className="text-sm text-gray-700">
-                    We Can Provide Meals
+                    Meals
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -436,7 +390,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                     onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTransport', checked as boolean)}
                   />
                   <Label htmlFor="willing-transport" className="text-sm text-gray-700">
-                    We Can Provide Transport
+                    Transport
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -446,17 +400,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
                     onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTraining', checked as boolean)}
                   />
                   <Label htmlFor="willing-training" className="text-sm text-gray-700">
-                    We Can Provide Training
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-equipment"
-                    checked={selectedFilters.willingToProvideEquipment}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideEquipment', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-equipment" className="text-sm text-gray-700">
-                    We Can Provide Equipment/Tools
+                    Training
                   </Label>
                 </div>
               </div>
@@ -467,7 +411,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
           <div className="bg-white border-t p-4 flex-shrink-0 rounded-b-[48px]">
             <Button
               onClick={applyFilters}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white"
             >
               Find Candidates
             </Button>
