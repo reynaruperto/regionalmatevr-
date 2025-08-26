@@ -126,7 +126,7 @@ const EmployerOnboardingForm: React.FC = () => {
       title: "Account created successfully!",
       description: "Welcome to Regional Mate",
     });
-    navigate('/employer/email-confirmation');
+    navigate('/business-registration');
   };
 
   return (
@@ -159,7 +159,7 @@ const EmployerOnboardingForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">1/4</span>
+                    <span className="text-sm font-medium text-gray-600">1/6</span>
                   </div>
                 </div>
               </div>

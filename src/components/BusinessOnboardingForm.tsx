@@ -79,7 +79,7 @@ const BusinessOnboardingForm: React.FC = () => {
       title: "Business information saved!",
       description: "Proceeding to next step",
     });
-    navigate('/employer/about-business');
+    navigate('/business-address');
   };
 
   return (
@@ -100,7 +100,7 @@ const BusinessOnboardingForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer/onboarding')}
+                  onClick={() => navigate('/business-registration')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -112,7 +112,7 @@ const BusinessOnboardingForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Details</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">2/4</span>
+                    <span className="text-sm font-medium text-gray-600">3/6</span>
                   </div>
                 </div>
               </div>

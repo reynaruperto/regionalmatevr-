@@ -74,7 +74,7 @@ const BusinessAddressForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/business-registration')}
+                  onClick={() => navigate('/business-onboarding')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
