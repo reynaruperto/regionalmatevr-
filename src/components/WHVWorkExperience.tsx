@@ -34,7 +34,8 @@ const WHVWorkExperience: React.FC = () => {
     preferredIndustry: '',
     stayDuration: '',
     willingToRelocate: '',
-    licenses: [] as string[]
+    licenses: [] as string[],
+    otherLicense: ''
   });
 
   const [aboutYourself, setAboutYourself] = useState({
@@ -385,9 +386,29 @@ const WHVWorkExperience: React.FC = () => {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Other License Input */}
+                  {workPreferences.licenses.includes('Other') && (
+                    <div className="space-y-2 mt-3">
+                      <Label className="text-sm font-medium text-gray-700">
+                        Please specify other licenses/tickets
+                      </Label>
+                      <Input
+                        type="text"
+                        value={workPreferences.otherLicense}
+                        onChange={(e) => handleWorkPreferenceChange('otherLicense', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900"
+                        placeholder="Enter your other licenses/tickets"
+                      />
+                    </div>
+                  )}
+                  
                   {workPreferences.licenses.length > 0 && (
                     <div className="text-sm text-gray-600">
                       Selected: {workPreferences.licenses.join(', ')}
+                      {workPreferences.licenses.includes('Other') && workPreferences.otherLicense && 
+                        ` (${workPreferences.otherLicense})`
+                      }
                     </div>
                   )}
                 </div>
@@ -597,12 +618,21 @@ const WHVWorkExperience: React.FC = () => {
                 )}
               </div>
 
-              <div className="pt-8">
+              <div className="pt-8 space-y-4">
                 <Button 
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
                   Continue →
+                </Button>
+                
+                <Button 
+                  type="button"
+                  onClick={() => navigate('/whv/photo-upload')}
+                  variant="ghost"
+                  className="w-full h-12 text-base text-gray-600 hover:text-gray-800"
+                >
+                  Skip for now
                 </Button>
               </div>
             </form>
