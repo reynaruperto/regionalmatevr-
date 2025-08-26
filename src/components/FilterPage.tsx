@@ -14,18 +14,12 @@ interface FilterPageProps {
 const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   const [selectedFilters, setSelectedFilters] = useState({
     candidateLocation: '',
+    candidateNationality: '',
+    candidateVisaType: '',
     candidateIndustryExperience: '',
     candidateAvailability: '',
     candidateWorkDuration: '',
-    candidateExperienceLevel: '',
-    candidateVisaType: '',
-    candidateNationality: '',
-    willingToProvideAccommodation: false,
-    willingToProvideMeals: false,
-    willingToProvideTransport: false,
-    willingToProvideTraining: false,
-    payRateMin: '',
-    payRateMax: '',
+    candidateWillingToRelocate: '',
   });
 
   const states = [
@@ -254,6 +248,22 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               </Select>
             </div>
 
+            {/* Candidate Nationality */}
+            <DropdownSection 
+              title="Candidate Nationality" 
+              items={candidateNationalities} 
+              category="candidateNationality" 
+              placeholder="Any nationality"
+            />
+
+            {/* Candidate Visa Type */}
+            <DropdownSection 
+              title="Candidate Visa Type" 
+              items={candidateVisaTypes} 
+              category="candidateVisaType" 
+              placeholder="Any working holiday visa"
+            />
+
             {/* Candidate Industry Experience */}
             <DropdownSection 
               title="Candidate Industry Experience" 
@@ -278,102 +288,25 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
               placeholder="Any duration"
             />
 
-            {/* Candidate Experience Level */}
-            <DropdownSection 
-              title="Candidate Experience Level" 
-              items={candidateExperienceLevels} 
-              category="candidateExperienceLevel" 
-              placeholder="Any experience level"
-            />
-
-            {/* Candidate Visa Type */}
-            <DropdownSection 
-              title="Candidate Visa Type" 
-              items={candidateVisaTypes} 
-              category="candidateVisaType" 
-              placeholder="Any working holiday visa"
-            />
-
-            {/* Candidate Nationality */}
-            <DropdownSection 
-              title="Candidate Nationality" 
-              items={candidateNationalities} 
-              category="candidateNationality" 
-              placeholder="Any nationality"
-            />
-
-            {/* Pay Rate Range */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Pay Rate Offering (per hour)</h3>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label className="text-sm text-gray-600 mb-2 block">Min $</Label>
-                  <Input
-                    type="number"
-                    placeholder="25"
-                    value={selectedFilters.payRateMin}
-                    onChange={(e) => handleSelectChange('payRateMin', e.target.value)}
-                    className="w-full bg-white border border-gray-300"
-                  />
-                </div>
-                <div>
-                  <Label className="text-sm text-gray-600 mb-2 block">Max $</Label>
-                  <Input
-                    type="number"
-                    placeholder="35"
-                    value={selectedFilters.payRateMax}
-                    onChange={(e) => handleSelectChange('payRateMax', e.target.value)}
-                    className="w-full bg-white border border-gray-300"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* What We Can Provide - Simplified */}
+            {/* Candidate Willing to Relocate */}
             <div className="mb-20">
-              <h3 className="font-semibold text-gray-900 mb-3">What We Can Provide</h3>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-accommodation"
-                    checked={selectedFilters.willingToProvideAccommodation}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideAccommodation', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-accommodation" className="text-sm text-gray-700">
-                    Accommodation
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-meals"
-                    checked={selectedFilters.willingToProvideMeals}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideMeals', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-meals" className="text-sm text-gray-700">
-                    Meals
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-transport"
-                    checked={selectedFilters.willingToProvideTransport}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTransport', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-transport" className="text-sm text-gray-700">
-                    Transport
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willing-training"
-                    checked={selectedFilters.willingToProvideTraining}
-                    onCheckedChange={(checked) => handleBooleanFilterChange('willingToProvideTraining', checked as boolean)}
-                  />
-                  <Label htmlFor="willing-training" className="text-sm text-gray-700">
-                    Training
-                  </Label>
-                </div>
-              </div>
+              <h3 className="font-semibold text-gray-900 mb-3">Candidate Willing to Relocate</h3>
+              <Select 
+                value={selectedFilters.candidateWillingToRelocate} 
+                onValueChange={(value) => handleSelectChange('candidateWillingToRelocate', value)}
+              >
+                <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
+                  <SelectValue placeholder="Any preference" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
+                  <SelectItem value="yes" className="hover:bg-gray-100">
+                    Yes, willing to relocate
+                  </SelectItem>
+                  <SelectItem value="no" className="hover:bg-gray-100">
+                    No, prefers to stay local
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
