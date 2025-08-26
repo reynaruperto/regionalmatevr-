@@ -16,6 +16,7 @@ const formSchema = z.object({
     .max(11, { message: "ABN must be 11 digits." })
     .regex(/^\d+$/, { message: "ABN must contain only numbers." }),
   companyName: z.string().min(2, { message: "Company name is required." }),
+  website: z.string().url({ message: "Please enter a valid website URL." }).optional().or(z.literal("")),
   businessPhone: z.string()
     .min(10, { message: "Please enter a valid phone number." })
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
@@ -183,7 +184,7 @@ const BusinessRegistrationForm: React.FC = () => {
                       className={`h-14 px-6 rounded-xl ${
                         abnVerified 
                           ? 'bg-green-600 hover:bg-green-700' 
-                          : 'bg-blue-600 hover:bg-blue-700'
+                          : 'bg-orange-500 hover:bg-orange-600'
                       } text-white`}
                     >
                       {isVerifyingAbn ? (
@@ -205,6 +206,26 @@ const BusinessRegistrationForm: React.FC = () => {
                   )}
                 </div>
 
+                {/* Website */}
+                <div>
+                  <Label htmlFor="website" className="text-base font-medium text-gray-900 mb-2 block">
+                    Business Website (Optional)
+                  </Label>
+                  <Input
+                    id="website"
+                    type="url"
+                    placeholder="https://www.yourfarm.com.au"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
+                    {...register("website")}
+                  />
+                  {errors.website && (
+                    <p className="text-red-500 text-sm mt-1">{errors.website.message}</p>
+                  )}
+                </div>
+
                 {/* Company Name */}
                 <div>
                   <Label htmlFor="companyName" className="text-base font-medium text-gray-900 mb-2 block">
@@ -213,7 +234,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input
                     id="companyName"
                     placeholder="Enter your company name"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("companyName")}
                   />
                   {errors.companyName && (
@@ -230,7 +254,10 @@ const BusinessRegistrationForm: React.FC = () => {
                     id="businessPhone"
                     type="tel"
                     placeholder="+61 2 1234 5678"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("businessPhone")}
                   />
                   {errors.businessPhone && (
@@ -247,7 +274,10 @@ const BusinessRegistrationForm: React.FC = () => {
                     id="businessEmail"
                     type="email"
                     placeholder="info@yourfarm.com.au"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("businessEmail")}
                   />
                   {errors.businessEmail && (
@@ -263,7 +293,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input
                     id="addressLine1"
                     placeholder="11 Apple St."
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("addressLine1")}
                   />
                   {errors.addressLine1 && (
@@ -279,7 +312,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input
                     id="addressLine2"
                     placeholder="Unit 5, Building B"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("addressLine2")}
                   />
                   {errors.addressLine2 && (
@@ -295,7 +331,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input
                     id="suburb"
                     placeholder="Spring Hill"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("suburb")}
                   />
                   {errors.suburb && (
@@ -311,7 +350,10 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input
                     id="city"
                     placeholder="Brisbane"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("city")}
                   />
                   {errors.city && (
@@ -324,8 +366,8 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Label htmlFor="state" className="text-base font-medium text-gray-900 mb-2 block">
                     State *
                   </Label>
-                  <Select onValueChange={(value) => setValue("state", value)}>
-                    <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                  <Select onValueChange={(value) => setValue("state", value)} disabled={!abnVerified}>
+                    <SelectTrigger className={`h-14 text-base border-0 rounded-xl ${!abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'}`}>
                       <SelectValue placeholder="Select a state" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-[300px] overflow-y-auto">
@@ -354,7 +396,10 @@ const BusinessRegistrationForm: React.FC = () => {
                     id="postCode"
                     placeholder="4019"
                     maxLength={4}
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
+                    disabled={!abnVerified}
+                    className={`h-14 text-base border-0 rounded-xl ${
+                      !abnVerified ? 'bg-gray-200 text-gray-400' : 'bg-gray-100'
+                    }`}
                     {...register("postCode")}
                     onChange={(e) => {
                       e.target.value = e.target.value.replace(/\D/g, '');
