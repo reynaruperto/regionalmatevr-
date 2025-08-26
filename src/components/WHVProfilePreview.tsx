@@ -124,7 +124,7 @@ const WHVProfilePreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate('/whv/edit-profile')}
+                onClick={() => navigate('/whv/profile-edit')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
