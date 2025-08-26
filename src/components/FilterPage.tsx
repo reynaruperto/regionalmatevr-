@@ -13,9 +13,7 @@ interface FilterPageProps {
 
 const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
   const [selectedFilters, setSelectedFilters] = useState({
-    state: '',
-    citySuburb: '',
-    postcode: '',
+    candidateLocation: '',
     candidateIndustryExperience: '',
     candidateAvailability: '',
     candidateWorkDuration: '',
@@ -235,53 +233,25 @@ const FilterPage: React.FC<FilterPageProps> = ({ onClose, onApplyFilters }) => {
 
           {/* Scrollable Content */}
           <div className="flex-1 px-4 py-4 overflow-y-auto">
-            {/* Candidate Location Preferences */}
+            {/* Candidate Location */}
             <div className="mb-6">
               <h3 className="font-semibold text-gray-900 mb-3">Candidate Location</h3>
-              
-              {/* State Selection */}
-              <div className="mb-3">
-                <Label className="text-sm text-gray-600 mb-2 block">Preferred State</Label>
-                <Select 
-                  value={selectedFilters.state} 
-                  onValueChange={(value) => handleSelectChange('state', value)}
-                >
-                  <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
-                    <SelectValue placeholder="Any state" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
-                    {states.map((state) => (
-                      <SelectItem key={state} value={state} className="hover:bg-gray-100">
-                        {state}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* City/Suburb Search */}
-              <div className="mb-3">
-                <Label className="text-sm text-gray-600 mb-2 block">City or Area</Label>
-                <Input
-                  type="text"
-                  placeholder="e.g., Brisbane, Tamworth, Mildura..."
-                  value={selectedFilters.citySuburb}
-                  onChange={(e) => handleSelectChange('citySuburb', e.target.value)}
-                  className="w-full bg-white border border-gray-300"
-                />
-              </div>
-
-              {/* Postcode Search */}
-              <div>
-                <Label className="text-sm text-gray-600 mb-2 block">Postcode</Label>
-                <Input
-                  type="text"
-                  placeholder="e.g., 4000, 2000, 3000..."
-                  value={selectedFilters.postcode}
-                  onChange={(e) => handleSelectChange('postcode', e.target.value)}
-                  className="w-full bg-white border border-gray-300"
-                />
-              </div>
+              <Select 
+                value={selectedFilters.candidateLocation} 
+                onValueChange={(value) => handleSelectChange('candidateLocation', value)}
+              >
+                <SelectTrigger className="w-full bg-white border border-gray-300 z-50">
+                  <SelectValue placeholder="Any location" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
+                  <SelectItem value="in-australia" className="hover:bg-gray-100">
+                    Currently in Australia
+                  </SelectItem>
+                  <SelectItem value="outside-australia" className="hover:bg-gray-100">
+                    Outside Australia
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Candidate Industry Experience */}
