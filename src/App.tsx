@@ -9,6 +9,7 @@ import LetsBegin from "./pages/LetsBegin";
 import EmployerOnboarding from "./pages/EmployerOnboarding";
 import EmployerSignIn from "./pages/EmployerSignIn";
 import ProfileCompletion from "./pages/ProfileCompletion";
+import BusinessRegistration from "./pages/BusinessRegistration";
 import BusinessOnboarding from "./pages/BusinessOnboarding";
 import BusinessAddress from "./pages/BusinessAddress";
 import PhotoUpload from "./pages/PhotoUpload";
@@ -80,13 +81,13 @@ const App = () => (
           <Route path="/lets-begin" element={<LetsBegin />} />
           <Route path="/employer/onboarding" element={<EmployerOnboarding />} />
           <Route path="/employer/email-confirmation" element={<EmployerEmailConfirmation />} />
-          <Route path="/employer/about-business" element={<EmployerAboutBusiness />} />
+          <Route path="/business-registration" element={<BusinessRegistration />} />
           <Route path="/profile-completion" element={<ProfileCompletion />} />
           <Route path="/employer/sign-in" element={<EmployerSignIn />} />
           <Route path="/business-onboarding" element={<BusinessOnboarding />} />
+          <Route path="/employer/about-business" element={<EmployerAboutBusiness />} />
           <Route path="/business-address" element={<BusinessAddress />} />
           <Route path="/employer/photo-upload" element={<EmployerPhotoUpload />} />
-          <Route path="/employer/account-confirmation" element={<EmployerAccountConfirmation />} />
           <Route path="/photo-upload" element={<PhotoUpload />} />
           <Route path="/employer/dashboard" element={<EmployerDashboard />} />
           <Route path="/whv/dashboard" element={<WHVDashboard />} />

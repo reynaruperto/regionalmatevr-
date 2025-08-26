@@ -27,7 +27,7 @@ const EmployerEmailConfirmation: React.FC = () => {
       title: "Email confirmed!",
       description: "Your account has been verified successfully",
     });
-    navigate('/employer/about-business');
+    navigate('/business-registration');
   };
 
   const handleResendCode = async () => {

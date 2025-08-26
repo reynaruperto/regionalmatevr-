@@ -16,7 +16,7 @@ const formSchema = z.object({
   suburb: z.string().min(2, { message: "Suburb is required." }),
   city: z.string().min(2, { message: "City is required." }),
   state: z.string().min(1, { message: "Please select a state." }),
-  postCode: z.string().min(4, { message: "Please enter a valid post code." }).max(4, { message: "Post code must be 4 digits." })
+  postCode: z.string().min(4, { message: "Please enter a valid post code." }).max(4, { message: "Post code must be 4 digits." }).regex(/^\d+$/, { message: "Post code must contain only numbers." })
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -53,7 +53,7 @@ const BusinessAddressForm: React.FC = () => {
       title: "Business address saved!",
       description: "Proceeding to final step",
     });
-    navigate('/employer/photo-upload');
+    navigate('/employer/about-business');
   };
 
   return (
@@ -74,7 +74,7 @@ const BusinessAddressForm: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer/about-business')}
+                  onClick={() => navigate('/business-registration')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -86,7 +86,7 @@ const BusinessAddressForm: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Address</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">4/4</span>
+                    <span className="text-sm font-medium text-gray-600">4/6</span>
                   </div>
                 </div>
               </div>
@@ -196,6 +196,10 @@ const BusinessAddressForm: React.FC = () => {
                     maxLength={4}
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("postCode")}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, '');
+                      register("postCode").onChange(e);
+                    }}
                   />
                   {errors.postCode && (
                     <p className="text-red-500 text-sm mt-1">{errors.postCode.message}</p>

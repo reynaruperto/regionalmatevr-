@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ArrowLeft, Check, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,10 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  abn: z.string()
-    .min(11, { message: "ABN must be 11 digits." })
-    .max(11, { message: "ABN must be 11 digits." })
-    .regex(/^\d+$/, { message: "ABN must contain only numbers." }),
   businessDescription: z.string().min(10, { message: "Please describe your business (minimum 10 characters)." }),
   yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
   employeeCount: z.string().min(1, { message: "Please select number of employees." }),
@@ -28,9 +24,6 @@ type FormData = z.infer<typeof formSchema>;
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [abnVerified, setAbnVerified] = useState(false);
-  const [businessName, setBusinessName] = useState('');
-  const [isVerifyingAbn, setIsVerifyingAbn] = useState(false);
 
   const yearsOptions = [
     'Less than 1 year',
@@ -59,64 +52,18 @@ const EmployerAboutBusiness: React.FC = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
 
-  const abnValue = watch("abn");
-
-  const verifyAbn = async () => {
-    if (!abnValue || abnValue.length !== 11) {
-      toast({
-        title: "Invalid ABN",
-        description: "Please enter a valid 11-digit ABN",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsVerifyingAbn(true);
-    
-    // Simulate ABN verification API call
-    setTimeout(() => {
-      setIsVerifyingAbn(false);
-      // Mock successful verification
-      if (abnValue === "12345678901") {
-        setBusinessName("Sample Business Pty Ltd");
-        setAbnVerified(true);
-        toast({
-          title: "ABN Verified",
-          description: "Business found: Sample Business Pty Ltd",
-        });
-      } else {
-        setBusinessName("Regional Farm Business Pty Ltd");
-        setAbnVerified(true);
-        toast({
-          title: "ABN Verified",
-          description: "Business found: Regional Farm Business Pty Ltd",
-        });
-      }
-    }, 2000);
-  };
-
   const onSubmit = (data: FormData) => {
-    if (!abnVerified) {
-      toast({
-        title: "ABN Required",
-        description: "Please verify your ABN before continuing",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    console.log('Business info submitted:', { ...data, businessName });
+    console.log('Business info submitted:', data);
     toast({
       title: "Business information saved!",
-      description: "Let's continue with your business address",
+      description: "Let's upload your profile photo",
     });
-    navigate('/business-address');
+    navigate('/employer/photo-upload');
   };
 
   const handleSkip = () => {
@@ -124,7 +71,7 @@ const EmployerAboutBusiness: React.FC = () => {
       title: "Step skipped",
       description: "You can complete this later in your profile settings",
     });
-    navigate('/business-address');
+    navigate('/employer/photo-upload');
   };
 
   return (
@@ -145,7 +92,7 @@ const EmployerAboutBusiness: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/employer/onboarding')}
+                  onClick={() => navigate('/business-address')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
@@ -157,7 +104,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">3/5</span>
+                    <span className="text-sm font-medium text-gray-600">5/6</span>
                   </div>
                 </div>
               </div>
@@ -173,55 +120,6 @@ const EmployerAboutBusiness: React.FC = () => {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* ABN Registration */}
-                <div>
-                  <Label htmlFor="abn" className="text-base font-medium text-gray-900 mb-2 block">
-                    Australian Business Number (ABN) *
-                  </Label>
-                  <div className="flex gap-3">
-                    <Input
-                      id="abn"
-                      placeholder="12345678901"
-                      maxLength={11}
-                      disabled={abnVerified}
-                      className={`h-14 text-base border-0 rounded-xl flex-1 ${
-                        abnVerified ? 'bg-green-50 text-green-800' : 'bg-gray-100'
-                      }`}
-                      {...register("abn")}
-                      onChange={(e) => {
-                        e.target.value = e.target.value.replace(/\D/g, '');
-                        register("abn").onChange(e);
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      onClick={verifyAbn}
-                      disabled={abnVerified || isVerifyingAbn}
-                      className={`h-14 px-6 rounded-xl ${
-                        abnVerified 
-                          ? 'bg-green-600 hover:bg-green-700' 
-                          : 'bg-blue-600 hover:bg-blue-700'
-                      } text-white`}
-                    >
-                      {isVerifyingAbn ? (
-                        "Verifying..."
-                      ) : abnVerified ? (
-                        <Check className="w-5 h-5" />
-                      ) : (
-                        "Verify"
-                      )}
-                    </Button>
-                  </div>
-                  {errors.abn && (
-                    <p className="text-red-500 text-sm mt-1">{errors.abn.message}</p>
-                  )}
-                  {abnVerified && businessName && (
-                    <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                      <p className="text-green-800 font-medium">✓ Business Name: {businessName}</p>
-                    </div>
-                  )}
-                </div>
-
                 {/* Business Description */}
                 <div>
                   <Label htmlFor="businessDescription" className="text-base font-medium text-gray-900 mb-2 block">
@@ -323,7 +221,7 @@ const EmployerAboutBusiness: React.FC = () => {
                     type="submit"
                     className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
                   >
-                    Continue
+                    Continue to Photo Upload
                   </Button>
                   
                   {/* Skip for now link */}
