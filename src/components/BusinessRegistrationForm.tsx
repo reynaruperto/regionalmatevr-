@@ -85,6 +85,7 @@ const BusinessRegistrationForm: React.FC = () => {
 
           {/* Main content */}
           <div className="w-full h-full flex flex-col relative bg-white">
+            
             {/* Header */}
             <div className="px-6 pt-16 pb-6">
               <div className="flex items-center justify-between mb-8">
@@ -99,6 +100,7 @@ const BusinessRegistrationForm: React.FC = () => {
                 <div className="flex-1"></div>
               </div>
 
+              {/* Progress */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Business Registration</h1>
