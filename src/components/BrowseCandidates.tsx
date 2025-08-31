@@ -14,7 +14,6 @@ interface Candidate {
   country: string;
   location: string;
   availability: string;
-  matchPercentage: number;
   profileImage: string;
 }
 
@@ -38,7 +37,6 @@ const BrowseCandidates: React.FC = () => {
       country: 'Argentina',
       location: 'QLD - Bundaberg',
       availability: 'Available from Sep 2025',
-      matchPercentage: 92,
       profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
     },
     {
@@ -48,7 +46,6 @@ const BrowseCandidates: React.FC = () => {
       country: 'Germany',
       location: 'NSW - Tamworth',
       availability: 'Available from Oct 2025',
-      matchPercentage: 88,
       profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
     },
     {
@@ -58,7 +55,6 @@ const BrowseCandidates: React.FC = () => {
       country: 'United Kingdom',
       location: 'VIC - Mildura',
       availability: 'Available from Nov 2025',
-      matchPercentage: 86,
       profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
     }
   ];
@@ -172,21 +168,12 @@ const BrowseCandidates: React.FC = () => {
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-gray-900 text-lg mb-1">{candidate.name}</h3>
-                            <p className="text-sm text-gray-600 mb-1">
-                              {candidate.industries.join(', ')}
-                            </p>
+                            <p className="text-sm text-gray-600 mb-1">{candidate.industries.join(', ')}</p>
                             <p className="text-sm text-gray-600 mb-1">{candidate.country}</p>
                             <p className="text-sm text-gray-600 mb-1">{candidate.location}</p>
                             <p className="text-sm text-gray-600">{candidate.availability}</p>
                           </div>
-                          <div className="text-right flex-shrink-0 ml-4">
-                            <div className="text-2xl font-bold text-orange-500">
-                              {candidate.matchPercentage}%
-                            </div>
-                            <div className="text-sm font-semibold text-orange-500">
-                              Match
-                            </div>
-                          </div>
+                          {/* Match percentage removed */}
                         </div>
                         
                         <div className="flex items-center gap-3 mt-4">
