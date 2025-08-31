@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { ArrowLeft, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -44,8 +43,8 @@ const PhotoUploadForm: React.FC = () => {
 
   const handleContinue = () => {
     if (selectedFile && selectedImage) {
-      // Store the uploaded photo in localStorage
-      localStorage.setItem('userProfilePhoto', selectedImage);
+      // ✅ Save under same employerProfilePhoto key
+      localStorage.setItem('employerProfilePhoto', selectedImage);
       console.log('Photo uploaded:', selectedFile);
       navigate('/account-confirmation');
     } else {

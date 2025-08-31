@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Upload, Camera } from 'lucide-react';
+import { ArrowLeft, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -16,7 +16,8 @@ const EmployerPhotoUpload: React.FC = () => {
       reader.onload = (e) => {
         const result = e.target?.result as string;
         setUploadedPhoto(result);
-        localStorage.setItem('businessProfilePhoto', result);
+        // ✅ Save consistently under employerProfilePhoto
+        localStorage.setItem('employerProfilePhoto', result);
       };
       reader.readAsDataURL(file);
     }
@@ -24,7 +25,7 @@ const EmployerPhotoUpload: React.FC = () => {
 
   const handleReUpload = () => {
     setUploadedPhoto(null);
-    localStorage.removeItem('businessProfilePhoto');
+    localStorage.removeItem('employerProfilePhoto');
   };
 
   const handleComplete = () => {
@@ -162,3 +163,4 @@ const EmployerPhotoUpload: React.FC = () => {
 };
 
 export default EmployerPhotoUpload;
+

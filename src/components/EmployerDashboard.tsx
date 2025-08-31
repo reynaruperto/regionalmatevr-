@@ -9,8 +9,8 @@ const EmployerDashboard: React.FC = () => {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
-    // Retrieve the uploaded photo from localStorage
-    const storedPhoto = localStorage.getItem('businessProfilePhoto');
+    // ✅ Use consistent key
+    const storedPhoto = localStorage.getItem('employerProfilePhoto');
     if (storedPhoto) {
       setProfilePhoto(storedPhoto);
     }
@@ -87,7 +87,6 @@ const EmployerDashboard: React.FC = () => {
                 <div className="space-y-2">
                   {settingsItems.map((item, index) => {
                     const Icon = item.icon;
-                    const isLogout = item.label === 'Log out';
                     return (
                       <button
                         key={index}
@@ -113,3 +112,4 @@ const EmployerDashboard: React.FC = () => {
 };
 
 export default EmployerDashboard;
+
