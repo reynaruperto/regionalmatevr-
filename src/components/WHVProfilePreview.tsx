@@ -26,7 +26,6 @@ const WHVProfilePreview: React.FC = () => {
   ]);
 
   useEffect(() => {
-    // Load data from localStorage if available
     const storedTagline = localStorage.getItem('profileTagline');
     if (storedTagline) {
       setProfileData(prev => ({ ...prev, tagline: storedTagline }));
@@ -36,9 +35,6 @@ const WHVProfilePreview: React.FC = () => {
     if (storedPhoto) {
       setProfileData(prev => ({ ...prev, profilePhoto: storedPhoto }));
     }
-
-    // In a real app, you would load all profile data from your backend/localStorage
-    // For now, we'll use the stored tagline and photo
   }, []);
 
   return (
@@ -124,7 +120,7 @@ const WHVProfilePreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate('/whv/edit-WHVdetails')}
+                onClick={() => navigate('/whv/profile-edit')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
