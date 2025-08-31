@@ -14,30 +14,30 @@ const WHVOnboardingForm: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const validatePassword = (password: string) => {
     const errors = [];
-    
+
     if (password.length < 8) {
       errors.push('Password must be at least 8 characters long');
     }
-    
+
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
       errors.push('Password must contain at least one uppercase letter, one lowercase letter, and one number');
     }
-    
+
     return errors;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData({
       ...formData,
       [name]: value
     });
-    
+
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -48,28 +48,28 @@ const WHVOnboardingForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const newErrors: {[key: string]: string} = {};
-    
+
+    const newErrors: { [key: string]: string } = {};
+
     // Password validation
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
+
     const passwordErrors = validatePassword(formData.password);
     if (passwordErrors.length > 0) {
       newErrors.password = passwordErrors[0];
     }
-    
+
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     if (!formData.password.trim()) newErrors.password = 'Password is required';
     if (!formData.confirmPassword.trim()) newErrors.confirmPassword = 'Password confirmation is required';
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
+
     console.log('WHV Registration Step 1:', formData);
     navigate('/whv/email-confirmation');
   };
@@ -81,11 +81,11 @@ const WHVOnboardingForm: React.FC = () => {
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
           <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
-          
+
           {/* Header */}
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
-              <button 
+              <button
                 onClick={() => navigate('/lets-begin')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
@@ -93,7 +93,8 @@ const WHVOnboardingForm: React.FC = () => {
               </button>
               <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">1/5</span>
+                {/* ✅ Updated to show Step 1 of 6 */}
+                <span className="text-sm font-medium text-gray-600">1/6</span>
               </div>
             </div>
           </div>
@@ -128,7 +129,7 @@ const WHVOnboardingForm: React.FC = () => {
                   <Input
                     id="password"
                     name="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     required
                     value={formData.password}
                     onChange={handleInputChange}
@@ -155,7 +156,7 @@ const WHVOnboardingForm: React.FC = () => {
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     required
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
@@ -174,7 +175,7 @@ const WHVOnboardingForm: React.FC = () => {
               </div>
 
               <div className="pt-8">
-                <Button 
+                <Button
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
