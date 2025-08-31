@@ -10,15 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  givenName: z.string()
-    .min(2, { message: "Given name must be at least 2 characters." })
-    .regex(/^[a-zA-Z\s]*$/, { message: "Given name can only contain letters." }),
-  middleName: z.string()
-    .optional()
-    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), { message: "Middle name can only contain letters." }),
-  familyName: z.string()
-    .min(2, { message: "Family name must be at least 2 characters." })
-    .regex(/^[a-zA-Z\s]*$/, { message: "Family name can only contain letters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   password: z.string()
     .min(8, { message: "Password must be at least 8 characters." })
