@@ -58,7 +58,7 @@ const RegionalMateApp: React.FC = () => {
               {/* CTA Button */}
               <div className="px-6 pb-6">
               <Button 
-                variant="blue" 
+                variant="orange" 
                 size="lg" 
                 className="w-full h-14 text-lg rounded-xl"
                 onClick={() => navigate('/lets-begin')}
