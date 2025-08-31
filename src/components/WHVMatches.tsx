@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Heart } from 'lucide-react';
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from '@/components/BottomNavigation';
-import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
 interface MatchEmployer {
   id: string;
@@ -13,15 +12,12 @@ interface MatchEmployer {
   location: string;
   availability: string;
   profileImage: string;
-  isMutualMatch?: boolean;
 }
 
 const WHVMatches: React.FC = () => {
   const navigate = useNavigate();
-  const [showLikeModal, setShowLikeModal] = useState(false);
-  const [likedEmployerName, setLikedEmployerName] = useState('');
 
-  // Mock data for matches only
+  // Mock data for mutual matches only
   const matches: MatchEmployer[] = [
     {
       id: '4',
@@ -31,7 +27,6 @@ const WHVMatches: React.FC = () => {
       location: 'Northrivers, NSW 2470',
       availability: 'Available from Aug 2025',
       profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png',
-      isMutualMatch: true
     },
     {
       id: '5',
@@ -41,7 +36,6 @@ const WHVMatches: React.FC = () => {
       location: 'Coolangatta, QLD 4225',
       availability: 'Available from Sep 2025',
       profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
-      isMutualMatch: true
     },
     {
       id: '6',
@@ -51,17 +45,11 @@ const WHVMatches: React.FC = () => {
       location: 'Sunshine Coast, 4019',
       availability: 'Available from Oct 2025',
       profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
-      isMutualMatch: true
     }
   ];
 
   const handleViewProfile = (employerId: string) => {
     navigate(`/whv/employer/full-profile/${employerId}?from=whv-matches`);
-  };
-
-  const handleCloseLikeModal = () => {
-    setShowLikeModal(false);
-    setLikedEmployerName('');
   };
 
   return (
@@ -109,11 +97,9 @@ const WHVMatches: React.FC = () => {
                         >
                           View Full Profile Card
                         </Button>
-                        {employer.isMutualMatch && (
-                          <div className="text-right">
-                            <span className="text-sm font-semibold text-orange-500">It’s a Match!</span>
-                          </div>
-                        )}
+                        <span className="text-sm font-semibold text-orange-500">
+                          It’s a Match!
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -126,13 +112,6 @@ const WHVMatches: React.FC = () => {
           <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
             <BottomNavigation />
           </div>
-
-          {/* Like Confirmation Modal (kept for future use, but unused now) */}
-          <LikeConfirmationModal
-            candidateName={likedEmployerName}
-            onClose={handleCloseLikeModal}
-            isVisible={showLikeModal}
-          />
         </div>
       </div>
     </div>
