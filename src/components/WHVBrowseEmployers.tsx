@@ -14,7 +14,6 @@ interface Employer {
   country: string;
   location: string;
   availability: string;
-  matchPercentage: number;
   profileImage: string;
 }
 
@@ -38,7 +37,6 @@ const WHVBrowseEmployers: React.FC = () => {
       country: 'Australia',
       location: 'Clontarf, QLD, 4017',
       availability: 'Start Date from Sep 2025',
-      matchPercentage: 92,
       profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
     },
     {
@@ -48,7 +46,6 @@ const WHVBrowseEmployers: React.FC = () => {
       country: 'Australia',
       location: 'Sunshine Coast, 4551',
       availability: 'Start Date from Oct 2025',
-      matchPercentage: 88,
       profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png'
     },
     {
@@ -58,7 +55,6 @@ const WHVBrowseEmployers: React.FC = () => {
       country: 'Australia',
       location: 'Toowoomba, 4350',
       availability: 'Start Date from Oct 2025',
-      matchPercentage: 86,
       profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
     }
   ];
@@ -86,7 +82,6 @@ const WHVBrowseEmployers: React.FC = () => {
 
   const handleApplyFilters = (filters: any) => {
     console.log('Applied filters:', filters);
-    // This will later handle the filter application
   };
 
   if (showFilters) {
@@ -95,7 +90,7 @@ const WHVBrowseEmployers: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      {/* iPhone 16 Pro Max Frame - Fixed dimensions */}
+      {/* iPhone 16 Pro Max Frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
@@ -103,10 +98,7 @@ const WHVBrowseEmployers: React.FC = () => {
           
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
-            <div className="text-center mb-4">
-              <p className="text-gray-600 text-sm">Browse for employers</p>
-            </div>
-            
+            {/* Header */}
             <div className="flex items-center gap-3 mb-6">
               <button onClick={() => navigate('/whv/dashboard')}>
                 <ArrowLeft size={20} className="text-gray-600" />
@@ -121,7 +113,7 @@ const WHVBrowseEmployers: React.FC = () => {
                 placeholder="Browse for employers"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-12 h-10"
+                className="pl-10 pr-12 h-10 rounded-xl border-gray-200 bg-white"
               />
               <button 
                 onClick={() => setShowFilters(true)}
@@ -132,7 +124,7 @@ const WHVBrowseEmployers: React.FC = () => {
             </div>
 
             {/* Active Filters */}
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-6">
               {selectedFilters.map((filter) => (
                 <div
                   key={filter.value}
@@ -150,48 +142,34 @@ const WHVBrowseEmployers: React.FC = () => {
             </div>
 
             {/* Employers List */}
-            <div className="space-y-3 pb-20">
+            <div className="space-y-4 pb-20">
               {employers.map((employer) => (
-                <div key={employer.id} className="bg-white rounded-lg p-3 shadow-sm border">
-                  <div className="flex items-start gap-3">
+                <div key={employer.id} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                  <div className="flex items-start gap-4">
                     <img
                       src={employer.profileImage}
                       alt={employer.name}
-                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                      className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm">{employer.name}</h3>
-                          <p className="text-xs text-gray-600 truncate">
-                            {employer.skills.join(', ')}
-                          </p>
-                          <p className="text-xs text-gray-600">{employer.country}</p>
-                          <p className="text-xs text-gray-600 truncate">{employer.location}</p>
-                          <p className="text-xs text-gray-600 truncate">{employer.availability}</p>
-                        </div>
-                        <div className="text-right flex-shrink-0 ml-2">
-                          <div className="text-sm font-bold text-orange-500">
-                            {employer.matchPercentage}%
-                          </div>
-                          <div className="text-xs font-semibold text-orange-500">
-                            Match
-                          </div>
-                        </div>
-                      </div>
+                      <h3 className="font-semibold text-gray-900 text-base mb-1">{employer.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1 truncate">{employer.skills.join(', ')}</p>
+                      <p className="text-sm text-gray-600 mb-1">{employer.country}</p>
+                      <p className="text-sm text-gray-600 mb-1">{employer.location}</p>
+                      <p className="text-sm text-gray-600">{employer.availability}</p>
                       
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-3 mt-4">
                         <Button
                           onClick={() => handleViewProfile(employer.id)}
-                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-xs h-7"
+                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white h-11 rounded-xl"
                         >
                           View Profile Card
                         </Button>
                         <button
                           onClick={() => handleLikeEmployer(employer.id)}
-                          className="h-7 w-7 flex-shrink-0 bg-slate-800 rounded-md flex items-center justify-center hover:bg-slate-900 transition-all duration-200 shadow-sm"
+                          className="h-11 w-11 flex-shrink-0 bg-slate-800 rounded-xl flex items-center justify-center hover:bg-slate-900 transition-all duration-200 shadow-sm"
                         >
-                          <Heart size={14} className="text-white" />
+                          <Heart size={18} className="text-white" />
                         </button>
                       </div>
                     </div>
@@ -201,7 +179,7 @@ const WHVBrowseEmployers: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom Navigation - Fixed */}
+          {/* Bottom Navigation */}
           <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
             <BottomNavigation />
           </div>
