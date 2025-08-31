@@ -52,15 +52,16 @@ const EmployerOnboardingForm: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content */}
+          {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-white">
             
-            {/* Header */}
+            {/* Header with back button and title */}
             <div className="px-6 pt-16 pb-6">
               <div className="flex items-center justify-between mb-8">
                 <Button 
@@ -74,23 +75,30 @@ const EmployerOnboardingForm: React.FC = () => {
                 <div className="flex-1"></div>
               </div>
 
-              {/* Progress indicator */}
+              {/* Progress indicator and title */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">1/3</span>
+                    <span className="text-sm font-medium text-gray-600">1/6</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Form */}
+            {/* Form content */}
             <div className="flex-1 overflow-y-auto px-6 pb-20">
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
+                <p className="text-gray-600">Start by setting up your account with email and password.</p>
+              </div>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Email */}
+                {/* Email field */}
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email" className="text-base font-medium text-gray-900 mb-2 block">
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     type="email"
@@ -103,9 +111,11 @@ const EmployerOnboardingForm: React.FC = () => {
                   )}
                 </div>
 
-                {/* Password */}
+                {/* Password field */}
                 <div>
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="text-base font-medium text-gray-900 mb-2 block">
+                    Password
+                  </Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -131,9 +141,11 @@ const EmployerOnboardingForm: React.FC = () => {
                   )}
                 </div>
 
-                {/* Confirm Password */}
+                {/* Confirm Password field */}
                 <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-900 mb-2 block">
+                    Confirm Password
+                  </Label>
                   <div className="relative">
                     <Input
                       id="confirmPassword"
@@ -182,3 +194,4 @@ const EmployerOnboardingForm: React.FC = () => {
 };
 
 export default EmployerOnboardingForm;
+
