@@ -82,14 +82,17 @@ const ShortCandidateProfileCard: React.FC<ShortCandidateProfileCardProps> = ({ c
   const handleLikeCandidate = () => setShowLikeModal(true);
   const handleCloseLikeModal = () => setShowLikeModal(false);
 
-  // ✅ Clean back button logic: Employer Matches OR Browse Candidates
+  // ✅ Clean back button logic
   const handleBack = () => {
     const fromPage = searchParams.get('from');
     const tab = searchParams.get('tab');
+
     if (fromPage === 'employer-matches') {
       navigate(`/employer/matches?tab=${tab || 'matches'}`);
+    } else if (fromPage === 'browse-candidates') {
+      navigate('/browse-candidates');
     } else {
-      navigate('/employer/browse-candidates');
+      navigate('/browse-candidates'); // fallback
     }
   };
 
