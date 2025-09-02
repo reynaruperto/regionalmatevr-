@@ -5,16 +5,54 @@ import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
-interface MatchCandidate {
+// Mock WHV + Employer profiles for matching algorithm
+interface Profile {
   id: string;
-  name: string;
   skills: string[];
-  country: string;
-  location: string;
   availability: string;
-  matchPercentage: number;
+  location: string;
+}
+
+interface MatchCandidate extends Profile {
+  name: string;
+  country: string;
   profileImage: string;
   isMutualMatch?: boolean;
+  matchPercentage?: number;
+}
+
+// Basic mock employer requirement (simulate logged-in employer)
+const employerProfile = {
+  requiredSkills: ['Agriculture', 'Hospitality'],
+  startDate: '2025-09-01',
+  jobLocation: 'Queensland'
+};
+
+// Matching algorithm
+function calculateMatch(whv: Profile, employer: typeof employerProfile): number {
+  let score = 0;
+  let maxScore = 0;
+
+  // Skills (50%)
+  maxScore += 50;
+  const skillMatches = whv.skills.filter((s) =>
+    employer.requiredSkills.includes(s)
+  ).length;
+  score += (skillMatches / employer.requiredSkills.length) * 50;
+
+  // Availability (25%)
+  maxScore += 25;
+  if (new Date(whv.availability) <= new Date(employer.startDate)) {
+    score += 25;
+  }
+
+  // Location (25%)
+  maxScore += 25;
+  if (whv.location.includes(employer.jobLocation)) {
+    score += 25;
+  }
+
+  return Math.round((score / maxScore) * 100);
 }
 
 const EmployerMatches: React.FC = () => {
@@ -38,9 +76,8 @@ const EmployerMatches: React.FC = () => {
       name: 'Peter',
       skills: ['Agriculture', 'Marketing'],
       country: 'Argentina',
-      location: 'Brisbane, 4000',
-      availability: 'Available from Sep 2025',
-      matchPercentage: 92,
+      location: 'Brisbane, Queensland',
+      availability: '2025-09-15',
       profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
     },
     {
@@ -48,37 +85,53 @@ const EmployerMatches: React.FC = () => {
       name: 'Daniel',
       skills: ['Construction', 'Agriculture'],
       country: 'Germany',
-      location: 'Sunshine Coast, 4551',
-      availability: 'Available from Oct 2025',
-      matchPercentage: 88,
+      location: 'Sunshine Coast, Queensland',
+      availability: '2025-10-01',
       profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
+    },
+    {
+      id: '3',
+      name: 'Hannah',
+      skills: ['Hospitality', 'Agriculture'],
+      country: 'UK',
+      location: 'Mildura, VIC',
+      availability: '2025-11-01',
+      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
     }
-  ];
+  ].map((c) => ({ ...c, matchPercentage: calculateMatch(c, employerProfile) }));
 
   const matches: MatchCandidate[] = [
     {
-      id: '3',
+      id: '4',
       name: 'Thomas',
       skills: ['Agriculture', 'Hospitality'],
       country: 'USA',
-      location: 'Gold Coast, 4221',
-      availability: 'Available from Aug 2025',
-      matchPercentage: 95,
+      location: 'Gold Coast, Queensland',
+      availability: '2025-08-01',
       profileImage: '/lovable-uploads/140ed1a1-12da-4d98-8f41-9aed46049366.png',
       isMutualMatch: true
     },
     {
-      id: '4',
+      id: '5',
       name: 'Emma',
       skills: ['Maintenance', 'Farming'],
       country: 'Canada',
       location: 'N/A',
-      availability: 'Available from Sep 2025',
-      matchPercentage: 91,
+      availability: '2025-09-20',
       profileImage: '/lovable-uploads/76ee4cf4-2a7f-4575-a02c-ba69817bfa35.png',
       isMutualMatch: true
+    },
+    {
+      id: '6',
+      name: 'Megan',
+      skills: ['Farming', 'Marketing'],
+      country: 'Sweden',
+      location: 'Moreton Bay, Queensland',
+      availability: '2025-08-15',
+      profileImage: '/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png',
+      isMutualMatch: true
     }
-  ];
+  ].map((c) => ({ ...c, matchPercentage: calculateMatch(c, employerProfile) }));
 
   const handleViewProfile = (id: string, isMutualMatch?: boolean) => {
     const route = isMutualMatch ? `/full-candidate-profile/${id}` : `/short-candidate-profile/${id}`;
@@ -116,7 +169,7 @@ const EmployerMatches: React.FC = () => {
               <button
                 onClick={() => setActiveTab('matches')}
                 className={`flex-1 py-2 rounded-full text-sm font-medium ${
-                  activeTab === 'matches' ? 'bg-orange-500 text-white' : 'text-gray-600'
+                  activeTab === 'matches' ? 'bg-slate-800 text-white' : 'text-gray-600'
                 }`}
               >
                 Matches
@@ -124,7 +177,7 @@ const EmployerMatches: React.FC = () => {
               <button
                 onClick={() => setActiveTab('topRecommended')}
                 className={`flex-1 py-2 rounded-full text-sm font-medium ${
-                  activeTab === 'topRecommended' ? 'bg-orange-500 text-white' : 'text-gray-600'
+                  activeTab === 'topRecommended' ? 'bg-slate-800 text-white' : 'text-gray-600'
                 }`}
               >
                 Top Recommended
@@ -147,7 +200,7 @@ const EmployerMatches: React.FC = () => {
                     <div className="flex items-center gap-2 mt-3">
                       <Button
                         onClick={() => handleViewProfile(c.id, c.isMutualMatch)}
-                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-full"
+                        className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-sm h-10 rounded-full"
                       >
                         {c.isMutualMatch ? 'View Full Profile' : 'View Profile'}
                       </Button>
@@ -161,6 +214,12 @@ const EmployerMatches: React.FC = () => {
                       )}
                     </div>
                   </div>
+                  {!c.isMutualMatch && (
+                    <div className="text-right flex-shrink-0 ml-2">
+                      <div className="text-lg font-bold text-orange-500">{c.matchPercentage}%</div>
+                      <div className="text-xs font-semibold text-orange-500">Match</div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -171,7 +230,6 @@ const EmployerMatches: React.FC = () => {
             <BottomNavigation />
           </div>
 
-          {/* Like Modal */}
           <LikeConfirmationModal
             candidateName={likedCandidateName}
             onClose={() => setShowLikeModal(false)}
