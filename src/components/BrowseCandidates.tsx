@@ -13,8 +13,43 @@ interface Candidate {
   industries: string[];
   country: string;
   location: string;
-  availability: string;
+  availability: string; // date string
   profileImage: string;
+  matchPercentage?: number;
+}
+
+// --- Mock employer requirement (simulate logged-in employer) ---
+const employerProfile = {
+  requiredSkills: ['Agriculture', 'Hospitality'],
+  startDate: '2025-09-01',
+  jobLocation: 'Queensland'
+};
+
+// --- Matching Algorithm ---
+function calculateMatch(candidate: Candidate, employer: typeof employerProfile): number {
+  let score = 0;
+  let maxScore = 0;
+
+  // Skills (50%)
+  maxScore += 50;
+  const skillMatches = candidate.industries.filter((s) =>
+    employer.requiredSkills.includes(s)
+  ).length;
+  score += (skillMatches / employer.requiredSkills.length) * 50;
+
+  // Availability (25%)
+  maxScore += 25;
+  if (new Date(candidate.availability) <= new Date(employer.startDate)) {
+    score += 25;
+  }
+
+  // Location (25%)
+  maxScore += 25;
+  if (candidate.location.includes(employer.jobLocation)) {
+    score += 25;
+  }
+
+  return Math.round((score / maxScore) * 100);
 }
 
 const BrowseCandidates: React.FC = () => {
@@ -28,7 +63,7 @@ const BrowseCandidates: React.FC = () => {
     { label: 'Availability: Sep-Dec', value: 'sep-dec' }
   ]);
 
-  // Mock candidate data
+  // --- Mock candidate data ---
   const candidates: Candidate[] = [
     {
       id: '1',
@@ -36,7 +71,7 @@ const BrowseCandidates: React.FC = () => {
       industries: ['Agriculture', 'Marketing'],
       country: 'Argentina',
       location: 'QLD - Bundaberg',
-      availability: 'Available from Sep 2025',
+      availability: '2025-09-15',
       profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png'
     },
     {
@@ -45,7 +80,7 @@ const BrowseCandidates: React.FC = () => {
       industries: ['Construction', 'Agriculture'],
       country: 'Germany',
       location: 'NSW - Tamworth',
-      availability: 'Available from Oct 2025',
+      availability: '2025-10-01',
       profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png'
     },
     {
@@ -54,10 +89,10 @@ const BrowseCandidates: React.FC = () => {
       industries: ['Hospitality', 'Agriculture'],
       country: 'United Kingdom',
       location: 'VIC - Mildura',
-      availability: 'Available from Nov 2025',
+      availability: '2025-11-01',
       profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png'
     }
-  ];
+  ].map((c) => ({ ...c, matchPercentage: calculateMatch(c, employerProfile) }));
 
   const removeFilter = (filterValue: string) => {
     setSelectedFilters(selectedFilters.filter(filter => filter.value !== filterValue));
@@ -72,7 +107,7 @@ const BrowseCandidates: React.FC = () => {
   };
 
   const handleViewProfile = (candidateId: string) => {
-    navigate(`/short-candidate-profile/${candidateId}`);
+    navigate(`/short-candidate-profile/${candidateId}?from=browse-candidates`);
   };
 
   const handleCloseLikeModal = () => {
@@ -82,7 +117,6 @@ const BrowseCandidates: React.FC = () => {
 
   const handleApplyFilters = (filters: any) => {
     console.log('Applied filters:', filters);
-    // This will later handle the filter application
   };
 
   if (showFilters) {
@@ -97,9 +131,7 @@ const BrowseCandidates: React.FC = () => {
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-50">
-            
             {/* Header */}
             <div className="px-6 pt-16 pb-4">
               <div className="flex items-center">
@@ -117,8 +149,6 @@ const BrowseCandidates: React.FC = () => {
           
             {/* Content */}
             <div className="flex-1 px-6 overflow-y-auto" style={{ paddingBottom: '100px' }}>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Browse Candidates</h2>
-              
               {/* Search Bar */}
               <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -173,7 +203,11 @@ const BrowseCandidates: React.FC = () => {
                             <p className="text-sm text-gray-600 mb-1">{candidate.location}</p>
                             <p className="text-sm text-gray-600">{candidate.availability}</p>
                           </div>
-                          {/* Match percentage removed */}
+                          {/* ✅ Match Percentage */}
+                          <div className="text-right flex-shrink-0 ml-4">
+                            <div className="text-lg font-bold text-orange-500">{candidate.matchPercentage}%</div>
+                            <div className="text-xs font-semibold text-orange-500">Match</div>
+                          </div>
                         </div>
                         
                         <div className="flex items-center gap-3 mt-4">
@@ -196,15 +230,12 @@ const BrowseCandidates: React.FC = () => {
                 ))}
               </div>
             </div>
-
           </div>
           
-          {/* Bottom Navigation - Fixed at bottom */}
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 rounded-b-[48px]">
             <BottomNavigation />
           </div>
 
-          {/* Like Confirmation Modal */}
           <LikeConfirmationModal
             candidateName={likedCandidateName}
             onClose={handleCloseLikeModal}
@@ -217,3 +248,4 @@ const BrowseCandidates: React.FC = () => {
 };
 
 export default BrowseCandidates;
+
