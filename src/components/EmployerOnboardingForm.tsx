@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -28,6 +29,7 @@ const EmployerOnboardingForm: React.FC = () => {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -41,13 +43,57 @@ const EmployerOnboardingForm: React.FC = () => {
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
 
-  const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
-    toast({
-      title: "Account created successfully!",
-      description: "Please check your email for verification",
-    });
-    navigate('/employer/email-confirmation');
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/employer/about-business`,
+          data: {
+            user_type: 'employer'
+          }
+        }
+      });
+
+      if (error) {
+        if (error.message === 'User already registered') {
+          toast({
+            title: "Account exists",
+            description: "An account with this email already exists",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Registration failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+        return;
+      }
+
+      // Store email for the confirmation page
+      sessionStorage.setItem('pendingEmail', data.email);
+      
+      toast({
+        title: "Account created successfully!",
+        description: "Please check your email for a confirmation code",
+      });
+      
+      navigate('/employer/email-confirmation');
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast({
+        title: "Registration failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -178,9 +224,10 @@ const EmployerOnboardingForm: React.FC = () => {
                 <div className="pt-8">
                   <Button 
                     type="submit"
-                    className="w-full h-14 text-lg rounded-xl bg-[#EC5823] hover:opacity-90 text-white"
+                    disabled={isLoading}
+                    className="w-full h-14 text-lg rounded-xl bg-[#EC5823] hover:opacity-90 text-white disabled:opacity-50"
                   >
-                    Continue
+                    {isLoading ? 'Creating account...' : 'Continue'}
                   </Button>
                 </div>
               </form>

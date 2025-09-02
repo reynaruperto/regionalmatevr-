@@ -4,9 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const WHVOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,6 +18,7 @@ const WHVOnboardingForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const validatePassword = (password: string) => {
     const errors = [];
@@ -46,8 +50,9 @@ const WHVOnboardingForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const newErrors: { [key: string]: string } = {};
 
@@ -67,11 +72,54 @@ const WHVOnboardingForm: React.FC = () => {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setIsLoading(false);
       return;
     }
 
-    console.log('WHV Registration Step 1:', formData);
-    navigate('/whv/email-confirmation');
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
+          data: {
+            user_type: 'whv'
+          }
+        }
+      });
+
+      if (error) {
+        if (error.message === 'User already registered') {
+          setErrors({ email: 'An account with this email already exists' });
+        } else {
+          toast({
+            title: "Registration failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+        return;
+      }
+
+      // Store email for the confirmation page
+      sessionStorage.setItem('pendingEmail', formData.email);
+      
+      toast({
+        title: "Registration successful",
+        description: "Please check your email for a confirmation code",
+      });
+      
+      navigate('/whv/email-confirmation');
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast({
+        title: "Registration failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -177,9 +225,10 @@ const WHVOnboardingForm: React.FC = () => {
               <div className="pt-8">
                 <Button
                   type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                  disabled={isLoading}
+                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium disabled:opacity-50"
                 >
-                  Continue →
+                  {isLoading ? 'Creating account...' : 'Continue →'}
                 </Button>
               </div>
             </form>

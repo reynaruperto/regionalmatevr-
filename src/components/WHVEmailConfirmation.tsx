@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const WHVEmailConfirmation: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [confirmationCode, setConfirmationCode] = useState('');
   const [isResending, setIsResending] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [email, setEmail] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const pendingEmail = sessionStorage.getItem('pendingEmail');
+    if (pendingEmail) {
+      setEmail(pendingEmail);
+    } else {
+      // If no pending email, redirect back to onboarding
+      navigate('/whv/onboarding');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (confirmationCode.length !== 6) {
       toast({
@@ -23,23 +36,82 @@ const WHVEmailConfirmation: React.FC = () => {
       return;
     }
     
-    toast({
-      title: "Email confirmed!",
-      description: "Your account has been verified successfully",
-    });
-    navigate('/whv/profile-setup');
+    setIsVerifying(true);
+
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token: confirmationCode,
+        type: 'signup'
+      });
+
+      if (error) {
+        toast({
+          title: "Verification failed",
+          description: error.message === 'Token has expired or is invalid' 
+            ? "The code has expired or is invalid. Please request a new one."
+            : error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Clear pending email from session
+      sessionStorage.removeItem('pendingEmail');
+      
+      toast({
+        title: "Email confirmed!",
+        description: "Your account has been verified successfully",
+      });
+      
+      navigate('/whv/profile-setup');
+    } catch (error) {
+      console.error('Verification error:', error);
+      toast({
+        title: "Verification failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   const handleResendCode = async () => {
+    if (!email) return;
+    
     setIsResending(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsResending(false);
-      toast({
-        title: "Code resent",
-        description: "Check your email for a new confirmation code",
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/whv/profile-setup`
+        }
       });
-    }, 2000);
+
+      if (error) {
+        toast({
+          title: "Failed to resend",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Code resent",
+          description: "Check your email for a new confirmation code",
+        });
+      }
+    } catch (error) {
+      console.error('Resend error:', error);
+      toast({
+        title: "Failed to resend",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -102,9 +174,10 @@ const WHVEmailConfirmation: React.FC = () => {
 
               <Button 
                 type="submit"
-                className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                disabled={isVerifying}
+                className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium disabled:opacity-50"
               >
-                Verify Email
+                {isVerifying ? 'Verifying...' : 'Verify Email'}
               </Button>
             </form>
 
