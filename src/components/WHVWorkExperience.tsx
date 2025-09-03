@@ -6,11 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 
+// -------------------- Types --------------------
 interface WorkExperience {
   id: string;
   startDate: string;
   endDate: string;
-  position: string;
+  industry: string;
+  role: string;
+  otherRole: string;
   company: string;
   location: string;
 }
@@ -24,75 +27,63 @@ interface JobReference {
   role: string;
 }
 
+// -------------------- Industry → Roles --------------------
+const industryRoles: Record<string, string[]> = {
+  "Agriculture & Farming": ["Fruit Picker", "Farm Hand", "Packer", "Other"],
+  "Hospitality & Tourism": ["Bartender", "Waitstaff", "Chef / Cook", "Housekeeper", "Tour Guide", "Other"],
+  "Construction": ["Construction Labourer", "Painter", "Scaffolder", "Cleaner", "Other"],
+  "Healthcare": ["Aged Care Worker", "Disability Support", "Cleaner", "Nurse", "Other"],
+  "Retail": ["Sales Assistant", "Cashier", "Storeperson", "Other"],
+  "Manufacturing": ["Factory Worker", "Machine Operator", "Assembler", "Other"],
+  "Mining": ["Truck Driver", "Driller", "Quarry Operator", "Other"],
+  "Education": ["Childcare Worker", "Teacher Assistant", "Other"],
+  "Transport & Logistics": ["Driver", "Forklift Operator", "Warehouse Worker", "Other"],
+};
+
+const allIndustries = Object.keys(industryRoles);
+
+// -------------------- Component --------------------
 const WHVWorkExperience: React.FC = () => {
   const navigate = useNavigate();
+
+  // Work Preferences
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [otherRole, setOtherRole] = useState("");
+
+  // Work Experience entries
   const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([]);
+
+  // Job References
   const [jobReferences, setJobReferences] = useState<JobReference[]>([]);
-  const [workPreferences, setWorkPreferences] = useState({
-    targetRole: '',
-    otherTargetRole: '',
-    preferredIndustry: '',
-    preferredLocationState: '',
-    preferredLocationCity: '',
-    licenses: [] as string[],
-    otherLicense: ''
-  });
 
-  const [aboutYourself, setAboutYourself] = useState({
-    tagline: ''
-  });
+  // -------------------- Handlers --------------------
+  const toggleIndustry = (industry: string) => {
+    if (selectedIndustries.includes(industry)) {
+      setSelectedIndustries(selectedIndustries.filter(i => i !== industry));
+      setSelectedRoles(selectedRoles.filter(r => !industryRoles[industry].includes(r)));
+    } else if (selectedIndustries.length < 3) {
+      setSelectedIndustries([...selectedIndustries, industry]);
+    }
+  };
 
-  // Industry options
-  const industries = [
-    'Agriculture & Farming',
-    'Construction',
-    'Hospitality & Tourism',
-    'Healthcare',
-    'Retail',
-    'Manufacturing',
-    'Mining',
-    'Education',
-    'Transport & Logistics',
-    'Other'
-  ];
+  const toggleRole = (role: string) => {
+    if (selectedRoles.includes(role)) {
+      setSelectedRoles(selectedRoles.filter(r => r !== role));
+    } else {
+      setSelectedRoles([...selectedRoles, role]);
+    }
+  };
 
-  // WHV Target Roles
-  const targetRoles = [
-    'Fruit Picker / Packer',
-    'Farm Hand',
-    'Bartender',
-    'Waitstaff',
-    'Chef / Cook',
-    'Construction Labourer',
-    'Cleaner',
-    'Housekeeper',
-    'Tour Guide',
-    'Other'
-  ];
-
-  const licenseOptions = [
-    'Driver\'s License',
-    'Forklift License',
-    'Working at Heights',
-    'White Card (Construction)',
-    'RSA (Responsible Service of Alcohol)',
-    'RCG (Responsible Conduct of Gambling)',
-    'Food Safety Certificate',
-    'First Aid Certificate',
-    'Heavy Vehicle License',
-    'Crane License',
-    'Electrical License',
-    'Other'
-  ];
-
-  // Work Experience handlers
   const addWorkExperience = () => {
     if (workExperiences.length < 8) {
       setWorkExperiences([...workExperiences, {
         id: Date.now().toString(),
         startDate: '',
         endDate: '',
-        position: '',
+        industry: '',
+        role: '',
+        otherRole: '',
         company: '',
         location: ''
       }]);
@@ -109,7 +100,6 @@ const WHVWorkExperience: React.FC = () => {
     setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
   };
 
-  // Job Reference handlers
   const addJobReference = () => {
     if (jobReferences.length < 5) {
       setJobReferences([...jobReferences, {
@@ -124,12 +114,8 @@ const WHVWorkExperience: React.FC = () => {
   };
 
   const updateJobReference = (id: string, field: string, value: string) => {
-    let processedValue = value;
-    if (field === 'phone') {
-      processedValue = value.replace(/\D/g, '');
-    }
     setJobReferences(jobReferences.map(ref =>
-      ref.id === id ? { ...ref, [field]: processedValue } : ref
+      ref.id === id ? { ...ref, [field]: value } : ref
     ));
   };
 
@@ -137,49 +123,24 @@ const WHVWorkExperience: React.FC = () => {
     setJobReferences(jobReferences.filter(ref => ref.id !== id));
   };
 
-  const handleWorkPreferenceChange = (field: string, value: string) => {
-    let processedValue: any = value;
-    if (field === 'licenses') {
-      const currentLicenses = workPreferences.licenses;
-      if (currentLicenses.includes(value)) {
-        processedValue = currentLicenses.filter(license => license !== value);
-      } else {
-        processedValue = [...currentLicenses, value];
-      }
-    }
-    setWorkPreferences({
-      ...workPreferences,
-      [field]: processedValue
-    });
-  };
-
-  const handleAboutYourselfChange = (field: string, value: string) => {
-    setAboutYourself({
-      ...aboutYourself,
-      [field]: value
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Work Preferences:', workPreferences);
-    console.log('Work Experiences:', workExperiences);
-    console.log('Job References:', jobReferences);
+    console.log("Work Preferences:", { selectedIndustries, selectedRoles, otherRole });
+    console.log("Work Experiences:", workExperiences);
+    console.log("Job References:", jobReferences);
     navigate('/whv/photo-upload');
   };
 
+  // -------------------- UI --------------------
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
-          {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
-
+          
           {/* Header */}
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
-              <button
+              <button 
                 onClick={() => navigate('/whv/current-address')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
@@ -192,134 +153,63 @@ const WHVWorkExperience: React.FC = () => {
             </div>
           </div>
 
-          {/* Scrollable Content */}
+          {/* Content */}
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8 pb-20">
-
-              {/* About Yourself */}
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold text-gray-900">Tell us about yourself</h2>
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Profile Tagline <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    type="text"
-                    value={aboutYourself.tagline}
-                    onChange={(e) => handleAboutYourselfChange('tagline', e.target.value)}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                    maxLength={60}
-                  />
-                  <p className="text-xs text-gray-500">Shown under your profile photo (max 60 characters)</p>
-                </div>
-              </div>
-
+              
               {/* Work Preferences */}
               <div className="space-y-6">
                 <h2 className="text-xl font-semibold text-gray-900">Work Preferences</h2>
-
-                {/* Target Role */}
+                
+                {/* Industry multi-select */}
                 <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Target Role <span className="text-red-500">*</span>
-                  </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('targetRole', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="Select your preferred role" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {targetRoles.map((role) => (
-                        <SelectItem key={role} value={role}>{role}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {workPreferences.targetRole === 'Other' && (
-                    <div className="mt-2 space-y-1">
-                      <Input
-                        type="text"
-                        value={workPreferences.otherTargetRole}
-                        onChange={(e) => handleWorkPreferenceChange('otherTargetRole', e.target.value)}
-                        className="h-12 bg-gray-100 border-0 text-gray-900"
-                        maxLength={50}
-                      />
-                      <p className="text-xs text-gray-500 text-orange-600">
-                        ⚠️ Custom roles may not count towards WHV 2nd & 3rd year extensions unless approved by Home Affairs.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Industry Interested In */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Industry <span className="text-red-500">*</span>
-                  </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('preferredIndustry', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="Select industry" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {industries.map((industry) => (
-                        <SelectItem key={industry} value={industry}>{industry}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Preferred Working Location */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Preferred Working Location <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Input
-                      type="text"
-                      value={workPreferences.preferredLocationState}
-                      onChange={(e) => handleWorkPreferenceChange('preferredLocationState', e.target.value)}
-                      className="h-12 bg-gray-100 border-0 text-gray-900"
-                      placeholder="State"
-                    />
-                    <Input
-                      type="text"
-                      value={workPreferences.preferredLocationCity}
-                      onChange={(e) => handleWorkPreferenceChange('preferredLocationCity', e.target.value)}
-                      className="h-12 bg-gray-100 border-0 text-gray-900"
-                      placeholder="City/Suburb"
-                    />
-                  </div>
-                </div>
-
-                {/* Licenses/Tickets */}
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">
-                    Licenses/Tickets
-                  </Label>
+                  <Label className="text-base font-medium text-gray-700">Select up to 3 Industries</Label>
                   <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-100 rounded-lg p-3">
-                    {licenseOptions.map((license) => (
-                      <div key={license} className="flex items-center gap-3">
+                    {allIndustries.map(ind => (
+                      <div key={ind} className="flex items-center gap-3">
                         <input
                           type="checkbox"
-                          id={`license-${license}`}
-                          checked={workPreferences.licenses.includes(license)}
-                          onChange={() => handleWorkPreferenceChange('licenses', license)}
-                          className="w-4 h-4 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
+                          checked={selectedIndustries.includes(ind)}
+                          onChange={() => toggleIndustry(ind)}
+                          disabled={!selectedIndustries.includes(ind) && selectedIndustries.length >= 3}
+                          className="w-4 h-4 text-orange-500 bg-white border-gray-300 rounded"
                         />
-                        <Label htmlFor={`license-${license}`} className="text-sm text-gray-700 cursor-pointer flex-1">
-                          {license}
-                        </Label>
+                        <span className="text-sm text-gray-700">{ind}</span>
                       </div>
                     ))}
                   </div>
-                  {workPreferences.licenses.includes('Other') && (
-                    <Input
-                      type="text"
-                      value={workPreferences.otherLicense}
-                      onChange={(e) => handleWorkPreferenceChange('otherLicense', e.target.value)}
-                      className="h-10 bg-gray-100 border-0 text-gray-900 mt-2"
-                      maxLength={50}
-                    />
-                  )}
                 </div>
+
+                {/* Roles */}
+                {selectedIndustries.length > 0 && (
+                  <div className="space-y-2">
+                    <Label className="text-base font-medium text-gray-700">Preferred Roles</Label>
+                    <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-100 rounded-lg p-3">
+                      {selectedIndustries.flatMap(ind => industryRoles[ind]).map(role => (
+                        <div key={role} className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedRoles.includes(role)}
+                            onChange={() => toggleRole(role)}
+                            className="w-4 h-4 text-orange-500 bg-white border-gray-300 rounded"
+                          />
+                          <span className="text-sm text-gray-700">{role}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {selectedRoles.includes("Other") && (
+                      <Input
+                        type="text"
+                        value={otherRole}
+                        onChange={(e) => setOtherRole(e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 mt-2"
+                      />
+                    )}
+                    <p className="text-xs text-red-500 mt-1">
+                      ⚠️ Only specific industries/roles count toward WHV 2nd & 3rd year extensions. Please check Home Affairs for eligibility.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Work Experience Details */}
@@ -347,43 +237,58 @@ const WHVWorkExperience: React.FC = () => {
                         variant="ghost"
                         className="text-red-500 hover:text-red-700 p-1"
                       >
-                        <X className="w-4 h-4" /> Remove
+                        <X className="w-4 h-4" />
+                        Remove
                       </Button>
                     </div>
 
+                    {/* Industry */}
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Start Date</Label>
-                      <Input
-                        type="text"
-                        value={experience.startDate}
-                        onChange={(e) => updateWorkExperience(experience.id, 'startDate', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={10}
-                      />
+                      <Label className="text-sm font-medium text-gray-700">Industry</Label>
+                      <Select
+                        onValueChange={(value) => updateWorkExperience(experience.id, "industry", value)}
+                        value={experience.industry}
+                      >
+                        <SelectTrigger className="h-10 bg-gray-100 border-0 text-gray-900 text-sm">
+                          <SelectValue placeholder="Select industry" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {allIndustries.map(ind => (
+                            <SelectItem key={ind} value={ind}>{ind}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">End Date</Label>
-                      <Input
-                        type="text"
-                        value={experience.endDate}
-                        onChange={(e) => updateWorkExperience(experience.id, 'endDate', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={10}
-                      />
-                    </div>
+                    {/* Role */}
+                    {experience.industry && (
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Role</Label>
+                        <Select
+                          onValueChange={(value) => updateWorkExperience(experience.id, "role", value)}
+                          value={experience.role}
+                        >
+                          <SelectTrigger className="h-10 bg-gray-100 border-0 text-gray-900 text-sm">
+                            <SelectValue placeholder="Select role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {industryRoles[experience.industry].map(role => (
+                              <SelectItem key={role} value={role}>{role}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {experience.role === "Other" && (
+                          <Input
+                            type="text"
+                            value={experience.otherRole}
+                            onChange={(e) => updateWorkExperience(experience.id, "otherRole", e.target.value)}
+                            className="h-10 bg-gray-100 border-0 text-gray-900 text-sm mt-2"
+                          />
+                        )}
+                      </div>
+                    )}
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Position</Label>
-                      <Input
-                        type="text"
-                        value={experience.position}
-                        onChange={(e) => updateWorkExperience(experience.id, 'position', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
-                      />
-                    </div>
-
+                    {/* Company */}
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">Company</Label>
                       <Input
@@ -391,10 +296,10 @@ const WHVWorkExperience: React.FC = () => {
                         value={experience.company}
                         onChange={(e) => updateWorkExperience(experience.id, 'company', e.target.value)}
                         className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
                       />
                     </div>
 
+                    {/* Location */}
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">Location</Label>
                       <Input
@@ -402,14 +307,37 @@ const WHVWorkExperience: React.FC = () => {
                         value={experience.location}
                         onChange={(e) => updateWorkExperience(experience.id, 'location', e.target.value)}
                         className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
                       />
+                    </div>
+
+                    {/* Dates */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Start Date (DD/MM/YYYY)</Label>
+                        <Input
+                          type="text"
+                          value={experience.startDate}
+                          onChange={(e) => updateWorkExperience(experience.id, 'startDate', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          maxLength={10}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">End Date (DD/MM/YYYY)</Label>
+                        <Input
+                          type="text"
+                          value={experience.endDate}
+                          onChange={(e) => updateWorkExperience(experience.id, 'endDate', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                          maxLength={10}
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Job References */}
+              {/* Job References (unchanged) */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-gray-900">Job References</h2>
@@ -419,7 +347,8 @@ const WHVWorkExperience: React.FC = () => {
                     disabled={jobReferences.length >= 5}
                     className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm"
                   >
-                    <Plus className="w-4 h-4 mr-1" /> Add Reference
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Reference
                   </Button>
                 </div>
 
@@ -433,63 +362,57 @@ const WHVWorkExperience: React.FC = () => {
                         variant="ghost"
                         className="text-red-500 hover:text-red-700 p-1"
                       >
-                        <X className="w-4 h-4" /> Remove
+                        <X className="w-4 h-4" />
+                        Remove
                       </Button>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Name</Label>
-                      <Input
-                        type="text"
-                        value={reference.name}
-                        onChange={(e) => updateJobReference(reference.id, 'name', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Business Name</Label>
-                      <Input
-                        type="text"
-                        value={reference.businessName}
-                        onChange={(e) => updateJobReference(reference.id, 'businessName', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Email</Label>
-                      <Input
-                        type="email"
-                        value={reference.email}
-                        onChange={(e) => updateJobReference(reference.id, 'email', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={100}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Phone</Label>
-                      <Input
-                        type="text"
-                        value={reference.phone}
-                        onChange={(e) => updateJobReference(reference.id, 'phone', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={15}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Role</Label>
-                      <Input
-                        type="text"
-                        value={reference.role}
-                        onChange={(e) => updateJobReference(reference.id, 'role', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        maxLength={50}
-                      />
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Name</Label>
+                        <Input
+                          type="text"
+                          value={reference.name}
+                          onChange={(e) => updateJobReference(reference.id, 'name', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Business Name</Label>
+                        <Input
+                          type="text"
+                          value={reference.businessName}
+                          onChange={(e) => updateJobReference(reference.id, 'businessName', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Email</Label>
+                        <Input
+                          type="email"
+                          value={reference.email}
+                          onChange={(e) => updateJobReference(reference.id, 'email', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Phone Number</Label>
+                        <Input
+                          type="text"
+                          value={reference.phone}
+                          onChange={(e) => updateJobReference(reference.id, 'phone', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Role</Label>
+                        <Input
+                          type="text"
+                          value={reference.role}
+                          onChange={(e) => updateJobReference(reference.id, 'role', e.target.value)}
+                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -497,10 +420,13 @@ const WHVWorkExperience: React.FC = () => {
 
               {/* Submit */}
               <div className="pt-8 space-y-4">
-                <Button type="submit" className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium">
+                <Button 
+                  type="submit"
+                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                >
                   Continue →
                 </Button>
-                <Button
+                <Button 
                   type="button"
                   onClick={() => navigate('/whv/photo-upload')}
                   variant="ghost"
