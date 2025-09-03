@@ -10,25 +10,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-// ✅ Schema updated for arrays & pay object
+// ✅ Schema
 const formSchema = z.object({
-  businessTagline: z
-    .string()
-    .min(10, { message: "Please describe what your business does (minimum 10 characters)." })
-    .max(200, { message: "Business tagline must be 200 characters or less." }),
-  yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
-  employeeCount: z.string().min(1, { message: "Please select number of employees." }),
-  industry: z.string().min(1, { message: "Please select an industry." }),
-  customIndustry: z.string().optional(),
-  rolesOffered: z.array(z.string()).min(1, { message: "Please select at least one role." }),
-  customRole: z.string().optional(),
-  jobAvailability: z.array(z.string()).min(1, { message: "Please select job availability." }),
+  businessTagline: z.string().min(10).max(200),
+  yearsInBusiness: z.string().min(1),
+  employeeCount: z.string().min(1),
+  industry: z.string().min(1),
+  rolesOffered: z.array(z.string()).min(1),
+  jobAvailability: z.array(z.string()).min(1),
   pay: z.object({
     min: z.number().nonnegative(),
     max: z.number().nonnegative(),
     unit: z.enum(["hourly", "daily", "weekly", "piecework"]),
   }),
-  facilitiesAndExtras: z.array(z.string()).min(1, { message: "Please select at least one facility or extra." }),
+  facilitiesAndExtras: z.array(z.string()).min(1),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -36,48 +31,32 @@ type FormData = z.infer<typeof formSchema>;
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [customRoles, setCustomRoles] = useState<string[]>([]);
 
-  const yearsOptions = [
-    "Less than 1 year",
-    "1 year",
-    "2 years",
-    "3 years",
-    "4 years",
-    "5 years",
-    "6-10 years",
-    "11-15 years",
-    "16-20 years",
-    "20+ years",
-  ];
-
-  const employeeCountOptions = [
-    "1 employee",
-    "2-5 employees",
-    "6-10 employees",
-    "11-20 employees",
-    "21-50 employees",
-    "51-100 employees",
-    "100+ employees",
-  ];
-
+  // ✅ Official WHV industries
   const industries = [
     "Plant & Animal Cultivation",
-    "Tourism & Hospitality",
-    "Construction",
+    "Fishing & Pearling",
+    "Tree Farming & Felling",
     "Mining",
-    "Healthcare & Medical",
-    "Other",
+    "Construction",
+    "Tourism & Hospitality",
+    "Bushfire Recovery",
+    "Natural Disaster Recovery",
+    "Healthcare & Childcare (Critical Sectors)",
   ];
 
-  // Map industries → roles
+  // ✅ Example roles per industry
   const industryRoles: Record<string, string[]> = {
-    "Plant & Animal Cultivation": ["Fruit Picker", "Farm Worker", "Dairy Worker", "Packer"],
-    "Tourism & Hospitality": ["Waitstaff", "Chef", "Cleaner", "Tour Guide"],
+    "Plant & Animal Cultivation": ["Fruit Picker", "Packer", "Dairy Worker", "Livestock Worker", "Horse Breeder", "Reforestation Worker"],
+    "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Pearl Diver"],
+    "Tree Farming & Felling": ["Tree Planter", "Logger", "Timber Transport Worker"],
+    Mining: ["Driller", "Truck Driver", "Exploration Worker", "Quarry Operator"],
     Construction: ["Labourer", "Painter", "Scaffolder", "Site Cleaner"],
-    Mining: ["Driller", "Truck Driver", "Maintenance Worker"],
-    "Healthcare & Medical": ["Nurse", "Aged Care Worker", "Support Worker"],
-    Other: ["Other"],
+    "Tourism & Hospitality": ["Chef", "Bartender", "Waitstaff", "Housekeeper", "Tour Guide", "Dive Instructor"],
+    "Bushfire Recovery": ["Wildlife Carer", "Rebuilder", "Clean-up Crew"],
+    "Natural Disaster Recovery": ["Clean-up Crew", "Insurance Support", "Animal Carer"],
+    "Healthcare & Childcare (Critical Sectors)": ["Nurse", "Aged Care Worker", "Disability Support", "Childcare Worker", "Cleaner"],
   };
 
   const jobAvailabilityOptions = ["Full-time", "Part-time", "Casual", "Seasonal", "Piecework"];
@@ -109,13 +88,27 @@ const EmployerAboutBusiness: React.FC = () => {
   });
 
   const watchedIndustry = watch("industry");
+  const watchedRoles = watch("rolesOffered") || [];
+
+  // ✅ Add custom role input
+  const addCustomRole = () => setCustomRoles([...customRoles, ""]);
+  const updateCustomRole = (i: number, value: string) => {
+    const newRoles = [...customRoles];
+    newRoles[i] = value;
+    setCustomRoles(newRoles);
+    const merged = [...watchedRoles.filter((r) => !customRoles.includes(r)), ...newRoles.filter((r) => r.trim() !== "")];
+    setValue("rolesOffered", merged, { shouldValidate: true });
+  };
+  const removeCustomRole = (i: number) => {
+    const newRoles = customRoles.filter((_, idx) => idx !== i);
+    setCustomRoles(newRoles);
+    const merged = watchedRoles.filter((r) => r !== customRoles[i]);
+    setValue("rolesOffered", merged, { shouldValidate: true });
+  };
 
   const onSubmit = (data: FormData) => {
     console.log("Business info submitted:", data);
-    toast({
-      title: "Business setup complete!",
-      description: "Your employer profile has been created successfully",
-    });
+    toast({ title: "Business setup complete!", description: "Your employer profile has been created successfully" });
     navigate("/employer/photo-upload");
   };
 
@@ -129,20 +122,18 @@ const EmployerAboutBusiness: React.FC = () => {
           <div className="w-full h-full flex flex-col relative bg-white">
             {/* Header */}
             <div className="px-6 pt-16 pb-6">
-              <div className="flex items-center justify-between mb-8">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate("/business-registration")}
-                >
-                  <ArrowLeft className="w-6 h-6 text-gray-700" />
-                </Button>
-              </div>
-              <div className="flex items-center justify-between mb-6">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
+                onClick={() => navigate("/business-registration")}
+              >
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
+              </Button>
+              <div className="flex items-center justify-between mt-6">
                 <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                 <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                  <span className="text-sm font-medium text-gray-600">4/6</span>
+                  <span className="text-sm font-medium text-gray-600">4/5</span>
                 </div>
               </div>
             </div>
@@ -152,8 +143,8 @@ const EmployerAboutBusiness: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Tagline */}
                 <div>
-                  <Label>Business Tagline</Label>
-                  <Input placeholder="Quality produce, sustainable farming" maxLength={200} {...register("businessTagline")} />
+                  <Label>Business Tagline *</Label>
+                  <Input placeholder="Quality produce, sustainable farming" {...register("businessTagline")} />
                   {errors.businessTagline && <p className="text-red-500 text-sm">{errors.businessTagline.message}</p>}
                 </div>
 
@@ -167,7 +158,9 @@ const EmployerAboutBusiness: React.FC = () => {
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger><SelectValue placeholder="Select years" /></SelectTrigger>
                         <SelectContent>
-                          {yearsOptions.map((opt) => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                          {["<1", "1", "2", "3", "4", "5", "6-10", "11-15", "16-20", "20+"].map((opt) => (
+                            <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -184,7 +177,9 @@ const EmployerAboutBusiness: React.FC = () => {
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger><SelectValue placeholder="Select employees" /></SelectTrigger>
                         <SelectContent>
-                          {employeeCountOptions.map((opt) => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                          {["1", "2-5", "6-10", "11-20", "21-50", "51-100", "100+"].map((opt) => (
+                            <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -198,7 +193,7 @@ const EmployerAboutBusiness: React.FC = () => {
                     name="industry"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={(value) => { field.onChange(value); setSelectedIndustry(value); }} value={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger><SelectValue placeholder="Select industry" /></SelectTrigger>
                         <SelectContent>
                           {industries.map((ind) => <SelectItem key={ind} value={ind}>{ind}</SelectItem>)}
@@ -212,14 +207,14 @@ const EmployerAboutBusiness: React.FC = () => {
                 {watchedIndustry && (
                   <div>
                     <Label>Roles Offered *</Label>
-                    {industryRoles[watchedIndustry].map((role) => (
+                    {industryRoles[watchedIndustry]?.map((role) => (
                       <div key={role} className="flex items-center space-x-2">
                         <input
                           type="checkbox"
                           value={role}
-                          checked={watch("rolesOffered")?.includes(role)}
+                          checked={watchedRoles.includes(role)}
                           onChange={(e) => {
-                            const current = watch("rolesOffered") || [];
+                            const current = watchedRoles;
                             if (e.target.checked) setValue("rolesOffered", [...current, role]);
                             else setValue("rolesOffered", current.filter((r) => r !== role));
                           }}
@@ -227,6 +222,17 @@ const EmployerAboutBusiness: React.FC = () => {
                         <span>{role}</span>
                       </div>
                     ))}
+
+                    {/* Custom roles */}
+                    {customRoles.map((role, i) => (
+                      <div key={i} className="flex items-center space-x-2 mt-2">
+                        <Input placeholder="Enter custom role" value={role} onChange={(e) => updateCustomRole(i, e.target.value)} />
+                        <Button type="button" variant="destructive" size="sm" onClick={() => removeCustomRole(i)}>Remove</Button>
+                      </div>
+                    ))}
+                    <Button type="button" variant="outline" size="sm" className="mt-2" onClick={addCustomRole}>
+                      + Add Another Role
+                    </Button>
                   </div>
                 )}
 
@@ -310,3 +316,4 @@ const EmployerAboutBusiness: React.FC = () => {
 };
 
 export default EmployerAboutBusiness;
+
