@@ -98,17 +98,6 @@ const validatePhoneNumber = (phone: string) => {
   return "";
 };
 
-const australianStates = [
-  "Australian Capital Territory",
-  "New South Wales",
-  "Northern Territory",
-  "Queensland",
-  "South Australia",
-  "Tasmania",
-  "Victoria",
-  "Western Australia",
-];
-
 const WHVProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -122,7 +111,8 @@ const WHVProfileSetup: React.FC = () => {
     phoneNumber: "",
     addressLine1: "",
     addressLine2: "",
-    suburbCity: "",
+    suburb: "",
+    city: "",
     state: "",
     postCode: "",
   });
@@ -141,11 +131,19 @@ const WHVProfileSetup: React.FC = () => {
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-      visaType: name === "nationality" ? "" : formData.visaType,
-    });
+    if (name === "nationality") {
+      setFormData({
+        ...formData,
+        nationality: value,
+        visaType: "", // reset only when nationality changes
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+
     if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
@@ -189,17 +187,17 @@ const WHVProfileSetup: React.FC = () => {
     else if (!formData.visaType)
       newErrors.visaType = "Visa type is required";
 
-    // Address validation
     if (!formData.addressLine1.trim())
-      newErrors.addressLine1 = "Address Line 1 is required";
-    if (!formData.suburbCity.trim())
-      newErrors.suburbCity = "Suburb/City is required";
-    if (!formData.state)
-      newErrors.state = "State is required";
+      newErrors.addressLine1 = "Address line 1 is required";
+    if (!formData.suburb.trim())
+      newErrors.suburb = "Suburb is required";
+    if (!formData.city.trim())
+      newErrors.city = "City is required";
+    if (!formData.state) newErrors.state = "State is required";
     if (!formData.postCode.trim())
-      newErrors.postCode = "Postcode is required";
+      newErrors.postCode = "Post code is required";
     else if (formData.postCode.length !== 4)
-      newErrors.postCode = "Postcode must be 4 digits";
+      newErrors.postCode = "Post code must be 4 digits";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -215,7 +213,7 @@ const WHVProfileSetup: React.FC = () => {
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 flex-shrink-0"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
 
           {/* Header */}
           <div className="px-4 py-5 border-b bg-white flex-shrink-0 mb-4">
@@ -226,7 +224,9 @@ const WHVProfileSetup: React.FC = () => {
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
+              <h1 className="text-lg font-medium text-gray-900">
+                Account Set Up
+              </h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">3/6</span>
               </div>
@@ -236,7 +236,7 @@ const WHVProfileSetup: React.FC = () => {
           {/* Content */}
           <div className="flex-1 overflow-y-auto px-4 pt-6 pb-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Names */}
+              {/* Given Name */}
               <div className="space-y-2">
                 <Label htmlFor="givenName">
                   Given Name(s) <span className="text-red-500">*</span>
@@ -255,6 +255,7 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
+              {/* Middle Name */}
               <div className="space-y-2">
                 <Label htmlFor="middleName">Middle Name</Label>
                 <Input
@@ -266,6 +267,7 @@ const WHVProfileSetup: React.FC = () => {
                 />
               </div>
 
+              {/* Family Name */}
               <div className="space-y-2">
                 <Label htmlFor="familyName">
                   Family Name(s) <span className="text-red-500">*</span>
@@ -284,10 +286,11 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
-              {/* DOB */}
+              {/* Date of Birth */}
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">
-                  Date of Birth (DD/MM/YYYY) <span className="text-red-500">*</span>
+                  Date of Birth (DD/MM/YYYY){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="dateOfBirth"
@@ -307,14 +310,20 @@ const WHVProfileSetup: React.FC = () => {
               {/* Nationality */}
               <div className="space-y-2">
                 <Label htmlFor="nationality">
-                  Nationality (Country of Passport) <span className="text-red-500">*</span>
+                  Nationality (Country of Passport){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Select
                   value={formData.nationality}
-                  onValueChange={(value) => handleSelectChange("nationality", value)}
+                  onValueChange={(value) =>
+                    handleSelectChange("nationality", value)
+                  }
                 >
-                  <SelectTrigger className={`h-12 bg-gray-100 border-0 ${
-                      errors.nationality ? "border-red-500" : ""}`}>
+                  <SelectTrigger
+                    className={`h-12 bg-gray-100 border-0 ${
+                      errors.nationality ? "border-red-500" : ""
+                    }`}
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -338,10 +347,15 @@ const WHVProfileSetup: React.FC = () => {
                   </Label>
                   <Select
                     value={formData.visaType}
-                    onValueChange={(value) => handleSelectChange("visaType", value)}
+                    onValueChange={(value) =>
+                      handleSelectChange("visaType", value)
+                    }
                   >
-                    <SelectTrigger className={`h-12 bg-gray-100 border-0 ${
-                        errors.visaType ? "border-red-500" : ""}`}>
+                    <SelectTrigger
+                      className={`h-12 bg-gray-100 border-0 ${
+                        errors.visaType ? "border-red-500" : ""
+                      }`}
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -358,10 +372,11 @@ const WHVProfileSetup: React.FC = () => {
                 </div>
               )}
 
-              {/* Visa Expiry */}
+              {/* Visa Expiry Date */}
               <div className="space-y-2">
                 <Label htmlFor="visaExpiryDate">
-                  Visa Expiry Date (DD/MM/YYYY) <span className="text-red-500">*</span>
+                  Visa Expiry Date (DD/MM/YYYY){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="visaExpiryDate"
@@ -378,7 +393,7 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
-              {/* Phone */}
+              {/* Phone Number */}
               <div className="space-y-2">
                 <Label htmlFor="phoneNumber">
                   Australian Phone Number <span className="text-red-500">*</span>
@@ -397,7 +412,7 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
-              {/* Address */}
+              {/* Address Line 1 */}
               <div className="space-y-2">
                 <Label htmlFor="addressLine1">
                   Address Line 1 <span className="text-red-500">*</span>
@@ -416,6 +431,7 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
+              {/* Address Line 2 */}
               <div className="space-y-2">
                 <Label htmlFor="addressLine2">Address Line 2</Label>
                 <Input
@@ -427,24 +443,45 @@ const WHVProfileSetup: React.FC = () => {
                 />
               </div>
 
+              {/* Suburb */}
               <div className="space-y-2">
-                <Label htmlFor="suburbCity">
-                  Suburb / City <span className="text-red-500">*</span>
+                <Label htmlFor="suburb">
+                  Suburb <span className="text-red-500">*</span>
                 </Label>
                 <Input
-                  id="suburbCity"
-                  name="suburbCity"
-                  value={formData.suburbCity}
+                  id="suburb"
+                  name="suburb"
+                  value={formData.suburb}
                   onChange={handleInputChange}
                   className={`h-12 bg-gray-100 border-0 ${
-                    errors.suburbCity ? "border-red-500" : ""
+                    errors.suburb ? "border-red-500" : ""
                   }`}
                 />
-                {errors.suburbCity && (
-                  <p className="text-red-500 text-sm">{errors.suburbCity}</p>
+                {errors.suburb && (
+                  <p className="text-red-500 text-sm">{errors.suburb}</p>
                 )}
               </div>
 
+              {/* City */}
+              <div className="space-y-2">
+                <Label htmlFor="city">
+                  City <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.city ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.city && (
+                  <p className="text-red-500 text-sm">{errors.city}</p>
+                )}
+              </div>
+
+              {/* State */}
               <div className="space-y-2">
                 <Label htmlFor="state">
                   State <span className="text-red-500">*</span>
@@ -453,16 +490,22 @@ const WHVProfileSetup: React.FC = () => {
                   value={formData.state}
                   onValueChange={(value) => handleSelectChange("state", value)}
                 >
-                  <SelectTrigger className={`h-12 bg-gray-100 border-0 ${
-                      errors.state ? "border-red-500" : ""}`}>
+                  <SelectTrigger
+                    className={`h-12 bg-gray-100 border-0 ${
+                      errors.state ? "border-red-500" : ""
+                    }`}
+                  >
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
                   <SelectContent>
-                    {australianStates.map((s) => (
-                      <SelectItem key={s} value={s}>
-                        {s}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="Australian Capital Territory">Australian Capital Territory</SelectItem>
+                    <SelectItem value="New South Wales">New South Wales</SelectItem>
+                    <SelectItem value="Northern Territory">Northern Territory</SelectItem>
+                    <SelectItem value="Queensland">Queensland</SelectItem>
+                    <SelectItem value="South Australia">South Australia</SelectItem>
+                    <SelectItem value="Tasmania">Tasmania</SelectItem>
+                    <SelectItem value="Victoria">Victoria</SelectItem>
+                    <SelectItem value="Western Australia">Western Australia</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.state && (
@@ -470,9 +513,10 @@ const WHVProfileSetup: React.FC = () => {
                 )}
               </div>
 
+              {/* Post Code */}
               <div className="space-y-2">
                 <Label htmlFor="postCode">
-                  Postcode <span className="text-red-500">*</span>
+                  Post Code <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="postCode"
@@ -506,6 +550,5 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
-
 
 
