@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { getEmployerProfile, updateEmployerProfile } from "@/utils/employerProfile";
 
-// ✅ Schema (same as EmployerAboutBusiness + registration where needed)
+// ✅ Schema
 const formSchema = z.object({
   companyName: z.string().min(2, "Company name is required."),
   abn: z.string().min(11).max(11).regex(/^\d+$/, "ABN must be 11 digits."),
@@ -35,15 +36,59 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-// ✅ Options (same as AboutBusiness)
-const industries = [...];
-const industryRoles = {...};
+// ✅ Options
+const industries = [
+  "Plant & Animal Cultivation",
+  "Fishing & Pearling",
+  "Tree Farming & Felling",
+  "Mining",
+  "Construction",
+  "Tourism & Hospitality",
+  "Natural Disaster Recovery",
+  "Healthcare & Medical (Critical Sectors)",
+];
+
+const industryRoles: Record<string, string[]> = {
+  "Plant & Animal Cultivation": ["Fruit Picker", "Packer", "Dairy Worker", "Livestock Worker", "Horse Breeder", "Reforestation Worker"],
+  "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Pearl Diver"],
+  "Tree Farming & Felling": ["Tree Planter", "Logger", "Timber Transport Worker"],
+  Mining: ["Driller", "Truck Driver", "Quarry Operator", "Exploration Worker"],
+  Construction: ["Labourer", "Painter", "Scaffolder", "Site Cleaner"],
+  "Tourism & Hospitality": ["Chef", "Bartender", "Waitstaff", "Housekeeper", "Tour Guide"],
+  "Natural Disaster Recovery": ["Clean-up Crew", "Rebuilder", "Wildlife Carer"],
+  "Healthcare & Medical (Critical Sectors)": ["Nurse", "Aged Care Worker", "Disability Support", "Childcare Worker", "Cleaner"],
+};
+
 const jobTypes = ["Full-time", "Part-time", "Casual", "Seasonal", "Contract"];
+
 const payRanges = ["$25–30/hour", "$30–35/hour", "$35–40/hour", "$40–45/hour", "$45+/hour"];
-const facilitiesExtras = ["Accommodation provided", "Meals included", "Transport provided", "Training provided", "Equipment provided", "Flexible hours", "Career progression", "Team environment", "Other"];
+
+const facilitiesExtras = [
+  "Accommodation provided",
+  "Meals included",
+  "Transport provided",
+  "Training provided",
+  "Equipment provided",
+  "Flexible hours",
+  "Career progression",
+  "Team environment",
+  "Other",
+];
+
 const yearsOptions = ["<1", "1", "2", "3", "4", "5", "6-10", "11-15", "16-20", "20+"];
+
 const employeeCountOptions = ["1", "2-5", "6-10", "11-20", "21-50", "51-100", "100+"];
-const AUSTRALIAN_STATES = ["Australian Capital Territory","New South Wales","Northern Territory","Queensland","South Australia","Tasmania","Victoria","Western Australia"];
+
+const AUSTRALIAN_STATES = [
+  "Australian Capital Territory",
+  "New South Wales",
+  "Northern Territory",
+  "Queensland",
+  "South Australia",
+  "Tasmania",
+  "Victoria",
+  "Western Australia",
+];
 
 const EditBusinessProfile: React.FC = () => {
   const navigate = useNavigate();
@@ -66,12 +111,10 @@ const EditBusinessProfile: React.FC = () => {
     },
   });
 
-  // ✅ Load existing data into form on mount
+  // ✅ Load existing profile into form
   useEffect(() => {
-    const aboutData = JSON.parse(localStorage.getItem("aboutBusiness") || "{}");
-    const regData = JSON.parse(localStorage.getItem("businessRegistration") || "{}");
-    const merged = { ...regData, ...aboutData };
-    reset(merged);
+    const profile = getEmployerProfile();
+    if (profile) reset(profile);
   }, [reset]);
 
   const watchedIndustry = watch("industry");
@@ -80,11 +123,13 @@ const EditBusinessProfile: React.FC = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Updated Business Profile:", data);
+    updateEmployerProfile(data); // ✅ overwrite stored profile
 
-    // ✅ Save updates
-    localStorage.setItem("aboutBusiness", JSON.stringify(data));
+    toast({
+      title: "Profile Updated",
+      description: "Your business profile has been successfully updated.",
+    });
 
-    toast({ title: "Profile Updated", description: "Your business profile has been updated." });
     navigate("/employer/dashboard");
   };
 
@@ -97,25 +142,248 @@ const EditBusinessProfile: React.FC = () => {
           <div className="w-full h-full flex flex-col bg-white">
             {/* Header */}
             <div className="px-6 pt-16 pb-4 flex items-center justify-between">
-              <button onClick={() => navigate("/employer/dashboard")} className="text-[#1E293B] underline">Cancel</button>
+              <button onClick={() => navigate("/employer/dashboard")} className="text-[#1E293B] underline">
+                Cancel
+              </button>
               <h1 className="text-lg font-semibold">Edit Business Profile</h1>
               <button type="submit" form="edit-business-form" className="flex items-center text-[#1E293B] underline">
-                <Check size={16} className="mr-1"/> Save
+                <Check size={16} className="mr-1" /> Save
               </button>
             </div>
 
             {/* Form */}
             <div className="flex-1 px-6 overflow-y-auto pb-20">
               <form id="edit-business-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                
-                {/* ABN (disabled) */}
+                {/* ABN (non-editable) */}
                 <div>
                   <Label>ABN</Label>
                   <Input {...register("abn")} disabled className="h-14 bg-gray-100 rounded-xl text-gray-500" />
                 </div>
 
-                {/* ... the rest of your fields (same as AboutBusiness) ... */}
+                {/* Company Name */}
+                <div>
+                  <Label>Company Name</Label>
+                  <Input {...register("companyName")} className="h-14 bg-gray-100 rounded-xl" />
+                  {errors.companyName && <p className="text-red-500 text-sm">{errors.companyName.message}</p>}
+                </div>
 
+                {/* Tagline */}
+                <div>
+                  <Label>Business Tagline</Label>
+                  <Input {...register("businessTagline")} className="h-14 bg-gray-100 rounded-xl" />
+                  {errors.businessTagline && <p className="text-red-500 text-sm">{errors.businessTagline.message}</p>}
+                </div>
+
+                {/* Years in Business */}
+                <div>
+                  <Label>Years in Business</Label>
+                  <Controller
+                    name="yearsInBusiness"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select years" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {yearsOptions.map((opt) => (
+                            <SelectItem key={opt} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* Employee Count */}
+                <div>
+                  <Label>Employees</Label>
+                  <Controller
+                    name="employeeCount"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select employees" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {employeeCountOptions.map((opt) => (
+                            <SelectItem key={opt} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* Industry */}
+                <div>
+                  <Label>Industry</Label>
+                  <Controller
+                    name="industry"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select industry" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {industries.map((ind) => (
+                            <SelectItem key={ind} value={ind}>
+                              {ind}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* Roles Offered */}
+                {watchedIndustry && (
+                  <div>
+                    <Label>Roles Offered</Label>
+                    {industryRoles[watchedIndustry]?.concat("Other").map((role) => (
+                      <label key={role} className="flex items-center space-x-2 mt-2">
+                        <input
+                          type="checkbox"
+                          value={role}
+                          checked={watchedRoles.includes(role)}
+                          onChange={(e) => {
+                            const current = watchedRoles;
+                            if (e.target.checked) setValue("rolesOffered", [...current, role]);
+                            else setValue("rolesOffered", current.filter((r) => r !== role));
+                          }}
+                        />
+                        <span>{role}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+
+                {/* Job Type */}
+                <div>
+                  <Label>Job Type</Label>
+                  {jobTypes.map((type) => (
+                    <label key={type} className="flex items-center space-x-2 mt-2">
+                      <input
+                        type="checkbox"
+                        value={type}
+                        checked={watch("jobType")?.includes(type)}
+                        onChange={(e) => {
+                          const current = watch("jobType") || [];
+                          if (e.target.checked) setValue("jobType", [...current, type]);
+                          else setValue("jobType", current.filter((a) => a !== type));
+                        }}
+                      />
+                      <span>{type}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Pay Range */}
+                <div>
+                  <Label>Pay Range</Label>
+                  <Controller
+                    name="payRange"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select pay" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {payRanges.map((range) => (
+                            <SelectItem key={range} value={range}>
+                              {range}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* Facilities */}
+                <div>
+                  <Label>Facilities & Extras</Label>
+                  {facilitiesExtras.map((facility) => (
+                    <label key={facility} className="flex items-center space-x-2 mt-2">
+                      <input
+                        type="checkbox"
+                        value={facility}
+                        checked={watchedFacilities.includes(facility)}
+                        onChange={(e) => {
+                          const current = watchedFacilities;
+                          if (e.target.checked) setValue("facilitiesAndExtras", [...current, facility]);
+                          else setValue("facilitiesAndExtras", current.filter((x) => x !== facility));
+                        }}
+                      />
+                      <span>{facility}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <Label>Business Phone</Label>
+                  <Input {...register("businessPhone")} className="h-14 bg-gray-100 rounded-xl" />
+                </div>
+
+                {/* Website */}
+                <div>
+                  <Label>Website</Label>
+                  <Input {...register("website")} className="h-14 bg-gray-100 rounded-xl" />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <Label>Address Line 1</Label>
+                  <Input {...register("addressLine1")} className="h-14 bg-gray-100 rounded-xl" />
+                </div>
+
+                <div>
+                  <Label>Address Line 2</Label>
+                  <Input {...register("addressLine2")} className="h-14 bg-gray-100 rounded-xl" />
+                </div>
+
+                <div>
+                  <Label>Suburb / City</Label>
+                  <Input {...register("suburbCity")} className="h-14 bg-gray-100 rounded-xl" />
+                </div>
+
+                {/* State */}
+                <div>
+                  <Label>State</Label>
+                  <Controller
+                    name="state"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select state" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AUSTRALIAN_STATES.map((s) => (
+                            <SelectItem key={s} value={s}>
+                              {s}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* Postcode */}
+                <div>
+                  <Label>Postcode</Label>
+                  <Input {...register("postCode")} className="h-14 bg-gray-100 rounded-xl" maxLength={4} />
+                </div>
               </form>
             </div>
           </div>
