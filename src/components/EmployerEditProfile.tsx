@@ -62,7 +62,11 @@ const EmployerEditProfile: React.FC = () => {
   };
 
   const handlePreviewProfile = () => {
-    navigate('/employer/profile-preview');
+    navigate('/employer/profile-preview'); // short profile card
+  };
+
+  const handlePreviewFullProfile = () => {
+    navigate('/employer/full-profile-preview'); // full profile view
   };
 
   return (
@@ -102,27 +106,40 @@ const EmployerEditProfile: React.FC = () => {
               {/* Profile Visibility */}
               <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-semibold text-gray-900 mb-1">Profile Visibility</h3>
-                  <p className="text-xs text-gray-500">Your profile is currently visible to all RegionalMate users</p>
+                  <div>
+                    <h3 className="text-base font-semibold text-gray-900 mb-1">Profile Visibility</h3>
+                    <p className="text-xs text-gray-500">Your profile is currently visible to all RegionalMate users</p>
                   </div>
-                <div className="flex items-center">
-                  <span className="text-sm font-medium text-gray-900 mr-3">ON</span>
-                  <Switch 
-                    checked={profileVisible}
-                    onCheckedChange={setProfileVisible}
-                    className="data-[state=checked]:bg-[#1E293B]"
-                  />
-                </div>
+                  <div className="flex items-center">
+                    <span className="text-sm font-medium text-gray-900 mr-3">{profileVisible ? 'ON' : 'OFF'}</span>
+                    <Switch 
+                      checked={profileVisible}
+                      onCheckedChange={setProfileVisible}
+                      className="data-[state=checked]:bg-[#1E293B]"
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Preview Profile Card */}
               <div className="bg-white rounded-2xl p-5 mb-5 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-gray-900">Preview Profile card</h3>
+                  <h3 className="text-base font-semibold text-gray-900">Preview Profile Card</h3>
                   <Button 
                     onClick={handlePreviewProfile}
+                    className="bg-[#1E293B] hover:bg-[#334155] text-white px-6 py-2 rounded-full text-sm font-medium"
+                  >
+                    VIEW
+                  </Button>
+                </div>
+              </div>
+
+              {/* Preview Full Profile */}
+              <div className="bg-white rounded-2xl p-5 mb-5 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-gray-900">Preview Full Profile</h3>
+                  <Button 
+                    onClick={handlePreviewFullProfile}
                     className="bg-[#1E293B] hover:bg-[#334155] text-white px-6 py-2 rounded-full text-sm font-medium"
                   >
                     VIEW
