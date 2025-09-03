@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@/components/BottomNavigation';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
-interface MatchEmployer {
+// Candidate profile type
+interface Candidate {
   id: string;
   name: string;
   skills: string[];
@@ -14,16 +15,47 @@ interface MatchEmployer {
   availability: string;
   profileImage: string;
   isMutualMatch?: boolean;
+  matchPercentage?: number;
 }
 
-const WHVMatches: React.FC = () => {
+// Mock logged-in employer profile (to calculate % match)
+const employerProfile = {
+  requiredSkills: ['Agriculture', 'Hospitality'],
+  startDate: '2025-09-01',
+  jobLocation: 'Queensland',
+};
+
+// Matching algorithm (skills 50%, availability 25%, location 25%)
+function calculateMatch(candidate: Candidate): number {
+  let score = 0;
+
+  // Skills
+  const skillMatches = candidate.skills.filter((s) =>
+    employerProfile.requiredSkills.includes(s)
+  ).length;
+  score += (skillMatches / employerProfile.requiredSkills.length) * 50;
+
+  // Availability
+  if (new Date(candidate.availability) <= new Date(employerProfile.startDate)) {
+    score += 25;
+  }
+
+  // Location
+  if (candidate.location.includes(employerProfile.jobLocation)) {
+    score += 25;
+  }
+
+  return Math.round(score);
+}
+
+const EmployerMatches: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<'matches' | 'topRecommended'>('matches');
   const [showLikeModal, setShowLikeModal] = useState(false);
-  const [likedEmployerName, setLikedEmployerName] = useState('');
+  const [likedCandidateName, setLikedCandidateName] = useState('');
 
-  // Tab selection from URL
+  // Sync tab from URL
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get('tab');
@@ -32,124 +64,122 @@ const WHVMatches: React.FC = () => {
     }
   }, [location.search]);
 
-  // 🔹 Original Top Recommended mock data
-  const topRecommended: MatchEmployer[] = [
+  // Top Recommended candidates
+  const topRecommended: Candidate[] = [
     {
       id: '1',
-      name: 'KANGAFARM',
-      skills: ['Agriculture & Farming', 'Fruit Picker'],
-      country: 'Australia',
-      location: 'Clontarf, QLD 4017',
-      availability: 'Start Date from Sep 2025',
-      profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
+      name: 'Peter',
+      skills: ['Agriculture', 'Marketing'],
+      country: 'Argentina',
+      location: 'Brisbane, Queensland',
+      availability: '2025-09-15',
+      profileImage: '/lovable-uploads/bbc5bcc9-817f-41e3-a13b-fdf1a0031017.png',
     },
     {
       id: '2',
-      name: 'SUNNY WINES',
-      skills: ['Wine Production', 'Farm Supervisor'],
-      country: 'Australia',
-      location: 'Sunshine Coast, 4551',
-      availability: 'Start Date from Oct 2025',
-      profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png'
+      name: 'Daniel',
+      skills: ['Construction', 'Agriculture'],
+      country: 'Germany',
+      location: 'Sunshine Coast, Queensland',
+      availability: '2025-10-01',
+      profileImage: '/lovable-uploads/da0de5ef-7b36-4a46-8929-8ab1398fe7d6.png',
     },
     {
       id: '3',
-      name: 'OAKRIDGE FARM',
-      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
-      country: 'Australia',
-      location: 'Toowoomba, 4350',
-      availability: 'Start Date from Oct 2025',
-      profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
-    }
-  ];
+      name: 'Hannah',
+      skills: ['Hospitality', 'Agriculture'],
+      country: 'United Kingdom',
+      location: 'Mildura, VIC',
+      availability: '2025-11-01',
+      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png',
+    },
+  ].map((c) => ({ ...c, matchPercentage: calculateMatch(c) }));
 
-  // 🔹 Original Matches mock data
-  const matches: MatchEmployer[] = [
+  // Matches
+  const matches: Candidate[] = [
     {
       id: '4',
-      name: 'Green Harvest Farms',
-      skills: ['Agriculture & Farming', 'Farm Assistant'],
-      country: 'Australia',
-      location: 'Northrivers, NSW 2470',
-      availability: 'Available from Aug 2025',
-      profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png',
-      isMutualMatch: true
+      name: 'Thomas',
+      skills: ['Agriculture', 'Hospitality'],
+      country: 'USA',
+      location: 'Gold Coast, Queensland',
+      availability: '2025-08-01',
+      profileImage: '/lovable-uploads/140ed1a1-12da-4d98-8f41-9aed46049366.png',
+      isMutualMatch: true,
     },
     {
       id: '5',
-      name: 'Coastal Breeze Resort',
-      skills: ['Hospitality and Tourism', 'Barista'],
-      country: 'Australia',
-      location: 'Coolangatta, QLD 4225',
-      availability: 'Available from Sep 2025',
-      profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
-      isMutualMatch: true
+      name: 'Emma',
+      skills: ['Maintenance', 'Farming'],
+      country: 'Canada',
+      location: 'N/A',
+      availability: '2025-09-20',
+      profileImage: '/lovable-uploads/76ee4cf4-2a7f-4575-a02c-ba69817bfa35.png',
+      isMutualMatch: true,
     },
     {
       id: '6',
-      name: 'Gotall Estates',
-      skills: ['Dairy Farm', 'Farm Maintenance'],
-      country: 'Australia',
-      location: 'Sunshine Coast, 4019',
-      availability: 'Available from Oct 2025',
-      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
-      isMutualMatch: true
-    }
-  ];
+      name: 'Megan',
+      skills: ['Farming', 'Marketing'],
+      country: 'Sweden',
+      location: 'Moreton Bay, Queensland',
+      availability: '2025-08-15',
+      profileImage: '/lovable-uploads/8ff82176-d379-4d34-b436-f2c63b90c153.png',
+      isMutualMatch: true,
+    },
+  ].map((c) => ({ ...c, matchPercentage: calculateMatch(c) }));
 
-  const handleViewProfile = (employerId: string, isMutualMatch?: boolean) => {
-    const route = isMutualMatch ? `/whv/employer/full-profile/${employerId}` : `/whv/employer/profile/${employerId}`;
-    navigate(`${route}?from=whv-matches&tab=${activeTab}`);
+  const handleViewProfile = (id: string, isMutualMatch?: boolean) => {
+    const route = isMutualMatch
+      ? `/full-candidate-profile/${id}`
+      : `/short-candidate-profile/${id}`;
+    navigate(`${route}?from=employer-matches&tab=${activeTab}`);
   };
 
-  const handleLikeEmployer = (employerName: string) => {
-    setLikedEmployerName(employerName);
+  const handleLike = (name: string) => {
+    setLikedCandidateName(name);
     setShowLikeModal(true);
   };
 
-  const handleCloseLikeModal = () => {
-    setShowLikeModal(false);
-    setLikedEmployerName('');
-  };
-
-  const currentEmployers = activeTab === 'matches' ? matches : topRecommended;
+  const currentList = activeTab === 'matches' ? matches : topRecommended;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      {/* iPhone Frame */}
-      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+    <div className="min-h-screen bg-gray-50 flex justify-center items-center p-4">
+      {/* iPhone frame */}
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl overflow-hidden">
         <div className="w-full h-full bg-white rounded-[48px] flex flex-col">
+          {/* Dynamic Island */}
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-2"></div>
+
           {/* Header */}
-          <div className="px-4 py-3 border-b bg-white">
-            <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/whv/dashboard')}>
-                <ArrowLeft size={24} className="text-gray-600" />
-              </button>
-              <h1 className="text-sm font-medium text-gray-700 flex-1 text-center">
-                Explore Matches & Top Recommended Employers
-              </h1>
-            </div>
+          <div className="px-4 py-3 border-b flex items-center gap-3 flex-shrink-0">
+            <button onClick={() => navigate('/employer/dashboard')}>
+              <ArrowLeft size={24} className="text-gray-600" />
+            </button>
+            <h1 className="text-sm font-medium text-gray-700 flex-1 text-center">
+              Matches & Top Recommended WHV Candidates
+            </h1>
           </div>
 
           {/* Tabs */}
-          <div className="px-4 py-4">
+          <div className="px-4 py-4 flex-shrink-0">
             <div className="flex bg-gray-100 rounded-full p-1">
               <button
                 onClick={() => setActiveTab('matches')}
-                className={`flex-1 py-2 px-4 rounded-full text-sm font-medium ${
+                className={`flex-1 py-2 rounded-full text-sm font-medium ${
                   activeTab === 'matches'
-                    ? 'bg-orange-500 text-white'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-slate-800 text-white'
+                    : 'text-gray-600'
                 }`}
               >
                 Matches
               </button>
               <button
                 onClick={() => setActiveTab('topRecommended')}
-                className={`flex-1 py-2 px-4 rounded-full text-sm font-medium ${
+                className={`flex-1 py-2 rounded-full text-sm font-medium ${
                   activeTab === 'topRecommended'
-                    ? 'bg-orange-500 text-white'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-slate-800 text-white'
+                    : 'text-gray-600'
                 }`}
               >
                 Top Recommended
@@ -157,47 +187,67 @@ const WHVMatches: React.FC = () => {
             </div>
           </div>
 
-          {/* Employer List */}
-          <div className="flex-1 overflow-y-auto px-4 pb-20 space-y-4">
-            {currentEmployers.map((e) => (
-              <div key={e.id} className="bg-white p-4 rounded-2xl shadow-sm border">
+          {/* Candidate list */}
+          <div className="flex-1 overflow-y-auto px-4 space-y-4 pb-4">
+            {currentList.map((c) => (
+              <div key={c.id} className="bg-white rounded-lg p-4 shadow-sm border">
                 <div className="flex items-start gap-3">
-                  <img src={e.profileImage} alt={e.name} className="w-16 h-16 rounded-lg object-cover" />
+                  <img
+                    src={c.profileImage}
+                    alt={c.name}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900">{e.name}</h3>
-                    <p className="text-sm text-gray-600">{e.skills.join(', ')}</p>
-                    <p className="text-sm text-gray-600">{e.country}</p>
-                    <p className="text-sm text-gray-600">{e.location}</p>
-                    <p className="text-sm text-gray-600">{e.availability}</p>
+                    <h3 className="font-semibold text-gray-900">{c.name}</h3>
+                    <p className="text-sm text-gray-600">{c.skills.join(', ')}</p>
+                    <p className="text-sm text-gray-600">{c.location}</p>
+                    <p className="text-sm text-gray-600">{c.availability}</p>
+
                     <div className="flex items-center gap-2 mt-3">
                       <Button
-                        onClick={() => handleViewProfile(e.id, e.isMutualMatch)}
-                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-full"
+                        onClick={() =>
+                          handleViewProfile(c.id, c.isMutualMatch)
+                        }
+                        className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-sm h-10 rounded-full"
                       >
-                        {e.isMutualMatch ? 'View Full Profile' : 'View Profile'}
+                        {c.isMutualMatch ? 'View Full Profile' : 'View Profile'}
                       </Button>
-                      {!e.isMutualMatch && (
+                      {!c.isMutualMatch && (
                         <button
-                          onClick={() => handleLikeEmployer(e.name)}
-                          className="h-10 w-10 bg-slate-800 rounded-lg flex items-center justify-center"
+                          onClick={() => handleLike(c.name)}
+                          className="h-10 w-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700"
                         >
                           <Heart size={16} className="text-white" />
                         </button>
                       )}
                     </div>
                   </div>
+
+                  {/* Show % if not mutual match */}
+                  {!c.isMutualMatch && (
+                    <div className="text-right flex-shrink-0 ml-2">
+                      <div className="text-lg font-bold text-orange-500">
+                        {c.matchPercentage}%
+                      </div>
+                      <div className="text-xs font-semibold text-orange-500">
+                        Match
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
           {/* Bottom Nav */}
-          <BottomNavigation />
+          <div className="bg-white border-t rounded-b-[48px] flex-shrink-0">
+            <BottomNavigation />
+          </div>
 
           {/* Like Modal */}
           <LikeConfirmationModal
-            candidateName={likedEmployerName}
-            onClose={handleCloseLikeModal}
+            candidateName={likedCandidateName}
+            onClose={() => setShowLikeModal(false)}
             isVisible={showLikeModal}
           />
         </div>
@@ -206,6 +256,7 @@ const WHVMatches: React.FC = () => {
   );
 };
 
-export default WHVMatches;
+export default EmployerMatches;
+
 
 
