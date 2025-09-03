@@ -33,7 +33,7 @@ const WHVMatches: React.FC = () => {
     }
   }, [location.search]);
 
-  // Top Recommended mock data
+  // Top Recommended mock data (3)
   const topRecommended: MatchEmployer[] = [
     {
       id: '1',
@@ -67,7 +67,7 @@ const WHVMatches: React.FC = () => {
     }
   ];
 
-  // Matches mock data
+  // Matches mock data (3)
   const matches: MatchEmployer[] = [
     {
       id: '4',
@@ -87,6 +87,16 @@ const WHVMatches: React.FC = () => {
       location: 'Coolangatta, QLD 4225',
       availability: 'Available from Sep 2025',
       profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
+      isMutualMatch: true
+    },
+    {
+      id: '6',
+      name: 'Bluegum Orchards',
+      skills: ['Fruit Picking', 'Farm Maintenance'],
+      country: 'Australia',
+      location: 'Shepparton, VIC 3630',
+      availability: 'Available from Oct 2025',
+      profileImage: '/lovable-uploads/e3e5d7f6-ccf1-4d1e-b18f-3d9e5f13eaaa.png',
       isMutualMatch: true
     }
   ];
@@ -183,7 +193,7 @@ const WHVMatches: React.FC = () => {
                       {!e.isMutualMatch && (
                         <button
                           onClick={() => handleLikeEmployer(e.name)}
-                          className="h-10 w-10 bg-slate-800 rounded-lg flex items-center justify-center"
+                          className="h-10 w-10 bg-orange-500 rounded-lg flex items-center justify-center hover:bg-orange-600"
                         >
                           <Heart size={16} className="text-white" />
                         </button>
@@ -215,3 +225,4 @@ const WHVMatches: React.FC = () => {
 };
 
 export default WHVMatches;
+
