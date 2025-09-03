@@ -134,7 +134,7 @@ const App = () => (
           <Route path="/whv/onboarding" element={<WHVOnboarding />} />
           <Route path="/whv/email-confirmation" element={<WHVEmailConfirmation />} />
           <Route path="/whv/about-you" element={<WHVAboutYou />} />
-        <Route path="/whv/profile-setup" element={<WHVWorkPreferences />} />
+        <Route path="/whv/profile-setup" element={<WHVProfileSetup />} />
         <Route path="/whv/work-preferences" element={<WHVWorkPreferences />} />
         <Route path="/whv/work-experience" element={<WHVWorkExperience />} />
         <Route path="/whv/photo-upload" element={<WHVPhotoUpload />} />
