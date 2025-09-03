@@ -24,7 +24,7 @@ const WHVMatches: React.FC = () => {
   const [showLikeModal, setShowLikeModal] = useState(false);
   const [likedEmployerName, setLikedEmployerName] = useState('');
 
-  // Tab selection from URL
+  // Read active tab from URL
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get('tab');
@@ -33,7 +33,7 @@ const WHVMatches: React.FC = () => {
     }
   }, [location.search]);
 
-  // Top Recommended mock data (3)
+  // Top Recommended mock data
   const topRecommended: MatchEmployer[] = [
     {
       id: '1',
@@ -58,16 +58,16 @@ const WHVMatches: React.FC = () => {
     {
       id: '3',
       name: 'Oakridge Farm',
-      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
+      skills: ['Dairy Farming', 'Farm Assistant'],
       country: 'Australia',
       location: 'Toowoomba, QLD 4350',
-      availability: 'Start Date Nov 2025',
+      availability: 'Start Date Oct 2025',
       profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png',
       matchPercentage: 86
     }
   ];
 
-  // Matches mock data (3)
+  // Matches mock data (3 employers)
   const matches: MatchEmployer[] = [
     {
       id: '4',
@@ -91,12 +91,12 @@ const WHVMatches: React.FC = () => {
     },
     {
       id: '6',
-      name: 'Bluegum Orchards',
-      skills: ['Fruit Picking', 'Farm Maintenance'],
+      name: 'Gotall Estates',
+      skills: ['Dairy Farm', 'Maintenance'],
       country: 'Australia',
-      location: 'Shepparton, VIC 3630',
+      location: 'Sunshine Coast, QLD 4019',
       availability: 'Available from Oct 2025',
-      profileImage: '/lovable-uploads/e3e5d7f6-ccf1-4d1e-b18f-3d9e5f13eaaa.png',
+      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
       isMutualMatch: true
     }
   ];
@@ -121,24 +121,25 @@ const WHVMatches: React.FC = () => {
   const currentEmployers = activeTab === 'matches' ? matches : topRecommended;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex justify-center items-center p-4">
       {/* iPhone Frame */}
-      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl relative">
-        <div className="w-full h-full bg-white rounded-[48px] flex flex-col overflow-hidden relative">
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] shadow-2xl flex flex-col">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
+          {/* Dynamic Island */}
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 mb-4"></div>
+
           {/* Header */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/whv/dashboard')}>
-                <ArrowLeft size={24} className="text-gray-600" />
-              </button>
-              <h1 className="text-sm font-medium text-gray-700 flex-1 text-center">
-                Explore Matches & Top Recommended Employers
-              </h1>
-            </div>
+          <div className="px-4 py-3 border-b bg-white flex items-center gap-3">
+            <button onClick={() => navigate('/whv/dashboard')}>
+              <ArrowLeft size={24} className="text-gray-600" />
+            </button>
+            <h1 className="text-sm font-medium text-gray-700 flex-1 text-center">
+              Explore Matches & Top Recommended Employers
+            </h1>
           </div>
 
           {/* Tabs */}
-          <div className="px-4 py-4 flex-shrink-0">
+          <div className="px-4 py-4">
             <div className="flex bg-gray-100 rounded-full p-1">
               <button
                 onClick={() => setActiveTab('matches')}
@@ -168,20 +169,17 @@ const WHVMatches: React.FC = () => {
             {currentEmployers.map((e) => (
               <div key={e.id} className="bg-white p-4 rounded-2xl shadow-sm border">
                 <div className="flex items-start gap-3">
-                  <img src={e.profileImage} alt={e.name} className="w-16 h-16 rounded-lg object-cover" />
+                  <img
+                    src={e.profileImage}
+                    alt={e.name}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-gray-900">{e.name}</h3>
                     <p className="text-sm text-gray-600">{e.skills.join(', ')}</p>
                     <p className="text-sm text-gray-600">{e.country}</p>
                     <p className="text-sm text-gray-600">{e.location}</p>
                     <p className="text-sm text-gray-600">{e.availability}</p>
-
-                    {/* Match % only for Top Recommended */}
-                    {!e.isMutualMatch && e.matchPercentage && (
-                      <div className="text-right text-orange-500 font-bold text-sm mt-1">
-                        {e.matchPercentage}% Match
-                      </div>
-                    )}
 
                     <div className="flex items-center gap-2 mt-3">
                       <Button
@@ -200,24 +198,32 @@ const WHVMatches: React.FC = () => {
                       )}
                     </div>
                   </div>
+
+                  {/* Show % only for Top Recommended */}
+                  {!e.isMutualMatch && e.matchPercentage && (
+                    <div className="text-right flex-shrink-0 ml-2">
+                      <div className="text-lg font-bold text-orange-500">
+                        {e.matchPercentage}%
+                      </div>
+                      <div className="text-xs font-semibold text-orange-500">Match</div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bottom Nav */}
-          <BottomNavigation />
+          {/* Bottom Navigation */}
+          <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
+            <BottomNavigation />
+          </div>
 
-          {/* Modal wrapped INSIDE frame */}
-          {showLikeModal && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 rounded-[48px]">
-              <LikeConfirmationModal
-                candidateName={likedEmployerName}
-                onClose={handleCloseLikeModal}
-                isVisible={showLikeModal}
-              />
-            </div>
-          )}
+          {/* Like Modal */}
+          <LikeConfirmationModal
+            candidateName={likedEmployerName}
+            onClose={handleCloseLikeModal}
+            isVisible={showLikeModal}
+          />
         </div>
       </div>
     </div>
@@ -225,4 +231,3 @@ const WHVMatches: React.FC = () => {
 };
 
 export default WHVMatches;
-
