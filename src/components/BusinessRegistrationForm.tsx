@@ -15,8 +15,8 @@ const formSchema = z.object({
     .min(2, { message: "Given name must be at least 2 characters." })
     .regex(/^[a-zA-Z\s]*$/, { message: "Given name can only contain letters." }),
   middleName: z.string()
-    .optional()
-    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), { message: "Middle name can only contain letters." }),
+    .min(2, { message: "Middle name must be at least 2 characters." })
+    .regex(/^[a-zA-Z\s]*$/, { message: "Middle name can only contain letters." }),
   familyName: z.string()
     .min(2, { message: "Family name must be at least 2 characters." })
     .regex(/^[a-zA-Z\s]*$/, { message: "Family name can only contain letters." }),
@@ -25,12 +25,12 @@ const formSchema = z.object({
     .max(11, { message: "ABN must be 11 digits." })
     .regex(/^\d+$/, { message: "ABN must contain only numbers." }),
   companyName: z.string().min(2, { message: "Company name is required." }),
-  website: z.string().url({ message: "Please enter a valid website URL." }).optional().or(z.literal("")),
+  website: z.string().url({ message: "Please enter a valid website URL." }),
   businessPhone: z.string()
     .min(10, { message: "Please enter a valid phone number." })
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
   addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
-  addressLine2: z.string().optional(),
+  addressLine2: z.string().min(2, { message: "Address line 2 is required." }),
   suburb: z.string().min(2, { message: "Suburb is required." }),
   city: z.string().min(2, { message: "City is required." }),
   state: z.string().min(1, { message: "Please select a state." }),
@@ -121,34 +121,33 @@ const BusinessRegistrationForm: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Given Name */}
                 <div>
-                  <Label htmlFor="givenName">Given Name(s) *</Label>
-                  <Input id="givenName" placeholder="John" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("givenName")} />
+                  <Label htmlFor="givenName">Given Name(s) <span className="text-red-500">*</span></Label>
+                  <Input id="givenName" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("givenName")} />
                   {errors.givenName && <p className="text-red-500 text-sm mt-1">{errors.givenName.message}</p>}
                 </div>
 
                 {/* Middle Name */}
                 <div>
-                  <Label htmlFor="middleName">Middle Name (optional)</Label>
-                  <Input id="middleName" placeholder="Michael" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("middleName")} />
+                  <Label htmlFor="middleName">Middle Name <span className="text-red-500">*</span></Label>
+                  <Input id="middleName" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("middleName")} />
                   {errors.middleName && <p className="text-red-500 text-sm mt-1">{errors.middleName.message}</p>}
                 </div>
 
                 {/* Family Name */}
                 <div>
-                  <Label htmlFor="familyName">Family Name(s) *</Label>
-                  <Input id="familyName" placeholder="Doe" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("familyName")} />
+                  <Label htmlFor="familyName">Family Name(s) <span className="text-red-500">*</span></Label>
+                  <Input id="familyName" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("familyName")} />
                   {errors.familyName && <p className="text-red-500 text-sm mt-1">{errors.familyName.message}</p>}
                 </div>
 
                 {/* ABN */}
                 <div>
-                  <Label htmlFor="abn">Australian Business Number (ABN) *</Label>
+                  <Label htmlFor="abn">Australian Business Number (ABN) <span className="text-red-500">*</span></Label>
                   <Input
                     id="abn"
                     type="text"
                     inputMode="numeric"
                     maxLength={11}
-                    placeholder="Enter 11 digits"
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("abn")}
                     onChange={(e) => {
@@ -161,55 +160,56 @@ const BusinessRegistrationForm: React.FC = () => {
 
                 {/* Company Name */}
                 <div>
-                  <Label htmlFor="companyName">Company Name *</Label>
-                  <Input id="companyName" placeholder="Your Company Pty Ltd" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("companyName")} />
+                  <Label htmlFor="companyName">Company Name <span className="text-red-500">*</span></Label>
+                  <Input id="companyName" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("companyName")} />
                   {errors.companyName && <p className="text-red-500 text-sm mt-1">{errors.companyName.message}</p>}
                 </div>
 
                 {/* Website */}
                 <div>
-                  <Label htmlFor="website">Business Website (Optional)</Label>
-                  <Input id="website" type="url" placeholder="https://yourbusiness.com.au" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("website")} />
+                  <Label htmlFor="website">Business Website <span className="text-red-500">*</span></Label>
+                  <Input id="website" type="url" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("website")} />
                   {errors.website && <p className="text-red-500 text-sm mt-1">{errors.website.message}</p>}
                 </div>
 
                 {/* Business Phone */}
                 <div>
-                  <Label htmlFor="businessPhone">Business Phone Number *</Label>
-                  <Input id="businessPhone" type="tel" placeholder="+61 2 1234 5678" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("businessPhone")} />
+                  <Label htmlFor="businessPhone">Business Phone Number <span className="text-red-500">*</span></Label>
+                  <Input id="businessPhone" type="tel" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("businessPhone")} />
                   {errors.businessPhone && <p className="text-red-500 text-sm mt-1">{errors.businessPhone.message}</p>}
                 </div>
 
                 {/* Address Line 1 */}
                 <div>
-                  <Label htmlFor="addressLine1">Business Address Line 1 *</Label>
-                  <Input id="addressLine1" placeholder="11 Apple St." className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine1")} />
+                  <Label htmlFor="addressLine1">Business Address Line 1 <span className="text-red-500">*</span></Label>
+                  <Input id="addressLine1" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine1")} />
                   {errors.addressLine1 && <p className="text-red-500 text-sm mt-1">{errors.addressLine1.message}</p>}
                 </div>
 
                 {/* Address Line 2 */}
                 <div>
-                  <Label htmlFor="addressLine2">Address Line 2 (Optional)</Label>
-                  <Input id="addressLine2" placeholder="Unit 5, Building B" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine2")} />
+                  <Label htmlFor="addressLine2">Address Line 2 <span className="text-red-500">*</span></Label>
+                  <Input id="addressLine2" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine2")} />
+                  {errors.addressLine2 && <p className="text-red-500 text-sm mt-1">{errors.addressLine2.message}</p>}
                 </div>
 
                 {/* Suburb */}
                 <div>
-                  <Label htmlFor="suburb">Suburb *</Label>
-                  <Input id="suburb" placeholder="Spring Hill" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburb")} />
+                  <Label htmlFor="suburb">Suburb <span className="text-red-500">*</span></Label>
+                  <Input id="suburb" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburb")} />
                   {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>}
                 </div>
 
                 {/* City */}
                 <div>
-                  <Label htmlFor="city">City *</Label>
-                  <Input id="city" placeholder="Brisbane" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("city")} />
+                  <Label htmlFor="city">City <span className="text-red-500">*</span></Label>
+                  <Input id="city" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("city")} />
                   {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
                 </div>
 
                 {/* State */}
                 <div>
-                  <Label htmlFor="state">State *</Label>
+                  <Label htmlFor="state">State <span className="text-red-500">*</span></Label>
                   <Select onValueChange={(value) => setValue("state", value)}>
                     <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
                       <SelectValue placeholder="Select a state" />
@@ -225,11 +225,10 @@ const BusinessRegistrationForm: React.FC = () => {
 
                 {/* Post Code */}
                 <div>
-                  <Label htmlFor="postCode">Post Code *</Label>
+                  <Label htmlFor="postCode">Post Code <span className="text-red-500">*</span></Label>
                   <Input
                     id="postCode"
                     maxLength={4}
-                    placeholder="4019"
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("postCode")}
                     onChange={(e) => {
@@ -242,7 +241,7 @@ const BusinessRegistrationForm: React.FC = () => {
 
                 {/* Continue */}
                 <div className="pt-8">
-                  <Button type="submit" className="w-full h-14 text-lg rounded-xl bg-[#EC5823] hover:opacity-90 text-white">
+                  <Button type="submit" className="w-full h-14 text-lg rounded-xl bg-[#1E293B] hover:opacity-90 text-white">
                     Continue
                   </Button>
                 </div>
@@ -256,3 +255,4 @@ const BusinessRegistrationForm: React.FC = () => {
 };
 
 export default BusinessRegistrationForm;
+
