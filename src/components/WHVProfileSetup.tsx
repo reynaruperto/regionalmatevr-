@@ -12,60 +12,19 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-
+// ✅ Eligible countries based on subclass
 const countries417 = [
-  "Belgium",
-  "Canada",
-  "Republic of Cyprus",
-  "Denmark",
-  "Estonia",
-  "Finland",
-  "France",
-  "Germany",
-  "Hong Kong",
-  "Ireland",
-  "Italy",
-  "Japan",
-  "Republic of Korea",
-  "Malta",
-  "Netherlands",
-  "Norway",
-  "Sweden",
-  "Taiwan",
-  "United Kingdom",
+  "Belgium", "Canada", "Republic of Cyprus", "Denmark", "Estonia", "Finland",
+  "France", "Germany", "Hong Kong", "Ireland", "Italy", "Japan", "Republic of Korea",
+  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan", "United Kingdom",
 ];
 
 const countries462 = [
-  "Argentina",
-  "Austria",
-  "Brazil",
-  "Chile",
-  "China",
-  "Czech Republic",
-  "Ecuador",
-  "Greece",
-  "Hungary",
-  "India",
-  "Indonesia",
-  "Israel",
-  "Luxembourg",
-  "Malaysia",
-  "Mongolia",
-  "Papua New Guinea",
-  "Peru",
-  "Poland",
-  "Portugal",
-  "San Marino",
-  "Singapore",
-  "Slovak Republic",
-  "Slovenia",
-  "Spain",
-  "Switzerland",
-  "Thailand",
-  "Türkiye",
-  "United States of America",
-  "Uruguay",
-  "Vietnam",
+  "Argentina", "Austria", "Brazil", "Chile", "China", "Czech Republic", "Ecuador",
+  "Greece", "Hungary", "India", "Indonesia", "Israel", "Luxembourg", "Malaysia",
+  "Mongolia", "Papua New Guinea", "Peru", "Poland", "Portugal", "San Marino",
+  "Singapore", "Slovak Republic", "Slovenia", "Spain", "Switzerland", "Thailand",
+  "Türkiye", "United States of America", "Uruguay", "Vietnam",
 ];
 
 const getVisaOptions = (nationality: string) => {
@@ -100,8 +59,7 @@ const formatDateInput = (value: string) => {
 
 const validateDate = (dateStr: string, isDateOfBirth = false) => {
   const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  if (!dateRegex.test(dateStr))
-    return "Please enter date in DD/MM/YYYY format";
+  if (!dateRegex.test(dateStr)) return "Please enter date in DD/MM/YYYY format";
 
   const [day, month, year] = dateStr.split("/").map(Number);
   const date = new Date(year, month - 1, day);
@@ -159,15 +117,18 @@ const WHVProfileSetup: React.FC = () => {
     let formattedValue = value;
     if (name === "dateOfBirth" || name === "visaExpiryDate")
       formattedValue = formatDateInput(value);
-    if (name === "phoneNumber")
-      formattedValue = value.replace(/\D/g, "");
+    if (name === "phoneNumber") formattedValue = value.replace(/\D/g, "");
 
     setFormData({ ...formData, [name]: formattedValue });
     if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value, visaType: name === "nationality" ? "" : formData.visaType });
+    setFormData({
+      ...formData,
+      [name]: value,
+      visaType: name === "nationality" ? "" : formData.visaType,
+    });
     if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
@@ -206,7 +167,8 @@ const WHVProfileSetup: React.FC = () => {
 
     const eligibleVisas = getVisaOptions(formData.nationality);
     if (eligibleVisas.length === 0)
-      newErrors.nationality = "Not eligible for a Working Holiday or Work and Holiday visa";
+      newErrors.nationality =
+        "Not eligible for a Working Holiday or Work and Holiday visa";
     else if (!formData.visaType)
       newErrors.visaType = "Visa type is required";
 
@@ -235,7 +197,9 @@ const WHVProfileSetup: React.FC = () => {
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
+              <h1 className="text-lg font-medium text-gray-900">
+                Account Set Up
+              </h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">3/6</span>
               </div>
@@ -255,8 +219,9 @@ const WHVProfileSetup: React.FC = () => {
                   name="givenName"
                   value={formData.givenName}
                   onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${errors.givenName ? "border-red-500" : ""}`}
-                  placeholder="Peter"
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.givenName ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.givenName && (
                   <p className="text-red-500 text-sm">{errors.givenName}</p>
@@ -272,7 +237,6 @@ const WHVProfileSetup: React.FC = () => {
                   value={formData.middleName}
                   onChange={handleInputChange}
                   className="h-12 bg-gray-100 border-0"
-                  placeholder="Benjamin"
                 />
               </div>
 
@@ -286,8 +250,9 @@ const WHVProfileSetup: React.FC = () => {
                   name="familyName"
                   value={formData.familyName}
                   onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${errors.familyName ? "border-red-500" : ""}`}
-                  placeholder="Parker"
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.familyName ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.familyName && (
                   <p className="text-red-500 text-sm">{errors.familyName}</p>
@@ -297,7 +262,8 @@ const WHVProfileSetup: React.FC = () => {
               {/* Date of Birth */}
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">
-                  Date of Birth (DD/MM/YYYY) <span className="text-red-500">*</span>
+                  Date of Birth (DD/MM/YYYY){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="dateOfBirth"
@@ -305,8 +271,9 @@ const WHVProfileSetup: React.FC = () => {
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
                   maxLength={10}
-                  placeholder="01/01/1990"
-                  className={`h-12 bg-gray-100 border-0 ${errors.dateOfBirth ? "border-red-500" : ""}`}
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.dateOfBirth ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.dateOfBirth && (
                   <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
@@ -316,14 +283,21 @@ const WHVProfileSetup: React.FC = () => {
               {/* Nationality */}
               <div className="space-y-2">
                 <Label htmlFor="nationality">
-                  Nationality (Country of Passport) <span className="text-red-500">*</span>
+                  Nationality (Country of Passport){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Select
                   value={formData.nationality}
-                  onValueChange={(value) => handleSelectChange("nationality", value)}
+                  onValueChange={(value) =>
+                    handleSelectChange("nationality", value)
+                  }
                 >
-                  <SelectTrigger className={`h-12 bg-gray-100 border-0 ${errors.nationality ? "border-red-500" : ""}`}>
-                    <SelectValue placeholder="Select country" />
+                  <SelectTrigger
+                    className={`h-12 bg-gray-100 border-0 ${
+                      errors.nationality ? "border-red-500" : ""
+                    }`}
+                  >
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {[...countries417, ...countries462].map((c) => (
@@ -346,10 +320,16 @@ const WHVProfileSetup: React.FC = () => {
                   </Label>
                   <Select
                     value={formData.visaType}
-                    onValueChange={(value) => handleSelectChange("visaType", value)}
+                    onValueChange={(value) =>
+                      handleSelectChange("visaType", value)
+                    }
                   >
-                    <SelectTrigger className={`h-12 bg-gray-100 border-0 ${errors.visaType ? "border-red-500" : ""}`}>
-                      <SelectValue placeholder="Select visa type" />
+                    <SelectTrigger
+                      className={`h-12 bg-gray-100 border-0 ${
+                        errors.visaType ? "border-red-500" : ""
+                      }`}
+                    >
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {getVisaOptions(formData.nationality).map((v) => (
@@ -368,7 +348,8 @@ const WHVProfileSetup: React.FC = () => {
               {/* Visa Expiry Date */}
               <div className="space-y-2">
                 <Label htmlFor="visaExpiryDate">
-                  Visa Expiry Date (DD/MM/YYYY) <span className="text-red-500">*</span>
+                  Visa Expiry Date (DD/MM/YYYY){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="visaExpiryDate"
@@ -376,8 +357,9 @@ const WHVProfileSetup: React.FC = () => {
                   value={formData.visaExpiryDate}
                   onChange={handleInputChange}
                   maxLength={10}
-                  placeholder="01/01/2026"
-                  className={`h-12 bg-gray-100 border-0 ${errors.visaExpiryDate ? "border-red-500" : ""}`}
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.visaExpiryDate ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.visaExpiryDate && (
                   <p className="text-red-500 text-sm">{errors.visaExpiryDate}</p>
@@ -387,15 +369,16 @@ const WHVProfileSetup: React.FC = () => {
               {/* Phone Number */}
               <div className="space-y-2">
                 <Label htmlFor="phoneNumber">
-                  Phone Number <span className="text-red-500">*</span>
+                  Australian Phone Number <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="phoneNumber"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
-                  placeholder="04xx xxx xxx"
-                  className={`h-12 bg-gray-100 border-0 ${errors.phoneNumber ? "border-red-500" : ""}`}
+                  className={`h-12 bg-gray-100 border-0 ${
+                    errors.phoneNumber ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.phoneNumber && (
                   <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
