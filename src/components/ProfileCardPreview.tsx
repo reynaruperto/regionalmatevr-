@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart } from 'lucide-react';
+import { ArrowLeft, Heart, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,6 +8,20 @@ const ProfileCardPreview: React.FC = () => {
   const location = useLocation();
   
   const isEmployerPreview = location.pathname === '/employer/profile-preview';
+
+  // Mock employer data — replace with real onboarding state later
+  const employer = {
+    businessName: "Kangafarm",
+    tagline: "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing",
+    industry: "Agriculture & Farming",
+    rolesOffered: ["Fruit Picker", "Farm Hand"],
+    jobAvailability: "Seasonal (Sep 2025 – Mar 2026)",
+    payRange: "$25 – $30/hour",
+    facilities: ["Accommodation provided", "Meals included"],
+    location: "Clontarf, QLD 4017",
+    abnProvided: true,
+    profilePhoto: "/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png"
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
@@ -27,63 +41,42 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
-                <div className={`${isEmployerPreview ? 'bg-slate-800' : 'bg-orange-500'} text-white text-center py-4 rounded-2xl mb-6`}>
-                  <h2 className="text-xl font-bold">{isEmployerPreview ? 'KANGAFARM' : 'PETER'}</h2>
+                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6 flex items-center justify-center gap-2">
+                  <h2 className="text-xl font-bold">{employer.businessName.toUpperCase()}</h2>
+                  {employer.abnProvided && (
+                    <span className="flex items-center text-xs bg-green-600 px-2 py-1 rounded-full">
+                      <CheckCircle size={14} className="mr-1" />
+                      ABN Provided
+                    </span>
+                  )}
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
-                  <div className={`w-32 h-32 rounded-full border-4 ${isEmployerPreview ? 'border-slate-800' : 'border-orange-500'} overflow-hidden`}>
+                  <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
                     <img 
-                      src={isEmployerPreview ? "/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png" : "/lovable-uploads/5171768d-7ee5-4242-8d48-29d87d896302.png"}
-                      alt="Profile" 
+                      src={employer.profilePhoto}
+                      alt="Business Logo" 
                       className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
 
-                {/* Description */}
+                {/* Tagline */}
                 <div className="text-center mb-6">
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    {isEmployerPreview 
-                      ? "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing"
-                      : "Backpacker from Argentina with experience in farm work, currently in Brisbane, QLD"
-                    }
+                    {employer.tagline}
                   </p>
                 </div>
 
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
-                  {isEmployerPreview ? (
-                    <>
-                      <div><span className="font-semibold">Employer:</span> John Doe</div>
-                      <div><span className="font-semibold">Location:</span> Clontarf, QLD 4017</div>
-                      <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
-                      <div><span className="font-semibold">Roles Offered:</span> Fruit Picker, Farm Hand</div>
-                      <div><span className="font-semibold">Job Availability:</span> Ongoing, September 2025</div>
-                      <div><span className="font-semibold">Pay & Benefits:</span> $28/hour + super</div>
-                      <div><span className="font-semibold">Facilities / Extras:</span> Meals included, Accommodation available on discounted price</div>
-                    </>
-                  ) : (
-                    <>
-                      <div><span className="font-semibold">Nationality:</span> Argentina</div>
-                      <div><span className="font-semibold">Location (Current / Preferred):</span> Brisbane, QLD 4000</div>
-                      <div><span className="font-semibold">Willing to Relocate:</span> Yes, anywhere in QLD/NSW</div>
-                      <div><span className="font-semibold">Visa Type & Expiry:</span> 417 (Working Holiday) - Expires Sep 2026</div>
-                      <div><span className="font-semibold">Industry:</span> Agriculture and Farming</div>
-                      <div>
-                        <span className="font-semibold">Experience / Skills:</span>
-                        <div className="mt-1 space-y-1 text-xs">
-                          <div>2020-2025: Farm Attendant - VillaFarm</div>
-                          <div>2019-2020: Marketing Head - Workspace</div>
-                          <div>2007-2019: Winery Assistant - BodegaWinery</div>
-                        </div>
-                      </div>
-                      <div><span className="font-semibold">Licenses / Certificates:</span> Driver's License, First Aid</div>
-                      <div><span className="font-semibold">Availability (date, duration):</span> Sep 2025 (8 months)</div>
-                      <div><span className="font-semibold">Languages:</span> Spanish (Native), English (Fluent)</div>
-                    </>
-                  )}
+                  <div><span className="font-semibold">Location:</span> {employer.location}</div>
+                  <div><span className="font-semibold">Industry:</span> {employer.industry}</div>
+                  <div><span className="font-semibold">Roles Offered:</span> {employer.rolesOffered.join(", ")}</div>
+                  <div><span className="font-semibold">Job Availability:</span> {employer.jobAvailability}</div>
+                  <div><span className="font-semibold">Pay Range:</span> {employer.payRange}</div>
+                  <div><span className="font-semibold">Facilities & Extras:</span> {employer.facilities.join(", ")}</div>
                 </div>
 
                 {/* Locked Message */}
@@ -93,9 +86,9 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <Button className={`w-full ${isEmployerPreview ? 'bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black' : 'bg-gradient-to-r from-orange-400 to-slate-800 hover:from-orange-500 hover:to-slate-900'} text-white px-8 py-3 rounded-2xl flex items-center gap-3 justify-center`}>
-                    <span className="font-semibold">{isEmployerPreview ? 'Like to Match' : 'Heart to Match'}</span>
-                    <div className={`${isEmployerPreview ? 'bg-slate-600' : 'bg-orange-500'} rounded-full p-2`}>
+                  <Button className="w-full bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white px-8 py-3 rounded-2xl flex items-center gap-3 justify-center">
+                    <span className="font-semibold">Like to Match</span>
+                    <div className="bg-slate-600 rounded-full p-2">
                       <Heart size={20} className="text-white fill-white" />
                     </div>
                   </Button>
@@ -110,7 +103,7 @@ const ProfileCardPreview: React.FC = () => {
                 variant="ghost" 
                 size="icon" 
                 className="w-12 h-12 bg-white rounded-xl shadow-sm"
-                onClick={() => navigate(isEmployerPreview ? '/employer/edit-profile' : '/whv/edit-WHVdetails')}
+                onClick={() => navigate('/employer/edit-profile')}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
