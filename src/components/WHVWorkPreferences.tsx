@@ -12,31 +12,36 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// Industry + Roles
+// ✅ WHV-relevant industries + roles
 const industryRoles: Record<string, string[]> = {
   "Agriculture & Farming": [
     "Fruit Picker",
     "Farm Hand",
     "Packer",
-    "Other",
+    "Crop Harvester",
+    "Irrigation Worker",
   ],
-  Hospitality: [
+  Construction: [
+    "Construction Labourer",
+    "Carpenter",
+    "Plumber",
+    "Electrician",
+    "Painter",
+  ],
+  Mining: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
+  "Hospitality & Tourism": [
     "Bartender",
     "Waitstaff",
     "Chef / Cook",
     "Housekeeper",
-    "Other",
-  ],
-  Construction: [
-    "Construction Labourer",
-    "Cleaner",
-    "Driver",
-    "Other",
-  ],
-  Tourism: [
     "Tour Guide",
-    "Activity Assistant",
-    "Other",
+  ],
+  "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Diver"],
+  Forestry: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
+  "Aged Care & Disability Services": [
+    "Personal Care Worker",
+    "Support Worker",
+    "Nurse Assistant",
   ],
 };
 
@@ -57,15 +62,16 @@ const WHVWorkPreferences: React.FC = () => {
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [otherRole, setOtherRole] = useState("");
   const [preferredState, setPreferredState] = useState("");
   const [preferredCity, setPreferredCity] = useState("");
 
   const toggleIndustry = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
       setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
-      setSelectedRoles(selectedRoles.filter(
-        (role) => !industryRoles[industry]?.includes(role)
-      ));
+      setSelectedRoles(
+        selectedRoles.filter((role) => !industryRoles[industry]?.includes(role))
+      );
     } else if (selectedIndustries.length < 3) {
       setSelectedIndustries([...selectedIndustries, industry]);
     }
@@ -84,7 +90,7 @@ const WHVWorkPreferences: React.FC = () => {
 
     console.log("Tagline:", tagline);
     console.log("Industries:", selectedIndustries);
-    console.log("Roles:", selectedRoles);
+    console.log("Roles:", selectedRoles, otherRole ? [otherRole] : []);
     console.log("Preferred Location:", preferredCity, preferredState);
 
     navigate("/whv/work-experience");
@@ -101,12 +107,14 @@ const WHVWorkPreferences: React.FC = () => {
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
-                onClick={() => navigate("/whv/about-you")}
+                onClick={() => navigate("/whv/profile-setup")}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Work Preferences</h1>
+              <h1 className="text-lg font-medium text-gray-900">
+                Work Preferences
+              </h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">4/6</span>
               </div>
@@ -136,7 +144,8 @@ const WHVWorkPreferences: React.FC = () => {
               {/* Industry Selection */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select up to 3 industries of interest <span className="text-red-500">*</span>
+                  Select up to 3 industries of interest{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex flex-wrap gap-2">
                   {Object.keys(industryRoles).map((industry) => (
@@ -189,8 +198,25 @@ const WHVWorkPreferences: React.FC = () => {
                       ))
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">
-                    Note: Some roles may not count toward visa extensions. Check with the Department of Home Affairs.
+
+                  {/* Other Role input */}
+                  <div className="space-y-2 mt-4">
+                    <Label className="text-base font-medium text-gray-700">
+                      Other Role (optional)
+                    </Label>
+                    <Input
+                      type="text"
+                      value={otherRole}
+                      onChange={(e) => setOtherRole(e.target.value)}
+                      className="h-12 bg-gray-100 border-0 text-gray-900"
+                      maxLength={50}
+                    />
+                  </div>
+
+                  {/* Disclaimer */}
+                  <p className="text-xs text-gray-500 mt-2">
+                    Note: Some roles may not count toward visa extensions. Please
+                    check with the Department of Home Affairs.
                   </p>
                 </div>
               )}
@@ -239,3 +265,4 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
+
