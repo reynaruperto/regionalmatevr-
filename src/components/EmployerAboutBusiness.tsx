@@ -16,30 +16,38 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-// ✅ Industries with roles
-const INDUSTRIES = [
-  {
-    name: "Agriculture & Farming",
-    roles: ["Fruit Picker", "Farm Hand", "Livestock Worker", "Other"],
-  },
-  {
-    name: "Tourism & Hospitality",
-    roles: ["Waitstaff", "Kitchen Hand", "Barista", "Housekeeping", "Other"],
-  },
-  {
-    name: "Construction & Building",
-    roles: ["Construction Worker", "Labourer", "Driver", "Other"],
-  },
-  {
-    name: "Mining & Resources",
-    roles: ["Operator", "Technician", "Other"],
-  },
-  {
-    name: "Healthcare & Aged Care",
-    roles: ["Support Worker", "Cleaner", "Other"],
-  },
-  { name: "Other", roles: ["Other"] },
-];
+// ✅ WHV eligible industries and sample roles
+const INDUSTRIES: { [key: string]: string[] } = {
+  "Agriculture & Farming": [
+    "Fruit Picker",
+    "Farm Hand",
+    "Livestock Worker",
+    "Dairy Hand",
+    "Other",
+  ],
+  "Tourism & Hospitality": [
+    "Waitstaff",
+    "Kitchen Hand",
+    "Barista",
+    "Housekeeping",
+    "Other",
+  ],
+  "Construction & Building": [
+    "Construction Worker",
+    "Labourer",
+    "Driver",
+    "Other",
+  ],
+  "Mining & Resources": ["Operator", "Technician", "Other"],
+  "Healthcare & Aged Care": [
+    "Support Worker",
+    "Nurse Assistant",
+    "Cleaner",
+    "Other",
+  ],
+  "Natural Disaster Recovery": ["Recovery Worker", "Volunteer Support", "Other"],
+  Other: ["Other"],
+};
 
 // ✅ Job Types
 const JOB_TYPES = [
@@ -50,13 +58,13 @@ const JOB_TYPES = [
   "Contract",
 ];
 
-// ✅ Pay ranges
+// ✅ Pay ranges (starting at AUD $25/hour)
 const PAY_RANGES = [
-  "$20–25/hour",
   "$25–30/hour",
   "$30–35/hour",
-  "$35+/hour",
-  "Competitive salary",
+  "$35–40/hour",
+  "$40–45/hour",
+  "$45+/hour",
 ];
 
 // ✅ Facilities
@@ -79,15 +87,14 @@ const formSchema = z.object({
     .max(200),
   yearsInBusiness: z.string().min(1, "Please select years in business."),
   employeeCount: z.string().min(1, "Please select number of employees."),
-  industries: z.array(z.string()).min(1, "Please select at least one industry."),
-  rolesOffered: z.record(z.string(), z.array(z.string())),
+  industry: z.string().min(1, "Please select an industry."),
+  rolesOffered: z.array(z.string()).min(1, "Please select at least one role."),
+  customRole: z.string().optional(),
   jobTypes: z.array(z.string()).min(1, "Please select at least one job type."),
   payRange: z.string().min(1, "Please select pay range."),
   facilitiesAndExtras: z
     .array(z.string())
     .min(1, "Select at least one facility."),
-  customIndustry: z.string().optional(),
-  customRole: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -95,7 +102,7 @@ type FormData = z.infer<typeof formSchema>;
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState("");
 
   const {
     register,
@@ -107,12 +114,13 @@ const EmployerAboutBusiness: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      industries: [],
-      rolesOffered: {},
+      rolesOffered: [],
       jobTypes: [],
       facilitiesAndExtras: [],
     },
   });
+
+  const watchedRoles = watch("rolesOffered");
 
   const onSubmit = (data: FormData) => {
     console.log("Step 4 submitted:", data);
@@ -189,13 +197,17 @@ const EmployerAboutBusiness: React.FC = () => {
                       <SelectValue placeholder="Select years" />
                     </SelectTrigger>
                     <SelectContent>
-                      {["<1 year", "1-2 years", "3-5 years", "6-10 years", "10+ years"].map(
-                        (y) => (
-                          <SelectItem key={y} value={y}>
-                            {y}
-                          </SelectItem>
-                        )
-                      )}
+                      {[
+                        "<1 year",
+                        "1-2 years",
+                        "3-5 years",
+                        "6-10 years",
+                        "10+ years",
+                      ].map((y) => (
+                        <SelectItem key={y} value={y}>
+                          {y}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   {errors.yearsInBusiness && (
@@ -232,157 +244,118 @@ const EmployerAboutBusiness: React.FC = () => {
                   )}
                 </div>
 
-                {/* Industries + Roles */}
+                {/* Industry */}
                 <div>
                   <Label>
                     Industry <span className="text-red-500">*</span>
                   </Label>
                   <Controller
-                    name="industries"
+                    name="industry"
                     control={control}
                     render={({ field }) => (
-                      <>
-                        <Select
-                          onValueChange={(value) => {
-                            if (!field.value.includes(value)) {
-                              const newIndustries = [...field.value, value];
-                              field.onChange(newIndustries);
-                              setSelectedIndustries(newIndustries);
-                            }
-                          }}
-                        >
-                          <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                            <SelectValue
-                              placeholder={
-                                field.value.length > 0
-                                  ? `${field.value.length} selected`
-                                  : "Select industries"
-                              }
-                            />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {INDUSTRIES.map((ind) => (
-                              <SelectItem key={ind.name} value={ind.name}>
-                                {ind.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-
-                        {/* Chips for selected industries */}
-                        {field.value.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {field.value.map((industry, i) => (
-                              <span
-                                key={i}
-                                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                              >
-                                {industry}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    const newIndustries = field.value.filter(
-                                      (_, idx) => idx !== i
-                                    );
-                                    field.onChange(newIndustries);
-                                    setSelectedIndustries(newIndustries);
-                                  }}
-                                  className="ml-2"
-                                >
-                                  ×
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setSelectedIndustry(value);
+                          setValue("rolesOffered", []); // reset roles
+                        }}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue placeholder="Select industry" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(INDUSTRIES).map((ind) => (
+                            <SelectItem key={ind} value={ind}>
+                              {ind}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     )}
                   />
-                  {errors.industries && (
-                    <p className="text-red-500 text-sm">
-                      {errors.industries.message}
-                    </p>
+                  {errors.industry && (
+                    <p className="text-red-500 text-sm">{errors.industry.message}</p>
                   )}
                 </div>
 
-                {/* Roles per selected industry */}
-                {selectedIndustries.map((industry) => {
-                  const industryObj = INDUSTRIES.find((i) => i.name === industry);
-                  if (!industryObj) return null;
-
-                  return (
-                    <div key={industry} className="mt-4">
-                      <Label>
-                        Roles in {industry}{" "}
-                        <span className="text-red-500">*</span>
-                      </Label>
-                      <Controller
-                        name={`rolesOffered.${industry}`}
-                        control={control}
-                        render={({ field }) => (
-                          <>
-                            <Select
-                              onValueChange={(value) => {
-                                if (!field.value?.includes(value)) {
-                                  field.onChange([...(field.value || []), value]);
+                {/* Roles Offered */}
+                {selectedIndustry && (
+                  <div>
+                    <Label>
+                      Roles Offered <span className="text-red-500">*</span>
+                    </Label>
+                    <Controller
+                      name="rolesOffered"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <Select
+                            onValueChange={(value) => {
+                              if (!field.value.includes(value)) {
+                                field.onChange([...field.value, value]);
+                              }
+                            }}
+                          >
+                            <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                              <SelectValue
+                                placeholder={
+                                  field.value.length > 0
+                                    ? `${field.value.length} selected`
+                                    : "Select roles"
                                 }
-                              }}
-                            >
-                              <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                                <SelectValue
-                                  placeholder={
-                                    field.value?.length
-                                      ? `${field.value.length} selected`
-                                      : "Select roles"
-                                  }
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {industryObj.roles.map((r) => (
-                                  <SelectItem key={r} value={r}>
-                                    {r}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-
-                            {field.value?.includes("Other") && (
-                              <Input
-                                className="mt-2"
-                                placeholder="Enter custom role"
-                                {...register("customRole")}
                               />
-                            )}
+                            </SelectTrigger>
+                            <SelectContent>
+                              {INDUSTRIES[selectedIndustry].map((role) => (
+                                <SelectItem key={role} value={role}>
+                                  {role}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
 
-                            {field.value?.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-2">
-                                {field.value.map((role, i) => (
-                                  <span
-                                    key={i}
-                                    className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+                          {field.value.includes("Other") && (
+                            <Input
+                              className="mt-2"
+                              placeholder="Enter custom role"
+                              {...register("customRole")}
+                            />
+                          )}
+
+                          {field.value.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {field.value.map((role, i) => (
+                                <span
+                                  key={i}
+                                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                                >
+                                  {role}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      field.onChange(
+                                        field.value.filter((_, idx) => idx !== i)
+                                      )
+                                    }
+                                    className="ml-2"
                                   >
-                                    {role}
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        field.onChange(
-                                          field.value.filter((_, idx) => idx !== i)
-                                        )
-                                      }
-                                      className="ml-2"
-                                    >
-                                      ×
-                                    </button>
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </>
-                        )}
-                      />
-                    </div>
-                  );
-                })}
+                                    ×
+                                  </button>
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    />
+                    {errors.rolesOffered && (
+                      <p className="text-red-500 text-sm">
+                        {errors.rolesOffered.message}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {/* Job Type */}
                 <div>
@@ -512,5 +485,4 @@ const EmployerAboutBusiness: React.FC = () => {
 };
 
 export default EmployerAboutBusiness;
-
 
