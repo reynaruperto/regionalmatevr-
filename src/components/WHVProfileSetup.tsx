@@ -387,7 +387,7 @@ const WHVProfileSetup: React.FC = () => {
               {/* Phone Number */}
               <div className="space-y-2">
                 <Label htmlFor="phoneNumber">
-                  Australian Phone Number <span className="text-red-500">*</span>
+                  Phone Number <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="phoneNumber"
