@@ -33,7 +33,7 @@ const EmployerAboutBusiness: React.FC = () => {
   const { toast } = useToast();
   const [customRoles, setCustomRoles] = useState<string[]>([]);
 
-  // ✅ Official WHV industries
+  // Industries (Visa-eligible)
   const industries = [
     "Plant & Animal Cultivation",
     "Fishing & Pearling",
@@ -46,7 +46,6 @@ const EmployerAboutBusiness: React.FC = () => {
     "Healthcare & Childcare (Critical Sectors)",
   ];
 
-  // ✅ Example roles per industry
   const industryRoles: Record<string, string[]> = {
     "Plant & Animal Cultivation": ["Fruit Picker", "Packer", "Dairy Worker", "Livestock Worker", "Horse Breeder", "Reforestation Worker"],
     "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Pearl Diver"],
@@ -90,7 +89,7 @@ const EmployerAboutBusiness: React.FC = () => {
   const watchedIndustry = watch("industry");
   const watchedRoles = watch("rolesOffered") || [];
 
-  // ✅ Add custom role input
+  // Custom role handling
   const addCustomRole = () => setCustomRoles([...customRoles, ""]);
   const updateCustomRole = (i: number, value: string) => {
     const newRoles = [...customRoles];
@@ -143,9 +142,10 @@ const EmployerAboutBusiness: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Tagline */}
                 <div>
-                  <Label>Business Tagline *</Label>
-                  <Input placeholder="Quality produce, sustainable farming" {...register("businessTagline")} />
-                  {errors.businessTagline && <p className="text-red-500 text-sm">{errors.businessTagline.message}</p>}
+                  <Label htmlFor="businessTagline">Business Tagline *</Label>
+                  <Input id="businessTagline" placeholder="Quality produce, sustainable farming" {...register("businessTagline")} className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
+                  <p className="text-sm text-gray-500 mt-1">This will appear under your profile photo (max 200 characters)</p>
+                  {errors.businessTagline && <p className="text-red-500 text-sm mt-1">{errors.businessTagline.message}</p>}
                 </div>
 
                 {/* Years in Business */}
@@ -156,7 +156,9 @@ const EmployerAboutBusiness: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger><SelectValue placeholder="Select years" /></SelectTrigger>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select years" />
+                        </SelectTrigger>
                         <SelectContent>
                           {["<1", "1", "2", "3", "4", "5", "6-10", "11-15", "16-20", "20+"].map((opt) => (
                             <SelectItem key={opt} value={opt}>{opt}</SelectItem>
@@ -165,6 +167,7 @@ const EmployerAboutBusiness: React.FC = () => {
                       </Select>
                     )}
                   />
+                  {errors.yearsInBusiness && <p className="text-red-500 text-sm mt-1">{errors.yearsInBusiness.message}</p>}
                 </div>
 
                 {/* Employee Count */}
@@ -175,7 +178,9 @@ const EmployerAboutBusiness: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger><SelectValue placeholder="Select employees" /></SelectTrigger>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select employees" />
+                        </SelectTrigger>
                         <SelectContent>
                           {["1", "2-5", "6-10", "11-20", "21-50", "51-100", "100+"].map((opt) => (
                             <SelectItem key={opt} value={opt}>{opt}</SelectItem>
@@ -184,6 +189,7 @@ const EmployerAboutBusiness: React.FC = () => {
                       </Select>
                     )}
                   />
+                  {errors.employeeCount && <p className="text-red-500 text-sm mt-1">{errors.employeeCount.message}</p>}
                 </div>
 
                 {/* Industry */}
@@ -194,13 +200,16 @@ const EmployerAboutBusiness: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger><SelectValue placeholder="Select industry" /></SelectTrigger>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select industry" />
+                        </SelectTrigger>
                         <SelectContent>
                           {industries.map((ind) => <SelectItem key={ind} value={ind}>{ind}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     )}
                   />
+                  {errors.industry && <p className="text-red-500 text-sm mt-1">{errors.industry.message}</p>}
                 </div>
 
                 {/* Roles Offered */}
@@ -208,7 +217,7 @@ const EmployerAboutBusiness: React.FC = () => {
                   <div>
                     <Label>Roles Offered *</Label>
                     {industryRoles[watchedIndustry]?.map((role) => (
-                      <div key={role} className="flex items-center space-x-2">
+                      <label key={role} className="flex items-center space-x-2 mt-2 text-gray-700">
                         <input
                           type="checkbox"
                           value={role}
@@ -220,19 +229,20 @@ const EmployerAboutBusiness: React.FC = () => {
                           }}
                         />
                         <span>{role}</span>
-                      </div>
+                      </label>
                     ))}
 
                     {/* Custom roles */}
                     {customRoles.map((role, i) => (
                       <div key={i} className="flex items-center space-x-2 mt-2">
-                        <Input placeholder="Enter custom role" value={role} onChange={(e) => updateCustomRole(i, e.target.value)} />
+                        <Input value={role} onChange={(e) => updateCustomRole(i, e.target.value)} placeholder="Enter custom role" className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
                         <Button type="button" variant="destructive" size="sm" onClick={() => removeCustomRole(i)}>Remove</Button>
                       </div>
                     ))}
                     <Button type="button" variant="outline" size="sm" className="mt-2" onClick={addCustomRole}>
                       + Add Another Role
                     </Button>
+                    {errors.rolesOffered && <p className="text-red-500 text-sm mt-1">{errors.rolesOffered.message}</p>}
                   </div>
                 )}
 
@@ -240,7 +250,7 @@ const EmployerAboutBusiness: React.FC = () => {
                 <div>
                   <Label>Job Availability *</Label>
                   {jobAvailabilityOptions.map((opt) => (
-                    <div key={opt} className="flex items-center space-x-2">
+                    <label key={opt} className="flex items-center space-x-2 mt-2 text-gray-700">
                       <input
                         type="checkbox"
                         value={opt}
@@ -252,22 +262,25 @@ const EmployerAboutBusiness: React.FC = () => {
                         }}
                       />
                       <span>{opt}</span>
-                    </div>
+                    </label>
                   ))}
+                  {errors.jobAvailability && <p className="text-red-500 text-sm mt-1">{errors.jobAvailability.message}</p>}
                 </div>
 
                 {/* Pay */}
                 <div>
                   <Label>Pay *</Label>
                   <div className="flex space-x-2">
-                    <Input type="number" placeholder="Min" {...register("pay.min", { valueAsNumber: true })} />
-                    <Input type="number" placeholder="Max" {...register("pay.max", { valueAsNumber: true })} />
+                    <Input type="number" placeholder="Min" {...register("pay.min", { valueAsNumber: true })} className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
+                    <Input type="number" placeholder="Max" {...register("pay.max", { valueAsNumber: true })} className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
                     <Controller
                       name="pay.unit"
                       control={control}
                       render={({ field }) => (
                         <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Unit" /></SelectTrigger>
+                          <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                            <SelectValue placeholder="Unit" />
+                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="hourly">Hourly</SelectItem>
                             <SelectItem value="daily">Daily</SelectItem>
@@ -278,13 +291,14 @@ const EmployerAboutBusiness: React.FC = () => {
                       )}
                     />
                   </div>
+                  {(errors.pay?.min || errors.pay?.max) && <p className="text-red-500 text-sm mt-1">Please enter valid pay range</p>}
                 </div>
 
                 {/* Facilities */}
                 <div>
                   <Label>Facilities & Extras *</Label>
                   {facilitiesExtras.map((facility) => (
-                    <div key={facility} className="flex items-center space-x-2">
+                    <label key={facility} className="flex items-center space-x-2 mt-2 text-gray-700">
                       <input
                         type="checkbox"
                         value={facility}
@@ -296,8 +310,9 @@ const EmployerAboutBusiness: React.FC = () => {
                         }}
                       />
                       <span>{facility}</span>
-                    </div>
+                    </label>
                   ))}
+                  {errors.facilitiesAndExtras && <p className="text-red-500 text-sm mt-1">{errors.facilitiesAndExtras.message}</p>}
                 </div>
 
                 {/* Continue */}
