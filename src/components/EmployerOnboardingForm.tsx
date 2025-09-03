@@ -225,7 +225,7 @@ const EmployerOnboardingForm: React.FC = () => {
                   <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-14 text-lg rounded-xl bg-[#EC5823] hover:opacity-90 text-white disabled:opacity-50"
+                    className="w-full h-14 text-lg rounded-xl bg-[#1E293B] hover:opacity-90 text-white disabled:opacity-50"
                   >
                     {isLoading ? 'Creating account...' : 'Continue'}
                   </Button>
@@ -241,5 +241,4 @@ const EmployerOnboardingForm: React.FC = () => {
 };
 
 export default EmployerOnboardingForm;
-
 
