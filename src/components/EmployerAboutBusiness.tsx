@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,33 +6,60 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-// ✅ Shared constants
-const INDUSTRY_OPTIONS = [
-  "Agriculture & Farming",
-  "Tourism & Hospitality",
-  "Construction & Building",
-  "Mining & Resources",
-  "Healthcare & Aged Care",
-  "Other",
+// ✅ Industries with roles
+const INDUSTRIES = [
+  {
+    name: "Agriculture & Farming",
+    roles: ["Fruit Picker", "Farm Hand", "Livestock Worker", "Other"],
+  },
+  {
+    name: "Tourism & Hospitality",
+    roles: ["Waitstaff", "Kitchen Hand", "Barista", "Housekeeping", "Other"],
+  },
+  {
+    name: "Construction & Building",
+    roles: ["Construction Worker", "Labourer", "Driver", "Other"],
+  },
+  {
+    name: "Mining & Resources",
+    roles: ["Operator", "Technician", "Other"],
+  },
+  {
+    name: "Healthcare & Aged Care",
+    roles: ["Support Worker", "Cleaner", "Other"],
+  },
+  { name: "Other", roles: ["Other"] },
 ];
 
-const ROLE_OPTIONS = [
-  "Farm Worker",
-  "Fruit Picker",
-  "Kitchen Hand",
-  "Waitstaff",
-  "Cleaner",
-  "Construction Worker",
-  "Driver",
-  "Other",
+// ✅ Job Types
+const JOB_TYPES = [
+  "Full-time",
+  "Part-time",
+  "Casual",
+  "Seasonal",
+  "Contract",
 ];
 
-const JOB_AVAILABILITY = ["Full-time", "Part-time", "Casual", "Seasonal", "Contract"];
+// ✅ Pay ranges
+const PAY_RANGES = [
+  "$20–25/hour",
+  "$25–30/hour",
+  "$30–35/hour",
+  "$35+/hour",
+  "Competitive salary",
+];
 
+// ✅ Facilities
 const FACILITIES = [
   "Accommodation provided",
   "Meals included",
@@ -44,19 +71,23 @@ const FACILITIES = [
   "Team environment",
 ];
 
-// ✅ Shared schema
+// ✅ Schema
 const formSchema = z.object({
-  businessTagline: z.string().min(10, "Please describe your business (min 10 chars)").max(200),
+  businessTagline: z
+    .string()
+    .min(10, "Please describe your business (min 10 chars)")
+    .max(200),
   yearsInBusiness: z.string().min(1, "Please select years in business."),
   employeeCount: z.string().min(1, "Please select number of employees."),
-  industry: z.string().min(1, "Please select an industry."),
+  industries: z.array(z.string()).min(1, "Please select at least one industry."),
+  rolesOffered: z.record(z.string(), z.array(z.string())),
+  jobTypes: z.array(z.string()).min(1, "Please select at least one job type."),
+  payRange: z.string().min(1, "Please select pay range."),
+  facilitiesAndExtras: z
+    .array(z.string())
+    .min(1, "Select at least one facility."),
   customIndustry: z.string().optional(),
-  rolesOffered: z.array(z.string()).min(1, "Please select at least one role."),
   customRole: z.string().optional(),
-  jobAvailability: z.array(z.string()).min(1, "Please select availability."),
-  payMin: z.string().min(1, "Enter min pay."),
-  payMax: z.string().min(1, "Enter max pay."),
-  facilitiesAndExtras: z.array(z.string()).min(1, "Select at least one facility."),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -64,22 +95,31 @@ type FormData = z.infer<typeof formSchema>;
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
-  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      rolesOffered: [],
-      jobAvailability: [],
+      industries: [],
+      rolesOffered: {},
+      jobTypes: [],
       facilitiesAndExtras: [],
     },
   });
 
-  const watchedIndustry = watch("industry");
-  const watchedRoles = watch("rolesOffered");
-
   const onSubmit = (data: FormData) => {
     console.log("Step 4 submitted:", data);
-    toast({ title: "Business details saved", description: "Proceeding to photo upload" });
+    toast({
+      title: "Business details saved",
+      description: "Proceeding to photo upload",
+    });
     navigate("/employer/photo-upload");
   };
 
@@ -106,7 +146,9 @@ const EmployerAboutBusiness: React.FC = () => {
               </div>
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    About Your Business
+                  </h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                     <span className="text-sm font-medium text-gray-600">4/5</span>
                   </div>
@@ -117,91 +159,138 @@ const EmployerAboutBusiness: React.FC = () => {
             {/* Form */}
             <div className="flex-1 overflow-y-auto px-6 pb-20">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Tagline */}
+                {/* Business Tagline */}
                 <div>
-                  <Label htmlFor="businessTagline">Business Tagline *</Label>
-                  <Input id="businessTagline" placeholder="Sustainable farming, local produce" {...register("businessTagline")} />
-                  {errors.businessTagline && <p className="text-red-500 text-sm">{errors.businessTagline.message}</p>}
+                  <Label htmlFor="businessTagline">
+                    Business Tagline <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="businessTagline"
+                    placeholder="Sustainable farming, local produce"
+                    {...register("businessTagline")}
+                  />
+                  {errors.businessTagline && (
+                    <p className="text-red-500 text-sm">
+                      {errors.businessTagline.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Years in Business */}
                 <div>
-                  <Label>Years in Business *</Label>
-                  <Select onValueChange={(v) => setValue("yearsInBusiness", v)} defaultValue="">
+                  <Label>
+                    Years in Business <span className="text-red-500">*</span>
+                  </Label>
+                  <Select
+                    onValueChange={(v) => setValue("yearsInBusiness", v)}
+                    defaultValue=""
+                  >
                     <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
                       <SelectValue placeholder="Select years" />
                     </SelectTrigger>
                     <SelectContent>
-                      {["<1 year", "1-2 years", "3-5 years", "6-10 years", "10+ years"].map((y) => (
-                        <SelectItem key={y} value={y}>{y}</SelectItem>
-                      ))}
+                      {["<1 year", "1-2 years", "3-5 years", "6-10 years", "10+ years"].map(
+                        (y) => (
+                          <SelectItem key={y} value={y}>
+                            {y}
+                          </SelectItem>
+                        )
+                      )}
                     </SelectContent>
                   </Select>
-                  {errors.yearsInBusiness && <p className="text-red-500 text-sm">{errors.yearsInBusiness.message}</p>}
+                  {errors.yearsInBusiness && (
+                    <p className="text-red-500 text-sm">
+                      {errors.yearsInBusiness.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Employee Count */}
                 <div>
-                  <Label>Employee Count *</Label>
-                  <Select onValueChange={(v) => setValue("employeeCount", v)} defaultValue="">
+                  <Label>
+                    Employee Count <span className="text-red-500">*</span>
+                  </Label>
+                  <Select
+                    onValueChange={(v) => setValue("employeeCount", v)}
+                    defaultValue=""
+                  >
                     <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
                       <SelectValue placeholder="Select count" />
                     </SelectTrigger>
                     <SelectContent>
                       {["1", "2-5", "6-10", "11-20", "21-50", "50+"].map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.employeeCount && <p className="text-red-500 text-sm">{errors.employeeCount.message}</p>}
-                </div>
-
-                {/* Industry */}
-                <div>
-                  <Label>Industry *</Label>
-                  <Select onValueChange={(v) => setValue("industry", v)} defaultValue="">
-                    <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                      <SelectValue placeholder="Select industry" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {INDUSTRY_OPTIONS.map((ind) => (
-                        <SelectItem key={ind} value={ind}>{ind}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {watchedIndustry === "Other" && (
-                    <Input className="mt-2" placeholder="Enter your industry" {...register("customIndustry")} />
+                  {errors.employeeCount && (
+                    <p className="text-red-500 text-sm">
+                      {errors.employeeCount.message}
+                    </p>
                   )}
-                  {errors.industry && <p className="text-red-500 text-sm">{errors.industry.message}</p>}
                 </div>
 
-                {/* Roles Offered */}
+                {/* Industries + Roles */}
                 <div>
-                  <Label>Roles Offered *</Label>
+                  <Label>
+                    Industry <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
-                    name="rolesOffered"
+                    name="industries"
                     control={control}
                     render={({ field }) => (
                       <>
-                        <Select onValueChange={(value) => field.onChange([...field.value, value])}>
+                        <Select
+                          onValueChange={(value) => {
+                            if (!field.value.includes(value)) {
+                              const newIndustries = [...field.value, value];
+                              field.onChange(newIndustries);
+                              setSelectedIndustries(newIndustries);
+                            }
+                          }}
+                        >
                           <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                            <SelectValue placeholder="Select roles" />
+                            <SelectValue
+                              placeholder={
+                                field.value.length > 0
+                                  ? `${field.value.length} selected`
+                                  : "Select industries"
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent>
-                            {ROLE_OPTIONS.map((r) => (
-                              <SelectItem key={r} value={r}>{r}</SelectItem>
+                            {INDUSTRIES.map((ind) => (
+                              <SelectItem key={ind.name} value={ind.name}>
+                                {ind.name}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        {watchedRoles?.includes("Other") && (
-                          <Input className="mt-2" placeholder="Enter custom role" {...register("customRole")} />
-                        )}
-                        {field.value?.length > 0 && (
+
+                        {/* Chips for selected industries */}
+                        {field.value.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-2">
-                            {field.value.map((role, i) => (
-                              <span key={i} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                                {role}
-                                <button type="button" onClick={() => field.onChange(field.value.filter((_, idx) => idx !== i))} className="ml-2">×</button>
+                            {field.value.map((industry, i) => (
+                              <span
+                                key={i}
+                                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                              >
+                                {industry}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newIndustries = field.value.filter(
+                                      (_, idx) => idx !== i
+                                    );
+                                    field.onChange(newIndustries);
+                                    setSelectedIndustries(newIndustries);
+                                  }}
+                                  className="ml-2"
+                                >
+                                  ×
+                                </button>
                               </span>
                             ))}
                           </div>
@@ -209,78 +298,207 @@ const EmployerAboutBusiness: React.FC = () => {
                       </>
                     )}
                   />
-                  {errors.rolesOffered && <p className="text-red-500 text-sm">{errors.rolesOffered.message}</p>}
+                  {errors.industries && (
+                    <p className="text-red-500 text-sm">
+                      {errors.industries.message}
+                    </p>
+                  )}
                 </div>
 
-                {/* Job Availability */}
+                {/* Roles per selected industry */}
+                {selectedIndustries.map((industry) => {
+                  const industryObj = INDUSTRIES.find((i) => i.name === industry);
+                  if (!industryObj) return null;
+
+                  return (
+                    <div key={industry} className="mt-4">
+                      <Label>
+                        Roles in {industry}{" "}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Controller
+                        name={`rolesOffered.${industry}`}
+                        control={control}
+                        render={({ field }) => (
+                          <>
+                            <Select
+                              onValueChange={(value) => {
+                                if (!field.value?.includes(value)) {
+                                  field.onChange([...(field.value || []), value]);
+                                }
+                              }}
+                            >
+                              <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                                <SelectValue
+                                  placeholder={
+                                    field.value?.length
+                                      ? `${field.value.length} selected`
+                                      : "Select roles"
+                                  }
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {industryObj.roles.map((r) => (
+                                  <SelectItem key={r} value={r}>
+                                    {r}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+
+                            {field.value?.includes("Other") && (
+                              <Input
+                                className="mt-2"
+                                placeholder="Enter custom role"
+                                {...register("customRole")}
+                              />
+                            )}
+
+                            {field.value?.length > 0 && (
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                {field.value.map((role, i) => (
+                                  <span
+                                    key={i}
+                                    className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+                                  >
+                                    {role}
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        field.onChange(
+                                          field.value.filter((_, idx) => idx !== i)
+                                        )
+                                      }
+                                      className="ml-2"
+                                    >
+                                      ×
+                                    </button>
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </>
+                        )}
+                      />
+                    </div>
+                  );
+                })}
+
+                {/* Job Type */}
                 <div>
-                  <Label>Job Availability *</Label>
+                  <Label>
+                    Job Type <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
-                    name="jobAvailability"
+                    name="jobTypes"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={(value) => field.onChange([...field.value, value])}>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange([...field.value, value])
+                        }
+                      >
                         <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                          <SelectValue placeholder="Select availability" />
+                          <SelectValue
+                            placeholder={
+                              field.value.length > 0
+                                ? `${field.value.length} selected`
+                                : "Select job types"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          {JOB_AVAILABILITY.map((a) => (
-                            <SelectItem key={a} value={a}>{a}</SelectItem>
+                          {JOB_TYPES.map((t) => (
+                            <SelectItem key={t} value={t}>
+                              {t}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     )}
                   />
-                  {errors.jobAvailability && <p className="text-red-500 text-sm">{errors.jobAvailability.message}</p>}
+                  {errors.jobTypes && (
+                    <p className="text-red-500 text-sm">
+                      {errors.jobTypes.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Pay Range */}
                 <div>
-                  <Label>Pay Range (AUD/hr) *</Label>
-                  <div className="flex gap-2">
-                    <Input placeholder="Min" {...register("payMin")} className="h-14 bg-gray-100 rounded-xl" />
-                    <Input placeholder="Max" {...register("payMax")} className="h-14 bg-gray-100 rounded-xl" />
-                  </div>
-                  {(errors.payMin || errors.payMax) && <p className="text-red-500 text-sm">Enter valid pay range</p>}
+                  <Label>
+                    Pay Range <span className="text-red-500">*</span>
+                  </Label>
+                  <Select
+                    onValueChange={(v) => setValue("payRange", v)}
+                    defaultValue=""
+                  >
+                    <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                      <SelectValue placeholder="Select pay range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PAY_RANGES.map((p) => (
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.payRange && (
+                    <p className="text-red-500 text-sm">
+                      {errors.payRange.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Facilities */}
                 <div>
-                  <Label>Facilities & Extras *</Label>
+                  <Label>
+                    Facilities & Extras <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
                     name="facilitiesAndExtras"
                     control={control}
                     render={({ field }) => (
-                      <>
-                        <Select onValueChange={(value) => field.onChange([...field.value, value])}>
-                          <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
-                            <SelectValue placeholder="Select facilities" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {FACILITIES.map((f) => (
-                              <SelectItem key={f} value={f}>{f}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {field.value?.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {field.value.map((f, i) => (
-                              <span key={i} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                                {f}
-                                <button type="button" onClick={() => field.onChange(field.value.filter((_, idx) => idx !== i))} className="ml-2">×</button>
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </>
+                      <Select
+                        onValueChange={(value) => {
+                          if (!field.value.includes(value)) {
+                            field.onChange([...field.value, value]);
+                          }
+                        }}
+                      >
+                        <SelectTrigger className="h-14 bg-gray-100 rounded-xl">
+                          <SelectValue
+                            placeholder={
+                              field.value.length > 0
+                                ? `${field.value.length} selected`
+                                : "Select facilities"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {FACILITIES.map((f) => (
+                            <SelectItem key={f} value={f}>
+                              {f}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     )}
                   />
-                  {errors.facilitiesAndExtras && <p className="text-red-500 text-sm">{errors.facilitiesAndExtras.message}</p>}
+                  {errors.facilitiesAndExtras && (
+                    <p className="text-red-500 text-sm">
+                      {errors.facilitiesAndExtras.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Submit */}
                 <div className="pt-6">
-                  <Button type="submit" className="w-full h-14 bg-slate-800 text-white rounded-xl">
+                  <Button
+                    type="submit"
+                    className="w-full h-14 bg-slate-800 text-white rounded-xl"
+                  >
                     Continue
                   </Button>
                 </div>
@@ -294,4 +512,5 @@ const EmployerAboutBusiness: React.FC = () => {
 };
 
 export default EmployerAboutBusiness;
+
 
