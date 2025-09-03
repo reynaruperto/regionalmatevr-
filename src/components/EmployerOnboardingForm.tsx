@@ -143,12 +143,12 @@ const EmployerOnboardingForm: React.FC = () => {
                 {/* Email field */}
                 <div>
                   <Label htmlFor="email" className="text-base font-medium text-gray-900 mb-2 block">
-                    Email
+                    Email <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="johndoe@gmail.com"
+                    autoComplete="off"
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
                     {...register("email")}
                   />
@@ -160,13 +160,13 @@ const EmployerOnboardingForm: React.FC = () => {
                 {/* Password field */}
                 <div>
                   <Label htmlFor="password" className="text-base font-medium text-gray-900 mb-2 block">
-                    Password
+                    Password <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
+                      autoComplete="new-password"
                       className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
                       {...register("password")}
                     />
@@ -190,13 +190,13 @@ const EmployerOnboardingForm: React.FC = () => {
                 {/* Confirm Password field */}
                 <div>
                   <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-900 mb-2 block">
-                    Confirm Password
+                    Confirm Password <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="••••••••"
+                      autoComplete="new-password"
                       className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
                       {...register("confirmPassword")}
                     />
@@ -241,4 +241,5 @@ const EmployerOnboardingForm: React.FC = () => {
 };
 
 export default EmployerOnboardingForm;
+
 
