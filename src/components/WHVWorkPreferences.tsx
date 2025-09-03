@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ WHV-relevant industries + roles
+// ✅ Industries & Roles aligned with WHV-specified work
 const industryRoles: Record<string, string[]> = {
   "Agriculture & Farming": [
     "Fruit Picker",
@@ -90,7 +90,8 @@ const WHVWorkPreferences: React.FC = () => {
 
     console.log("Tagline:", tagline);
     console.log("Industries:", selectedIndustries);
-    console.log("Roles:", selectedRoles, otherRole ? [otherRole] : []);
+    console.log("Roles:", selectedRoles);
+    console.log("Other Role:", otherRole);
     console.log("Preferred Location:", preferredCity, preferredState);
 
     navigate("/whv/work-experience");
@@ -101,10 +102,10 @@ const WHVWorkPreferences: React.FC = () => {
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-6 flex-shrink-0"></div>
 
           {/* Header */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
+          <div className="px-4 py-5 border-b bg-white flex-shrink-0 mb-4">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate("/whv/profile-setup")}
@@ -122,8 +123,8 @@ const WHVWorkPreferences: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-6">
-            <form onSubmit={handleSubmit} className="space-y-8 pb-20">
+          <div className="flex-1 overflow-y-auto px-4 py-10">
+            <form onSubmit={handleSubmit} className="space-y-10 pb-20">
               {/* Profile Tagline */}
               <div className="space-y-2">
                 <Label className="text-base font-medium text-gray-700">
@@ -213,10 +214,11 @@ const WHVWorkPreferences: React.FC = () => {
                     />
                   </div>
 
-                  {/* Disclaimer */}
+                  {/* Softer Tip Disclaimer */}
                   <p className="text-xs text-gray-500 mt-2">
-                    Tip: Some of these jobs can help you qualify for a visa extension. 
-                    Check the Department of Home Affairs website for details.
+                    💡 Tip: Some of these jobs can help you qualify for a visa
+                    extension. Check the Department of Home Affairs website for
+                    details.
                   </p>
                 </div>
               )}
@@ -224,7 +226,8 @@ const WHVWorkPreferences: React.FC = () => {
               {/* Preferred Location */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Working Location <span className="text-red-500">*</span>
+                  Preferred Working Location{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Select onValueChange={(value) => setPreferredState(value)}>
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
@@ -248,7 +251,7 @@ const WHVWorkPreferences: React.FC = () => {
               </div>
 
               {/* Continue Button */}
-              <div className="pt-8">
+              <div className="pt-10 pb-6">
                 <Button
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
@@ -265,4 +268,5 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
+
 
