@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Heart, BadgeCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -9,16 +9,16 @@ const ProfileCardPreview: React.FC = () => {
   
   const isEmployerPreview = location.pathname === '/employer/profile-preview';
 
-  // Mock employer data — replace with real onboarding state later
-  const employer = {
+  // Mock data – replace later with props or API data
+  const employerData = {
     businessName: "Kangafarm",
     tagline: "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing",
+    location: "Clontarf, QLD 4017",
     industry: "Agriculture & Farming",
     rolesOffered: ["Fruit Picker", "Farm Hand"],
-    jobAvailability: "Seasonal (Sep 2025 – Mar 2026)",
-    payRange: "$25 – $30/hour",
+    jobAvailability: "Seasonal",
+    payRange: "$25–30/hour",
     facilities: ["Accommodation provided", "Meals included"],
-    location: "Clontarf, QLD 4017",
     abnProvided: true,
     profilePhoto: "/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png"
   };
@@ -41,47 +41,51 @@ const ProfileCardPreview: React.FC = () => {
               <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
                 {/* Business Header */}
-                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6 flex items-center justify-center gap-2">
-                  <h2 className="text-xl font-bold">{employer.businessName.toUpperCase()}</h2>
-                  {employer.abnProvided && (
-                    <span className="flex items-center text-xs bg-green-600 px-2 py-1 rounded-full">
-                      <CheckCircle size={14} className="mr-1" />
-                      ABN Provided
-                    </span>
-                  )}
+                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
+                  <h2 className="text-xl font-bold">{employerData.businessName.toUpperCase()}</h2>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="flex justify-center mb-6">
                   <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
                     <img 
-                      src={employer.profilePhoto}
-                      alt="Business Logo" 
+                      src={employerData.profilePhoto}
+                      alt="Employer Profile" 
                       className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
 
-                {/* Tagline */}
+                {/* Description */}
                 <div className="text-center mb-6">
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    {employer.tagline}
+                    {employerData.tagline}
                   </p>
                 </div>
 
                 {/* Details */}
                 <div className="space-y-2 text-sm mb-6">
-                  <div><span className="font-semibold">Location:</span> {employer.location}</div>
-                  <div><span className="font-semibold">Industry:</span> {employer.industry}</div>
-                  <div><span className="font-semibold">Roles Offered:</span> {employer.rolesOffered.join(", ")}</div>
-                  <div><span className="font-semibold">Job Availability:</span> {employer.jobAvailability}</div>
-                  <div><span className="font-semibold">Pay Range:</span> {employer.payRange}</div>
-                  <div><span className="font-semibold">Facilities & Extras:</span> {employer.facilities.join(", ")}</div>
+                  <div><span className="font-semibold">Location:</span> {employerData.location}</div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-semibold">ABN:</span> 
+                    {employerData.abnProvided ? (
+                      <span className="flex items-center gap-1 text-green-600">
+                        <BadgeCheck size={14} /> Verified
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">Not Provided</span>
+                    )}
+                  </div>
+                  <div><span className="font-semibold">Industry:</span> {employerData.industry}</div>
+                  <div><span className="font-semibold">Roles Offered:</span> {employerData.rolesOffered.join(", ")}</div>
+                  <div><span className="font-semibold">Job Availability:</span> {employerData.jobAvailability}</div>
+                  <div><span className="font-semibold">Pay Range:</span> {employerData.payRange}</div>
+                  <div><span className="font-semibold">Facilities / Extras:</span> {employerData.facilities.join(", ")}</div>
                 </div>
 
                 {/* Locked Message */}
                 <div className="bg-gray-200 text-center py-3 rounded-xl mb-4">
-                  <p className="text-gray-600 text-sm">Full Details Unlocked if you both Match</p>
+                  <p className="text-gray-600 text-sm">Full contact details unlock if you both Match</p>
                 </div>
 
                 {/* Action Buttons */}
