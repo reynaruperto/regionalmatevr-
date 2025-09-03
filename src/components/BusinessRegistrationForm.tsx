@@ -31,8 +31,7 @@ const formSchema = z.object({
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
   addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
   addressLine2: z.string().optional(),
-  suburb: z.string().min(2, { message: "Suburb is required." }),
-  city: z.string().min(2, { message: "City is required." }),
+  suburbCity: z.string().min(2, { message: "Suburb / City is required." }),
   state: z.string().min(1, { message: "Please select a state." }),
   postCode: z.string()
     .min(4, { message: "Please enter a valid post code." })
@@ -192,18 +191,11 @@ const BusinessRegistrationForm: React.FC = () => {
                   <Input id="addressLine2" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine2")} />
                 </div>
 
-                {/* Suburb + City in one line */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="suburb">Suburb <span className="text-red-500">*</span></Label>
-                    <Input id="suburb" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburb")} />
-                    {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>}
-                  </div>
-                  <div>
-                    <Label htmlFor="city">City <span className="text-red-500">*</span></Label>
-                    <Input id="city" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("city")} />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
-                  </div>
+                {/* Suburb / City */}
+                <div>
+                  <Label htmlFor="suburbCity">Suburb / City <span className="text-red-500">*</span></Label>
+                  <Input id="suburbCity" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburbCity")} />
+                  {errors.suburbCity && <p className="text-red-500 text-sm mt-1">{errors.suburbCity.message}</p>}
                 </div>
 
                 {/* State */}
