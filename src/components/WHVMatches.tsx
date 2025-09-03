@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/BottomNavigation';
 import LikeConfirmationModal from '@/components/LikeConfirmationModal';
 
-// Employer profile type
 interface Employer {
   id: string;
   name: string;
@@ -95,7 +94,7 @@ const WHVMatches: React.FC = () => {
     },
   ].map((e) => ({ ...e, matchPercentage: calculateMatch(e) }));
 
-  // Matches (mutual match, no % needed)
+  // Matches (mutual matches, no % needed) → now 3 employers
   const matches: Employer[] = [
     {
       id: '4',
@@ -115,6 +114,16 @@ const WHVMatches: React.FC = () => {
       location: 'Bundaberg, QLD',
       availability: '2025-09-05',
       profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png',
+      isMutualMatch: true,
+    },
+    {
+      id: '6',
+      name: 'Golden Fields',
+      skills: ['Hospitality', 'Agriculture'],
+      country: 'Australia',
+      location: 'Mildura, VIC',
+      availability: '2025-11-01',
+      profileImage: '/lovable-uploads/f8e06077-061a-45ec-b61f-f9f81d72b6ed.png',
       isMutualMatch: true,
     },
   ];
@@ -195,17 +204,15 @@ const WHVMatches: React.FC = () => {
 
                     <div className="flex items-center gap-2 mt-3">
                       <Button
-                        onClick={() =>
-                          handleViewProfile(e.id, e.isMutualMatch)
-                        }
-                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-full"
+                        onClick={() => handleViewProfile(e.id, e.isMutualMatch)}
+                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm h-10 rounded-xl"
                       >
                         {e.isMutualMatch ? 'View Full Profile' : 'View Profile'}
                       </Button>
                       {!e.isMutualMatch && (
                         <button
                           onClick={() => handleLikeEmployer(e.name)}
-                          className="h-10 w-10 bg-orange-500 rounded-lg flex items-center justify-center hover:bg-orange-600"
+                          className="h-10 w-10 bg-orange-500 rounded-xl flex items-center justify-center hover:bg-orange-600"
                         >
                           <Heart size={16} className="text-white" />
                         </button>
@@ -213,7 +220,7 @@ const WHVMatches: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Show % for Top Recommended only */}
+                  {/* % match for Top Recommended only */}
                   {!e.isMutualMatch && (
                     <div className="text-right flex-shrink-0 ml-2">
                       <div className="text-lg font-bold text-orange-500">
