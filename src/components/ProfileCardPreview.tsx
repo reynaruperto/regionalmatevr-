@@ -6,21 +6,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const ProfileCardPreview: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const isEmployerPreview = location.pathname === '/employer/profile-preview';
 
-  // Mock data – replace later with props or API data
+  // Mock employer data (replace later with props/context/API)
   const employerData = {
     businessName: "Kangafarm",
+    profilePhoto: "/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png",
     tagline: "Family-run farm in regional Queensland, offering seasonal work in fruit picking and packing",
     location: "Clontarf, QLD 4017",
     industry: "Agriculture & Farming",
     rolesOffered: ["Fruit Picker", "Farm Hand"],
-    jobAvailability: "Seasonal",
-    payRange: "$25–30/hour",
-    facilities: ["Accommodation provided", "Meals included"],
-    abnProvided: true,
-    profilePhoto: "/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png"
+    jobAvailability: "Seasonal", // ✅ from onboarding/settings
+    payRange: "$28/hour + super",
+    facilities: ["Meals included", "Accommodation available"],
+    abnVerified: true
   };
 
   return (
@@ -28,21 +28,23 @@ const ProfileCardPreview: React.FC = () => {
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative">
+          
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-200">
             
             {/* Scrollable Content */}
             <div className="flex-1 px-6 pt-16 pb-24 overflow-y-auto">
               
-              {/* Profile Card */}
               <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
                 
-                {/* Business Header */}
-                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6">
-                  <h2 className="text-xl font-bold">{employerData.businessName.toUpperCase()}</h2>
+                {/* Header */}
+                <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6 flex items-center justify-center gap-2">
+                  <h2 className="text-xl font-bold uppercase">{employerData.businessName}</h2>
+                  {employerData.abnVerified && (
+                    <BadgeCheck size={18} className="text-green-400" title="ABN Verified" />
+                  )}
                 </div>
 
                 {/* Profile Picture */}
@@ -50,32 +52,22 @@ const ProfileCardPreview: React.FC = () => {
                   <div className="w-32 h-32 rounded-full border-4 border-slate-800 overflow-hidden">
                     <img 
                       src={employerData.profilePhoto}
-                      alt="Employer Profile" 
+                      alt="Employer"
                       className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
 
-                {/* Description */}
+                {/* Tagline */}
                 <div className="text-center mb-6">
                   <p className="text-gray-700 text-sm leading-relaxed">
                     {employerData.tagline}
                   </p>
                 </div>
 
-                {/* Details */}
+                {/* Key Details */}
                 <div className="space-y-2 text-sm mb-6">
                   <div><span className="font-semibold">Location:</span> {employerData.location}</div>
-                  <div className="flex items-center gap-1">
-                    <span className="font-semibold">ABN:</span> 
-                    {employerData.abnProvided ? (
-                      <span className="flex items-center gap-1 text-green-600">
-                        <BadgeCheck size={14} /> Verified
-                      </span>
-                    ) : (
-                      <span className="text-gray-500">Not Provided</span>
-                    )}
-                  </div>
                   <div><span className="font-semibold">Industry:</span> {employerData.industry}</div>
                   <div><span className="font-semibold">Roles Offered:</span> {employerData.rolesOffered.join(", ")}</div>
                   <div><span className="font-semibold">Job Availability:</span> {employerData.jobAvailability}</div>
@@ -85,7 +77,7 @@ const ProfileCardPreview: React.FC = () => {
 
                 {/* Locked Message */}
                 <div className="bg-gray-200 text-center py-3 rounded-xl mb-4">
-                  <p className="text-gray-600 text-sm">Full contact details unlock if you both Match</p>
+                  <p className="text-gray-600 text-sm">Full details unlocked if you both Match</p>
                 </div>
 
                 {/* Action Buttons */}
@@ -101,7 +93,7 @@ const ProfileCardPreview: React.FC = () => {
 
             </div>
 
-            {/* Back Button - Fixed at bottom */}
+            {/* Back Button */}
             <div className="absolute bottom-8 left-6">
               <Button 
                 variant="ghost" 
@@ -121,3 +113,4 @@ const ProfileCardPreview: React.FC = () => {
 };
 
 export default ProfileCardPreview;
+
