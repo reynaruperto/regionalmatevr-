@@ -15,8 +15,8 @@ const formSchema = z.object({
     .min(2, { message: "Given name must be at least 2 characters." })
     .regex(/^[a-zA-Z\s]*$/, { message: "Given name can only contain letters." }),
   middleName: z.string()
-    .min(2, { message: "Middle name must be at least 2 characters." })
-    .regex(/^[a-zA-Z\s]*$/, { message: "Middle name can only contain letters." }),
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), { message: "Middle name can only contain letters." }),
   familyName: z.string()
     .min(2, { message: "Family name must be at least 2 characters." })
     .regex(/^[a-zA-Z\s]*$/, { message: "Family name can only contain letters." }),
@@ -25,12 +25,12 @@ const formSchema = z.object({
     .max(11, { message: "ABN must be 11 digits." })
     .regex(/^\d+$/, { message: "ABN must contain only numbers." }),
   companyName: z.string().min(2, { message: "Company name is required." }),
-  website: z.string().url({ message: "Please enter a valid website URL." }),
+  website: z.string().url({ message: "Please enter a valid website URL." }).optional().or(z.literal("")),
   businessPhone: z.string()
     .min(10, { message: "Please enter a valid phone number." })
     .regex(/^[\d\s\+\-\(\)]+$/, { message: "Please enter a valid phone number." }),
   addressLine1: z.string().min(2, { message: "Address line 1 is required." }),
-  addressLine2: z.string().min(2, { message: "Address line 2 is required." }),
+  addressLine2: z.string().optional(),
   suburb: z.string().min(2, { message: "Suburb is required." }),
   city: z.string().min(2, { message: "City is required." }),
   state: z.string().min(1, { message: "Please select a state." }),
@@ -126,9 +126,9 @@ const BusinessRegistrationForm: React.FC = () => {
                   {errors.givenName && <p className="text-red-500 text-sm mt-1">{errors.givenName.message}</p>}
                 </div>
 
-                {/* Middle Name */}
+                {/* Middle Name - Optional */}
                 <div>
-                  <Label htmlFor="middleName">Middle Name <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="middleName">Middle Name(s)</Label>
                   <Input id="middleName" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("middleName")} />
                   {errors.middleName && <p className="text-red-500 text-sm mt-1">{errors.middleName.message}</p>}
                 </div>
@@ -165,9 +165,9 @@ const BusinessRegistrationForm: React.FC = () => {
                   {errors.companyName && <p className="text-red-500 text-sm mt-1">{errors.companyName.message}</p>}
                 </div>
 
-                {/* Website */}
+                {/* Website - Optional */}
                 <div>
-                  <Label htmlFor="website">Business Website <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="website">Business Website</Label>
                   <Input id="website" type="url" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("website")} />
                   {errors.website && <p className="text-red-500 text-sm mt-1">{errors.website.message}</p>}
                 </div>
@@ -186,25 +186,24 @@ const BusinessRegistrationForm: React.FC = () => {
                   {errors.addressLine1 && <p className="text-red-500 text-sm mt-1">{errors.addressLine1.message}</p>}
                 </div>
 
-                {/* Address Line 2 */}
+                {/* Address Line 2 - Optional */}
                 <div>
-                  <Label htmlFor="addressLine2">Address Line 2 <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="addressLine2">Address Line 2</Label>
                   <Input id="addressLine2" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("addressLine2")} />
-                  {errors.addressLine2 && <p className="text-red-500 text-sm mt-1">{errors.addressLine2.message}</p>}
                 </div>
 
-                {/* Suburb */}
-                <div>
-                  <Label htmlFor="suburb">Suburb <span className="text-red-500">*</span></Label>
-                  <Input id="suburb" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburb")} />
-                  {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>}
-                </div>
-
-                {/* City */}
-                <div>
-                  <Label htmlFor="city">City <span className="text-red-500">*</span></Label>
-                  <Input id="city" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("city")} />
-                  {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+                {/* Suburb + City in one line */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="suburb">Suburb <span className="text-red-500">*</span></Label>
+                    <Input id="suburb" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("suburb")} />
+                    {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb.message}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="city">City <span className="text-red-500">*</span></Label>
+                    <Input id="city" className="h-14 text-base bg-gray-100 border-0 rounded-xl" {...register("city")} />
+                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+                  </div>
                 </div>
 
                 {/* State */}
