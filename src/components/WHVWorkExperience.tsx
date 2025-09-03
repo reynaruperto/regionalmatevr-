@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 
 interface WorkExperience {
@@ -30,10 +29,11 @@ const WHVWorkExperience: React.FC = () => {
   const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([]);
   const [jobReferences, setJobReferences] = useState<JobReference[]>([]);
   const [workPreferences, setWorkPreferences] = useState({
-    availableStartDate: '',
+    targetRole: '',
+    otherTargetRole: '',
     preferredIndustry: '',
-    stayDuration: '',
-    willingToRelocate: '',
+    preferredLocationState: '',
+    preferredLocationCity: '',
     licenses: [] as string[],
     otherLicense: ''
   });
@@ -56,17 +56,21 @@ const WHVWorkExperience: React.FC = () => {
     'Other'
   ];
 
-  const stayDurations = [
-    '3 months',
-    '6 months',
-    '12 months',
-    '18 months',
-    '2 years',
-    'Flexible'
+  // WHV Target Roles
+  const targetRoles = [
+    'Fruit Picker / Packer',
+    'Farm Hand',
+    'Bartender',
+    'Waitstaff',
+    'Chef / Cook',
+    'Construction Labourer',
+    'Cleaner',
+    'Housekeeper',
+    'Tour Guide',
+    'Other'
   ];
 
   const licenseOptions = [
-    'N/A',
     'Driver\'s License',
     'Forklift License',
     'Working at Heights',
@@ -80,23 +84,6 @@ const WHVWorkExperience: React.FC = () => {
     'Electrical License',
     'Other'
   ];
-
-  // Date validation
-  const validateDate = (dateStr: string): boolean => {
-    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!regex.test(dateStr)) return false;
-    
-    const [day, month, year] = dateStr.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
-  };
-
-  const formatDateInput = (value: string): string => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 2) return numbers;
-    if (numbers.length <= 4) return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
-    return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
-  };
 
   // Work Experience handlers
   const addWorkExperience = () => {
@@ -113,8 +100,8 @@ const WHVWorkExperience: React.FC = () => {
   };
 
   const updateWorkExperience = (id: string, field: string, value: string) => {
-    setWorkExperiences(workExperiences.map(exp => 
-      exp.id === id ? { ...exp, [field]: field.includes('Date') ? formatDateInput(value) : value } : exp
+    setWorkExperiences(workExperiences.map(exp =>
+      exp.id === id ? { ...exp, [field]: value } : exp
     ));
   };
 
@@ -141,7 +128,7 @@ const WHVWorkExperience: React.FC = () => {
     if (field === 'phone') {
       processedValue = value.replace(/\D/g, '');
     }
-    setJobReferences(jobReferences.map(ref => 
+    setJobReferences(jobReferences.map(ref =>
       ref.id === id ? { ...ref, [field]: processedValue } : ref
     ));
   };
@@ -152,10 +139,7 @@ const WHVWorkExperience: React.FC = () => {
 
   const handleWorkPreferenceChange = (field: string, value: string) => {
     let processedValue: any = value;
-    if (field === 'availableStartDate') {
-      processedValue = formatDateInput(value);
-    } else if (field === 'licenses') {
-      // Handle multiple license selection
+    if (field === 'licenses') {
       const currentLicenses = workPreferences.licenses;
       if (currentLicenses.includes(value)) {
         processedValue = currentLicenses.filter(license => license !== value);
@@ -178,25 +162,6 @@ const WHVWorkExperience: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate dates
-    if (workPreferences.availableStartDate && !validateDate(workPreferences.availableStartDate)) {
-      alert('Please enter a valid start date in DD/MM/YYYY format');
-      return;
-    }
-
-    // Validate work experience dates
-    for (const exp of workExperiences) {
-      if (exp.startDate && !validateDate(exp.startDate)) {
-        alert('Please enter valid start dates in DD/MM/YYYY format');
-        return;
-      }
-      if (exp.endDate && !validateDate(exp.endDate)) {
-        alert('Please enter valid end dates in DD/MM/YYYY format');
-        return;
-      }
-    }
-
     console.log('Work Preferences:', workPreferences);
     console.log('Work Experiences:', workExperiences);
     console.log('Job References:', jobReferences);
@@ -210,11 +175,11 @@ const WHVWorkExperience: React.FC = () => {
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
           {/* Dynamic Island */}
           <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
-          
-          {/* Header - Fixed */}
+
+          {/* Header */}
           <div className="px-4 py-3 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
-              <button 
+              <button
                 onClick={() => navigate('/whv/current-address')}
                 className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
               >
@@ -230,142 +195,104 @@ const WHVWorkExperience: React.FC = () => {
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8 pb-20">
-              
-              {/* Tell us about yourself Section */}
+
+              {/* About Yourself */}
               <div className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Tell us about yourself</h2>
-                  <p className="text-gray-600 mt-1">This helps us match you with the right employers and opportunities.</p>
-                </div>
-                
-                {/* Profile Tagline */}
+                <h2 className="text-xl font-semibold text-gray-900">Tell us about yourself</h2>
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    Profile Tagline
+                    Profile Tagline <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     type="text"
                     value={aboutYourself.tagline}
                     onChange={(e) => handleAboutYourselfChange('tagline', e.target.value)}
                     className="h-12 bg-gray-100 border-0 text-gray-900"
-                    placeholder="Hardworking farm enthusiast ready for adventure"
                     maxLength={60}
                   />
-                  <p className="text-xs text-gray-500">This will appear under your profile photo (max 60 characters)</p>
+                  <p className="text-xs text-gray-500">Shown under your profile photo (max 60 characters)</p>
                 </div>
               </div>
 
-              {/* Work Preferences Section */}
+              {/* Work Preferences */}
               <div className="space-y-6">
                 <h2 className="text-xl font-semibold text-gray-900">Work Preferences</h2>
-                
-                {/* Available Start Date */}
+
+                {/* Target Role */}
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    Available Start Date (DD/MM/YYYY)
+                    Target Role <span className="text-red-500">*</span>
                   </Label>
-                  <Input
-                    type="text"
-                    value={workPreferences.availableStartDate}
-                    onChange={(e) => handleWorkPreferenceChange('availableStartDate', e.target.value)}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                    placeholder="10/10/2025"
-                    maxLength={10}
-                  />
+                  <Select onValueChange={(value) => handleWorkPreferenceChange('targetRole', value)}>
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                      <SelectValue placeholder="Select your preferred role" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
+                      {targetRoles.map((role) => (
+                        <SelectItem key={role} value={role}>{role}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {workPreferences.targetRole === 'Other' && (
+                    <div className="mt-2 space-y-1">
+                      <Input
+                        type="text"
+                        value={workPreferences.otherTargetRole}
+                        onChange={(e) => handleWorkPreferenceChange('otherTargetRole', e.target.value)}
+                        className="h-12 bg-gray-100 border-0 text-gray-900"
+                        maxLength={50}
+                      />
+                      <p className="text-xs text-gray-500 text-orange-600">
+                        ⚠️ Custom roles may not count towards WHV 2nd & 3rd year extensions unless approved by Home Affairs.
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Industry Interested In */}
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    Industry Interested in
+                    Industry <span className="text-red-500">*</span>
                   </Label>
                   <Select onValueChange={(value) => handleWorkPreferenceChange('preferredIndustry', value)}>
                     <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="Agriculture & Farming" />
+                      <SelectValue placeholder="Select industry" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
                       {industries.map((industry) => (
-                        <SelectItem key={industry} value={industry} className="hover:bg-gray-100">
-                          {industry}
-                        </SelectItem>
+                        <SelectItem key={industry} value={industry}>{industry}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* How long staying in Australia */}
+                {/* Preferred Working Location */}
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    How long are you planning to stay in Australia?
+                    Preferred Working Location <span className="text-red-500">*</span>
                   </Label>
-                  <Select onValueChange={(value) => handleWorkPreferenceChange('stayDuration', value)}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="12 months" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg max-h-60 overflow-y-auto z-50">
-                      {stayDurations.map((duration) => (
-                        <SelectItem key={duration} value={duration} className="hover:bg-gray-100">
-                          {duration}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Willing to Relocate */}
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-gray-700">
-                    Willing to Relocate?
-                  </Label>
-                  <div className="flex gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'yes')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
-                        workPreferences.willingToRelocate === 'yes' 
-                          ? 'border-orange-500 bg-orange-50' 
-                          : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        workPreferences.willingToRelocate === 'yes' 
-                          ? 'border-orange-500 bg-orange-500' 
-                          : 'border-gray-300'
-                      }`}>
-                        {workPreferences.willingToRelocate === 'yes' && (
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="text-gray-700">Yes</span>
-                    </button>
-                    
-                    <button
-                      type="button"
-                      onClick={() => handleWorkPreferenceChange('willingToRelocate', 'no')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
-                        workPreferences.willingToRelocate === 'no' 
-                          ? 'border-orange-500 bg-orange-50' 
-                          : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        workPreferences.willingToRelocate === 'no' 
-                          ? 'border-orange-500 bg-orange-500' 
-                          : 'border-gray-300'
-                      }`}>
-                        {workPreferences.willingToRelocate === 'no' && (
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="text-gray-700">No</span>
-                    </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input
+                      type="text"
+                      value={workPreferences.preferredLocationState}
+                      onChange={(e) => handleWorkPreferenceChange('preferredLocationState', e.target.value)}
+                      className="h-12 bg-gray-100 border-0 text-gray-900"
+                      placeholder="State"
+                    />
+                    <Input
+                      type="text"
+                      value={workPreferences.preferredLocationCity}
+                      onChange={(e) => handleWorkPreferenceChange('preferredLocationCity', e.target.value)}
+                      className="h-12 bg-gray-100 border-0 text-gray-900"
+                      placeholder="City/Suburb"
+                    />
                   </div>
                 </div>
 
                 {/* Licenses/Tickets */}
                 <div className="space-y-2">
                   <Label className="text-base font-medium text-gray-700">
-                    Licenses/Tickets (Select all that apply)
+                    Licenses/Tickets
                   </Label>
                   <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-100 rounded-lg p-3">
                     {licenseOptions.map((license) => (
@@ -377,44 +304,25 @@ const WHVWorkExperience: React.FC = () => {
                           onChange={() => handleWorkPreferenceChange('licenses', license)}
                           className="w-4 h-4 text-orange-500 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                         />
-                        <Label 
-                          htmlFor={`license-${license}`}
-                          className="text-sm text-gray-700 cursor-pointer flex-1"
-                        >
+                        <Label htmlFor={`license-${license}`} className="text-sm text-gray-700 cursor-pointer flex-1">
                           {license}
                         </Label>
                       </div>
                     ))}
                   </div>
-                  
-                  {/* Other License Input */}
                   {workPreferences.licenses.includes('Other') && (
-                    <div className="space-y-2 mt-3">
-                      <Label className="text-sm font-medium text-gray-700">
-                        Please specify other licenses/tickets
-                      </Label>
-                      <Input
-                        type="text"
-                        value={workPreferences.otherLicense}
-                        onChange={(e) => handleWorkPreferenceChange('otherLicense', e.target.value)}
-                        className="h-10 bg-gray-100 border-0 text-gray-900"
-                        placeholder="Enter your other licenses/tickets"
-                      />
-                    </div>
-                  )}
-                  
-                  {workPreferences.licenses.length > 0 && (
-                    <div className="text-sm text-gray-600">
-                      Selected: {workPreferences.licenses.join(', ')}
-                      {workPreferences.licenses.includes('Other') && workPreferences.otherLicense && 
-                        ` (${workPreferences.otherLicense})`
-                      }
-                    </div>
+                    <Input
+                      type="text"
+                      value={workPreferences.otherLicense}
+                      onChange={(e) => handleWorkPreferenceChange('otherLicense', e.target.value)}
+                      className="h-10 bg-gray-100 border-0 text-gray-900 mt-2"
+                      maxLength={50}
+                    />
                   )}
                 </div>
               </div>
 
-              {/* Work Experience Details Section */}
+              {/* Work Experience Details */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-gray-900">Work Experience Details</h2>
@@ -439,35 +347,30 @@ const WHVWorkExperience: React.FC = () => {
                         variant="ghost"
                         className="text-red-500 hover:text-red-700 p-1"
                       >
-                        <X className="w-4 h-4" />
-                        Remove
+                        <X className="w-4 h-4" /> Remove
                       </Button>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Start Date</Label>
-                        <Input
-                          type="text"
-                          value={experience.startDate}
-                          onChange={(e) => updateWorkExperience(experience.id, 'startDate', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="01/2020"
-                          maxLength={10}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Start Date</Label>
+                      <Input
+                        type="text"
+                        value={experience.startDate}
+                        onChange={(e) => updateWorkExperience(experience.id, 'startDate', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={10}
+                      />
+                    </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">End Date</Label>
-                        <Input
-                          type="text"
-                          value={experience.endDate}
-                          onChange={(e) => updateWorkExperience(experience.id, 'endDate', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="12/2024"
-                          maxLength={10}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">End Date</Label>
+                      <Input
+                        type="text"
+                        value={experience.endDate}
+                        onChange={(e) => updateWorkExperience(experience.id, 'endDate', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={10}
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -477,7 +380,6 @@ const WHVWorkExperience: React.FC = () => {
                         value={experience.position}
                         onChange={(e) => updateWorkExperience(experience.id, 'position', e.target.value)}
                         className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        placeholder="Farm Attendant"
                         maxLength={50}
                       />
                     </div>
@@ -489,7 +391,6 @@ const WHVWorkExperience: React.FC = () => {
                         value={experience.company}
                         onChange={(e) => updateWorkExperience(experience.id, 'company', e.target.value)}
                         className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        placeholder="Villa Farm"
                         maxLength={50}
                       />
                     </div>
@@ -501,22 +402,14 @@ const WHVWorkExperience: React.FC = () => {
                         value={experience.location}
                         onChange={(e) => updateWorkExperience(experience.id, 'location', e.target.value)}
                         className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                        placeholder="Mendoza, Argentina"
                         maxLength={50}
                       />
                     </div>
                   </div>
                 ))}
-
-                {workExperiences.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>No work experiences added yet.</p>
-                    <p className="text-sm">Click "Add Experience" to get started.</p>
-                  </div>
-                )}
               </div>
 
-              {/* Job References Section */}
+              {/* Job References */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-gray-900">Job References</h2>
@@ -526,8 +419,7 @@ const WHVWorkExperience: React.FC = () => {
                     disabled={jobReferences.length >= 5}
                     className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm"
                   >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Reference
+                    <Plus className="w-4 h-4 mr-1" /> Add Reference
                   </Button>
                 </div>
 
@@ -541,92 +433,74 @@ const WHVWorkExperience: React.FC = () => {
                         variant="ghost"
                         className="text-red-500 hover:text-red-700 p-1"
                       >
-                        <X className="w-4 h-4" />
-                        Remove
+                        <X className="w-4 h-4" /> Remove
                       </Button>
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Name</Label>
-                        <Input
-                          type="text"
-                          value={reference.name}
-                          onChange={(e) => updateJobReference(reference.id, 'name', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="Elaine Smith"
-                          maxLength={50}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Name</Label>
+                      <Input
+                        type="text"
+                        value={reference.name}
+                        onChange={(e) => updateJobReference(reference.id, 'name', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={50}
+                      />
+                    </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Business Name</Label>
-                        <Input
-                          type="text"
-                          value={reference.businessName}
-                          onChange={(e) => updateJobReference(reference.id, 'businessName', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="Villa Farm Pty Ltd"
-                          maxLength={50}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Business Name</Label>
+                      <Input
+                        type="text"
+                        value={reference.businessName}
+                        onChange={(e) => updateJobReference(reference.id, 'businessName', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={50}
+                      />
+                    </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Email</Label>
-                        <Input
-                          type="email"
-                          value={reference.email}
-                          onChange={(e) => updateJobReference(reference.id, 'email', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="elaine.smith@villafarm.com"
-                          maxLength={100}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Email</Label>
+                      <Input
+                        type="email"
+                        value={reference.email}
+                        onChange={(e) => updateJobReference(reference.id, 'email', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={100}
+                      />
+                    </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Phone Number</Label>
-                        <Input
-                          type="text"
-                          value={reference.phone}
-                          onChange={(e) => updateJobReference(reference.id, 'phone', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="61499888000"
-                          maxLength={15}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Phone</Label>
+                      <Input
+                        type="text"
+                        value={reference.phone}
+                        onChange={(e) => updateJobReference(reference.id, 'phone', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={15}
+                      />
+                    </div>
 
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">Role</Label>
-                        <Input
-                          type="text"
-                          value={reference.role}
-                          onChange={(e) => updateJobReference(reference.id, 'role', e.target.value)}
-                          className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
-                          placeholder="Head of HR"
-                          maxLength={50}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Role</Label>
+                      <Input
+                        type="text"
+                        value={reference.role}
+                        onChange={(e) => updateJobReference(reference.id, 'role', e.target.value)}
+                        className="h-10 bg-gray-100 border-0 text-gray-900 text-sm"
+                        maxLength={50}
+                      />
                     </div>
                   </div>
                 ))}
-
-                {jobReferences.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>No job references added yet.</p>
-                    <p className="text-sm">Click "Add Reference" to get started.</p>
-                  </div>
-                )}
               </div>
 
+              {/* Submit */}
               <div className="pt-8 space-y-4">
-                <Button 
-                  type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
-                >
+                <Button type="submit" className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium">
                   Continue →
                 </Button>
-                
-                <Button 
+                <Button
                   type="button"
                   onClick={() => navigate('/whv/photo-upload')}
                   variant="ghost"
