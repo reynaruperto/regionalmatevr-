@@ -1,347 +1,499 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
-// --- Schema ---
 const formSchema = z.object({
-  businessName: z.string().min(2, { message: "Business name must be at least 2 characters." }),
-  abn: z.string().min(11, { message: "Please enter a valid ABN." }),
+  businessTagline: z.string().min(10, { message: "Please describe what your business does (minimum 10 characters)." }).max(200, { message: "Business tagline must be 200 characters or less." }),
+  yearsInBusiness: z.string().min(1, { message: "Please select years in business." }),
+  employeeCount: z.string().min(1, { message: "Please select number of employees." }),
   industry: z.string().min(1, { message: "Please select an industry." }),
-  roles: z.array(z.string()).min(1, { message: "Please select at least one role." }),
-  availability: z.array(z.string()).min(1, { message: "Select at least one availability option." }),
-  pay: z.object({
-    min: z.number().min(1, { message: "Enter minimum pay." }),
-    max: z.number().min(1, { message: "Enter maximum pay." }),
-    unit: z.string().min(1, { message: "Select pay unit." }),
-  }),
-  facilities: z.array(z.string()).optional(),
-  businessPhone: z.string().min(10, { message: "Please enter a valid phone number." }),
-  website: z.string().optional().or(z.literal("")),
+  customIndustry: z.string().optional(),
+  rolesOffered: z.array(z.string()).min(1, { message: "Please select at least one role." }),
+  customRole: z.string().optional(),
+  jobAvailability: z.string().min(1, { message: "Please select job availability." }),
+  payAndBenefits: z.string().min(1, { message: "Please select pay and benefits." }),
+  facilitiesAndExtras: z.array(z.string()).min(1, { message: "Please select at least one facility or extra." })
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-// --- Industry → Roles Map ---
-const INDUSTRY_ROLES: Record<string, string[]> = {
-  "Plant & Animal Cultivation": [
-    "Fruit Picker",
-    "Packer",
-    "Pruner",
-    "Farm Hand",
-    "Dairy Worker",
-  ],
-  "Fishing & Pearling": ["Deckhand", "Pearl Diver", "Aquaculture Worker"],
-  "Tree Farming & Felling": ["Tree Planter", "Logger", "Transport Worker"],
-  "Construction": ["Labourer", "Scaffolder", "Painter", "Site Cleaner"],
-  "Tourism & Hospitality": [
-    "Chef",
-    "Waiter",
-    "Hotel Staff",
-    "Tour Guide",
-    "Bartender",
-  ],
-  "Healthcare & Medical": ["Nurse", "Aged Care Worker", "Cleaner"],
-  "Disaster Recovery": ["Rebuilder", "Wildlife Carer", "Community Support"],
-};
-
-const INDUSTRY_OPTIONS = Object.keys(INDUSTRY_ROLES);
-
-const AVAILABILITY_OPTIONS = ["Full-time", "Part-time", "Casual", "Seasonal", "Piecework"];
-
-const PAY_UNITS = ["hourly", "daily", "weekly", "piecework"];
-
-const FACILITIES_OPTIONS = [
-  "Accommodation Provided",
-  "Transport to Site",
-  "Meals",
-  "Training/Certification",
-  "Overtime Available",
-  "Equipment/Uniform Provided",
-];
-
-const BusinessOnboardingForm: React.FC = () => {
+const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+
+  const yearsOptions = [
+    'Less than 1 year',
+    '1 year',
+    '2 years', 
+    '3 years',
+    '4 years',
+    '5 years',
+    '6-10 years',
+    '11-15 years',
+    '16-20 years',
+    '20+ years'
+  ];
+
+  const employeeCountOptions = [
+    '1 employee',
+    '2-5 employees',
+    '6-10 employees',
+    '11-20 employees',
+    '21-50 employees',
+    '51-100 employees',
+    '100+ employees'
+  ];
+
+  // Industry options
+  const industries = [
+    "Agriculture & Farming",
+    "Tourism & Hospitality", 
+    "Construction & Building",
+    "Mining & Resources",
+    "Healthcare & Aged Care",
+    "Education & Training",
+    "Retail & Sales",
+    "Manufacturing",
+    "Transport & Logistics",
+    "Other"
+  ];
+
+  // Role options
+  const roles = [
+    "Farm Worker",
+    "Fruit Picker",
+    "Kitchen Hand",
+    "Waitstaff",
+    "Cleaner",
+    "Construction Worker",
+    "Laborer",
+    "Driver",
+    "Sales Assistant",
+    "Other"
+  ];
+
+  // Job availability options
+  const jobAvailabilityOptions = [
+    "Full-time",
+    "Part-time",
+    "Casual",
+    "Seasonal",
+    "Contract"
+  ];
+
+  // Pay and benefits options
+  const payBenefitsOptions = [
+    "$20-25/hour",
+    "$25-30/hour",
+    "$30-35/hour", 
+    "$35+/hour",
+    "Competitive salary",
+    "Benefits included"
+  ];
+
+  // Facilities and extras options
+  const facilitiesExtras = [
+    "Accommodation provided",
+    "Meals included",
+    "Transport provided",
+    "Training provided",
+    "Equipment provided",
+    "Flexible hours",
+    "Career progression",
+    "Team environment"
+  ];
 
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      businessName: "",
-      abn: "",
-      industry: "",
-      roles: [],
-      availability: [],
-      pay: { min: 0, max: 0, unit: "" },
-      facilities: [],
-      businessPhone: "",
-      website: "",
-    },
+      rolesOffered: [],
+      facilitiesAndExtras: []
+    }
   });
 
+  const watchedIndustry = watch("industry");
+  const watchedRoles = watch("rolesOffered");
+
   const onSubmit = (data: FormData) => {
-    console.log("Business form submitted:", data);
+    console.log('Business info submitted:', data);
     toast({
-      title: "Business information saved!",
-      description: "Proceeding to next step",
+      title: "Business setup complete!",
+      description: "Your employer profile has been created successfully",
     });
-    navigate("/business-address");
+    navigate('/employer/photo-upload');
   };
 
-  const selectedRoles = watch("roles");
-  const selectedFacilities = watch("facilities");
+  const handleSkip = () => {
+    toast({
+      title: "Step skipped",
+      description: "You can complete this later in your profile settings",
+    });
+    navigate('/employer/photo-upload');
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
-      {/* iPhone Frame */}
+      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
-
-          {/* Main Content */}
+          
+          {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-white">
-            {/* Header */}
+            
+            {/* Header with back button and title */}
             <div className="px-6 pt-16 pb-6">
               <div className="flex items-center justify-between mb-8">
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
                   className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate("/business-registration")}
+                  onClick={() => navigate('/business-registration')}
                 >
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
                 <div className="flex-1"></div>
               </div>
 
-              {/* Progress */}
+              {/* Progress indicator and title */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className="text-2xl font-bold text-gray-900">Business Details</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">About Your Business</h1>
                   <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <span className="text-sm font-medium text-gray-600">4/6</span>
+                    <span className="text-sm font-medium text-gray-600">4/5</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Form */}
-            <div className="flex-1 px-6 overflow-y-auto">
+            {/* Form content */}
+            <div className="flex-1 overflow-y-auto px-6 pb-20">
+              <div className="mb-8">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2">Tell us about your business</h2>
+                  <p className="text-gray-600">Help us understand your business to better match you with candidates.</p>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Business Name */}
+                {/* Business Tagline */}
                 <div>
-                  <Label htmlFor="businessName">Business Name *</Label>
+                  <Label htmlFor="businessTagline" className="text-base font-medium text-gray-900 mb-2 block">
+                    Business Tagline
+                  </Label>
                   <Input
-                    id="businessName"
-                    placeholder="Kangafarm"
+                    id="businessTagline"
+                    placeholder="Quality produce, sustainable farming"
+                    maxLength={200}
                     className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                    {...register("businessName")}
+                    {...register("businessTagline")}
                   />
-                  {errors.businessName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.businessName.message}</p>
+                  <p className="text-sm text-gray-500 mt-1">This will appear under your profile photo (max 200 characters)</p>
+                  {errors.businessTagline && (
+                    <p className="text-red-500 text-sm mt-1">{errors.businessTagline.message}</p>
                   )}
                 </div>
 
-                {/* ABN */}
+                {/* Years in Business */}
                 <div>
-                  <Label htmlFor="abn">ABN *</Label>
-                  <Input
-                    id="abn"
-                    placeholder="11 222 333 444"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                    {...register("abn")}
-                  />
-                  {errors.abn && (
-                    <p className="text-red-500 text-sm mt-1">{errors.abn.message}</p>
-                  )}
-                </div>
-
-                {/* Industry */}
-                <div>
-                  <Label htmlFor="industry">Industry *</Label>
-                  <Select
-                    onValueChange={(value) => {
-                      setValue("industry", value, { shouldValidate: true });
-                      setSelectedIndustry(value);
-                      setValue("roles", []); // reset roles when industry changes
-                    }}
-                  >
+                  <Label className="text-base font-medium text-gray-900 mb-2 block">
+                    How many years of trajectory does your business have? *
+                  </Label>
+                  <Select onValueChange={(value) => setValue("yearsInBusiness", value)}>
                     <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
-                      <SelectValue placeholder="Select an industry" />
+                      <SelectValue placeholder="Select years in business" />
                     </SelectTrigger>
-                    <SelectContent>
-                      {INDUSTRY_OPTIONS.map((industry) => (
-                        <SelectItem key={industry} value={industry}>
-                          {industry}
+                    <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                      {yearsOptions.map((year) => (
+                        <SelectItem key={year} value={year} className="hover:bg-gray-100">
+                          {year}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.yearsInBusiness && (
+                    <p className="text-red-500 text-sm mt-1">{errors.yearsInBusiness.message}</p>
+                  )}
+                </div>
+
+                {/* Employee Count */}
+                <div>
+                  <Label className="text-base font-medium text-gray-900 mb-2 block">
+                    How many employees do you currently have? *
+                  </Label>
+                  <Select onValueChange={(value) => setValue("employeeCount", value)}>
+                    <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                      <SelectValue placeholder="Select number of employees" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                      {employeeCountOptions.map((count) => (
+                        <SelectItem key={count} value={count} className="hover:bg-gray-100">
+                          {count}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.employeeCount && (
+                    <p className="text-red-500 text-sm mt-1">{errors.employeeCount.message}</p>
+                  )}
+                </div>
+
+                {/* Industry field */}
+                <div>
+                  <Label htmlFor="industry" className="text-base font-medium text-gray-900 mb-2 block">
+                    Industry *
+                  </Label>
+                  <Controller
+                    name="industry"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelectedIndustry(value);
+                      }} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select your industry" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {industries.map((industry) => (
+                            <SelectItem key={industry} value={industry} className="hover:bg-gray-50">
+                              {industry}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {watchedIndustry === "Other" && (
+                    <div className="mt-3">
+                      <Input
+                        placeholder="Please specify your industry"
+                        className="h-14 text-base bg-gray-50 border-0 rounded-xl"
+                        {...register("customIndustry")}
+                      />
+                    </div>
+                  )}
                   {errors.industry && (
                     <p className="text-red-500 text-sm mt-1">{errors.industry.message}</p>
                   )}
                 </div>
 
-                {/* Roles (checkboxes) */}
-                {selectedIndustry && (
-                  <div>
-                    <Label>Roles *</Label>
-                    <div className="grid grid-cols-2 gap-2 mt-2">
-                      {INDUSTRY_ROLES[selectedIndustry].map((role) => (
-                        <label
-                          key={role}
-                          className="flex items-center space-x-2 bg-gray-100 p-2 rounded-lg cursor-pointer"
-                        >
-                          <input
-                            type="checkbox"
-                            value={role}
-                            checked={selectedRoles?.includes(role) || false}
-                            onChange={(e) => {
-                              const newRoles = e.target.checked
-                                ? [...(selectedRoles || []), role]
-                                : selectedRoles?.filter((r) => r !== role) || [];
-                              setValue("roles", newRoles, { shouldValidate: true });
-                            }}
-                          />
-                          <span>{role}</span>
-                        </label>
-                      ))}
-                    </div>
-                    {errors.roles && (
-                      <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>
+                {/* Roles Offered field */}
+                <div>
+                  <Label htmlFor="rolesOffered" className="text-base font-medium text-gray-900 mb-2 block">
+                    Roles Offered *
+                  </Label>
+                  <Controller
+                    name="rolesOffered"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Select onValueChange={(value) => {
+                          const currentValues = field.value || [];
+                          if (!currentValues.includes(value)) {
+                            const newValues = [...currentValues, value];
+                            field.onChange(newValues);
+                            setSelectedRoles(newValues);
+                          }
+                        }}>
+                          <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                            <SelectValue placeholder={field.value?.length > 0 ? `${field.value.length} role(s) selected` : "Select roles offered"} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                            {roles.map((role) => (
+                              <SelectItem key={role} value={role} className="hover:bg-gray-50">
+                                {role}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {watchedRoles?.includes("Other") && (
+                          <div className="mt-3">
+                            <Input
+                              placeholder="Please specify the role"
+                              className="h-14 text-base bg-gray-50 border-0 rounded-xl"
+                              {...register("customRole")}
+                            />
+                          </div>
+                        )}
+                        {field.value?.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {field.value.map((role, index) => (
+                              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                                {role}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newValues = field.value.filter((_, i) => i !== index);
+                                    field.onChange(newValues);
+                                    setSelectedRoles(newValues);
+                                  }}
+                                  className="ml-2 text-blue-600 hover:text-blue-800"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </>
                     )}
-                  </div>
-                )}
-
-                {/* Availability */}
-                <div>
-                  <Label>Job Availability *</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {AVAILABILITY_OPTIONS.map((option) => (
-                      <label
-                        key={option}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded-lg cursor-pointer"
-                      >
-                        <input
-                          type="checkbox"
-                          value={option}
-                          onChange={(e) => {
-                            const current = watch("availability") || [];
-                            const updated = e.target.checked
-                              ? [...current, option]
-                              : current.filter((a) => a !== option);
-                            setValue("availability", updated, { shouldValidate: true });
-                          }}
-                        />
-                        <span>{option}</span>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.availability && (
-                    <p className="text-red-500 text-sm mt-1">{errors.availability.message}</p>
+                  />
+                  {errors.rolesOffered && (
+                    <p className="text-red-500 text-sm mt-1">{errors.rolesOffered.message}</p>
                   )}
                 </div>
 
-                {/* Pay */}
+                {/* Job Availability field */}
                 <div>
-                  <Label>Pay *</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="Min"
-                      className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                      onChange={(e) =>
-                        setValue("pay.min", Number(e.target.value), { shouldValidate: true })
-                      }
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Max"
-                      className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                      onChange={(e) =>
-                        setValue("pay.max", Number(e.target.value), { shouldValidate: true })
-                      }
-                    />
-                    <Select
-                      onValueChange={(val) =>
-                        setValue("pay.unit", val, { shouldValidate: true })
-                      }
+                  <Label htmlFor="jobAvailability" className="text-base font-medium text-gray-900 mb-2 block">
+                    Job Availability *
+                  </Label>
+                  <Controller
+                    name="jobAvailability"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select job availability" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {jobAvailabilityOptions.map((option) => (
+                            <SelectItem key={option} value={option} className="hover:bg-gray-50">
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.jobAvailability && (
+                    <p className="text-red-500 text-sm mt-1">{errors.jobAvailability.message}</p>
+                  )}
+                </div>
+
+                {/* Pay and Benefits field */}
+                <div>
+                  <Label htmlFor="payAndBenefits" className="text-base font-medium text-gray-900 mb-2 block">
+                    Pay & Benefits *
+                  </Label>
+                  <Controller
+                    name="payAndBenefits"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                          <SelectValue placeholder="Select pay and benefits" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                          {payBenefitsOptions.map((option) => (
+                            <SelectItem key={option} value={option} className="hover:bg-gray-50">
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.payAndBenefits && (
+                    <p className="text-red-500 text-sm mt-1">{errors.payAndBenefits.message}</p>
+                  )}
+                </div>
+
+                {/* Facilities and Extras field */}
+                <div>
+                  <Label htmlFor="facilitiesAndExtras" className="text-base font-medium text-gray-900 mb-2 block">
+                    Facilities & Extras *
+                  </Label>
+                  <Controller
+                    name="facilitiesAndExtras"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Select onValueChange={(value) => {
+                          const currentValues = field.value || [];
+                          if (!currentValues.includes(value)) {
+                            field.onChange([...currentValues, value]);
+                          }
+                        }}>
+                          <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl">
+                            <SelectValue placeholder={field.value?.length > 0 ? `${field.value.length} facility(ies) selected` : "Select facilities & extras"} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                            {facilitiesExtras.map((facility) => (
+                              <SelectItem key={facility} value={facility} className="hover:bg-gray-50">
+                                {facility}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {field.value?.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {field.value.map((facility, index) => (
+                              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                                {facility}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newValues = field.value.filter((_, i) => i !== index);
+                                    field.onChange(newValues);
+                                  }}
+                                  className="ml-2 text-green-600 hover:text-green-800"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  />
+                  {errors.facilitiesAndExtras && (
+                    <p className="text-red-500 text-sm mt-1">{errors.facilitiesAndExtras.message}</p>
+                  )}
+                </div>
+
+                {/* Continue button */}
+                <div className="pt-8 space-y-4">
+                  <Button 
+                    type="submit"
+                    className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
+                  >
+                    Continue
+                  </Button>
+                  
+                  {/* Skip for now link */}
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={handleSkip}
+                      className="text-gray-600 hover:text-gray-800 underline text-sm"
                     >
-                      <SelectTrigger className="h-14 text-base bg-gray-100 border-0 rounded-xl w-32">
-                        <SelectValue placeholder="Unit" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PAY_UNITS.map((unit) => (
-                          <SelectItem key={unit} value={unit}>
-                            {unit}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  {errors.pay && (
-                    <p className="text-red-500 text-sm mt-1">{errors.pay.message}</p>
-                  )}
-                </div>
-
-                {/* Facilities */}
-                <div>
-                  <Label>Facilities & Extras</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {FACILITIES_OPTIONS.map((facility) => (
-                      <label
-                        key={facility}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded-lg cursor-pointer"
-                      >
-                        <input
-                          type="checkbox"
-                          value={facility}
-                          checked={selectedFacilities?.includes(facility) || false}
-                          onChange={(e) => {
-                            const current = selectedFacilities || [];
-                            const updated = e.target.checked
-                              ? [...current, facility]
-                              : current.filter((f) => f !== facility);
-                            setValue("facilities", updated);
-                          }}
-                        />
-                        <span>{facility}</span>
-                      </label>
-                    ))}
+                      Skip for now
+                    </button>
                   </div>
                 </div>
               </form>
-            </div>
-
-            {/* Continue */}
-            <div className="px-6 pb-8 mt-4">
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-              >
-                Continue
-              </Button>
             </div>
           </div>
         </div>
@@ -350,4 +502,4 @@ const BusinessOnboardingForm: React.FC = () => {
   );
 };
 
-export default BusinessOnboardingForm;
+export default EmployerAboutBusiness;
