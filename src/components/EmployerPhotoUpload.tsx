@@ -16,8 +16,11 @@ const EmployerPhotoUpload: React.FC = () => {
       reader.onload = (e) => {
         const result = e.target?.result as string;
         setUploadedPhoto(result);
-        // ✅ Save consistently under employerProfilePhoto
-        localStorage.setItem('employerProfilePhoto', result);
+
+        // ✅ Merge into aboutBusiness object
+        const aboutData = JSON.parse(localStorage.getItem('aboutBusiness') || "{}");
+        const updated = { ...aboutData, profilePhoto: result };
+        localStorage.setItem('aboutBusiness', JSON.stringify(updated));
       };
       reader.readAsDataURL(file);
     }
@@ -25,7 +28,11 @@ const EmployerPhotoUpload: React.FC = () => {
 
   const handleReUpload = () => {
     setUploadedPhoto(null);
-    localStorage.removeItem('employerProfilePhoto');
+
+    // ✅ Remove photo only, keep other aboutBusiness fields
+    const aboutData = JSON.parse(localStorage.getItem('aboutBusiness') || "{}");
+    delete aboutData.profilePhoto;
+    localStorage.setItem('aboutBusiness', JSON.stringify(aboutData));
   };
 
   const handleComplete = () => {
@@ -57,10 +64,9 @@ const EmployerPhotoUpload: React.FC = () => {
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
           
-          {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-white">
             
-            {/* Header with back button and title */}
+            {/* Header */}
             <div className="px-6 pt-16 pb-6">
               <div className="flex items-center justify-between mb-8">
                 <Button 
@@ -74,7 +80,6 @@ const EmployerPhotoUpload: React.FC = () => {
                 <div className="flex-1"></div>
               </div>
 
-              {/* Progress indicator and title */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
@@ -85,23 +90,17 @@ const EmployerPhotoUpload: React.FC = () => {
               </div>
             </div>
 
-            {/* Content */}
+            {/* Upload content */}
             <div className="flex-1 px-6 flex flex-col justify-center">
-              {/* Upload Photo Title */}
               <div className="text-center mb-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Upload your photo</h2>
               </div>
 
-              {/* Photo Upload Area */}
               <div className="flex justify-center mb-8">
                 <div className="relative">
                   {uploadedPhoto ? (
                     <div className="w-48 h-48 rounded-xl overflow-hidden border-2 border-gray-200">
-                      <img 
-                        src={uploadedPhoto} 
-                        alt="Uploaded business photo" 
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={uploadedPhoto} alt="Uploaded business photo" className="w-full h-full object-cover" />
                     </div>
                   ) : (
                     <div className="w-48 h-48 bg-gray-100 rounded-xl flex flex-col items-center justify-center border-2 border-dashed border-gray-300">
@@ -109,7 +108,6 @@ const EmployerPhotoUpload: React.FC = () => {
                       <p className="text-gray-500 text-sm text-center">Tap to upload<br />business photo</p>
                     </div>
                   )}
-                  
                   <input
                     type="file"
                     accept="image/*"
@@ -119,7 +117,6 @@ const EmployerPhotoUpload: React.FC = () => {
                 </div>
               </div>
 
-              {/* Re Upload Button */}
               {uploadedPhoto && (
                 <div className="flex justify-center mb-8">
                   <Button 
@@ -133,7 +130,7 @@ const EmployerPhotoUpload: React.FC = () => {
               )}
             </div>
 
-            {/* Bottom Buttons */}
+            {/* Bottom buttons */}
             <div className="px-6 pb-8 space-y-4">
               <Button 
                 onClick={handleComplete}
@@ -163,4 +160,5 @@ const EmployerPhotoUpload: React.FC = () => {
 };
 
 export default EmployerPhotoUpload;
+
 
