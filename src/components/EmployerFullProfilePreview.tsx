@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 const EmployerFullProfilePreview: React.FC = () => {
   const navigate = useNavigate();
 
-  // Mocked employer data (replace with Supabase/props later)
+  // Mocked employer data (replace later with Supabase)
   const [employerProfile] = useState({
     businessName: "Kangafarm",
     employerName: "John Doe",
@@ -29,6 +29,7 @@ const EmployerFullProfilePreview: React.FC = () => {
       {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+          
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
 
@@ -39,34 +40,44 @@ const EmployerFullProfilePreview: React.FC = () => {
             </button>
           </div>
 
-          {/* Scrollable content */}
+          {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-6 pb-6">
-            {/* Profile Card */}
             <div className="w-full max-w-sm mx-auto bg-white rounded-3xl p-6 shadow-lg">
               
-              {/* Profile Header */}
-              <div className="text-center mb-6">
-                <div className="w-32 h-32 mx-auto rounded-full border-4 border-slate-800 overflow-hidden mb-4">
+              {/* Match Banner */}
+              <div className="bg-gradient-to-r from-orange-500 to-slate-800 text-white text-center py-4 rounded-2xl mb-6">
+                <h2 className="text-xl font-bold">IT'S A MATCH</h2>
+                <p className="text-sm mt-1">{employerProfile.businessName}</p>
+              </div>
+
+              {/* Profile Picture */}
+              <div className="flex justify-center mb-6">
+                <div className="w-32 h-32 rounded-full border-4 border-orange-500 overflow-hidden">
                   <img 
                     src={employerProfile.profileImage}
                     alt={employerProfile.businessName}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">{employerProfile.businessName}</h2>
-                <p className="text-sm text-gray-600">{employerProfile.businessTagline}</p>
+              </div>
+
+              {/* Tagline */}
+              <div className="text-center mb-6 bg-gray-50 rounded-2xl p-4">
+                <p className="text-gray-700 text-sm italic leading-relaxed">
+                  {employerProfile.businessTagline}
+                </p>
               </div>
 
               {/* Key Details */}
               <div className="space-y-3 text-sm text-gray-800 mb-6">
                 <div><span className="font-semibold">Employer:</span> {employerProfile.employerName}</div>
+                <div><span className="font-semibold">ABN:</span> {employerProfile.abn}</div>
                 <div><span className="font-semibold">Location:</span> {employerProfile.location}</div>
                 <div><span className="font-semibold">Industry:</span> {employerProfile.industry}</div>
                 <div><span className="font-semibold">Roles Offered:</span> {employerProfile.rolesOffered.join(", ")}</div>
                 <div><span className="font-semibold">Job Availability:</span> {employerProfile.jobAvailability}</div>
                 <div><span className="font-semibold">Pay Range:</span> {employerProfile.payRange}</div>
                 <div><span className="font-semibold">Facilities / Extras:</span> {employerProfile.facilities.join(", ")}</div>
-                <div><span className="font-semibold">ABN Provided:</span> ✔ Yes</div>
                 <div><span className="font-semibold">Company Size:</span> {employerProfile.companySize}</div>
                 <div><span className="font-semibold">Years in Business:</span> {employerProfile.yearsInBusiness}</div>
                 {employerProfile.website && (
@@ -93,3 +104,4 @@ const EmployerFullProfilePreview: React.FC = () => {
 };
 
 export default EmployerFullProfilePreview;
+
