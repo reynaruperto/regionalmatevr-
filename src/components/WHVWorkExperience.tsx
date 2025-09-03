@@ -6,88 +6,99 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 
+// ----------------- Types -----------------
 interface WorkExperience {
   id: string;
   startDate: string;
   endDate: string;
-  position: string;
+  industry: string;
+  role: string;
   company: string;
   location: string;
 }
 
-interface JobReference {
-  id: string;
-  name: string;
-  businessName: string;
-  email: string;
-  phone: string;
-  role: string;
-}
-
-const industryRoles: Record<string, string[]> = {
-  "Agriculture & Farming": ["Fruit Picker", "Packer", "Farm Hand", "Dairy Worker", "Other"],
-  "Construction": ["Labourer", "Scaffolder", "Painter", "Other"],
-  "Hospitality & Tourism": ["Chef", "Bartender", "Waitstaff", "Housekeeper", "Cleaner", "Tour Guide", "Other"],
-  "Healthcare": ["Nurse", "Aged Care Worker", "Disability Support", "Childcare Worker", "Other"],
-  "Retail": ["Sales Assistant", "Storeperson", "Other"],
-  "Manufacturing": ["Factory Worker", "Machine Operator", "Other"],
-  "Mining": ["Driller", "Truck Driver", "Other"],
-  "Education": ["Tutor", "Teacher Aide", "Other"],
-  "Transport & Logistics": ["Driver", "Forklift Operator", "Other"],
+// ----------------- Options -----------------
+const INDUSTRIES: Record<string, string[]> = {
+  "Agriculture & Farming": ["Fruit Picker", "Farm Hand", "Packer", "Other"],
+  "Construction": ["Labourer", "Painter", "Scaffolder", "Other"],
+  "Hospitality & Tourism": ["Waitstaff", "Bartender", "Chef", "Housekeeper", "Tour Guide", "Other"],
+  "Healthcare": ["Aged Care Worker", "Disability Support", "Cleaner", "Other"],
+  "Retail": ["Sales Assistant", "Store Worker", "Other"],
+  "Manufacturing": ["Factory Worker", "Assembler", "Other"],
+  "Mining": ["Truck Driver", "Driller", "Other"],
+  "Transport & Logistics": ["Driver", "Warehouse Worker", "Other"],
+  "Other": ["Other"],
 };
 
-const licenseOptions = [
+const AUSTRALIAN_STATES = [
+  'Australian Capital Territory', 'New South Wales', 'Northern Territory',
+  'Queensland', 'South Australia', 'Tasmania', 'Victoria', 'Western Australia'
+];
+
+const LICENSES = [
   'Driver\'s License',
   'Forklift License',
   'White Card (Construction)',
   'RSA (Responsible Service of Alcohol)',
-  'RCG (Responsible Conduct of Gambling)',
   'Food Safety Certificate',
   'First Aid Certificate',
   'Heavy Vehicle License',
   'Other'
 ];
 
+// ----------------- Component -----------------
 const WHVWorkExperience: React.FC = () => {
   const navigate = useNavigate();
+
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [otherRole, setOtherRole] = useState('');
+  const [preferredLocation, setPreferredLocation] = useState({ state: '', suburb: '' });
+  const [licenses, setLicenses] = useState<string[]>([]);
+  const [otherLicense, setOtherLicense] = useState('');
   const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([]);
-  const [jobReferences, setJobReferences] = useState<JobReference[]>([]);
-  const [workPreferences, setWorkPreferences] = useState({
-    industries: [] as string[],
-    roles: [] as string[],
-    preferredLocation: { state: '', suburb: '' },
-    licenses: [] as string[],
-    otherLicense: ''
-  });
 
-  const [aboutYourself, setAboutYourself] = useState({ tagline: '' });
-
-  const australianStates = [
-    'Australian Capital Territory',
-    'New South Wales',
-    'Northern Territory',
-    'Queensland',
-    'South Australia',
-    'Tasmania',
-    'Victoria',
-    'Western Australia'
-  ];
-
-  // Work Experience handlers
-  const addWorkExperience = () => {
-    if (workExperiences.length < 8) {
-      setWorkExperiences([...workExperiences, {
-        id: Date.now().toString(),
-        startDate: '',
-        endDate: '',
-        position: '',
-        company: '',
-        location: ''
-      }]);
+  // ----------------- Handlers -----------------
+  const toggleIndustry = (industry: string) => {
+    if (selectedIndustries.includes(industry)) {
+      setSelectedIndustries(selectedIndustries.filter(i => i !== industry));
+      setSelectedRoles(selectedRoles.filter(r => !(INDUSTRIES[industry] || []).includes(r)));
+    } else if (selectedIndustries.length < 3) {
+      setSelectedIndustries([...selectedIndustries, industry]);
     }
   };
 
-  const updateWorkExperience = (id: string, field: string, value: string) => {
+  const toggleRole = (role: string) => {
+    if (selectedRoles.includes(role)) {
+      setSelectedRoles(selectedRoles.filter(r => r !== role));
+      if (role === "Other") setOtherRole('');
+    } else {
+      setSelectedRoles([...selectedRoles, role]);
+    }
+  };
+
+  const toggleLicense = (license: string) => {
+    if (licenses.includes(license)) {
+      setLicenses(licenses.filter(l => l !== license));
+      if (license === "Other") setOtherLicense('');
+    } else {
+      setLicenses([...licenses, license]);
+    }
+  };
+
+  const addWorkExperience = () => {
+    setWorkExperiences([...workExperiences, {
+      id: Date.now().toString(),
+      startDate: '',
+      endDate: '',
+      industry: '',
+      role: '',
+      company: '',
+      location: ''
+    }]);
+  };
+
+  const updateWorkExperience = (id: string, field: keyof WorkExperience, value: string) => {
     setWorkExperiences(workExperiences.map(exp =>
       exp.id === id ? { ...exp, [field]: value } : exp
     ));
@@ -97,264 +108,216 @@ const WHVWorkExperience: React.FC = () => {
     setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
   };
 
-  // Job Reference handlers
-  const addJobReference = () => {
-    if (jobReferences.length < 5) {
-      setJobReferences([...jobReferences, {
-        id: Date.now().toString(),
-        name: '',
-        businessName: '',
-        email: '',
-        phone: '',
-        role: ''
-      }]);
-    }
-  };
-
-  const updateJobReference = (id: string, field: string, value: string) => {
-    let processedValue = value;
-    if (field === 'phone') {
-      processedValue = value.replace(/\D/g, '');
-    }
-    setJobReferences(jobReferences.map(ref =>
-      ref.id === id ? { ...ref, [field]: processedValue } : ref
-    ));
-  };
-
-  const removeJobReference = (id: string) => {
-    setJobReferences(jobReferences.filter(ref => ref.id !== id));
-  };
-
-  const handleIndustryToggle = (industry: string) => {
-    setWorkPreferences(prev => {
-      let newIndustries = [...prev.industries];
-      if (newIndustries.includes(industry)) {
-        newIndustries = newIndustries.filter(i => i !== industry);
-      } else if (newIndustries.length < 3) {
-        newIndustries.push(industry);
-      }
-      return { ...prev, industries: newIndustries, roles: [] };
-    });
-  };
-
-  const handleRoleToggle = (role: string) => {
-    setWorkPreferences(prev => {
-      let newRoles = [...prev.roles];
-      if (newRoles.includes(role)) {
-        newRoles = newRoles.filter(r => r !== role);
-      } else {
-        newRoles.push(role);
-      }
-      return { ...prev, roles: newRoles };
-    });
-  };
-
-  const handleLicenseToggle = (license: string) => {
-    setWorkPreferences(prev => {
-      let newLicenses = [...prev.licenses];
-      if (newLicenses.includes(license)) {
-        newLicenses = newLicenses.filter(l => l !== license);
-      } else {
-        newLicenses.push(license);
-      }
-      return { ...prev, licenses: newLicenses };
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Work Preferences (for matching algorithm):', workPreferences.industries);
-    console.log('Roles (extra refinement only):', workPreferences.roles);
-    console.log('Preferred Location:', workPreferences.preferredLocation);
-    console.log('Licenses:', workPreferences.licenses);
-    console.log('Other License:', workPreferences.otherLicense);
-    console.log('Work Experiences:', workExperiences);
-    console.log('Job References:', jobReferences);
+    console.log("Industries:", selectedIndustries);
+    console.log("Roles:", selectedRoles, otherRole);
+    console.log("Preferred Location:", preferredLocation);
+    console.log("Licenses:", licenses, otherLicense);
+    console.log("Work Experiences:", workExperiences);
     navigate('/whv/photo-upload');
   };
 
+  // ----------------- Render -----------------
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
-
+        <div className="w-full h-full bg-white rounded-[48px] flex flex-col">
           {/* Header */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => navigate('/whv/current-address')}
-                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-              >
-                <ArrowLeft size={20} className="text-gray-600" />
-              </button>
-              <h1 className="text-lg font-medium text-gray-900">Work Experience</h1>
-              <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">5/6</span>
-              </div>
+          <div className="px-4 py-3 border-b flex items-center justify-between">
+            <button onClick={() => navigate('/whv/current-address')} className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+              <ArrowLeft size={20} className="text-gray-600" />
+            </button>
+            <h1 className="text-lg font-medium">Work Experience</h1>
+            <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full">
+              <span className="text-sm">5/6</span>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-6">
-            <form onSubmit={handleSubmit} className="space-y-8 pb-20">
-              
-              {/* Profile Tagline */}
-              <div className="space-y-2">
-                <Label className="text-base font-medium text-gray-700">Profile Tagline</Label>
-                <Input
-                  type="text"
-                  value={aboutYourself.tagline}
-                  onChange={(e) => setAboutYourself({ tagline: e.target.value })}
-                  className="h-12 bg-gray-100 border-0 text-gray-900"
-                  maxLength={60}
-                />
-                <p className="text-xs text-gray-500">This will appear under your profile photo (max 60 characters)</p>
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Work Preferences */}
+              <div className="space-y-6">
+                <h2 className="text-xl font-semibold">Work Preferences</h2>
 
-              {/* Industry Selection */}
-              <div className="space-y-2">
-                <Label className="text-base font-medium text-gray-700">Select up to 3 industries</Label>
-                <div className="grid grid-cols-1 gap-2">
-                  {Object.keys(industryRoles).map(industry => (
-                    <div key={industry} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={workPreferences.industries.includes(industry)}
-                        onChange={() => handleIndustryToggle(industry)}
-                      />
-                      <span>{industry}</span>
-                    </div>
-                  ))}
+                {/* Industries */}
+                <div>
+                  <Label>Select up to 3 Industries <span className="text-red-500">*</span></Label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {Object.keys(INDUSTRIES).map(ind => {
+                      const selected = selectedIndustries.includes(ind);
+                      const disabled = !selected && selectedIndustries.length >= 3;
+                      return (
+                        <button
+                          key={ind}
+                          type="button"
+                          onClick={() => toggleIndustry(ind)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium border 
+                            ${selected ? "bg-orange-500 text-white border-orange-500" : "bg-gray-100 text-gray-700 border-gray-300"} 
+                            ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                        >
+                          {ind}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
 
-              {/* Roles Selection */}
-              {workPreferences.industries.length > 0 && (
-                <div className="space-y-2">
-                  <Label className="text-base font-medium text-gray-700">Select preferred roles</Label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {workPreferences.industries.flatMap(ind => industryRoles[ind]).map(role => (
-                      <div key={role} className="flex items-center gap-2">
+                {/* Roles */}
+                {selectedIndustries.map(ind => (
+                  <div key={ind}>
+                    <Label>Roles in {ind}</Label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {INDUSTRIES[ind].map(role => {
+                        const selected = selectedRoles.includes(role);
+                        return (
+                          <button
+                            key={role}
+                            type="button"
+                            onClick={() => toggleRole(role)}
+                            className={`px-3 py-1 rounded-full text-sm border
+                              ${selected ? "bg-orange-500 text-white border-orange-500" : "bg-gray-100 text-gray-700 border-gray-300"}`}
+                          >
+                            {role}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {selectedRoles.includes("Other") && (
+                      <Input
+                        value={otherRole}
+                        onChange={(e) => setOtherRole(e.target.value)}
+                        className="mt-2 h-10 bg-gray-100"
+                        maxLength={50}
+                      />
+                    )}
+                  </div>
+                ))}
+                <p className="text-xs text-gray-500">
+                  💡 Some industries/roles may be required for visa extensions. Please confirm with Home Affairs.
+                </p>
+
+                {/* Preferred Location */}
+                <div>
+                  <Label>Preferred Location in Australia <span className="text-red-500">*</span></Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <Select onValueChange={(v) => setPreferredLocation({ ...preferredLocation, state: v })}>
+                      <SelectTrigger className="h-10 bg-gray-100">
+                        <SelectValue placeholder="Choose State" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {AUSTRALIAN_STATES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      value={preferredLocation.suburb}
+                      onChange={(e) => setPreferredLocation({ ...preferredLocation, suburb: e.target.value })}
+                      className="h-10 bg-gray-100"
+                      placeholder="City/Suburb"
+                    />
+                  </div>
+                </div>
+
+                {/* Licenses */}
+                <div>
+                  <Label>Licenses/Tickets</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    {LICENSES.map(lic => (
+                      <label key={lic} className="flex items-center gap-2 text-sm">
                         <input
                           type="checkbox"
-                          checked={workPreferences.roles.includes(role)}
-                          onChange={() => handleRoleToggle(role)}
+                          checked={licenses.includes(lic)}
+                          onChange={() => toggleLicense(lic)}
+                          className="accent-orange-500"
                         />
-                        <span>{role}</span>
-                      </div>
+                        {lic}
+                      </label>
                     ))}
                   </div>
-                  <p className="text-xs text-red-500 mt-1">
-                    💡 Tip: Some industries/roles may help with 2nd/3rd year visa extensions. 
-                    For up-to-date info, visit the Department of Home Affairs website
-                  </p>
-                </div>
-              )}
-
-              {/* Preferred Location */}
-              <div className="space-y-2">
-                <Label className="text-base font-medium text-gray-700">Preferred Working Location</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <Select onValueChange={(value) => setWorkPreferences(prev => ({
-                    ...prev, preferredLocation: { ...prev.preferredLocation, state: value }
-                  }))}>
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {australianStates.map(state => (
-                        <SelectItem key={state} value={state}>{state}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    type="text"
-                    value={workPreferences.preferredLocation.suburb}
-                    onChange={(e) => setWorkPreferences(prev => ({
-                      ...prev, preferredLocation: { ...prev.preferredLocation, suburb: e.target.value }
-                    }))}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                  />
+                  {licenses.includes("Other") && (
+                    <Input
+                      value={otherLicense}
+                      onChange={(e) => setOtherLicense(e.target.value)}
+                      className="mt-2 h-10 bg-gray-100"
+                      placeholder="Specify other license"
+                    />
+                  )}
                 </div>
               </div>
 
-              {/* Licenses/Tickets */}
-              <div className="space-y-2">
-                <Label className="text-base font-medium text-gray-700">Licenses/Tickets</Label>
-                <div className="grid grid-cols-1 gap-2">
-                  {licenseOptions.map(license => (
-                    <div key={license} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={workPreferences.licenses.includes(license)}
-                        onChange={() => handleLicenseToggle(license)}
-                      />
-                      <span>{license}</span>
-                    </div>
-                  ))}
-                </div>
-                {workPreferences.licenses.includes('Other') && (
-                  <Input
-                    type="text"
-                    value={workPreferences.otherLicense}
-                    onChange={(e) => setWorkPreferences(prev => ({ ...prev, otherLicense: e.target.value }))}
-                    className="h-12 bg-gray-100 border-0 text-gray-900 mt-2"
-                  />
-                )}
-              </div>
-
-              {/* Work Experiences */}
+              {/* Work Experience */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-gray-900">Work Experience Details</h2>
-                  <Button type="button" onClick={addWorkExperience} disabled={workExperiences.length >= 8}>
-                    <Plus className="w-4 h-4 mr-1" /> Add Experience
+                  <h2 className="text-xl font-semibold">Work Experience</h2>
+                  <Button
+                    type="button"
+                    onClick={addWorkExperience}
+                    disabled={workExperiences.length >= 8}
+                    className="bg-orange-500 text-white text-sm rounded-full px-3 py-1"
+                  >
+                    <Plus size={14} /> Add
                   </Button>
                 </div>
-                {workExperiences.map((exp, index) => (
-                  <div key={exp.id} className="border border-gray-200 rounded-lg p-4 space-y-4">
+
+                {workExperiences.map((exp, i) => (
+                  <div key={exp.id} className="border rounded-lg p-4 space-y-2">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-900">Experience {index + 1}</h3>
-                      <Button type="button" onClick={() => removeWorkExperience(exp.id)} variant="ghost">
-                        <X className="w-4 h-4 text-red-500" />
-                      </Button>
+                      <h3 className="font-medium">Experience {i + 1}</h3>
+                      <button type="button" onClick={() => removeWorkExperience(exp.id)} className="text-red-500">
+                        <X size={16} />
+                      </button>
                     </div>
-                    <Input value={exp.startDate} onChange={(e) => updateWorkExperience(exp.id, 'startDate', e.target.value)} placeholder="Start Date" />
-                    <Input value={exp.endDate} onChange={(e) => updateWorkExperience(exp.id, 'endDate', e.target.value)} placeholder="End Date" />
-                    <Input value={exp.position} onChange={(e) => updateWorkExperience(exp.id, 'position', e.target.value)} placeholder="Position" />
-                    <Input value={exp.company} onChange={(e) => updateWorkExperience(exp.id, 'company', e.target.value)} placeholder="Company" />
-                    <Input value={exp.location} onChange={(e) => updateWorkExperience(exp.id, 'location', e.target.value)} placeholder="Location" />
+
+                    <Select onValueChange={(v) => updateWorkExperience(exp.id, 'industry', v)}>
+                      <SelectTrigger className="h-10 bg-gray-100">
+                        <SelectValue placeholder="Select Industry *" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.keys(INDUSTRIES).map(ind => (
+                          <SelectItem key={ind} value={ind}>{ind}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Input
+                      value={exp.role}
+                      onChange={(e) => updateWorkExperience(exp.id, 'role', e.target.value)}
+                      className="h-10 bg-gray-100"
+                      placeholder="Role/Position *"
+                    />
+                    <Input
+                      value={exp.company}
+                      onChange={(e) => updateWorkExperience(exp.id, 'company', e.target.value)}
+                      className="h-10 bg-gray-100"
+                      placeholder="Company *"
+                    />
+                    <Input
+                      value={exp.location}
+                      onChange={(e) => updateWorkExperience(exp.id, 'location', e.target.value)}
+                      className="h-10 bg-gray-100"
+                      placeholder="Location *"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        value={exp.startDate}
+                        onChange={(e) => updateWorkExperience(exp.id, 'startDate', e.target.value)}
+                        className="h-10 bg-gray-100"
+                        placeholder="Start Date (MM/YYYY)"
+                      />
+                      <Input
+                        value={exp.endDate}
+                        onChange={(e) => updateWorkExperience(exp.id, 'endDate', e.target.value)}
+                        className="h-10 bg-gray-100"
+                        placeholder="End Date (MM/YYYY)"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
 
-              {/* Job References */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-gray-900">Job References</h2>
-                  <Button type="button" onClick={addJobReference} disabled={jobReferences.length >= 5}>
-                    <Plus className="w-4 h-4 mr-1" /> Add Reference
-                  </Button>
-                </div>
-                {jobReferences.map((ref, index) => (
-                  <div key={ref.id} className="border border-gray-200 rounded-lg p-4 space-y-2">
-                    <Input value={ref.name} onChange={(e) => updateJobReference(ref.id, 'name', e.target.value)} placeholder="Name" />
-                    <Input value={ref.businessName} onChange={(e) => updateJobReference(ref.id, 'businessName', e.target.value)} placeholder="Business Name" />
-                    <Input value={ref.email} onChange={(e) => updateJobReference(ref.id, 'email', e.target.value)} placeholder="Email" />
-                    <Input value={ref.phone} onChange={(e) => updateJobReference(ref.id, 'phone', e.target.value)} placeholder="Phone" />
-                    <Input value={ref.role} onChange={(e) => updateJobReference(ref.id, 'role', e.target.value)} placeholder="Role" />
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-8 space-y-4">
-                <Button type="submit" className="w-full h-14 text-lg rounded-xl bg-orange-500 text-white">
-                  Continue →
-                </Button>
-                <Button type="button" onClick={() => navigate('/whv/photo-upload')} variant="ghost" className="w-full h-12 text-gray-600">
-                  Skip for now
-                </Button>
-              </div>
+              <Button type="submit" className="w-full h-12 bg-orange-500 text-white rounded-xl">
+                Continue →
+              </Button>
             </form>
           </div>
         </div>
@@ -364,4 +327,5 @@ const WHVWorkExperience: React.FC = () => {
 };
 
 export default WHVWorkExperience;
+
 
