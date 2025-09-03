@@ -19,9 +19,11 @@ const formSchema = z.object({
   employeeCount: z.string().min(1, "Please select employee count."),
   industry: z.string().min(1, "Please select an industry."),
   rolesOffered: z.array(z.string()).min(1, "Select at least one role."),
+  customRole: z.string().optional(),
   jobType: z.array(z.string()).min(1, "Select at least one job type."),
   payRange: z.string().min(1, "Select a pay range."),
   facilitiesAndExtras: z.array(z.string()).min(1, "Select at least one facility."),
+  customFacility: z.string().optional(),
   businessPhone: z.string().min(10, "Enter a valid phone number."),
   website: z.string().optional().or(z.literal("")),
   addressLine1: z.string().min(2, "Address line 1 is required."),
@@ -61,7 +63,7 @@ const payRanges = ["$25–30/hour", "$30–35/hour", "$35–40/hour", "$40–45/
 const facilitiesExtras = [
   "Accommodation provided", "Meals included", "Transport provided",
   "Training provided", "Equipment provided", "Flexible hours",
-  "Career progression", "Team environment",
+  "Career progression", "Team environment", "Other"
 ];
 const yearsOptions = ["<1", "1", "2", "3", "4", "5", "6-10", "11-15", "16-20", "20+"];
 const employeeCountOptions = ["1", "2-5", "6-10", "11-20", "21-50", "51-100", "100+"];
@@ -74,7 +76,6 @@ const AUSTRALIAN_STATES = [
 const EditBusinessProfile: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [customRoles, setCustomRoles] = useState<string[]>([]);
 
   const {
     register,
@@ -94,6 +95,7 @@ const EditBusinessProfile: React.FC = () => {
 
   const watchedIndustry = watch("industry");
   const watchedRoles = watch("rolesOffered") || [];
+  const watchedFacilities = watch("facilitiesAndExtras") || [];
 
   const onSubmit = (data: FormData) => {
     console.log("Updated Business Profile:", data);
@@ -123,11 +125,10 @@ const EditBusinessProfile: React.FC = () => {
             <div className="flex-1 px-6 overflow-y-auto pb-20">
               <form id="edit-business-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 
-                {/* ABN (non-editable) */}
+                {/* ABN (disabled) */}
                 <div>
-                  <Label>ABN (non-editable)</Label>
-                  <div className="h-14 bg-gray-100 rounded-xl flex items-center px-4 text-gray-500">11 222 333 444</div>
-                  <p className="text-sm text-gray-500 mt-1">Contact support to update ABN</p>
+                  <Label>ABN</Label>
+                  <Input {...register("abn")} disabled className="h-14 bg-gray-100 rounded-xl text-gray-500" />
                 </div>
 
                 {/* Company Name */}
@@ -157,7 +158,6 @@ const EditBusinessProfile: React.FC = () => {
                       </Select>
                     )}
                   />
-                  {errors.yearsInBusiness && <p className="text-red-500 text-sm">{errors.yearsInBusiness.message}</p>}
                 </div>
 
                 {/* Employee Count */}
@@ -173,7 +173,6 @@ const EditBusinessProfile: React.FC = () => {
                       </Select>
                     )}
                   />
-                  {errors.employeeCount && <p className="text-red-500 text-sm">{errors.employeeCount.message}</p>}
                 </div>
 
                 {/* Industry */}
@@ -189,14 +188,13 @@ const EditBusinessProfile: React.FC = () => {
                       </Select>
                     )}
                   />
-                  {errors.industry && <p className="text-red-500 text-sm">{errors.industry.message}</p>}
                 </div>
 
                 {/* Roles */}
                 {watchedIndustry && (
                   <div>
                     <Label>Roles Offered</Label>
-                    {industryRoles[watchedIndustry]?.map(role => (
+                    {industryRoles[watchedIndustry]?.concat("Other").map(role => (
                       <label key={role} className="flex items-center space-x-2 mt-2">
                         <input
                           type="checkbox"
@@ -211,7 +209,9 @@ const EditBusinessProfile: React.FC = () => {
                         <span>{role}</span>
                       </label>
                     ))}
-                    {errors.rolesOffered && <p className="text-red-500 text-sm">{errors.rolesOffered.message}</p>}
+                    {watchedRoles.includes("Other") && (
+                      <Input placeholder="Enter custom role" {...register("customRole")} className="mt-2 h-14 bg-gray-100 rounded-xl" />
+                    )}
                   </div>
                 )}
 
@@ -233,7 +233,6 @@ const EditBusinessProfile: React.FC = () => {
                       <span>{t}</span>
                     </label>
                   ))}
-                  {errors.jobType && <p className="text-red-500 text-sm">{errors.jobType.message}</p>}
                 </div>
 
                 {/* Pay */}
@@ -249,7 +248,6 @@ const EditBusinessProfile: React.FC = () => {
                       </Select>
                     )}
                   />
-                  {errors.payRange && <p className="text-red-500 text-sm">{errors.payRange.message}</p>}
                 </div>
 
                 {/* Facilities */}
@@ -260,9 +258,9 @@ const EditBusinessProfile: React.FC = () => {
                       <input
                         type="checkbox"
                         value={f}
-                        checked={watch("facilitiesAndExtras")?.includes(f)}
+                        checked={watchedFacilities.includes(f)}
                         onChange={e => {
-                          const current = watch("facilitiesAndExtras") || [];
+                          const current = watchedFacilities;
                           if (e.target.checked) setValue("facilitiesAndExtras", [...current, f]);
                           else setValue("facilitiesAndExtras", current.filter(x => x !== f));
                         }}
@@ -270,14 +268,15 @@ const EditBusinessProfile: React.FC = () => {
                       <span>{f}</span>
                     </label>
                   ))}
-                  {errors.facilitiesAndExtras && <p className="text-red-500 text-sm">{errors.facilitiesAndExtras.message}</p>}
+                  {watchedFacilities.includes("Other") && (
+                    <Input placeholder="Enter custom facility" {...register("customFacility")} className="mt-2 h-14 bg-gray-100 rounded-xl" />
+                  )}
                 </div>
 
                 {/* Contact Info */}
                 <div>
                   <Label>Business Phone</Label>
                   <Input {...register("businessPhone")} className="h-14 bg-gray-100 rounded-xl" />
-                  {errors.businessPhone && <p className="text-red-500 text-sm">{errors.businessPhone.message}</p>}
                 </div>
 
                 <div>
