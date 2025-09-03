@@ -42,9 +42,9 @@ const ProfileCardPreview: React.FC = () => {
                 {/* Header */}
                 <div className="bg-slate-800 text-white text-center py-4 rounded-2xl mb-6 flex items-center justify-center gap-2">
                   <h2 className="text-xl font-bold uppercase">{employerData.businessName}</h2>
-                  {employerData.abnVerified && (
-                    <BadgeCheck size={18} className="text-green-400" title="ABN Verified" />
-                  )}
+                   {employerData.abnVerified && (
+                     <BadgeCheck size={18} className="text-green-400" />
+                   )}
                 </div>
 
                 {/* Profile Picture */}

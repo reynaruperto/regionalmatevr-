@@ -68,6 +68,7 @@ import WHVEmployerJobs from "./pages/WHVEmployerJobs";
 import WHVEmployerJobDetails from "./pages/WHVEmployerJobDetails";
 import WHVJobDetails from "./pages/WHVJobDetails";
 import AccountConfirmation from "./pages/AccountConfirmation";
+import EmployerFullProfilePreview from "./pages/EmployerFullProfilePreview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -98,7 +99,8 @@ const App = () => (
           <Route path="/employer/edit-profile" element={<EmployerEditProfile />} />
           <Route path="/whv/edit-WHVdetails" element={<WHVEditProfile />} />
           <Route path="/whv/profile-preview" element={<WHVProfilePreview />} />
-          <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
+           <Route path="/employer/profile-preview" element={<ProfileCardPreview />} />
+           <Route path="/employer/full-profile-preview" element={<EmployerFullProfilePreview />} />
           <Route path="/security" element={<Security />} />
           <Route path="/whv/security" element={<Security />} />
           <Route path="/employer/security" element={<EmployerSecurity />} />
