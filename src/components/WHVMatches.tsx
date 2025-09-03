@@ -24,7 +24,6 @@ const WHVMatches: React.FC = () => {
   const [showLikeModal, setShowLikeModal] = useState(false);
   const [likedEmployerName, setLikedEmployerName] = useState('');
 
-  // Read active tab from URL
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get('tab');
@@ -33,7 +32,7 @@ const WHVMatches: React.FC = () => {
     }
   }, [location.search]);
 
-  // Top Recommended mock data
+  // Top Recommended
   const topRecommended: MatchEmployer[] = [
     {
       id: '1',
@@ -67,7 +66,7 @@ const WHVMatches: React.FC = () => {
     }
   ];
 
-  // Matches mock data (3 employers)
+  // Matches (3 employers)
   const matches: MatchEmployer[] = [
     {
       id: '4',
@@ -121,10 +120,10 @@ const WHVMatches: React.FC = () => {
   const currentEmployers = activeTab === 'matches' ? matches : topRecommended;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-center p-4">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone Frame */}
-      <div className="w-[430px] h-[932px] bg-black rounded-[60px] shadow-2xl flex flex-col">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-white rounded-[48px] flex flex-col overflow-hidden">
           {/* Dynamic Island */}
           <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 mb-4"></div>
 
@@ -199,12 +198,10 @@ const WHVMatches: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Show % only for Top Recommended */}
+                  {/* % only for topRecommended */}
                   {!e.isMutualMatch && e.matchPercentage && (
                     <div className="text-right flex-shrink-0 ml-2">
-                      <div className="text-lg font-bold text-orange-500">
-                        {e.matchPercentage}%
-                      </div>
+                      <div className="text-lg font-bold text-orange-500">{e.matchPercentage}%</div>
                       <div className="text-xs font-semibold text-orange-500">Match</div>
                     </div>
                   )}
@@ -214,7 +211,7 @@ const WHVMatches: React.FC = () => {
           </div>
 
           {/* Bottom Navigation */}
-          <div className="bg-white border-t flex-shrink-0 rounded-b-[48px]">
+          <div className="bg-white border-t rounded-b-[48px] flex-shrink-0">
             <BottomNavigation />
           </div>
 
@@ -231,3 +228,4 @@ const WHVMatches: React.FC = () => {
 };
 
 export default WHVMatches;
+
