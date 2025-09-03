@@ -32,29 +32,67 @@ const WHVMatches: React.FC = () => {
     }
   }, [location.search]);
 
-  // Top Recommended mock data
+  // 🔹 Original Top Recommended mock data
   const topRecommended: MatchEmployer[] = [
     {
       id: '1',
-      name: 'Kangafarm',
+      name: 'KANGAFARM',
       skills: ['Agriculture & Farming', 'Fruit Picker'],
       country: 'Australia',
       location: 'Clontarf, QLD 4017',
-      availability: 'Start Date Sep 2025',
+      availability: 'Start Date from Sep 2025',
       profileImage: '/lovable-uploads/b18ec59d-46ed-4c8c-95cb-65e60d9aea25.png'
+    },
+    {
+      id: '2',
+      name: 'SUNNY WINES',
+      skills: ['Wine Production', 'Farm Supervisor'],
+      country: 'Australia',
+      location: 'Sunshine Coast, 4551',
+      availability: 'Start Date from Oct 2025',
+      profileImage: '/lovable-uploads/07a3f593-64d9-4f5c-871d-4d9114963942.png'
+    },
+    {
+      id: '3',
+      name: 'OAKRIDGE FARM',
+      skills: ['Agriculture & Farming', 'Dairy Farm Assistant'],
+      country: 'Australia',
+      location: 'Toowoomba, 4350',
+      availability: 'Start Date from Oct 2025',
+      profileImage: '/lovable-uploads/5672fb16-6ddf-42ed-bddd-ea2395f6b999.png'
     }
   ];
 
-  // Matches mock data
+  // 🔹 Original Matches mock data
   const matches: MatchEmployer[] = [
     {
-      id: '2',
+      id: '4',
       name: 'Green Harvest Farms',
-      skills: ['Agriculture', 'Farm Assistant'],
+      skills: ['Agriculture & Farming', 'Farm Assistant'],
       country: 'Australia',
       location: 'Northrivers, NSW 2470',
       availability: 'Available from Aug 2025',
       profileImage: '/lovable-uploads/a8da007e-b9f6-4996-9a54-c5cb294d1f4f.png',
+      isMutualMatch: true
+    },
+    {
+      id: '5',
+      name: 'Coastal Breeze Resort',
+      skills: ['Hospitality and Tourism', 'Barista'],
+      country: 'Australia',
+      location: 'Coolangatta, QLD 4225',
+      availability: 'Available from Sep 2025',
+      profileImage: '/lovable-uploads/dde1f5c0-2bba-4180-ab2c-b05bcb7b7def.png',
+      isMutualMatch: true
+    },
+    {
+      id: '6',
+      name: 'Gotall Estates',
+      skills: ['Dairy Farm', 'Farm Maintenance'],
+      country: 'Australia',
+      location: 'Sunshine Coast, 4019',
+      availability: 'Available from Oct 2025',
+      profileImage: '/lovable-uploads/3961a45e-fda8-48f4-97cc-a5573079e6ac.png',
       isMutualMatch: true
     }
   ];
@@ -169,4 +207,5 @@ const WHVMatches: React.FC = () => {
 };
 
 export default WHVMatches;
+
 
