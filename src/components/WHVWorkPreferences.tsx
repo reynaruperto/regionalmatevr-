@@ -215,8 +215,8 @@ const WHVWorkPreferences: React.FC = () => {
 
                   {/* Disclaimer */}
                   <p className="text-xs text-gray-500 mt-2">
-                    Note: Some roles may not count toward visa extensions. Please
-                    check with the Department of Home Affairs.
+                    Tip: Some of these jobs can help you qualify for a visa extension. 
+                    Check the Department of Home Affairs website for details.
                   </p>
                 </div>
               )}
