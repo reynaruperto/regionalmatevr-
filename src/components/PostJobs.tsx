@@ -12,7 +12,7 @@ interface Job {
   title: string;
   location: string;
   startDate: string;
-  status: 'Active' | 'Closed';
+  status: 'Active' | 'Inactive';
 }
 
 const PostJobs: React.FC = () => {
@@ -20,7 +20,7 @@ const PostJobs: React.FC = () => {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
-  const [filter, setFilter] = useState<'all' | 'active' | 'closed'>('all');
+  const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
 
   const [jobs, setJobs] = useState<Job[]>([
     {
@@ -42,7 +42,7 @@ const PostJobs: React.FC = () => {
       title: 'Tractor Driver',
       location: 'Clontarf, Queensland',
       startDate: 'May 2025',
-      status: 'Closed'
+      status: 'Inactive'
     }
   ]);
 
@@ -70,11 +70,11 @@ const PostJobs: React.FC = () => {
   const toggleJobStatus = (jobId: string) => {
     setJobs(prev => prev.map(job => 
       job.id === jobId 
-        ? { ...job, status: job.status === 'Active' ? 'Closed' : 'Active' }
+        ? { ...job, status: job.status === 'Active' ? 'Inactive' : 'Active' }
         : job
     ));
     const job = jobs.find(j => j.id === jobId);
-    const newStatus = job?.status === 'Active' ? 'Closed' : 'Active';
+    const newStatus = job?.status === 'Active' ? 'Inactive' : 'Active';
     toast({
       title: `Job ${newStatus}`,
       description: `Job has been ${newStatus.toLowerCase()}`,
@@ -83,7 +83,7 @@ const PostJobs: React.FC = () => {
 
   const filteredJobs = jobs.filter(job => {
     if (filter === 'active') return job.status === 'Active';
-    if (filter === 'closed') return job.status === 'Closed';
+    if (filter === 'inactive') return job.status === 'Inactive';
     return true;
   });
 
@@ -158,9 +158,9 @@ const PostJobs: React.FC = () => {
                   Active
                 </button>
                 <button
-                  onClick={() => setFilter('closed')}
+                  onClick={() => setFilter('inactive')}
                   className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                    filter === 'closed' 
+                    filter === 'inactive' 
                       ? 'bg-[#1E293B] text-white' 
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
@@ -174,15 +174,15 @@ const PostJobs: React.FC = () => {
               /* Empty State */
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="bg-white rounded-2xl p-8 shadow-sm text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {filter === 'all' ? 'No Jobs Posted Yet' : `No ${filter} Jobs`}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {filter === 'all' 
-                      ? 'Create your first job posting to start finding the right candidates.'
-                      : `You don't have any ${filter} jobs at the moment.`
-                    }
-                  </p>
+                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                     {filter === 'all' ? 'No Jobs Posted Yet' : `No ${filter === 'inactive' ? 'Closed' : filter} Jobs`}
+                   </h3>
+                   <p className="text-gray-600 mb-4">
+                     {filter === 'all' 
+                       ? 'Create your first job posting to start finding the right candidates.'
+                       : `You don't have any ${filter === 'inactive' ? 'closed' : filter} jobs at the moment.`
+                     }
+                   </p>
                   {filter === 'all' && (
                     <Button 
                       onClick={handlePostJobs}
