@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Eligible countries based on subclass
+
 const countries417 = [
   "Belgium",
   "Canada",
