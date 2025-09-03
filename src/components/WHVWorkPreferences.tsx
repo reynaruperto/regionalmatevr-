@@ -100,12 +100,12 @@ const WHVWorkPreferences: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-6 flex-shrink-0"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 flex-shrink-0"></div>
 
           {/* Header */}
-          <div className="px-4 py-5 border-b bg-white flex-shrink-0 mb-4">
+          <div className="px-4 py-4 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate("/whv/profile-setup")}
@@ -123,8 +123,8 @@ const WHVWorkPreferences: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-10">
-            <form onSubmit={handleSubmit} className="space-y-10 pb-20">
+          <div className="flex-1 overflow-y-auto px-4 py-6">
+            <form onSubmit={handleSubmit} className="space-y-8 pb-20">
               {/* Profile Tagline */}
               <div className="space-y-2">
                 <Label className="text-base font-medium text-gray-700">
@@ -251,7 +251,7 @@ const WHVWorkPreferences: React.FC = () => {
               </div>
 
               {/* Continue Button */}
-              <div className="pt-10 pb-6">
+              <div className="pt-8">
                 <Button
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
@@ -268,5 +268,3 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
-
-
