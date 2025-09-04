@@ -350,11 +350,25 @@ const WHVProfileSetup: React.FC = () => {
                       errors.nationality ? "border-red-500" : ""
                     }`}
                   >
-                    <SelectValue placeholder="Select nationality" />
+                    <SelectValue /> {/* ✅ no placeholder */}
                   </SelectTrigger>
                   <SelectContent>
+                    <div className="p-2">
+                      <Input
+                        placeholder="Search country..."
+                        className="h-10 mb-2"
+                        onChange={(e) => {
+                          const search = e.target.value.toLowerCase();
+                          document.querySelectorAll("[data-country-item]").forEach((el) => {
+                            const item = el as HTMLElement;
+                            const match = item.innerText.toLowerCase().includes(search);
+                            item.style.display = match ? "block" : "none";
+                          });
+                        }}
+                      />
+                    </div>
                     {[...countries417FirstSecond, ...countries462First].map((c) => (
-                      <SelectItem key={c} value={c}>
+                      <SelectItem key={c} value={c} data-country-item>
                         {c}
                       </SelectItem>
                     ))}
@@ -382,7 +396,7 @@ const WHVProfileSetup: React.FC = () => {
                         errors.visaType ? "border-red-500" : ""
                       }`}
                     >
-                      <SelectValue placeholder="Select visa type" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {getVisaOptions(formData.nationality).map((v) => (
