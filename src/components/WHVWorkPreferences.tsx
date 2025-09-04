@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Subclass 417 industries
+// ✅ Industries for Subclass 417
 const industryRoles417: Record<
   string,
   { roles: string[]; validStates: string[]; validAreas: string[] }
@@ -120,7 +120,7 @@ const industryRoles417: Record<
   },
 };
 
-// ✅ Subclass 462 industries
+// ✅ Industries for Subclass 462
 const industryRoles462: Record<
   string,
   { roles: string[]; validStates: string[]; validAreas: string[] }
@@ -229,7 +229,6 @@ const industryRoles462: Record<
 };
 
 const areaOptions = ["Regional", "Remote", "Very Remote", "Northern Australia"];
-
 const australianStates = [
   "Australian Capital Territory",
   "New South Wales",
@@ -250,13 +249,25 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   const navigate = useNavigate();
 
   const [tagline, setTagline] = useState("");
-  const [selectedIndustry, setSelectedIndustry] = useState<string>("");
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredState, setPreferredState] = useState("");
   const [preferredArea, setPreferredArea] = useState("");
   const [warning, setWarning] = useState("");
+  const [error, setError] = useState("");
 
   const industries = visaType === "417" ? industryRoles417 : industryRoles462;
+
+  const toggleIndustry = (industry: string) => {
+    if (selectedIndustries.includes(industry)) {
+      setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
+      setSelectedRoles(
+        selectedRoles.filter((role) => !industries[industry].roles.includes(role))
+      );
+    } else if (selectedIndustries.length < 3) {
+      setSelectedIndustries([...selectedIndustries, industry]);
+    }
+  };
 
   const toggleRole = (role: string) => {
     if (selectedRoles.includes(role)) {
@@ -267,40 +278,50 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   };
 
   const validateLocation = (state: string, area: string) => {
-    if (!selectedIndustry) return;
-    const { validStates, validAreas } = industries[selectedIndustry];
+    if (selectedIndustries.length === 0) return;
 
-    const stateValid =
-      validStates.includes("All") || validStates.includes(state);
-    const areaValid =
-      validAreas.includes("All") || validAreas.includes(area);
+    for (let industry of selectedIndustries) {
+      const { validStates, validAreas } = industries[industry];
+      const stateValid =
+        validStates.includes("All") || validStates.includes(state);
+      const areaValid =
+        validAreas.includes("All") || validAreas.includes(area);
 
-    if (!stateValid || (visaStage !== "1st" && !areaValid)) {
-      setWarning(
-        `⚠ ${selectedIndustry} work in ${state}${
-          area ? " (" + area + ")" : ""
-        } may not count towards visa extension.`
-      );
-    } else {
-      setWarning("");
+      if (!stateValid || (visaStage !== "1st" && !areaValid)) {
+        setWarning(
+          `⚠ ${industry} work in ${state}${
+            area ? " (" + area + ")" : ""
+          } may not count towards visa extension.`
+        );
+        return;
+      }
     }
+    setWarning("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (selectedIndustries.length < 1) {
+      setError("⚠ Please select at least 1 industry.");
+      return;
+    }
+
+    setError("");
     console.log("Tagline:", tagline);
     console.log("Visa:", visaType, visaStage);
-    console.log("Industry:", selectedIndustry);
+    console.log("Industries:", selectedIndustries);
     console.log("Roles:", selectedRoles);
     console.log("Preferred State:", preferredState);
     console.log("Preferred Area:", preferredArea);
+
     navigate("/whv/work-experience");
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
+        <div className="w-full h-full bg-white rounded-[48px] flex flex-col justify-between">
           {/* Header */}
           <div className="px-4 py-4 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
@@ -320,8 +341,8 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-6">
-            <form onSubmit={handleSubmit} className="space-y-8 pb-20">
+          <div className="flex-1 overflow-y-auto px-4 py-10">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {/* Profile Tagline */}
               <div className="space-y-2">
                 <Label className="text-base font-medium text-gray-700">
@@ -339,7 +360,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
               {/* Industry Selection */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select an industry of interest{" "}
+                  Select up to 3 industries of interest{" "}
                   <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex flex-wrap gap-2">
@@ -347,17 +368,16 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                     <button
                       type="button"
                       key={industry}
-                      onClick={() => {
-                        setSelectedIndustry(industry);
-                        setSelectedRoles([]);
-                        setWarning("");
-                        validateLocation(preferredState, preferredArea);
-                      }}
+                      onClick={() => toggleIndustry(industry)}
                       className={`px-4 py-2 rounded-full text-sm border transition ${
-                        selectedIndustry === industry
+                        selectedIndustries.includes(industry)
                           ? "bg-orange-500 text-white border-orange-500"
                           : "bg-white text-gray-700 border-gray-300"
                       }`}
+                      disabled={
+                        selectedIndustries.length >= 3 &&
+                        !selectedIndustries.includes(industry)
+                      }
                     >
                       {industry}
                     </button>
@@ -366,26 +386,28 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
               </div>
 
               {/* Role Selection */}
-              {selectedIndustry && (
+              {selectedIndustries.length > 0 && (
                 <div className="space-y-3">
                   <Label className="text-base font-medium text-gray-700">
-                    Select roles within {selectedIndustry}
+                    Select roles within chosen industries
                   </Label>
                   <div className="flex flex-wrap gap-2">
-                    {industries[selectedIndustry].roles.map((role) => (
-                      <button
-                        type="button"
-                        key={role}
-                        onClick={() => toggleRole(role)}
-                        className={`px-4 py-2 rounded-full text-sm border transition ${
-                          selectedRoles.includes(role)
-                            ? "bg-orange-500 text-white border-orange-500"
-                            : "bg-white text-gray-700 border-gray-300"
-                        }`}
-                      >
-                        {role}
-                      </button>
-                    ))}
+                    {selectedIndustries.flatMap((industry) =>
+                      industries[industry].roles.map((role) => (
+                        <button
+                          type="button"
+                          key={`${industry}-${role}`}
+                          onClick={() => toggleRole(role)}
+                          className={`px-4 py-2 rounded-full text-sm border transition ${
+                            selectedRoles.includes(role)
+                              ? "bg-orange-500 text-white border-orange-500"
+                              : "bg-white text-gray-700 border-gray-300"
+                          }`}
+                        >
+                          {role}
+                        </button>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
@@ -438,18 +460,19 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                 {warning && (
                   <p className="text-xs text-red-600 mt-2">{warning}</p>
                 )}
-              </div>
-
-              {/* Continue Button */}
-              <div className="pt-8">
-                <Button
-                  type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
-                >
-                  Continue →
-                </Button>
+                {error && <p className="text-xs text-red-600 mt-2">{error}</p>}
               </div>
             </form>
+          </div>
+
+          {/* Continue Button pinned to bottom */}
+          <div className="px-4 pb-6">
+            <Button
+              onClick={handleSubmit}
+              className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+            >
+              Continue →
+            </Button>
           </div>
         </div>
       </div>
@@ -458,3 +481,4 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
 };
 
 export default WHVWorkPreferences;
+
