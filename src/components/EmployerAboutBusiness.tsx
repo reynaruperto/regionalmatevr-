@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-
+// ✅ Schema
 const formSchema = z.object({
   businessTagline: z.string().min(10, "Please enter at least 10 characters").max(200, "Max 200 characters"),
   yearsInBusiness: z.string().min(1, "Required"),
@@ -26,27 +26,128 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-
+// ✅ Industry list
 const industries = [
   "Plant & Animal Cultivation",
+  "Health",
+  "Aged & Disability Care",
+  "Childcare",
+  "Tourism & Hospitality",
+  "Natural Disaster Recovery",
   "Fishing & Pearling",
   "Tree Farming & Felling",
   "Mining",
   "Construction",
-  "Tourism & Hospitality",
-  "Natural Disaster Recovery",
-  "Healthcare & Medical (Critical Sectors)",
 ];
 
+// ✅ Full roles per industry
 const industryRoles: Record<string, string[]> = {
-  "Plant & Animal Cultivation": ["Fruit Picker", "Packer", "Dairy Worker", "Livestock Worker", "Horse Breeder", "Reforestation Worker"],
-  "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Pearl Diver"],
-  "Tree Farming & Felling": ["Tree Planter", "Logger", "Timber Transport Worker"],
-  Mining: ["Driller", "Truck Driver", "Quarry Operator", "Exploration Worker"],
-  Construction: ["Labourer", "Painter", "Scaffolder", "Site Cleaner"],
-  "Tourism & Hospitality": ["Chef", "Bartender", "Waitstaff", "Housekeeper", "Tour Guide"],
-  "Natural Disaster Recovery": ["Clean-up Crew", "Rebuilder", "Wildlife Carer"],
-  "Healthcare & Medical (Critical Sectors)": ["Nurse", "Aged Care Worker", "Disability Support", "Childcare Worker", "Cleaner"],
+  "Plant & Animal Cultivation": [
+    "Harvesting & packing fruit/vegetable crops",
+    "Pruning & trimming vines/trees (commercial horticulture)",
+    "Cultivating/propagating plants, fungi, parts/products",
+    "Maintaining crops",
+    "Processing plant products",
+    "Maintaining animals for sale/produce (including natural increase)",
+    "Feeding/herding livestock",
+    "Horse breeding and stud farming",
+    "Shearing",
+    "Butchery",
+    "Packing & tanning animal products",
+    "Manufacturing dairy produce",
+    "Conservation & reforestation work",
+    "Zoo work involving plant/animal cultivation",
+  ],
+  Health: [
+    "Doctors",
+    "Nurses",
+    "Dentists & dental staff (clinical + admin)",
+    "Allied health workers",
+    "Medical imaging staff",
+    "Mental health workers",
+    "Radiology staff",
+    "Installation/maintenance of complex medical machinery",
+    "Hospital & healthcare cleaners",
+    "Medical support & admin staff",
+  ],
+  "Aged & Disability Care": [
+    "Aged care workers",
+    "Disability carers",
+    "Aged/disabled support workers",
+    "Community care workers",
+  ],
+  Childcare: [
+    "Daycare staff",
+    "Nursery/crèche attendants",
+    "Family day care workers",
+    "Nannies / au pairs",
+    "Out-of-school/vacation care staff",
+    "Child protection / welfare staff",
+  ],
+  "Tourism & Hospitality": [
+    "Hotel, motel, hostel, B&B staff",
+    "Caravan park & camping ground staff",
+    "Boarding house & reception centre staff",
+    "Housekeeping staff",
+    "Receptionists & guest service agents",
+    "Chefs & cooks",
+    "Waiters, bartenders & baristas",
+    "Catering staff",
+    "Pub/tavern/bar/hospitality club staff",
+    "Tour guides & operators",
+    "Adventure/outdoor instructors (e.g. dive instructors)",
+    "Tourist transport workers (e.g. bus/tour drivers)",
+    "Event & entertainment venue staff",
+    "Gallery/museum workers, curators & guides",
+    "Travel agents & tourist information staff",
+  ],
+  "Natural Disaster Recovery": [
+    "Clean-up staff (wiping, hosing, mopping, rubbish removal)",
+    "Demolition workers",
+    "Land clearing & earthmoving staff",
+    "Construction/repair workers (residential & non-residential)",
+    "Road, bridge, railway, dam, irrigation, sewage, drainage repair staff",
+    "Farm & wildlife recovery staff",
+    "Animal carers (rescue, transport, management)",
+    "Volunteer support staff",
+    "Insurance & claims staff",
+    "Call centre & admin recovery staff",
+    "Government/community recovery coordinators",
+    "Logistics staff (food/medication/essentials delivery)",
+  ],
+  "Fishing & Pearling": [
+    "Fishing deckhands",
+    "Aquaculture workers",
+    "Pearl divers",
+    "Pearl culturing workers",
+  ],
+  "Tree Farming & Felling": [
+    "Planting/tending plantation/forest trees",
+    "Felling plantation/forest trees",
+    "Transporting logs to mills/processing facilities",
+  ],
+  Mining: [
+    "Coal miners",
+    "Oil & gas extraction workers",
+    "Metal ore miners",
+    "Quarry/construction material miners",
+    "Non-metallic mineral miners",
+    "Exploration staff",
+    "Mining support staff",
+  ],
+  Construction: [
+    "Residential builders",
+    "Non-residential builders",
+    "Heavy & civil engineering workers",
+    "Land development/site prep staff",
+    "Building structure workers",
+    "Building installation workers",
+    "Building completion staff",
+    "Landscapers (on construction sites only)",
+    "Painters (on construction sites only)",
+    "Scaffolders",
+    "Fencers",
+  ],
 };
 
 const jobTypes = ["Full-time", "Part-time", "Casual", "Seasonal", "Contract"];
@@ -84,10 +185,7 @@ const EmployerAboutBusiness: React.FC = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Business info submitted:", data);
-
-    
     localStorage.setItem("aboutBusiness", JSON.stringify(data));
-
     toast({ title: "Business setup complete!", description: "Your employer profile has been created successfully" });
     navigate("/employer/photo-upload");
   };
@@ -193,21 +291,23 @@ const EmployerAboutBusiness: React.FC = () => {
                 {watchedIndustry && (
                   <div>
                     <Label>Roles Offered</Label>
-                    {industryRoles[watchedIndustry]?.concat("Other").map(role => (
-                      <label key={role} className="flex items-center space-x-2 mt-2">
-                        <input
-                          type="checkbox"
-                          value={role}
-                          checked={watchedRoles.includes(role)}
-                          onChange={e => {
-                            const current = watchedRoles;
-                            if (e.target.checked) setValue("rolesOffered", [...current, role]);
-                            else setValue("rolesOffered", current.filter(r => r !== role));
-                          }}
-                        />
-                        <span>{role}</span>
-                      </label>
-                    ))}
+                    <div className="max-h-48 overflow-y-auto border p-2 rounded-lg bg-gray-50">
+                      {industryRoles[watchedIndustry]?.concat("Other").map(role => (
+                        <label key={role} className="flex items-center space-x-2 mt-2">
+                          <input
+                            type="checkbox"
+                            value={role}
+                            checked={watchedRoles.includes(role)}
+                            onChange={e => {
+                              const current = watchedRoles;
+                              if (e.target.checked) setValue("rolesOffered", [...current, role]);
+                              else setValue("rolesOffered", current.filter(r => r !== role));
+                            }}
+                          />
+                          <span>{role}</span>
+                        </label>
+                      ))}
+                    </div>
                     {watchedRoles.includes("Other") && (
                       <Input placeholder="Enter custom role" {...register("customRole")} className="mt-2 h-14 bg-gray-100 rounded-xl" />
                     )}
@@ -293,5 +393,6 @@ const EmployerAboutBusiness: React.FC = () => {
 };
 
 export default EmployerAboutBusiness;
+
 
 
