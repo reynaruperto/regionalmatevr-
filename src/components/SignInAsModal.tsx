@@ -1,85 +1,127 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import AustraliaIcon from './AustraliaIcon';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
-interface SignInAsModalProps {
-  onClose: () => void;
-}
-
-const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleEmployerSignIn = () => {
-    navigate('/employer/sign-in');
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleWHVSignIn = () => {
-    navigate('/whv/login');
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError || !authData.user) {
+      toast({
+        title: "Login failed",
+        description: authError?.message || "Invalid email or password",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // 🔑 Fetch user_type from users table
+    const { data: userData, error } = await supabase
+      .from("users")
+      .select("user_type")
+      .eq("id", authData.user.id)
+      .single();
+
+    if (error || !userData) {
+      toast({
+        title: "Error",
+        description: "Could not determine user type",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // 🚀 Redirect based on user_type
+    if (userData.user_type === "whv") {
+      navigate("/whv/dashboard");
+    } else if (userData.user_type === "employer") {
+      navigate("/employer/dashboard");
+    } else {
+      toast({
+        title: "Error",
+        description: "Invalid user type",
+        variant: "destructive",
+      });
+    }
+
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
-      {/* iPhone 16 Pro Max frame */}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      {/* iPhone 16 Pro Max Frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
-          {/* Dynamic Island */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
-          
-          {/* Main content container */}
-          <div className="w-full h-full flex flex-col relative bg-gray-50">
-            
-            {/* Header with back button */}
-            <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="w-12 h-12 bg-white rounded-2xl shadow-sm"
-                onClick={onClose}
-              >
-                <ArrowLeft className="w-6 h-6 text-gray-700" />
-              </Button>
-              <div className="flex-1"></div>
+        <div className="w-full h-full bg-white rounded-[48px] p-6 flex flex-col">
+          {/* Header */}
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Sign In</h1>
+          <p className="text-sm text-gray-600 mb-8">
+            Enter your email and password to access your account.
+          </p>
+
+          {/* Form */}
+          <form onSubmit={handleSignIn} className="space-y-6 flex-1">
+            {/* Email */}
+            <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-12 bg-gray-100 border-0 text-gray-900"
+              />
             </div>
 
-            {/* Logo section */}
-            <div className="px-6 pt-8 pb-12">
-              <div className="flex justify-center">
-                <div className="bg-white p-6 rounded-3xl shadow-lg">
-                  <AustraliaIcon className="w-[108px] h-[108px]" />
-                </div>
-              </div>
+            {/* Password */}
+            <div>
+              <Label>Password</Label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-12 bg-gray-100 border-0 text-gray-900"
+              />
             </div>
 
-            {/* Title */}
-            <div className="px-6 pb-16 text-center">
-              <h1 className="text-2xl font-medium text-gray-600">
-                Sign In As
-              </h1>
-            </div>
+            {/* Sign In Button */}
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
 
-            {/* Sign in options */}
-            <div className="px-6 pb-8 space-y-4">
-              <Button 
-                variant="default" 
-                size="lg" 
-                className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                onClick={handleEmployerSignIn}
-              >
-                I want to hire
-              </Button>
-              
-              <Button 
-                variant="default" 
-                size="lg" 
-                className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={handleWHVSignIn}
-              >
-                I want to get hired
-              </Button>
-            </div>
-
+          {/* Footer */}
+          <div className="mt-8 text-center text-sm text-gray-600">
+            Don’t have an account?{" "}
+            <span
+              onClick={() => navigate("/lets-begin")}
+              className="text-orange-500 cursor-pointer hover:underline"
+            >
+              Sign up
+            </span>
           </div>
         </div>
       </div>
@@ -87,4 +129,4 @@ const SignInAsModal: React.FC<SignInAsModalProps> = ({ onClose }) => {
   );
 };
 
-export default SignInAsModal;
+export default SignIn;
