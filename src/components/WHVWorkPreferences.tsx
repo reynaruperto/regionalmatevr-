@@ -12,38 +12,156 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Industries & Roles aligned with WHV-specified work
-const industryRoles: Record<string, string[]> = {
-  "Agriculture & Farming": [
-    "Fruit Picker",
-    "Farm Hand",
-    "Packer",
-    "Crop Harvester",
-    "Irrigation Worker",
+// ✅ Full industries & roles for Subclass 417
+const industryRoles417: Record<string, string[]> = {
+  "Aged & Disability Care": [
+    "Disability carers",
+    "aged care workers",
+    "community support carers",
+  ],
+  "Bushfire Recovery": [
+    "Rebuilding fences",
+    "demolition",
+    "land clearing",
+    "wildlife care",
+    "construction repairs",
+    "volunteer/community support roles",
+  ],
+  Childcare: [
+    "Daycare staff",
+    "nursery/crèche attendants",
+    "family day care workers",
+    "nannies/au pairs",
+    "out-of-school/vacation care staff",
+    "child protection/welfare staff",
   ],
   Construction: [
-    "Construction Labourer",
-    "Carpenter",
-    "Plumber",
-    "Electrician",
-    "Painter",
+    "Residential/non-residential builders",
+    "heavy civil works",
+    "land development",
+    "building structure work",
+    "carpenters",
+    "plumbers",
+    "electricians",
+    "painters",
   ],
-  Mining: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
-  "Hospitality & Tourism": [
-    "Bartender",
-    "Waitstaff",
-    "Chef / Cook",
-    "Housekeeper",
-    "Tour Guide",
+  "Fishing & Pearling": ["Deckhands", "aquaculture workers", "divers"],
+  Forestry: ["Tree planters", "chainsaw operators", "forest workers"],
+  "Plant & Animal Cultivation": [
+    "Harvesting/packing fruit & vegetable crops",
+    "pruning/trimming vines & trees",
+    "general maintenance crop work",
+    "cultivating/propagating plants",
+    "feeding & herding livestock",
+    "machine operation for planting/harvesting",
+    "meat processing, packing & direct animal slaughter",
+    "general livestock management",
   ],
-  "Fishing & Pearling": ["Deckhand", "Aquaculture Worker", "Diver"],
-  Forestry: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
-  "Aged Care & Disability Services": [
-    "Personal Care Worker",
-    "Support Worker",
-    "Nurse Assistant",
+  "Tourism & Hospitality": [
+    "Hotel/motel/hostel staff",
+    "reception",
+    "housekeeping",
+    "chefs",
+    "waiters",
+    "bartenders",
+    "baristas",
+    "catering staff",
+    "tour guides",
+    "event/entertainment staff",
+    "gallery/museum staff",
+    "travel agents",
+  ],
+  Health: [
+    "Doctors",
+    "nurses",
+    "dentists and dental staff",
+    "allied health professionals",
+    "aged care staff",
+    "hospital cleaners",
+  ],
+  Mining: [
+    "Drillers",
+    "truck operators",
+    "plant operators",
+    "trades assistants",
   ],
 };
+
+// ✅ Full industries & roles for Subclass 462
+const industryRoles462: Record<string, string[]> = {
+  "Aged & Disability Care": [
+    "Disability carers",
+    "aged care workers",
+    "community support carers",
+  ],
+  "Bushfire Recovery": [
+    "Rebuilding fences",
+    "demolition",
+    "land clearing",
+    "wildlife care",
+    "construction repairs",
+    "volunteer/community support roles",
+  ],
+  Childcare: [
+    "Daycare staff",
+    "nursery/crèche attendants",
+    "family day care workers",
+    "nannies/au pairs",
+    "out-of-school/vacation care staff",
+    "child protection/welfare staff",
+  ],
+  "Construction (Northern + Regional Aus)": [
+    "Residential/non-residential builders",
+    "heavy civil works",
+    "land development",
+    "building structure work",
+    "carpenters",
+    "plumbers",
+    "electricians",
+    "painters",
+  ],
+  "Fishing & Pearling (Northern Aus only)": [
+    "Deckhands",
+    "aquaculture workers",
+    "divers",
+  ],
+  Forestry: ["Tree planters", "chainsaw operators", "forest workers"],
+  "Plant & Animal Cultivation": [
+    "Harvesting/packing fruit & vegetable crops",
+    "pruning/trimming vines & trees",
+    "general maintenance crop work",
+    "cultivating/propagating plants",
+    "feeding & herding livestock",
+    "machine operation for planting/harvesting",
+    "meat processing, packing & direct animal slaughter",
+    "general livestock management",
+  ],
+  "Tourism & Hospitality (Northern/Remote/Very Remote only)": [
+    "Hotel/motel/hostel staff",
+    "reception",
+    "housekeeping",
+    "chefs",
+    "waiters",
+    "bartenders",
+    "baristas",
+    "catering staff",
+    "tour guides",
+    "event/entertainment staff",
+    "gallery/museum staff",
+    "travel agents",
+  ],
+  Health: [
+    "Doctors",
+    "nurses",
+    "dentists and dental staff",
+    "allied health professionals",
+    "aged care staff",
+    "hospital cleaners",
+  ],
+};
+
+// ✅ Areas for 2nd / 3rd visa
+const areaOptions = ["Regional", "Remote", "Very Remote", "Northern Australia"];
 
 const australianStates = [
   "Australian Capital Territory",
@@ -56,21 +174,34 @@ const australianStates = [
   "Western Australia",
 ];
 
-const WHVWorkPreferences: React.FC = () => {
+// Example postcode data (replace with full list from Excel if needed)
+const postcodeData: Record<string, string[]> = {
+  Queensland: ["4124–4125", "4133", "4183–4184"],
+  "New South Wales": ["2250–2251", "2256–2263", "2311–2312"],
+};
+
+interface Props {
+  visaType: "417" | "462";
+  visaStage: "1st" | "2nd" | "3rd";
+}
+
+const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   const navigate = useNavigate();
 
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [otherRole, setOtherRole] = useState("");
   const [preferredState, setPreferredState] = useState("");
-  const [preferredCity, setPreferredCity] = useState("");
+  const [preferredArea, setPreferredArea] = useState("");
+  const [showPostcodes, setShowPostcodes] = useState(false);
+
+  const roles = visaType === "417" ? industryRoles417 : industryRoles462;
 
   const toggleIndustry = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
       setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
       setSelectedRoles(
-        selectedRoles.filter((role) => !industryRoles[industry]?.includes(role))
+        selectedRoles.filter((role) => !roles[industry]?.includes(role))
       );
     } else if (selectedIndustries.length < 3) {
       setSelectedIndustries([...selectedIndustries, industry]);
@@ -87,13 +218,12 @@ const WHVWorkPreferences: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     console.log("Tagline:", tagline);
+    console.log("Visa:", visaType, visaStage);
     console.log("Industries:", selectedIndustries);
     console.log("Roles:", selectedRoles);
-    console.log("Other Role:", otherRole);
-    console.log("Preferred Location:", preferredCity, preferredState);
-
+    console.log("Preferred State:", preferredState);
+    console.log("Preferred Area:", preferredArea);
     navigate("/whv/work-experience");
   };
 
@@ -149,7 +279,7 @@ const WHVWorkPreferences: React.FC = () => {
                   <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex flex-wrap gap-2">
-                  {Object.keys(industryRoles).map((industry) => (
+                  {Object.keys(roles).map((industry) => (
                     <button
                       type="button"
                       key={industry}
@@ -183,7 +313,7 @@ const WHVWorkPreferences: React.FC = () => {
                   </Label>
                   <div className="flex flex-wrap gap-2">
                     {selectedIndustries.flatMap((industry) =>
-                      industryRoles[industry].map((role) => (
+                      roles[industry].map((role) => (
                         <button
                           type="button"
                           key={`${industry}-${role}`}
@@ -199,27 +329,6 @@ const WHVWorkPreferences: React.FC = () => {
                       ))
                     )}
                   </div>
-
-                  {/* Other Role input */}
-                  <div className="space-y-2 mt-4">
-                    <Label className="text-base font-medium text-gray-700">
-                      Other Role (optional)
-                    </Label>
-                    <Input
-                      type="text"
-                      value={otherRole}
-                      onChange={(e) => setOtherRole(e.target.value)}
-                      className="h-12 bg-gray-100 border-0 text-gray-900"
-                      maxLength={50}
-                    />
-                  </div>
-
-                  {/* Softer Tip Disclaimer */}
-                  <p className="text-xs text-gray-500 mt-2">
-                    💡 Tip: Some of these jobs can help you qualify for a visa
-                    extension. Check the Department of Home Affairs website for
-                    details.
-                  </p>
                 </div>
               )}
 
@@ -229,6 +338,8 @@ const WHVWorkPreferences: React.FC = () => {
                   Preferred Working Location{" "}
                   <span className="text-red-500">*</span>
                 </Label>
+
+                {/* Always select state */}
                 <Select onValueChange={(value) => setPreferredState(value)}>
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
                     <SelectValue placeholder="Select a state" />
@@ -241,13 +352,47 @@ const WHVWorkPreferences: React.FC = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <Input
-                  type="text"
-                  value={preferredCity}
-                  onChange={(e) => setPreferredCity(e.target.value)}
-                  className="h-12 bg-gray-100 border-0 text-gray-900 mt-2"
-                  placeholder="Suburb / City"
-                />
+
+                {/* Show Area + Postcodes only for 2nd / 3rd visa */}
+                {(visaStage === "2nd" || visaStage === "3rd") && (
+                  <>
+                    <Select onValueChange={(value) => setPreferredArea(value)}>
+                      <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900 mt-2">
+                        <SelectValue placeholder="Select area type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {areaOptions.map((area) => (
+                          <SelectItem key={area} value={area}>
+                            {area}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Expandable Postcodes */}
+                    {preferredState && preferredArea && (
+                      <div className="mt-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => setShowPostcodes(!showPostcodes)}
+                        >
+                          {showPostcodes
+                            ? "Hide Eligible Postcodes"
+                            : "View Eligible Postcodes"}
+                        </Button>
+                        {showPostcodes && postcodeData[preferredState] && (
+                          <ul className="mt-2 text-sm text-gray-700 list-disc pl-5">
+                            {postcodeData[preferredState].map((pc) => (
+                              <li key={pc}>{pc}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Continue Button */}
@@ -268,3 +413,4 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
+
