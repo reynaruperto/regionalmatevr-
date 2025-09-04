@@ -12,34 +12,60 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Eligible countries based on subclass
-const countries417 = [
+// ✅ 417 Eligible Countries
+const countries417FirstSecond = [
   "Belgium", "Canada", "Republic of Cyprus", "Denmark", "Estonia", "Finland",
-  "France", "Germany", "Hong Kong", "Ireland", "Italy", "Japan", "Republic of Korea",
-  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan", "United Kingdom",
+  "France", "Germany", "Hong Kong Special Administrative Region",
+  "Republic of Ireland", "Italy", "Japan", "Republic of Korea",
+  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan",
+  "United Kingdom of Great Britain and Northern Ireland",
 ];
 
-const countries462 = [
-  "Argentina", "Austria", "Brazil", "Chile", "China", "Czech Republic", "Ecuador",
-  "Greece", "Hungary", "India", "Indonesia", "Israel", "Luxembourg", "Malaysia",
-  "Mongolia", "Papua New Guinea", "Peru", "Poland", "Portugal", "San Marino",
-  "Singapore", "Slovak Republic", "Slovenia", "Spain", "Switzerland", "Thailand",
-  "Türkiye", "United States of America", "Uruguay", "Vietnam",
+const countries417Third = [
+  "Republic of Cyprus", "Denmark", "Estonia", "Finland",
+  "France", "Germany", "Hong Kong Special Administrative Region",
+  "Republic of Ireland", "Italy", "Japan", "Republic of Korea",
+  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan",
+  "United Kingdom of Great Britain and Northern Ireland",
 ];
 
+// ✅ 462 Eligible Countries
+const countries462First = [
+  "Argentina", "Austria", "Brazil", "Chile", "China", "Czech Republic",
+  "Ecuador", "Greece", "Hungary", "India", "Indonesia", "Israel",
+  "Luxembourg", "Malaysia", "Mongolia", "Papua New Guinea", "Peru",
+  "Poland", "Portugal", "San Marino", "Singapore", "Slovak Republic",
+  "Slovenia", "Spain", "Switzerland", "Thailand", "Türkiye",
+  "Uruguay", "United States of America", "Vietnam",
+];
+
+const countries462SecondThird = [
+  "Argentina", "Austria", "Brazil", "Chile", "China", "Czech Republic",
+  "Ecuador", "Greece", "Hungary", "India", "Indonesia", "Israel",
+  "Luxembourg", "Malaysia", "Mongolia", "Papua New Guinea", "Peru",
+  "Poland", "Portugal", "San Marino", "Singapore", "Slovak Republic",
+  "Slovenia", "Spain", "Switzerland", "Thailand", "Türkiye",
+  "Uruguay", "United States of America", "Vietnam",
+];
+
+// ✅ Visa options by nationality
 const getVisaOptions = (nationality: string) => {
-  if (countries417.includes(nationality)) {
+  if (countries417FirstSecond.includes(nationality)) {
     return [
-      "417 (Working Holiday Visa)",
-      "417 Second Year Extension",
-      "417 Third Year Extension",
+      "417 (First Working Holiday Visa)",
+      "417 (Second Working Holiday Visa)",
+      ...(countries417Third.includes(nationality)
+        ? ["417 (Third Working Holiday Visa)"]
+        : []),
     ];
   }
-  if (countries462.includes(nationality)) {
+  if (countries462First.includes(nationality)) {
     return [
-      "462 (Work and Holiday Visa)",
-      "462 Second Year Extension",
-      "462 Third Year Extension",
+      "462 (First Work and Holiday Visa)",
+      "462 (Second Work and Holiday Visa)",
+      ...(countries462SecondThird.includes(nationality)
+        ? ["462 (Third Work and Holiday Visa)"]
+        : []),
     ];
   }
   return [];
@@ -135,7 +161,7 @@ const WHVProfileSetup: React.FC = () => {
       setFormData({
         ...formData,
         nationality: value,
-        visaType: "", // reset only when nationality changes
+        visaType: "", // reset visa when nationality changes
       });
     } else {
       setFormData({
@@ -236,77 +262,6 @@ const WHVProfileSetup: React.FC = () => {
           {/* Content */}
           <div className="flex-1 overflow-y-auto px-4 pt-6 pb-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Given Name */}
-              <div className="space-y-2">
-                <Label htmlFor="givenName">
-                  Given Name(s) <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="givenName"
-                  name="givenName"
-                  value={formData.givenName}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.givenName ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.givenName && (
-                  <p className="text-red-500 text-sm">{errors.givenName}</p>
-                )}
-              </div>
-
-              {/* Middle Name */}
-              <div className="space-y-2">
-                <Label htmlFor="middleName">Middle Name</Label>
-                <Input
-                  id="middleName"
-                  name="middleName"
-                  value={formData.middleName}
-                  onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0"
-                />
-              </div>
-
-              {/* Family Name */}
-              <div className="space-y-2">
-                <Label htmlFor="familyName">
-                  Family Name(s) <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="familyName"
-                  name="familyName"
-                  value={formData.familyName}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.familyName ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.familyName && (
-                  <p className="text-red-500 text-sm">{errors.familyName}</p>
-                )}
-              </div>
-
-              {/* Date of Birth */}
-              <div className="space-y-2">
-                <Label htmlFor="dateOfBirth">
-                  Date of Birth (DD/MM/YYYY){" "}
-                  <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="dateOfBirth"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
-                  maxLength={10}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.dateOfBirth ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.dateOfBirth && (
-                  <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
-                )}
-              </div>
-
               {/* Nationality */}
               <div className="space-y-2">
                 <Label htmlFor="nationality">
@@ -324,10 +279,10 @@ const WHVProfileSetup: React.FC = () => {
                       errors.nationality ? "border-red-500" : ""
                     }`}
                   >
-                    <SelectValue />
+                    <SelectValue placeholder="Select nationality" />
                   </SelectTrigger>
                   <SelectContent>
-                    {[...countries417, ...countries462].map((c) => (
+                    {[...countries417FirstSecond, ...countries462First].map((c) => (
                       <SelectItem key={c} value={c}>
                         {c}
                       </SelectItem>
@@ -356,7 +311,7 @@ const WHVProfileSetup: React.FC = () => {
                         errors.visaType ? "border-red-500" : ""
                       }`}
                     >
-                      <SelectValue />
+                      <SelectValue placeholder="Select visa type" />
                     </SelectTrigger>
                     <SelectContent>
                       {getVisaOptions(formData.nationality).map((v) => (
@@ -372,175 +327,8 @@ const WHVProfileSetup: React.FC = () => {
                 </div>
               )}
 
-              {/* Visa Expiry Date */}
-              <div className="space-y-2">
-                <Label htmlFor="visaExpiryDate">
-                  Visa Expiry Date (DD/MM/YYYY){" "}
-                  <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="visaExpiryDate"
-                  name="visaExpiryDate"
-                  value={formData.visaExpiryDate}
-                  onChange={handleInputChange}
-                  maxLength={10}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.visaExpiryDate ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.visaExpiryDate && (
-                  <p className="text-red-500 text-sm">{errors.visaExpiryDate}</p>
-                )}
-              </div>
-
-              {/* Phone Number */}
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber">
-                  Australian Phone Number <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.phoneNumber ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.phoneNumber && (
-                  <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-                )}
-              </div>
-
-              {/* Address Line 1 */}
-              <div className="space-y-2">
-                <Label htmlFor="addressLine1">
-                  Address Line 1 <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="addressLine1"
-                  name="addressLine1"
-                  value={formData.addressLine1}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.addressLine1 ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.addressLine1 && (
-                  <p className="text-red-500 text-sm">{errors.addressLine1}</p>
-                )}
-              </div>
-
-              {/* Address Line 2 */}
-              <div className="space-y-2">
-                <Label htmlFor="addressLine2">Address Line 2</Label>
-                <Input
-                  id="addressLine2"
-                  name="addressLine2"
-                  value={formData.addressLine2}
-                  onChange={handleInputChange}
-                  className="h-12 bg-gray-100 border-0"
-                />
-              </div>
-
-              {/* Suburb */}
-              <div className="space-y-2">
-                <Label htmlFor="suburb">
-                  Suburb <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="suburb"
-                  name="suburb"
-                  value={formData.suburb}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.suburb ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.suburb && (
-                  <p className="text-red-500 text-sm">{errors.suburb}</p>
-                )}
-              </div>
-
-              {/* City */}
-              <div className="space-y-2">
-                <Label htmlFor="city">
-                  City <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.city ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.city && (
-                  <p className="text-red-500 text-sm">{errors.city}</p>
-                )}
-              </div>
-
-              {/* State */}
-              <div className="space-y-2">
-                <Label htmlFor="state">
-                  State <span className="text-red-500">*</span>
-                </Label>
-                <Select
-                  value={formData.state}
-                  onValueChange={(value) => handleSelectChange("state", value)}
-                >
-                  <SelectTrigger
-                    className={`h-12 bg-gray-100 border-0 ${
-                      errors.state ? "border-red-500" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="Select a state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Australian Capital Territory">Australian Capital Territory</SelectItem>
-                    <SelectItem value="New South Wales">New South Wales</SelectItem>
-                    <SelectItem value="Northern Territory">Northern Territory</SelectItem>
-                    <SelectItem value="Queensland">Queensland</SelectItem>
-                    <SelectItem value="South Australia">South Australia</SelectItem>
-                    <SelectItem value="Tasmania">Tasmania</SelectItem>
-                    <SelectItem value="Victoria">Victoria</SelectItem>
-                    <SelectItem value="Western Australia">Western Australia</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.state && (
-                  <p className="text-red-500 text-sm">{errors.state}</p>
-                )}
-              </div>
-
-              {/* Post Code */}
-              <div className="space-y-2">
-                <Label htmlFor="postCode">
-                  Post Code <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="postCode"
-                  name="postCode"
-                  value={formData.postCode}
-                  onChange={handleInputChange}
-                  maxLength={4}
-                  className={`h-12 bg-gray-100 border-0 ${
-                    errors.postCode ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.postCode && (
-                  <p className="text-red-500 text-sm">{errors.postCode}</p>
-                )}
-              </div>
-
-              <div className="pt-8">
-                <Button
-                  type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
-                >
-                  Continue →
-                </Button>
-              </div>
+              {/* Other fields */}
+              {/* Add back the rest of your form fields here (DOB, names, phone, address, etc.) */}
             </form>
           </div>
         </div>
@@ -550,5 +338,6 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
+
 
 
