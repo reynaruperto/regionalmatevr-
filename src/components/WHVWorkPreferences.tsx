@@ -315,11 +315,16 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] flex flex-col justify-between">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      {/* iPhone Frame */}
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl flex items-center justify-center">
+        {/* Screen */}
+        <div className="w-full h-full bg-white rounded-[48px] flex flex-col">
+          {/* Dynamic Island */}
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4"></div>
+
           {/* Header */}
-          <div className="px-4 py-4 border-b bg-white flex-shrink-0">
+          <div className="px-4 py-4 border-b flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate("/whv/profile-setup")}
@@ -336,8 +341,8 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
             </div>
           </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto px-4 py-8">
+          {/* Content (scrollable) */}
+          <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Profile Tagline */}
               <div className="space-y-2">
@@ -357,7 +362,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                 </div>
               </div>
 
-              {/* Industry Selection */}
+              {/* Industry Selection (Checklist) */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
                   Select up to 3 industries of interest{" "}
@@ -382,7 +387,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                 </div>
               </div>
 
-              {/* Role Selection */}
+              {/* Role Selection (Bubbles) */}
               {selectedIndustries.length > 0 && (
                 <div className="space-y-3">
                   <Label className="text-base font-medium text-gray-700">
@@ -462,7 +467,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
             </form>
           </div>
 
-          {/* Continue Button pinned to bottom */}
+          {/* Footer (Continue Button pinned bottom) */}
           <div className="px-4 pb-6">
             <Button
               onClick={handleSubmit}
