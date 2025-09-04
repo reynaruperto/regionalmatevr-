@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,155 +13,18 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Full industries & roles for Subclass 417
-const industryRoles417: Record<string, string[]> = {
-  "Aged & Disability Care": [
-    "Disability carers",
-    "aged care workers",
-    "community support carers",
-  ],
-  "Bushfire Recovery": [
-    "Rebuilding fences",
-    "demolition",
-    "land clearing",
-    "wildlife care",
-    "construction repairs",
-    "volunteer/community support roles",
-  ],
-  Childcare: [
-    "Daycare staff",
-    "nursery/crèche attendants",
-    "family day care workers",
-    "nannies/au pairs",
-    "out-of-school/vacation care staff",
-    "child protection/welfare staff",
-  ],
-  Construction: [
-    "Residential/non-residential builders",
-    "heavy civil works",
-    "land development",
-    "building structure work",
-    "carpenters",
-    "plumbers",
-    "electricians",
-    "painters",
-  ],
-  "Fishing & Pearling": ["Deckhands", "aquaculture workers", "divers"],
-  Forestry: ["Tree planters", "chainsaw operators", "forest workers"],
-  "Plant & Animal Cultivation": [
-    "Harvesting/packing fruit & vegetable crops",
-    "pruning/trimming vines & trees",
-    "general maintenance crop work",
-    "cultivating/propagating plants",
-    "feeding & herding livestock",
-    "machine operation for planting/harvesting",
-    "meat processing, packing & direct animal slaughter",
-    "general livestock management",
-  ],
-  "Tourism & Hospitality": [
-    "Hotel/motel/hostel staff",
-    "reception",
-    "housekeeping",
-    "chefs",
-    "waiters",
-    "bartenders",
-    "baristas",
-    "catering staff",
-    "tour guides",
-    "event/entertainment staff",
-    "gallery/museum staff",
-    "travel agents",
-  ],
-  Health: [
-    "Doctors",
-    "nurses",
-    "dentists and dental staff",
-    "allied health professionals",
-    "aged care staff",
-    "hospital cleaners",
-  ],
-  Mining: [
-    "Drillers",
-    "truck operators",
-    "plant operators",
-    "trades assistants",
-  ],
-};
+// ‚úÖ Full industry-role-location mapping for Subclass 417
+const industryRoles417: Record<
+  string,
+  { roles: string[]; validStates: string[]; validAreas: string[] }
+> = {'Plant & Animal Cultivation': {'roles': ['Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees (commercial horticulture)', 'maintaining crops', 'cultivating/propagating plants and fungi', 'processing plant products', 'maintaining animals for sale or produce', 'processing animal products (shearing, butchery, packing, tanning)', 'manufacturing dairy produce', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation'], 'validStates': ['All'], 'validAreas': ['All']}, 'Health': {'roles': ['Doctors', 'nurses', 'dentists and dental staff', 'allied health workers', 'medical support/admin roles', 'medical imaging staff', 'mental health staff', 'radiology services staff', 'installation/maintenance of medical machinery', 'hospital/healthcare cleaning staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Aged & Disability Care': {'roles': ['Disability carers', 'aged care workers', 'community support carers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Childcare': {'roles': ['Daycare staff', 'nursery/cr√®che attendants', 'family day care workers', 'nannies/au pairs', 'out-of-school/vacation care staff', 'child protection/welfare staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'adventure instructors', 'bus drivers', 'event/entertainment venue staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['All'], 'validAreas': ['All']}, 'Natural Disaster Recovery': {'roles': ['Clean-up', 'construction repairs', 'demolition', 'land clearing', 'animal rescue/care', 'logistics and delivery of aid', 'government/community support', 'insurance and admin recovery roles', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Construction': {'roles': ['Residential builders', 'non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'landscapers (on construction sites)', 'painters', 'scaffolders', 'fencers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality (Northern/Remote/Very Remote Aus only)': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents', 'Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['QLD, NT, WA, TAS, SA, VIC, NSW'], 'validAreas': ['Northern / Remote / Very Remote only']}, 'Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers', 'Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills', 'Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff', 'Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Construction': {'roles': ['Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)', 'Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)'], 'validStates': ['All'], 'validAreas': ['Northern Australia']}, 'Bushfire Recovery': {'roles': ['Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles', 'Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles'], 'validStates': ['All'], 'validAreas': ['All']}};
 
-// ✅ Full industries & roles for Subclass 462
-const industryRoles462: Record<string, string[]> = {
-  "Aged & Disability Care": [
-    "Disability carers",
-    "aged care workers",
-    "community support carers",
-  ],
-  "Bushfire Recovery": [
-    "Rebuilding fences",
-    "demolition",
-    "land clearing",
-    "wildlife care",
-    "construction repairs",
-    "volunteer/community support roles",
-  ],
-  Childcare: [
-    "Daycare staff",
-    "nursery/crèche attendants",
-    "family day care workers",
-    "nannies/au pairs",
-    "out-of-school/vacation care staff",
-    "child protection/welfare staff",
-  ],
-  "Construction (Northern + Regional Aus)": [
-    "Residential/non-residential builders",
-    "heavy civil works",
-    "land development",
-    "building structure work",
-    "carpenters",
-    "plumbers",
-    "electricians",
-    "painters",
-  ],
-  "Fishing & Pearling (Northern Aus only)": [
-    "Deckhands",
-    "aquaculture workers",
-    "divers",
-  ],
-  Forestry: ["Tree planters", "chainsaw operators", "forest workers"],
-  "Plant & Animal Cultivation": [
-    "Harvesting/packing fruit & vegetable crops",
-    "pruning/trimming vines & trees",
-    "general maintenance crop work",
-    "cultivating/propagating plants",
-    "feeding & herding livestock",
-    "machine operation for planting/harvesting",
-    "meat processing, packing & direct animal slaughter",
-    "general livestock management",
-  ],
-  "Tourism & Hospitality (Northern/Remote/Very Remote only)": [
-    "Hotel/motel/hostel staff",
-    "reception",
-    "housekeeping",
-    "chefs",
-    "waiters",
-    "bartenders",
-    "baristas",
-    "catering staff",
-    "tour guides",
-    "event/entertainment staff",
-    "gallery/museum staff",
-    "travel agents",
-  ],
-  Health: [
-    "Doctors",
-    "nurses",
-    "dentists and dental staff",
-    "allied health professionals",
-    "aged care staff",
-    "hospital cleaners",
-  ],
-};
+// ‚úÖ Full industry-role-location mapping for Subclass 462
+const industryRoles462: Record<
+  string,
+  { roles: string[]; validStates: string[]; validAreas: string[] }
+> = {'Plant & Animal Cultivation': {'roles': ['Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees (commercial horticulture)', 'maintaining crops', 'cultivating/propagating plants and fungi', 'processing plant products', 'maintaining animals for sale or produce', 'processing animal products (shearing, butchery, packing, tanning)', 'manufacturing dairy produce', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation'], 'validStates': ['All'], 'validAreas': ['All']}, 'Health': {'roles': ['Doctors', 'nurses', 'dentists and dental staff', 'allied health workers', 'medical support/admin roles', 'medical imaging staff', 'mental health staff', 'radiology services staff', 'installation/maintenance of medical machinery', 'hospital/healthcare cleaning staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Aged & Disability Care': {'roles': ['Disability carers', 'aged care workers', 'community support carers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Childcare': {'roles': ['Daycare staff', 'nursery/cr√®che attendants', 'family day care workers', 'nannies/au pairs', 'out-of-school/vacation care staff', 'child protection/welfare staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'adventure instructors', 'bus drivers', 'event/entertainment venue staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['All'], 'validAreas': ['All']}, 'Natural Disaster Recovery': {'roles': ['Clean-up', 'construction repairs', 'demolition', 'land clearing', 'animal rescue/care', 'logistics and delivery of aid', 'government/community support', 'insurance and admin recovery roles', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Construction': {'roles': ['Residential builders', 'non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'landscapers (on construction sites)', 'painters', 'scaffolders', 'fencers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality (Northern/Remote/Very Remote Aus only)': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents', 'Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['QLD, NT, WA, NSW, VIC, SA, TAS'], 'validAreas': ['Northern Australia + Remote & Very Remote Australia']}, 'Fishing & Pearling (Northern Aus only)': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers', 'Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['QLD, NT, WA'], 'validAreas': ['Northern Australia']}, 'Tree Farming & Felling (Northern Aus only)': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills', 'Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['QLD, NT, WA'], 'validAreas': ['Northern Australia']}, 'Construction (Northern + Regional Aus)': {'roles': ['Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)', 'Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)'], 'validStates': ['All'], 'validAreas': ['Northern Australia + Regional']}, 'Bushfire Recovery': {'roles': ['Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles', 'Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles'], 'validStates': ['All'], 'validAreas': ['All']}};
 
-// ✅ Areas for 2nd / 3rd visa
 const areaOptions = ["Regional", "Remote", "Very Remote", "Northern Australia"];
 
 const australianStates = [
@@ -174,12 +38,6 @@ const australianStates = [
   "Western Australia",
 ];
 
-// Example postcode data (replace with full list from Excel if needed)
-const postcodeData: Record<string, string[]> = {
-  Queensland: ["4124–4125", "4133", "4183–4184"],
-  "New South Wales": ["2250–2251", "2256–2263", "2311–2312"],
-};
-
 interface Props {
   visaType: "417" | "462";
   visaStage: "1st" | "2nd" | "3rd";
@@ -189,24 +47,13 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   const navigate = useNavigate();
 
   const [tagline, setTagline] = useState("");
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState<string>("");
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredState, setPreferredState] = useState("");
   const [preferredArea, setPreferredArea] = useState("");
-  const [showPostcodes, setShowPostcodes] = useState(false);
+  const [warning, setWarning] = useState("");
 
-  const roles = visaType === "417" ? industryRoles417 : industryRoles462;
-
-  const toggleIndustry = (industry: string) => {
-    if (selectedIndustries.includes(industry)) {
-      setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
-      setSelectedRoles(
-        selectedRoles.filter((role) => !roles[industry]?.includes(role))
-      );
-    } else if (selectedIndustries.length < 3) {
-      setSelectedIndustries([...selectedIndustries, industry]);
-    }
-  };
+  const industries = visaType === "417" ? industryRoles417 : industryRoles462;
 
   const toggleRole = (role: string) => {
     if (selectedRoles.includes(role)) {
@@ -216,11 +63,31 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
     }
   };
 
+  const validateLocation = (state: string, area: string) => {
+    if (!selectedIndustry) return;
+    const { validStates, validAreas } = industries[selectedIndustry];
+
+    const stateValid =
+      validStates.includes("All") || validStates.includes(state);
+    const areaValid =
+      validAreas.includes("All") || validAreas.includes(area);
+
+    if (!stateValid || (visaStage !== "1st" && !areaValid)) {
+      setWarning(
+        `‚ö† ${selectedIndustry} work in ${state}${
+          area ? " (" + area + ")" : ""
+        } may not count towards visa extension.`
+      );
+    } else {
+      setWarning("");
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Tagline:", tagline);
     console.log("Visa:", visaType, visaStage);
-    console.log("Industries:", selectedIndustries);
+    console.log("Industry:", selectedIndustry);
     console.log("Roles:", selectedRoles);
     console.log("Preferred State:", preferredState);
     console.log("Preferred Area:", preferredArea);
@@ -231,9 +98,6 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
-          {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 flex-shrink-0"></div>
-
           {/* Header */}
           <div className="px-4 py-4 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
@@ -267,36 +131,29 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   maxLength={60}
                 />
-                <p className="text-xs text-gray-500">
-                  This will appear under your profile photo (max 60 characters)
-                </p>
               </div>
 
               {/* Industry Selection */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select up to 3 industries of interest{" "}
+                  Select an industry of interest{" "}
                   <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex flex-wrap gap-2">
-                  {Object.keys(roles).map((industry) => (
+                  {Object.keys(industries).map((industry) => (
                     <button
                       type="button"
                       key={industry}
-                      onClick={() => toggleIndustry(industry)}
-                      disabled={
-                        selectedIndustries.length >= 3 &&
-                        !selectedIndustries.includes(industry)
-                      }
+                      onClick={() => {
+                        setSelectedIndustry(industry);
+                        setSelectedRoles([]);
+                        setWarning("");
+                        validateLocation(preferredState, preferredArea);
+                      }}
                       className={`px-4 py-2 rounded-full text-sm border transition ${
-                        selectedIndustries.includes(industry)
+                        selectedIndustry === industry
                           ? "bg-orange-500 text-white border-orange-500"
                           : "bg-white text-gray-700 border-gray-300"
-                      } ${
-                        selectedIndustries.length >= 3 &&
-                        !selectedIndustries.includes(industry)
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
                       }`}
                     >
                       {industry}
@@ -306,28 +163,26 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
               </div>
 
               {/* Role Selection */}
-              {selectedIndustries.length > 0 && (
+              {selectedIndustry && (
                 <div className="space-y-3">
                   <Label className="text-base font-medium text-gray-700">
-                    Select roles within chosen industries
+                    Select roles within {selectedIndustry}
                   </Label>
                   <div className="flex flex-wrap gap-2">
-                    {selectedIndustries.flatMap((industry) =>
-                      roles[industry].map((role) => (
-                        <button
-                          type="button"
-                          key={`${industry}-${role}`}
-                          onClick={() => toggleRole(role)}
-                          className={`px-4 py-2 rounded-full text-sm border transition ${
-                            selectedRoles.includes(role)
-                              ? "bg-orange-500 text-white border-orange-500"
-                              : "bg-white text-gray-700 border-gray-300"
-                          }`}
-                        >
-                          {role}
-                        </button>
-                      ))
-                    )}
+                    {industries[selectedIndustry].roles.map((role) => (
+                      <button
+                        type="button"
+                        key={role}
+                        onClick={() => toggleRole(role)}
+                        className={`px-4 py-2 rounded-full text-sm border transition ${
+                          selectedRoles.includes(role)
+                            ? "bg-orange-500 text-white border-orange-500"
+                            : "bg-white text-gray-700 border-gray-300"
+                        }`}
+                      >
+                        {role}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
@@ -339,8 +194,12 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   <span className="text-red-500">*</span>
                 </Label>
 
-                {/* Always select state */}
-                <Select onValueChange={(value) => setPreferredState(value)}>
+                <Select
+                  onValueChange={(value) => {
+                    setPreferredState(value);
+                    validateLocation(value, preferredArea);
+                  }}
+                >
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
@@ -353,45 +212,28 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   </SelectContent>
                 </Select>
 
-                {/* Show Area + Postcodes only for 2nd / 3rd visa */}
                 {(visaStage === "2nd" || visaStage === "3rd") && (
-                  <>
-                    <Select onValueChange={(value) => setPreferredArea(value)}>
-                      <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900 mt-2">
-                        <SelectValue placeholder="Select area type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {areaOptions.map((area) => (
-                          <SelectItem key={area} value={area}>
-                            {area}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <Select
+                    onValueChange={(value) => {
+                      setPreferredArea(value);
+                      validateLocation(preferredState, value);
+                    }}
+                  >
+                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900 mt-2">
+                      <SelectValue placeholder="Select area type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {areaOptions.map((area) => (
+                        <SelectItem key={area} value={area}>
+                          {area}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
 
-                    {/* Expandable Postcodes */}
-                    {preferredState && preferredArea && (
-                      <div className="mt-3">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="w-full"
-                          onClick={() => setShowPostcodes(!showPostcodes)}
-                        >
-                          {showPostcodes
-                            ? "Hide Eligible Postcodes"
-                            : "View Eligible Postcodes"}
-                        </Button>
-                        {showPostcodes && postcodeData[preferredState] && (
-                          <ul className="mt-2 text-sm text-gray-700 list-disc pl-5">
-                            {postcodeData[preferredState].map((pc) => (
-                              <li key={pc}>{pc}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    )}
-                  </>
+                {warning && (
+                  <p className="text-xs text-red-600 mt-2">{warning}</p>
                 )}
               </div>
 
@@ -401,7 +243,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
-                  Continue →
+                  Continue ‚Üí
                 </Button>
               </div>
             </form>
