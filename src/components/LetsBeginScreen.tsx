@@ -10,7 +10,8 @@ const LetsBeginScreen: React.FC = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);
 
   if (showSignInModal) {
-    return <SignInAsModal onClose={() => setShowSignInModal(false)} />;
+    // ✅ Removed onClose prop
+    return <SignInAsModal />;
   }
   
   return (
