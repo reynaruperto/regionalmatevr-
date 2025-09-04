@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,17 +12,221 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ‚úÖ Full industry-role-location mapping for Subclass 417
+// ✅ Subclass 417 industries
 const industryRoles417: Record<
   string,
   { roles: string[]; validStates: string[]; validAreas: string[] }
-> = {'Plant & Animal Cultivation': {'roles': ['Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees (commercial horticulture)', 'maintaining crops', 'cultivating/propagating plants and fungi', 'processing plant products', 'maintaining animals for sale or produce', 'processing animal products (shearing, butchery, packing, tanning)', 'manufacturing dairy produce', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation'], 'validStates': ['All'], 'validAreas': ['All']}, 'Health': {'roles': ['Doctors', 'nurses', 'dentists and dental staff', 'allied health workers', 'medical support/admin roles', 'medical imaging staff', 'mental health staff', 'radiology services staff', 'installation/maintenance of medical machinery', 'hospital/healthcare cleaning staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Aged & Disability Care': {'roles': ['Disability carers', 'aged care workers', 'community support carers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Childcare': {'roles': ['Daycare staff', 'nursery/cr√®che attendants', 'family day care workers', 'nannies/au pairs', 'out-of-school/vacation care staff', 'child protection/welfare staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'adventure instructors', 'bus drivers', 'event/entertainment venue staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['All'], 'validAreas': ['All']}, 'Natural Disaster Recovery': {'roles': ['Clean-up', 'construction repairs', 'demolition', 'land clearing', 'animal rescue/care', 'logistics and delivery of aid', 'government/community support', 'insurance and admin recovery roles', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Construction': {'roles': ['Residential builders', 'non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'landscapers (on construction sites)', 'painters', 'scaffolders', 'fencers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality (Northern/Remote/Very Remote Aus only)': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents', 'Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['QLD, NT, WA, TAS, SA, VIC, NSW'], 'validAreas': ['Northern / Remote / Very Remote only']}, 'Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers', 'Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills', 'Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff', 'Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['QLD,NT, WA'], 'validAreas': ['Northern Australia']}, 'Construction': {'roles': ['Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)', 'Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)'], 'validStates': ['All'], 'validAreas': ['Northern Australia']}, 'Bushfire Recovery': {'roles': ['Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles', 'Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles'], 'validStates': ['All'], 'validAreas': ['All']}};
+> = {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting/packing fruit & vegetable crops",
+      "Pruning/trimming vines and trees",
+      "Crop maintenance",
+      "Cultivating/propagating plants or fungi",
+      "Processing plant products",
+      "Feeding and herding livestock",
+      "Animal slaughter and butchery",
+      "Shearing, tanning, dairy processing",
+      "Reforestation",
+      "Zoo-based plant/animal care",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Fishing & Pearling": {
+    roles: ["Deckhand", "Aquaculture Worker", "Diver"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Tree Farming & Forestry": {
+    roles: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Mining: {
+    roles: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Construction: {
+    roles: [
+      "Construction Labourer",
+      "Carpenter",
+      "Plumber",
+      "Electrician",
+      "Painter",
+      "General Building Work",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Bushfire Recovery": {
+    roles: [
+      "Rebuilding fences",
+      "Demolition",
+      "Land clearing",
+      "Wildlife care",
+      "Construction repairs",
+      "Volunteer/community support roles",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Hotel/motel/hostel staff",
+      "Reception",
+      "Housekeeping",
+      "Chefs",
+      "Waiters",
+      "Bartenders",
+      "Baristas",
+      "Catering staff",
+      "Tour guides",
+      "Event/entertainment staff",
+      "Gallery/museum staff",
+      "Travel agents",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Aged & Disability Care": {
+    roles: ["Disability Carer", "Aged Care Worker", "Community Support Carer"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Childcare: {
+    roles: [
+      "Daycare Staff",
+      "Nursery/Crèche Attendants",
+      "Family Day Care Workers",
+      "Nannies/Au Pairs",
+      "Out-of-school/vacation care staff",
+      "Child protection/welfare staff",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Health: {
+    roles: [
+      "Doctors",
+      "Nurses",
+      "Dentists and dental staff",
+      "Allied health professionals",
+      "Hospital cleaners",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+};
 
-// ‚úÖ Full industry-role-location mapping for Subclass 462
+// ✅ Subclass 462 industries
 const industryRoles462: Record<
   string,
   { roles: string[]; validStates: string[]; validAreas: string[] }
-> = {'Plant & Animal Cultivation': {'roles': ['Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees (commercial horticulture)', 'maintaining crops', 'cultivating/propagating plants and fungi', 'processing plant products', 'maintaining animals for sale or produce', 'processing animal products (shearing, butchery, packing, tanning)', 'manufacturing dairy produce', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation', 'Harvesting/packing fruit & vegetable crops', 'pruning/trimming vines and trees', 'cultivating/propagating plants/fungi', 'immediate processing of plant products', 'maintaining/breeding animals', 'dairy processing', 'butchery', 'shearing', 'tanning', 'reforestation', 'zoo-based plant/animal cultivation'], 'validStates': ['All'], 'validAreas': ['All']}, 'Health': {'roles': ['Doctors', 'nurses', 'dentists and dental staff', 'allied health workers', 'medical support/admin roles', 'medical imaging staff', 'mental health staff', 'radiology services staff', 'installation/maintenance of medical machinery', 'hospital/healthcare cleaning staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Aged & Disability Care': {'roles': ['Disability carers', 'aged care workers', 'community support carers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Childcare': {'roles': ['Daycare staff', 'nursery/cr√®che attendants', 'family day care workers', 'nannies/au pairs', 'out-of-school/vacation care staff', 'child protection/welfare staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'adventure instructors', 'bus drivers', 'event/entertainment venue staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['All'], 'validAreas': ['All']}, 'Natural Disaster Recovery': {'roles': ['Clean-up', 'construction repairs', 'demolition', 'land clearing', 'animal rescue/care', 'logistics and delivery of aid', 'government/community support', 'insurance and admin recovery roles', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination', 'Flood/cyclone clean-up', 'demolition', 'construction repairs', 'logistics', 'animal care', 'call centre/insurance/government support', 'community coordination'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Fishing & Pearling': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Tree Farming & Felling': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Mining': {'roles': ['Coal miners', 'oil & gas workers', 'ore miners', 'quarry workers', 'exploration workers', 'mining support staff'], 'validStates': ['All'], 'validAreas': ['All']}, 'Northern Australia ‚Äì Construction': {'roles': ['Residential builders', 'non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'landscapers (on construction sites)', 'painters', 'scaffolders', 'fencers'], 'validStates': ['All'], 'validAreas': ['All']}, 'Tourism & Hospitality (Northern/Remote/Very Remote Aus only)': {'roles': ['Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents', 'Hotel/motel/hostel staff', 'reception', 'housekeeping', 'chefs', 'waiters', 'bartenders', 'baristas', 'catering staff', 'tour guides', 'dive instructors', 'bus drivers', 'event/entertainment staff', 'gallery/museum staff', 'travel agents'], 'validStates': ['QLD, NT, WA, NSW, VIC, SA, TAS'], 'validAreas': ['Northern Australia + Remote & Very Remote Australia']}, 'Fishing & Pearling (Northern Aus only)': {'roles': ['Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers', 'Fishing deckhands', 'aquaculture workers', 'pearl divers', 'pearl culturing workers'], 'validStates': ['QLD, NT, WA'], 'validAreas': ['Northern Australia']}, 'Tree Farming & Felling (Northern Aus only)': {'roles': ['Planting/tending plantation trees', 'felling trees', 'transporting logs to mills', 'Planting/tending plantation trees', 'felling trees', 'transporting logs to mills'], 'validStates': ['QLD, NT, WA'], 'validAreas': ['Northern Australia']}, 'Construction (Northern + Regional Aus)': {'roles': ['Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)', 'Residential/non-residential builders', 'heavy civil works', 'land development', 'building structure services', 'installation', 'completion', 'fencing', 'scaffolding', 'painting', 'landscaping (on construction sites)'], 'validStates': ['All'], 'validAreas': ['Northern Australia + Regional']}, 'Bushfire Recovery': {'roles': ['Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles', 'Rebuilding fences', 'demolition', 'land clearing', 'wildlife care', 'construction repairs', 'volunteer/community support roles'], 'validStates': ['All'], 'validAreas': ['All']}};
+> = {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting/packing fruit & vegetable crops",
+      "Pruning/trimming vines and trees",
+      "Crop maintenance",
+      "Cultivating/propagating plants or fungi",
+      "Processing plant products",
+      "Feeding and herding livestock",
+      "Animal slaughter and butchery",
+      "Shearing, tanning, dairy processing",
+      "Reforestation",
+      "Zoo-based plant/animal care",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Fishing & Pearling": {
+    roles: ["Deckhand", "Aquaculture Worker", "Diver"],
+    validStates: ["Northern Territory", "Western Australia"],
+    validAreas: ["Northern Australia"],
+  },
+  "Tree Farming & Forestry": {
+    roles: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Mining: {
+    roles: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Construction: {
+    roles: [
+      "Construction Labourer",
+      "Carpenter",
+      "Plumber",
+      "Electrician",
+      "Painter",
+      "General Building Work",
+    ],
+    validStates: ["Northern Territory", "Queensland", "Western Australia"],
+    validAreas: ["Northern Australia", "Remote", "Very Remote"],
+  },
+  "Bushfire Recovery": {
+    roles: [
+      "Rebuilding fences",
+      "Demolition",
+      "Land clearing",
+      "Wildlife care",
+      "Construction repairs",
+      "Volunteer/community support roles",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Hotel/motel/hostel staff",
+      "Reception",
+      "Housekeeping",
+      "Chefs",
+      "Waiters",
+      "Bartenders",
+      "Baristas",
+      "Catering staff",
+      "Tour guides",
+      "Event/entertainment staff",
+      "Gallery/museum staff",
+      "Travel agents",
+    ],
+    validStates: ["Northern Territory", "Queensland", "Western Australia"],
+    validAreas: ["Northern Australia", "Remote", "Very Remote"],
+  },
+  "Aged & Disability Care": {
+    roles: ["Disability Carer", "Aged Care Worker", "Community Support Carer"],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Childcare: {
+    roles: [
+      "Daycare Staff",
+      "Nursery/Crèche Attendants",
+      "Family Day Care Workers",
+      "Nannies/Au Pairs",
+      "Out-of-school/vacation care staff",
+      "Child protection/welfare staff",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+  Health: {
+    roles: [
+      "Doctors",
+      "Nurses",
+      "Dentists and dental staff",
+      "Allied health professionals",
+      "Hospital cleaners",
+    ],
+    validStates: ["All"],
+    validAreas: ["All"],
+  },
+};
 
 const areaOptions = ["Regional", "Remote", "Very Remote", "Northern Australia"];
 
@@ -74,7 +277,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
 
     if (!stateValid || (visaStage !== "1st" && !areaValid)) {
       setWarning(
-        `‚ö† ${selectedIndustry} work in ${state}${
+        `⚠ ${selectedIndustry} work in ${state}${
           area ? " (" + area + ")" : ""
         } may not count towards visa extension.`
       );
@@ -243,7 +446,7 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   type="submit"
                   className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
                 >
-                  Continue ‚Üí
+                  Continue →
                 </Button>
               </div>
             </form>
@@ -255,4 +458,3 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
 };
 
 export default WHVWorkPreferences;
-
