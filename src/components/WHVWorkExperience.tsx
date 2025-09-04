@@ -8,13 +8,16 @@ import { ArrowLeft, Plus, X } from "lucide-react";
 
 // Industry list aligned with WHV categories
 const industries = [
-  "Agriculture & Farming",
-  "Construction",
-  "Mining",
-  "Hospitality & Tourism",
+  "Plant & Animal Cultivation",
   "Fishing & Pearling",
-  "Forestry",
-  "Aged Care & Disability Services",
+  "Tree Farming & Forestry",
+  "Mining",
+  "Construction",
+  "Bushfire Recovery",
+  "Tourism & Hospitality",
+  "Aged & Disability Care",
+  "Childcare",
+  "Health",
 ];
 
 const licenseOptions = [
