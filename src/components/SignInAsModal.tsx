@@ -1,38 +1,51 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
-import AustraliaIcon from './AustraliaIcon';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
+import AustraliaIcon from "./AustraliaIcon";
+import { supabase } from "@/integrations/supabase/client";
 
-const SignInAsModal: React.FC = () => {
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState<'employer' | 'whv' | null>(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!userType) {
-      setMessage({ type: 'error', text: 'Please select a sign in type first.' });
-      return;
-    }
+    setLoading(true);
+    setMessage(null);
 
     try {
-      // ✅ Replace this with supabase.auth.signInWithPassword or your auth function
-      if (email === 'test@example.com' && password === 'password123') {
-        setMessage({ type: 'success', text: 'Login successful!' });
-        setTimeout(() => {
-          navigate(userType === 'employer' ? '/employer/dashboard' : '/whv/dashboard');
-        }, 1000);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setMessage({ type: "error", text: error.message });
+        setLoading(false);
+        return;
+      }
+
+      const userType = data.user?.user_metadata?.user_type;
+
+      if (userType === "employer") {
+        setMessage({ type: "success", text: "Welcome back, Employer!" });
+        setTimeout(() => navigate("/employer/dashboard"), 1000);
+      } else if (userType === "whv") {
+        setMessage({ type: "success", text: "Welcome back, WHV Holder!" });
+        setTimeout(() => navigate("/whv/dashboard"), 1000);
       } else {
-        setMessage({ type: 'error', text: 'Invalid credentials. Try again.' });
+        setMessage({ type: "error", text: "No user type found. Please contact support." });
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+      setMessage({ type: "error", text: "Unexpected error. Please try again." });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,15 +56,13 @@ const SignInAsModal: React.FC = () => {
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
-          
-          {/* Main content container */}
+
           <div className="w-full h-full flex flex-col relative bg-gray-50">
-            
-            {/* Header with back button */}
+            {/* Header */}
             <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="w-12 h-12 bg-white rounded-2xl shadow-sm"
                 onClick={() => navigate(-1)}
               >
@@ -60,96 +71,71 @@ const SignInAsModal: React.FC = () => {
               <div className="flex-1"></div>
             </div>
 
-            {/* Logo section */}
-            <div className="px-6 pt-8 pb-6">
-              <div className="flex justify-center">
-                <div className="bg-white p-6 rounded-3xl shadow-lg">
-                  <AustraliaIcon className="w-[108px] h-[108px]" />
-                </div>
+            {/* Logo */}
+            <div className="px-6 pt-8 pb-6 flex justify-center">
+              <div className="bg-white p-6 rounded-3xl shadow-lg">
+                <AustraliaIcon className="w-[108px] h-[108px]" />
               </div>
             </div>
 
             {/* Title */}
             <div className="px-6 pb-6 text-center">
-              <h1 className="text-2xl font-medium text-gray-600">
-                Sign In
-              </h1>
+              <h1 className="text-2xl font-medium text-gray-600">Sign In</h1>
             </div>
 
-            {/* Sign in options */}
-            {!userType && (
-              <div className="px-6 pb-8 space-y-4">
-                <Button 
-                  size="lg" 
-                  className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                  onClick={() => setUserType('employer')}
-                >
-                  I want to hire
-                </Button>
-                
-                <Button 
-                  size="lg" 
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                  onClick={() => setUserType('whv')}
-                >
-                  I want to get hired
-                </Button>
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
+              <div>
+                <Label>Email</Label>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                />
               </div>
-            )}
+              <div>
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-12 bg-gray-100 border-0 text-gray-900"
+                />
+              </div>
 
-            {/* Sign in form */}
-            {userType && (
-              <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
-                <div>
-                  <Label>Email</Label>
-                  <Input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                  />
-                </div>
-                <div>
-                  <Label>Password</Label>
-                  <Input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 bg-gray-100 border-0 text-gray-900"
-                  />
-                </div>
-
-                {/* Forgot password */}
-                <div className="text-right">
-                  <button 
-                    type="button" 
-                    onClick={() => navigate('/forgot-password')}
-                    className="text-sm text-orange-600 hover:underline"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-
-                {/* Notification message */}
-                {message && (
-                  <div
-                    className={`p-3 rounded-lg text-sm ${
-                      message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}
-                  >
-                    {message.text}
-                  </div>
-                )}
-
-                <Button 
-                  type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+              {/* Forgot password */}
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-sm text-orange-600 hover:underline"
                 >
-                  Sign In
-                </Button>
-              </form>
-            )}
+                  Forgot password?
+                </button>
+              </div>
 
+              {/* Inline message */}
+              {message && (
+                <div
+                  className={`p-3 rounded-lg text-sm ${
+                    message.type === "success"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                {loading ? "Signing in..." : "Sign In"}
+              </Button>
+            </form>
           </div>
         </div>
       </div>
@@ -157,4 +143,4 @@ const SignInAsModal: React.FC = () => {
   );
 };
 
-export default SignInAsModal;
+export default SignIn;
