@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AustraliaIcon from './AustraliaIcon';
 import SignInAsModal from './SignInAsModal';
-// Background images for the collage
 
 const RegionalMateApp: React.FC = () => {
   const navigate = useNavigate();
   const [showSignInModal, setShowSignInModal] = useState(false);
 
   if (showSignInModal) {
-    return <SignInAsModal onClose={() => setShowSignInModal(false)} />;
+    // ✅ Removed onClose prop
+    return <SignInAsModal />;
   }
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -57,12 +58,12 @@ const RegionalMateApp: React.FC = () => {
 
               {/* CTA Button */}
               <div className="px-6 pb-6">
-              <Button 
-                size="lg" 
-                style={{ backgroundColor: "#EC5823", color: "white" }}
-                className="w-full h-14 text-lg rounded-xl"
-                onClick={() => navigate('/lets-begin')}
-              >
+                <Button 
+                  size="lg" 
+                  style={{ backgroundColor: "#EC5823", color: "white" }}
+                  className="w-full h-14 text-lg rounded-xl"
+                  onClick={() => navigate('/lets-begin')}
+                >
                   ✨ Get started
                 </Button>
               </div>
