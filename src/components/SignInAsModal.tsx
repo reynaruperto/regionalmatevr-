@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import AustraliaIcon from "./AustraliaIcon"; // logo component
+import AustraliaIcon from "./AustraliaIcon"; // logo
 
-const SignIn: React.FC = () => {
+const SignInAsModal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -35,9 +35,9 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    // 👇 TS fix: tell supabase this table can be any type
-    const { data: userData, error } = await supabase
-      .from<any>("users")
+    // ✅ Fix: cast supabase to any so TS doesn’t block build
+    const { data: userData, error } = await (supabase as any)
+      .from("users")
       .select("user_type")
       .eq("id", authData.user.id)
       .single();
@@ -52,7 +52,6 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    // 🚀 Redirect based on user_type
     if (userData.user_type === "whv") {
       navigate("/whv/dashboard");
     } else if (userData.user_type === "employer") {
@@ -147,4 +146,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignInAsModal;
