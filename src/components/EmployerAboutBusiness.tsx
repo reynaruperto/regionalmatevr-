@@ -20,13 +20,11 @@ const formSchema = z.object({
   jobType: z.array(z.string()).min(1, "Select at least one job type"),
   payRange: z.string().min(1, "Select a pay range"),
   facilitiesAndExtras: z.array(z.string()).min(1, "Select at least one facility"),
-  customRole: z.string().optional(),
-  customFacility: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-// ✅ Industry list
+// ✅ Immigration-approved industries
 const industries = [
   "Plant & Animal Cultivation",
   "Health",
@@ -40,7 +38,7 @@ const industries = [
   "Construction",
 ];
 
-// ✅ Full roles per industry
+// ✅ Roles mapped to industries
 const industryRoles: Record<string, string[]> = {
   "Plant & Animal Cultivation": [
     "Harvesting & packing fruit/vegetable crops",
@@ -161,7 +159,6 @@ const facilitiesExtras = [
 const EmployerAboutBusiness: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [customRoles, setCustomRoles] = useState<string[]>([]);
 
   const {
     register,
@@ -222,14 +219,18 @@ const EmployerAboutBusiness: React.FC = () => {
                 
                 {/* Tagline */}
                 <div>
-                  <Label>Business Tagline</Label>
+                  <Label>
+                    Business Tagline <span className="text-red-500">*</span>
+                  </Label>
                   <Input placeholder="Quality produce, sustainable farming" {...register("businessTagline")} className="h-14 bg-gray-100 rounded-xl" />
                   {errors.businessTagline && <p className="text-red-500 text-sm">{errors.businessTagline.message}</p>}
                 </div>
 
                 {/* Years in Business */}
                 <div>
-                  <Label>Years in Business</Label>
+                  <Label>
+                    Years in Business <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
                     name="yearsInBusiness"
                     control={control}
@@ -249,7 +250,9 @@ const EmployerAboutBusiness: React.FC = () => {
 
                 {/* Employee Count */}
                 <div>
-                  <Label>Employees</Label>
+                  <Label>
+                    Employees <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
                     name="employeeCount"
                     control={control}
@@ -269,7 +272,9 @@ const EmployerAboutBusiness: React.FC = () => {
 
                 {/* Industry */}
                 <div>
-                  <Label>Industry</Label>
+                  <Label>
+                    Industry <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
                     name="industry"
                     control={control}
@@ -290,9 +295,11 @@ const EmployerAboutBusiness: React.FC = () => {
                 {/* Roles */}
                 {watchedIndustry && (
                   <div>
-                    <Label>Roles Offered</Label>
-                    <div className="max-h-48 overflow-y-auto border p-2 rounded-lg bg-gray-50">
-                      {industryRoles[watchedIndustry]?.concat("Other").map(role => (
+                    <Label>
+                      Roles Offered <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="max-h-48 overflow-y-auto border rounded-md p-3 bg-gray-50">
+                      {industryRoles[watchedIndustry]?.map(role => (
                         <label key={role} className="flex items-center space-x-2 mt-2">
                           <input
                             type="checkbox"
@@ -308,15 +315,15 @@ const EmployerAboutBusiness: React.FC = () => {
                         </label>
                       ))}
                     </div>
-                    {watchedRoles.includes("Other") && (
-                      <Input placeholder="Enter custom role" {...register("customRole")} className="mt-2 h-14 bg-gray-100 rounded-xl" />
-                    )}
+                    {errors.rolesOffered && <p className="text-red-500 text-sm">{errors.rolesOffered.message}</p>}
                   </div>
                 )}
 
                 {/* Job Type */}
                 <div>
-                  <Label>Job Type</Label>
+                  <Label>
+                    Job Type <span className="text-red-500">*</span>
+                  </Label>
                   {jobTypes.map(type => (
                     <label key={type} className="flex items-center space-x-2 mt-2">
                       <input
@@ -332,11 +339,14 @@ const EmployerAboutBusiness: React.FC = () => {
                       <span>{type}</span>
                     </label>
                   ))}
+                  {errors.jobType && <p className="text-red-500 text-sm">{errors.jobType.message}</p>}
                 </div>
 
                 {/* Pay */}
                 <div>
-                  <Label>Pay Range</Label>
+                  <Label>
+                    Pay Range <span className="text-red-500">*</span>
+                  </Label>
                   <Controller
                     name="payRange"
                     control={control}
@@ -351,11 +361,14 @@ const EmployerAboutBusiness: React.FC = () => {
                       </Select>
                     )}
                   />
+                  {errors.payRange && <p className="text-red-500 text-sm">{errors.payRange.message}</p>}
                 </div>
 
                 {/* Facilities */}
                 <div>
-                  <Label>Facilities & Extras</Label>
+                  <Label>
+                    Facilities & Extras <span className="text-red-500">*</span>
+                  </Label>
                   {facilitiesExtras.map(facility => (
                     <label key={facility} className="flex items-center space-x-2 mt-2">
                       <input
@@ -371,9 +384,7 @@ const EmployerAboutBusiness: React.FC = () => {
                       <span>{facility}</span>
                     </label>
                   ))}
-                  {watchedFacilities.includes("Other") && (
-                    <Input placeholder="Enter custom facility" {...register("customFacility")} className="mt-2 h-14 bg-gray-100 rounded-xl" />
-                  )}
+                  {errors.facilitiesAndExtras && <p className="text-red-500 text-sm">{errors.facilitiesAndExtras.message}</p>}
                 </div>
 
                 {/* Continue */}
@@ -393,6 +404,5 @@ const EmployerAboutBusiness: React.FC = () => {
 };
 
 export default EmployerAboutBusiness;
-
 
 
