@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import AustraliaIcon from "./AustraliaIcon"; // keep your logo component
+import AustraliaIcon from "./AustraliaIcon"; // logo component
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -19,10 +19,11 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
     if (authError || !authData.user) {
       toast({
@@ -34,9 +35,9 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    // 🔑 Fetch user_type from users table
+    // 👇 TS fix: tell supabase this table can be any type
     const { data: userData, error } = await supabase
-      .from("users")
+      .from<any>("users")
       .select("user_type")
       .eq("id", authData.user.id)
       .single();
