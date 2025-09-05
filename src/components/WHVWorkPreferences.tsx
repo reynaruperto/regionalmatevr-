@@ -12,223 +12,17 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 
-// ✅ Subclass 417 industries
-const industryRoles417: Record<
-  string,
-  { roles: string[]; validStates: string[]; validAreas: string[] }
-> = {
-  "Plant & Animal Cultivation": {
-    roles: [
-      "Harvesting/packing fruit & vegetable crops",
-      "Pruning/trimming vines and trees",
-      "Crop maintenance",
-      "Cultivating/propagating plants or fungi",
-      "Processing plant products",
-      "Feeding and herding livestock",
-      "Animal slaughter and butchery",
-      "Shearing, tanning, dairy processing",
-      "Reforestation",
-      "Zoo-based plant/animal care",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Fishing & Pearling": {
-    roles: ["Deckhand", "Aquaculture Worker", "Diver"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Tree Farming & Forestry": {
-    roles: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Mining: {
-    roles: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Construction: {
-    roles: [
-      "Construction Labourer",
-      "Carpenter",
-      "Plumber",
-      "Electrician",
-      "Painter",
-      "General Building Work",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Bushfire Recovery": {
-    roles: [
-      "Rebuilding fences",
-      "Demolition",
-      "Land clearing",
-      "Wildlife care",
-      "Construction repairs",
-      "Volunteer/community support roles",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Tourism & Hospitality": {
-    roles: [
-      "Hotel/motel/hostel staff",
-      "Reception",
-      "Housekeeping",
-      "Chefs",
-      "Waiters",
-      "Bartenders",
-      "Baristas",
-      "Catering staff",
-      "Tour guides",
-      "Event/entertainment staff",
-      "Gallery/museum staff",
-      "Travel agents",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Aged & Disability Care": {
-    roles: ["Disability Carer", "Aged Care Worker", "Community Support Carer"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Childcare: {
-    roles: [
-      "Daycare Staff",
-      "Nursery/Crèche Attendants",
-      "Family Day Care Workers",
-      "Nannies/Au Pairs",
-      "Out-of-school/vacation care staff",
-      "Child protection/welfare staff",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Health: {
-    roles: [
-      "Doctors",
-      "Nurses",
-      "Dentists and dental staff",
-      "Allied health professionals",
-      "Hospital cleaners",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-};
+// ==========================
+// Enums
+// ==========================
+enum AreaRestriction {
+  All = "All",
+  Regional = "Regional",
+  Northern = "Northern",
+  Remote = "Remote",
+  VeryRemote = "Very Remote",
+}
 
-// ✅ Subclass 462 industries
-const industryRoles462: Record<
-  string,
-  { roles: string[]; validStates: string[]; validAreas: string[] }
-> = {
-  "Plant & Animal Cultivation": {
-    roles: [
-      "Harvesting/packing fruit & vegetable crops",
-      "Pruning/trimming vines and trees",
-      "Crop maintenance",
-      "Cultivating/propagating plants or fungi",
-      "Processing plant products",
-      "Feeding and herding livestock",
-      "Animal slaughter and butchery",
-      "Shearing, tanning, dairy processing",
-      "Reforestation",
-      "Zoo-based plant/animal care",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Fishing & Pearling": {
-    roles: ["Deckhand", "Aquaculture Worker", "Diver"],
-    validStates: ["Northern Territory", "Western Australia"],
-    validAreas: ["Northern Australia"],
-  },
-  "Tree Farming & Forestry": {
-    roles: ["Tree Planter", "Chainsaw Operator", "Forest Worker"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Mining: {
-    roles: ["Driller", "Truck Operator", "Plant Operator", "Trades Assistant"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Construction: {
-    roles: [
-      "Construction Labourer",
-      "Carpenter",
-      "Plumber",
-      "Electrician",
-      "Painter",
-      "General Building Work",
-    ],
-    validStates: ["Northern Territory", "Queensland", "Western Australia"],
-    validAreas: ["Northern Australia", "Remote", "Very Remote"],
-  },
-  "Bushfire Recovery": {
-    roles: [
-      "Rebuilding fences",
-      "Demolition",
-      "Land clearing",
-      "Wildlife care",
-      "Construction repairs",
-      "Volunteer/community support roles",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  "Tourism & Hospitality": {
-    roles: [
-      "Hotel/motel/hostel staff",
-      "Reception",
-      "Housekeeping",
-      "Chefs",
-      "Waiters",
-      "Bartenders",
-      "Baristas",
-      "Catering staff",
-      "Tour guides",
-      "Event/entertainment staff",
-      "Gallery/museum staff",
-      "Travel agents",
-    ],
-    validStates: ["Northern Territory", "Queensland", "Western Australia"],
-    validAreas: ["Northern Australia", "Remote", "Very Remote"],
-  },
-  "Aged & Disability Care": {
-    roles: ["Disability Carer", "Aged Care Worker", "Community Support Carer"],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Childcare: {
-    roles: [
-      "Daycare Staff",
-      "Nursery/Crèche Attendants",
-      "Family Day Care Workers",
-      "Nannies/Au Pairs",
-      "Out-of-school/vacation care staff",
-      "Child protection/welfare staff",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-  Health: {
-    roles: [
-      "Doctors",
-      "Nurses",
-      "Dentists and dental staff",
-      "Allied health professionals",
-      "Hospital cleaners",
-    ],
-    validStates: ["All"],
-    validAreas: ["All"],
-  },
-};
-
-const areaOptions = ["Regional", "Remote", "Very Remote", "Northern Australia"];
 const australianStates = [
   "Australian Capital Territory",
   "New South Wales",
@@ -240,29 +34,644 @@ const australianStates = [
   "Western Australia",
 ];
 
-interface Props {
-  visaType: "417" | "462";
-  visaStage: "1st" | "2nd" | "3rd";
-}
+// ==========================
+// Tooltip Generator
+// ==========================
+const getIndustryTooltip = (
+  visaSubclass: string,
+  industry: string,
+  state: string,
+  area: string
+): string => {
+  const config = whvIndustries[visaSubclass]?.[industry];
+  if (!config || !state || !area) return "";
 
-const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
+  const validStates =
+    config.states.includes("All") ? australianStates : config.states;
+
+  const validAreas =
+    config.areas.includes("All") ? Object.values(AreaRestriction) : config.areas;
+
+  if (!validStates.includes(state)) {
+    return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
+  }
+
+  if (!validAreas.includes(area)) {
+    return `⚠️ ${industry} may only count in areas: ${validAreas.join(", ")}.`;
+  }
+
+  return `✅ ${industry} can be done in ${state} (${area}).`;
+};
+
+// ==========================
+// Full WHV Industries Dataset (from Excel)
+// ==========================
+const whvIndustries: Record<
+  string,
+  Record<
+    string,
+    { roles: string[]; states: string[]; areas: string[]; postcodes: string[] }
+  >
+> = {
+  "417_6-Month Exemption": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "maintaining crops",
+        "cultivating/propagating plants and fungi",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Health": {
+      roles: [
+        "Doctors",
+        "nurses",
+        "dentists and dental staff",
+        "allied health workers",
+        "medical support/admin roles",
+        "medical imaging staff",
+        "mental health staff",
+        "radiology services staff",
+        "installation/maintenance of medical machinery",
+        "hospital/healthcare cleaning staff"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Aged & Disability Care": {
+      roles: [
+        "Disability carers",
+        "aged care workers",
+        "community support carers"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Childcare": {
+      roles: [
+        "Daycare staff",
+        "nursery/crèche attendants",
+        "family day care workers",
+        "nannies/au pairs",
+        "out-of-school/vacation care staff",
+        "child protection/welfare staff"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Clean-up",
+        "construction repairs",
+        "demolition",
+        "land clearing",
+        "community recovery work"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Northern Australia – Fishing & Pearling": {
+      roles: [
+        "Fishing deckhands",
+        "aquaculture workers",
+        "pearl farm workers"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Northern Australia – Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Northern Australia – Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Northern Australia – Construction": {
+      roles: [
+        "Residential builders",
+        "non-residential builders",
+        "heavy civil engineering staff",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  },
+  "417_2nd Visa (3 months specified work)": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "cultivating plants and fungi",
+        "maintaining crops",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: [
+        "Queensland",
+        "Northern Territory",
+        "Western Australia",
+        "Tasmania",
+        "South Australia",
+        "Victoria",
+        "New South Wales"
+      ],
+      areas: ["Northern", "Remote", "Very Remote"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799",
+        "TAS: 7209, 7255–7257, 7321",
+        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+      ]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Construction": {
+      roles: [
+        "Residential/non-residential builders",
+        "heavy civil engineering",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["Regional"],
+      postcodes: ["All"]
+    },
+    "Bushfire Recovery": {
+      roles: [
+        "Rebuilding fences",
+        "demolition",
+        "land clearing",
+        "replanting",
+        "clearing debris"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: [
+        "NSW: 2250–2251, 2256–2263, 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "ACT: All postcodes"
+      ]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Flood/cyclone clean-up",
+        "demolition",
+        "construction repairs",
+        "land clearing",
+        "community recovery"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  },
+  "417_3rd Visa (6 months specified work)": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "cultivating plants and fungi",
+        "maintaining crops",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: [
+        "Queensland",
+        "Northern Territory",
+        "Western Australia",
+        "New South Wales",
+        "Victoria",
+        "South Australia",
+        "Tasmania"
+      ],
+      areas: ["Northern", "Remote", "Very Remote"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799",
+        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+        "TAS: 7209, 7255–7257, 7321"
+      ]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Construction": {
+      roles: [
+        "Residential/non-residential builders",
+        "heavy civil engineering",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["Regional"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Flood/cyclone clean-up",
+        "demolition",
+        "construction repairs",
+        "land clearing",
+        "community recovery"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  },
+
+  "462_2nd Visa (3 months specified work)": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "cultivating plants and fungi",
+        "maintaining crops",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: [
+        "Queensland",
+        "Northern Territory",
+        "Western Australia",
+        "Tasmania",
+        "South Australia",
+        "Victoria",
+        "New South Wales"
+      ],
+      areas: ["Northern", "Remote", "Very Remote"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799",
+        "TAS: 7209, 7255–7257, 7321",
+        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+      ]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Construction": {
+      roles: [
+        "Residential/non-residential builders",
+        "heavy civil engineering",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["Regional"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Flood/cyclone clean-up",
+        "demolition",
+        "construction repairs",
+        "land clearing",
+        "community recovery"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  },
+  "462_3rd Visa (6 months specified work)": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "cultivating plants and fungi",
+        "maintaining crops",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: [
+        "Queensland",
+        "Northern Territory",
+        "Western Australia",
+        "Tasmania",
+        "South Australia",
+        "Victoria",
+        "New South Wales"
+      ],
+      areas: ["Northern", "Remote", "Very Remote"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799",
+        "TAS: 7209, 7255–7257, 7321",
+        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+      ]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Construction": {
+      roles: [
+        "Residential/non-residential builders",
+        "heavy civil engineering",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["Regional"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Flood/cyclone clean-up",
+        "demolition",
+        "construction repairs",
+        "land clearing",
+        "community recovery"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  }
+}; // END of whvIndustries
+
+// ==========================
+// Main Component
+// ==========================
+const WHVWorkPreferences: React.FC = () => {
   const navigate = useNavigate();
 
+  const [visaSubclass, setVisaSubclass] = useState<string>("417_2nd Visa (3 months specified work)");
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredState, setPreferredState] = useState("");
   const [preferredArea, setPreferredArea] = useState("");
-  const [warning, setWarning] = useState("");
-  const [error, setError] = useState("");
-
-  const industries = visaType === "417" ? industryRoles417 : industryRoles462;
 
   const toggleIndustry = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
       setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
       setSelectedRoles(
-        selectedRoles.filter((role) => !industries[industry].roles.includes(role))
+        selectedRoles.filter((role) => !whvIndustries[visaSubclass]?.[industry]?.roles.includes(role))
       );
     } else if (selectedIndustries.length < 3) {
       setSelectedIndustries([...selectedIndustries, industry]);
@@ -277,36 +686,10 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
     }
   };
 
-  const validateLocation = (state: string, area: string) => {
-    if (selectedIndustries.length === 0) return;
-    for (let industry of selectedIndustries) {
-      const { validStates, validAreas } = industries[industry];
-      const stateValid =
-        validStates.includes("All") || validStates.includes(state);
-      const areaValid =
-        validAreas.includes("All") || validAreas.includes(area);
-
-      if (!stateValid || (visaStage !== "1st" && !areaValid)) {
-        setWarning(
-          `⚠ ${industry} work in ${state}${
-            area ? " (" + area + ")" : ""
-          } may not count towards visa extension.`
-        );
-        return;
-      }
-    }
-    setWarning("");
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedIndustries.length < 1) {
-      setError("⚠ Please select at least 1 industry.");
-      return;
-    }
-    setError("");
+    console.log("Visa:", visaSubclass);
     console.log("Tagline:", tagline);
-    console.log("Visa:", visaType, visaStage);
     console.log("Industries:", selectedIndustries);
     console.log("Roles:", selectedRoles);
     console.log("Preferred State:", preferredState);
@@ -315,16 +698,14 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {/* iPhone Frame */}
-      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl flex items-center justify-center">
-        {/* Screen */}
-        <div className="w-full h-full bg-white rounded-[48px] flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4"></div>
+          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 flex-shrink-0"></div>
 
           {/* Header */}
-          <div className="px-4 py-4 border-b flex-shrink-0">
+          <div className="px-4 py-4 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate("/whv/profile-setup")}
@@ -332,18 +713,16 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">
-                Work Preferences
-              </h1>
+              <h1 className="text-lg font-medium text-gray-900">Work Preferences</h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">4/6</span>
               </div>
             </div>
           </div>
 
-          {/* Content (scrollable) */}
+          {/* Content */}
           <div className="flex-1 overflow-y-auto px-4 py-6">
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8 pb-20">
               {/* Profile Tagline */}
               <div className="space-y-2">
                 <Label className="text-base font-medium text-gray-700">
@@ -356,38 +735,43 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   maxLength={60}
                 />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <p>This will appear under your profile photo</p>
-                  <p>{tagline.length}/60</p>
-                </div>
+                <p className="text-xs text-gray-500">
+                  This will appear under your profile photo (max 60 characters)
+                </p>
               </div>
 
-              {/* Industry Selection (Checklist) */}
+              {/* Industry Selection */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select up to 3 industries of interest{" "}
-                  <span className="text-red-500">*</span>
+                  Select up to 3 industries of interest <span className="text-red-500">*</span>
                 </Label>
-                <div className="space-y-2">
-                  {Object.keys(industries).map((industry) => (
-                    <label key={industry} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedIndustries.includes(industry)}
-                        onChange={() => toggleIndustry(industry)}
-                        disabled={
-                          selectedIndustries.length >= 3 &&
-                          !selectedIndustries.includes(industry)
-                        }
-                        className="h-4 w-4 text-orange-500 rounded"
-                      />
-                      <span className="text-sm text-gray-700">{industry}</span>
-                    </label>
+                <div className="flex flex-wrap gap-2">
+                  {Object.keys(whvIndustries[visaSubclass]).map((industry) => (
+                    <button
+                      type="button"
+                      key={industry}
+                      onClick={() => toggleIndustry(industry)}
+                      disabled={
+                        selectedIndustries.length >= 3 && !selectedIndustries.includes(industry)
+                      }
+                      className={`px-4 py-2 rounded-full text-sm border transition ${
+                        selectedIndustries.includes(industry)
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-white text-gray-700 border-gray-300"
+                      } ${
+                        selectedIndustries.length >= 3 &&
+                        !selectedIndustries.includes(industry)
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                    >
+                      {industry}
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Role Selection (Bubbles) */}
+              {/* Role Selection */}
               {selectedIndustries.length > 0 && (
                 <div className="space-y-3">
                   <Label className="text-base font-medium text-gray-700">
@@ -395,12 +779,12 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                   </Label>
                   <div className="flex flex-wrap gap-2">
                     {selectedIndustries.flatMap((industry) =>
-                      industries[industry].roles.map((role) => (
+                      whvIndustries[visaSubclass][industry].roles.map((role) => (
                         <button
                           type="button"
                           key={`${industry}-${role}`}
                           onClick={() => toggleRole(role)}
-                          className={`px-2.5 py-1 rounded-full text-xs border transition ${
+                          className={`px-4 py-2 rounded-full text-sm border transition ${
                             selectedRoles.includes(role)
                               ? "bg-orange-500 text-white border-orange-500"
                               : "bg-white text-gray-700 border-gray-300"
@@ -414,19 +798,12 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                 </div>
               )}
 
-              {/* Preferred Location */}
+              {/* Preferred State */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Working Location{" "}
-                  <span className="text-red-500">*</span>
+                  Preferred Working State <span className="text-red-500">*</span>
                 </Label>
-
-                <Select
-                  onValueChange={(value) => {
-                    setPreferredState(value);
-                    validateLocation(value, preferredArea);
-                  }}
-                >
+                <Select onValueChange={(value) => setPreferredState(value)}>
                   <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
@@ -438,43 +815,55 @@ const WHVWorkPreferences: React.FC<Props> = ({ visaType, visaStage }) => {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
 
-                {(visaStage === "2nd" || visaStage === "3rd") && (
-                  <Select
-                    onValueChange={(value) => {
-                      setPreferredArea(value);
-                      validateLocation(preferredState, value);
-                    }}
-                  >
-                    <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900 mt-2">
-                      <SelectValue placeholder="Select area type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {areaOptions.map((area) => (
-                        <SelectItem key={area} value={area}>
-                          {area}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+              {/* Preferred Area */}
+              <div className="space-y-3">
+                <Label className="text-base font-medium text-gray-700">
+                  Preferred Area Restriction <span className="text-red-500">*</span>
+                </Label>
+                <Select onValueChange={(value) => setPreferredArea(value)}>
+                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
+                    <SelectValue placeholder="Select an area" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.values(AreaRestriction).map((area) => (
+                      <SelectItem key={area} value={area}>
+                        {area}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-                {warning && (
-                  <p className="text-xs text-red-600 mt-2">{warning}</p>
-                )}
-                {error && <p className="text-xs text-red-600 mt-2">{error}</p>}
+              {/* Tooltips */}
+              {preferredState && preferredArea && selectedIndustries.length > 0 && (
+                <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
+                  {selectedIndustries.map((industry) => (
+                    <p
+                      key={industry}
+                      className={`${
+                        getIndustryTooltip(visaSubclass, industry, preferredState, preferredArea).includes("⚠️")
+                          ? "text-yellow-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {getIndustryTooltip(visaSubclass, industry, preferredState, preferredArea)}
+                    </p>
+                  ))}
+                </div>
+              )}
+
+              {/* Continue Button */}
+              <div className="pt-8">
+                <Button
+                  type="submit"
+                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                >
+                  Continue →
+                </Button>
               </div>
             </form>
-          </div>
-
-          {/* Footer (Continue Button pinned bottom) */}
-          <div className="px-4 pb-6">
-            <Button
-              onClick={handleSubmit}
-              className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
-            >
-              Continue →
-            </Button>
           </div>
         </div>
       </div>
