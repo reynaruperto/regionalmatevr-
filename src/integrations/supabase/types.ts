@@ -25,7 +25,7 @@ export type Database = {
           employee_count: Database["public"]["Enums"]["employee_count"] | null
           family_name: string | null
           given_name: string
-          industry_id: string | null
+          industry_id: number | null
           middle_name: string | null
           mobile_num: string | null
           pay_range: Database["public"]["Enums"]["pay_range"] | null
@@ -50,7 +50,7 @@ export type Database = {
           employee_count?: Database["public"]["Enums"]["employee_count"] | null
           family_name?: string | null
           given_name: string
-          industry_id?: string | null
+          industry_id?: number | null
           middle_name?: string | null
           mobile_num?: string | null
           pay_range?: Database["public"]["Enums"]["pay_range"] | null
@@ -75,7 +75,7 @@ export type Database = {
           employee_count?: Database["public"]["Enums"]["employee_count"] | null
           family_name?: string | null
           given_name?: string
-          industry_id?: string | null
+          industry_id?: number | null
           middle_name?: string | null
           mobile_num?: string | null
           pay_range?: Database["public"]["Enums"]["pay_range"] | null
@@ -185,33 +185,33 @@ export type Database = {
       }
       industry: {
         Row: {
-          industry_id: string
+          industry_id: number
           name: string
         }
         Insert: {
-          industry_id?: string
+          industry_id?: number
           name: string
         }
         Update: {
-          industry_id?: string
+          industry_id?: number
           name?: string
         }
         Relationships: []
       }
       industry_role: {
         Row: {
-          industry_id: string
-          industry_role_id: string
+          industry_id: number
+          industry_role_id: number
           role: string
         }
         Insert: {
-          industry_id: string
-          industry_role_id?: string
+          industry_id: number
+          industry_role_id?: number
           role: string
         }
         Update: {
-          industry_id?: string
-          industry_role_id?: string
+          industry_id?: number
+          industry_role_id?: number
           role?: string
         }
         Relationships: [
@@ -289,17 +289,17 @@ export type Database = {
       job_license: {
         Row: {
           job_id: number
-          license_id: string
+          license_id: number
           other: string | null
         }
         Insert: {
           job_id: number
-          license_id: string
+          license_id: number
           other?: string | null
         }
         Update: {
           job_id?: number
-          license_id?: string
+          license_id?: number
           other?: string | null
         }
         Relationships: [
@@ -336,32 +336,32 @@ export type Database = {
       }
       license: {
         Row: {
-          license_id: string
+          license_id: number
           name: string
         }
         Insert: {
-          license_id?: string
+          license_id?: number
           name: string
         }
         Update: {
-          license_id?: string
+          license_id?: number
           name?: string
         }
         Relationships: []
       }
       maker_license: {
         Row: {
-          license_id: string
+          license_id: number
           other: string | null
           user_id: string
         }
         Insert: {
-          license_id: string
+          license_id: number
           other?: string | null
           user_id: string
         }
         Update: {
-          license_id?: string
+          license_id?: number
           other?: string | null
           user_id?: string
         }
@@ -384,24 +384,24 @@ export type Database = {
       }
       maker_preference: {
         Row: {
-          industry_id: string | null
-          industry_role_id: string | null
+          industry_id: number | null
+          industry_role_id: number | null
           preference_id: number
           state: Database["public"]["Enums"]["state"] | null
           suburb_city: string | null
           user_id: string
         }
         Insert: {
-          industry_id?: string | null
-          industry_role_id?: string | null
+          industry_id?: number | null
+          industry_role_id?: number | null
           preference_id?: number
           state?: Database["public"]["Enums"]["state"] | null
           suburb_city?: string | null
           user_id: string
         }
         Update: {
-          industry_id?: string | null
-          industry_role_id?: string | null
+          industry_id?: number | null
+          industry_role_id?: number | null
           preference_id?: number
           state?: Database["public"]["Enums"]["state"] | null
           suburb_city?: string | null
