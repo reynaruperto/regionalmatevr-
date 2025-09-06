@@ -1166,5 +1166,3 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
   );
 };
 
-export default WHVWorkPreferences;
-export default WHVWorkPreferences;
