@@ -28,6 +28,18 @@ const australianStates = [
 ];
 
 // ==========================
+// Full WHV Industries Dataset
+// (to be completed in Stages 2–4)
+// ==========================
+const whvIndustries: Record<
+  string,
+  Record<
+    string,
+    { roles: string[]; states: string[]; areas: string[]; postcodes: string[] }
+  >
+> = {};
+
+// ==========================
 // Tooltip Generator
 // ==========================
 const getIndustryTooltip = (
@@ -55,10 +67,6 @@ const getIndustryTooltip = (
 
   return `✅ ${industry} can be done in ${state} (${area}).`;
 };
-
-// ==========================
-// Full WHV Industries Dataset
-// ==========================
 const whvIndustries: Record<
   string,
   Record<
@@ -66,18 +74,26 @@ const whvIndustries: Record<
     { roles: string[]; states: string[]; areas: string[]; postcodes: string[] }
   >
 > = {
-  // --- 417 6-Month Exemption (10 industries) ---
+  // --- 417 6-Month Exemption ---
   "417_6-Month Exemption": {
     "Plant & Animal Cultivation": {
       roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "maintaining crops",
-        "cultivating/propagating plants and fungi",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
+        "Harvesting and/or packing of fruit and vegetable crops",
+        "Pruning and trimming vines and trees (commercial horticulture)",
+        "Maintaining crops",
+        "Cultivating or propagating plants, fungi, or their products/parts",
+        "Processing of plant products",
+        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+        "Processing of animal products (shearing, butchery, packing, tanning)",
+        "Manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Agriculture": {
+      roles: [
+        "All general farming activities (cropping, livestock, mixed farming, etc.)"
       ],
       states: ["All"],
       areas: ["All"],
@@ -86,34 +102,38 @@ const whvIndustries: Record<
     "Health": {
       roles: [
         "Doctors",
-        "nurses",
-        "dentists and dental staff",
-        "allied health workers",
-        "medical support/admin roles",
-        "medical imaging staff",
-        "mental health staff",
-        "radiology services staff",
-        "installation/maintenance of medical machinery",
-        "hospital/healthcare cleaning staff"
+        "Nurses",
+        "Dentists and dental support staff",
+        "Allied health workers",
+        "Medical support and administrative staff",
+        "Medical imaging staff",
+        "Mental health staff",
+        "Radiology services staff",
+        "Installation and maintenance of medical machinery",
+        "Hospital and healthcare cleaning staff"
       ],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
     },
     "Aged & Disability Care": {
-      roles: ["Disability carers", "aged care workers", "community support carers"],
+      roles: [
+        "Aged care worker",
+        "Disability support worker",
+        "Community support worker"
+      ],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
     },
     "Childcare": {
       roles: [
-        "Daycare staff",
-        "nursery/crèche attendants",
-        "family day care workers",
-        "nannies/au pairs",
-        "out-of-school/vacation care staff",
-        "child protection/welfare staff"
+        "Daycare worker",
+        "Nursery/crèche worker/aide/attendants",
+        "Family daycare worker",
+        "Nanny/au pair",
+        "Out-of-school/vacation care worker",
+        "Child protection/welfare staff"
       ],
       states: ["All"],
       areas: ["All"],
@@ -121,19 +141,17 @@ const whvIndustries: Record<
     },
     "Tourism & Hospitality": {
       roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
+        "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+        "Accommodation: caravan parks and camping grounds",
+        "Hospitality: cafes, restaurants, takeaway shops, catering",
+        "Hospitality: pubs, taverns, bars, clubs",
+        "Hospitality: casinos",
+        "Travel agents",
+        "Tour guides",
+        "Dive instructors",
+        "Bus drivers",
+        "Event/entertainment staff",
+        "Gallery/museum staff"
       ],
       states: ["All"],
       areas: ["All"],
@@ -141,628 +159,720 @@ const whvIndustries: Record<
     },
     "Natural Disaster Recovery": {
       roles: [
-        "Clean-up",
-        "construction repairs",
-        "demolition",
-        "land clearing",
-        "community recovery work"
+        "Clean-up work (wiping down items, moving furniture, clearing debris)",
+        "Construction repairs",
+        "Demolition",
+        "Land clearing",
+        "Community recovery work"
       ],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
     },
     "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
+      roles: [
+        "Fishing deckhands (trawlers, longliners, net boats)",
+        "Aquaculture workers",
+        "Pearl farm workers"
+      ],
+      states: ["QLD", "NT", "WA"],
+      areas: ["Northern Australia"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
     },
     "Tree Farming & Felling": {
       roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
+        "Planting or tending trees in a plantation/forest",
+        "Felling trees in a plantation or forest",
+        "Transporting trees or parts of trees to the mill"
       ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
+      states: ["QLD", "NT", "WA"],
+      areas: ["Northern Australia"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
     },
     "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
+      roles: [
+        "Coal mining",
+        "Oil and gas extraction",
+        "Metal ore mining",
+        "Quarrying and construction material mining"
+      ],
+      states: ["QLD", "NT", "WA"],
+      areas: ["Northern Australia"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
     },
     "Construction": {
       roles: [
-        "Residential builders",
-        "non-residential builders",
-        "heavy civil engineering staff",
-        "construction services"
+        "Residential building construction",
+        "Non-residential building construction",
+        "Heavy and civil engineering construction",
+        "Construction services"
       ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
+      states: ["QLD", "NT", "WA"],
+      areas: ["Northern Australia"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
     }
   },
-
-  // --- 462 6-Month Exemption (10 industries) ---
-  "462_6-Month Exemption": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "maintaining crops",
-        "cultivating/propagating plants and fungi",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Health": {
-      roles: [
-        "Doctors",
-        "nurses",
-        "dentists and dental staff",
-        "allied health workers",
-        "medical support/admin roles",
-        "medical imaging staff",
-        "mental health staff",
-        "radiology services staff",
-        "installation/maintenance of medical machinery",
-        "hospital/healthcare cleaning staff"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Aged & Disability Care": {
-      roles: ["Disability carers", "aged care workers", "community support carers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Childcare": {
-      roles: [
-        "Daycare staff",
-        "nursery/crèche attendants",
-        "family day care workers",
-        "nannies/au pairs",
-        "out-of-school/vacation care staff",
-        "child protection/welfare staff"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Clean-up",
-        "construction repairs",
-        "demolition",
-        "land clearing",
-        "community recovery work"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Construction": {
-      roles: [
-        "Residential builders",
-        "non-residential builders",
-        "heavy civil engineering staff",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+};
+// --- 462 6-Month Exemption ---
+"462_6-Month Exemption": {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting and/or packing of fruit and vegetable crops",
+      "Pruning and trimming vines and trees (commercial horticulture)",
+      "Maintaining crops",
+      "Cultivating or propagating plants, fungi, or their products/parts",
+      "Processing of plant products",
+      "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+      "Processing of animal products (shearing, butchery, packing, tanning)",
+      "Manufacturing dairy produce"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
   },
-  // --- 417 2nd Visa (3 months specified work) ---
-  "417_2nd Visa (3 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "cultivating plants and fungi",
-        "maintaining crops",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales"
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799",
-        "TAS: 7209, 7255–7257, 7321",
-        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
-        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
-        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
-      ]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "heavy civil engineering",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"]
-    },
-    "Bushfire Recovery": {
-      roles: [
-        "Rebuilding fences",
-        "demolition",
-        "land clearing",
-        "replanting",
-        "clearing debris"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: [
-        "NSW: 2250–2251, 2256–2263, 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
-        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
-        "ACT: All postcodes"
-      ]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "demolition",
-        "construction repairs",
-        "land clearing",
-        "community recovery"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+  "Agriculture": {
+    roles: [
+      "All general farming activities (cropping, livestock, mixed farming, etc.)"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
   },
-  // --- 417 3rd Visa (6 months specified work) ---
-  "417_3rd Visa (6 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "cultivating plants and fungi",
-        "maintaining crops",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "New South Wales",
-        "Victoria",
-        "South Australia",
-        "Tasmania"
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799",
-        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
-        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
-        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
-        "TAS: 7209, 7255–7257, 7321"
-      ]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "heavy civil engineering",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "demolition",
-        "construction repairs",
-        "land clearing",
-        "community recovery"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+  "Health": {
+    roles: [
+      "Doctors",
+      "Nurses",
+      "Dentists and dental support staff",
+      "Allied health workers",
+      "Medical support and administrative staff",
+      "Medical imaging staff",
+      "Mental health staff",
+      "Radiology services staff",
+      "Installation and maintenance of medical machinery",
+      "Hospital and healthcare cleaning staff"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
   },
-  // --- 462 2nd Visa (3 months specified work) ---
-  "462_2nd Visa (3 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "cultivating plants and fungi",
-        "maintaining crops",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales"
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799",
-        "TAS: 7209, 7255–7257, 7321",
-        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
-        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
-        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
-      ]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "heavy civil engineering",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "demolition",
-        "construction repairs",
-        "land clearing",
-        "community recovery"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+  "Aged & Disability Care": {
+    roles: [
+      "Aged care worker",
+      "Disability support worker",
+      "Community support worker"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
   },
-   // --- 462 3rd Visa (6 months specified work) ---
-  "462_3rd Visa (6 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "cultivating plants and fungi",
-        "maintaining crops",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales"
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799",
-        "TAS: 7209, 7255–7257, 7321",
-        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
-        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
-        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
-      ]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: [
-        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
-        "NT: All postcodes",
-        "WA: 0872, 6121–6126, 6200–6799"
-      ]
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "heavy civil engineering",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "demolition",
-        "construction repairs",
-        "land clearing",
-        "community recovery"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+  "Childcare": {
+    roles: [
+      "Daycare worker",
+      "Nursery/crèche worker/aide/attendants",
+      "Family daycare worker",
+      "Nanny/au pair",
+      "Out-of-school/vacation care worker",
+      "Child protection/welfare staff"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+      "Accommodation: caravan parks and camping grounds",
+      "Hospitality: cafes, restaurants, takeaway shops, catering",
+      "Hospitality: pubs, taverns, bars, clubs",
+      "Hospitality: casinos",
+      "Travel agents",
+      "Tour guides",
+      "Dive instructors",
+      "Bus drivers",
+      "Event/entertainment staff",
+      "Gallery/museum staff"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  },
+  "Natural Disaster Recovery": {
+    roles: [
+      "Clean-up work (wiping down items, moving furniture, clearing debris)",
+      "Construction repairs",
+      "Demolition",
+      "Land clearing",
+      "Community recovery work"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  },
+  "Fishing & Pearling": {
+    roles: [
+      "Fishing deckhands (trawlers, longliners, net boats)",
+      "Aquaculture workers",
+      "Pearl farm workers"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Tree Farming & Felling": {
+    roles: [
+      "Planting or tending trees in a plantation/forest",
+      "Felling trees in a plantation or forest",
+      "Transporting trees or parts of trees to the mill"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Mining": {
+    roles: [
+      "Coal mining",
+      "Oil and gas extraction",
+      "Metal ore mining",
+      "Quarrying and construction material mining"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Construction": {
+    roles: [
+      "Residential building construction",
+      "Non-residential building construction",
+      "Heavy and civil engineering construction",
+      "Construction services"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
   }
-}; // END of whvIndustries
-
+},
+// --- 417 2nd Visa (3 months specified work) ---
+"417_2nd Visa (3 months specified work)": {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting and/or packing of fruit and vegetable crops",
+      "Pruning and trimming vines and trees (commercial horticulture)",
+      "Maintaining crops",
+      "Cultivating or propagating plants, fungi, or their products/parts",
+      "Processing of plant products",
+      "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+      "Processing of animal products (shearing, butchery, packing, tanning)",
+      "Manufacturing dairy produce"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: [
+      "NSW: 2250–2251, 2256–2263, 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "QLD: 4124–4125, 4133, 4211, 4270, 4272, 4275, 4280, 4285, 4287, 4307, 4309, 4310, 4313, 4340, 4342, 4345–4346, 4350–4352, 4355–4359, 4361–4362, 4364–4365, 4370–4375, 4380–4383, 4385, 4400–4407, 4410–4413, 4415–4420, 4422–4424, 4426–4428, 4454–4471, 4472, 4474–4478, 4480–4498, 4507, 4515, 4517–4519, 4521, 4550–4551, 4553–4562, 4565–4575, 4580, 4581, 4600–4601, 4605–4612, 4614–4618, 4620–4621, 4625–4630, 4650, 4655, 4659–4662, 4670–4678, 4694–4698, 4700–4717, 4720–4728, 4730–4732, 4735–4746, 4754, 4800–4812, 4814–4825, 4828–4830, 4849–4850, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "SA: 5220–5734",
+      "WA: 6041–6044, 6055, 6069, 6076, 6083–6084, 6111, 6121–6126, 6200–6799",
+      "TAS: 7017, 7030, 7054, 7056, 7070, 7072–7999, 7209, 7255–7257, 7321",
+      "NT: All postcodes",
+      "ACT: None"
+    ]
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+      "Accommodation: caravan parks and camping grounds",
+      "Hospitality: cafes, restaurants, takeaway shops, catering",
+      "Hospitality: pubs, taverns, bars, clubs",
+      "Hospitality: casinos",
+      "Travel agents",
+      "Tour guides",
+      "Dive instructors",
+      "Bus drivers",
+      "Event/entertainment staff",
+      "Gallery/museum staff"
+    ],
+    states: ["QLD", "NT", "WA", "TAS", "SA", "VIC", "NSW"],
+    areas: ["Northern", "Remote", "Very Remote"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799",
+      "TAS: 7209, 7255–7257, 7321",
+      "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+    ]
+  },
+  "Fishing & Pearling": {
+    roles: [
+      "Fishing deckhands (trawlers, longliners, net boats)",
+      "Aquaculture workers",
+      "Pearl farm workers"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Tree Farming & Felling": {
+    roles: [
+      "Planting or tending trees in a plantation/forest",
+      "Felling trees in a plantation or forest",
+      "Transporting trees or parts of trees to the mill"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Mining": {
+    roles: [
+      "Coal mining",
+      "Oil and gas extraction",
+      "Metal ore mining",
+      "Quarrying and construction material mining"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Construction": {
+    roles: [
+      "Residential building construction",
+      "Non-residential building construction",
+      "Heavy and civil engineering construction",
+      "Construction services"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: ["All"]
+  },
+  "Bushfire Recovery": {
+    roles: [
+      "Rebuilding fences",
+      "Demolition",
+      "Land clearing",
+      "Replanting",
+      "Clearing debris"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: [
+      "NSW: 2250–2251, 2256–2263, 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "ACT: All postcodes"
+    ]
+  },
+  "Natural Disaster Recovery": {
+    roles: [
+      "Flood and cyclone clean-up",
+      "Demolition",
+      "Construction repairs",
+      "Land clearing",
+      "Community recovery work"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  }
+},
+// --- 417 3rd Visa (6 months specified work) ---
+"417_3rd Visa (6 months specified work)": {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting and/or packing of fruit and vegetable crops",
+      "Pruning and trimming vines and trees (commercial horticulture)",
+      "Maintaining crops",
+      "Cultivating or propagating plants, fungi, or their products/parts",
+      "Processing of plant products",
+      "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+      "Processing of animal products (shearing, butchery, packing, tanning)",
+      "Manufacturing dairy produce"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: [
+      "NSW: 2250–2251, 2256–2263, 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "QLD: 4124–4125, 4133, 4211, 4270, 4272, 4275, 4280, 4285, 4287, 4307, 4309, 4310, 4313, 4340, 4342, 4345–4346, 4350–4352, 4355–4359, 4361–4362, 4364–4365, 4370–4375, 4380–4383, 4385, 4400–4407, 4410–4413, 4415–4420, 4422–4424, 4426–4428, 4454–4471, 4472, 4474–4478, 4480–4498, 4507, 4515, 4517–4519, 4521, 4550–4551, 4553–4562, 4565–4575, 4580, 4581, 4600–4601, 4605–4612, 4614–4618, 4620–4621, 4625–4630, 4650, 4655, 4659–4662, 4670–4678, 4694–4698, 4700–4717, 4720–4728, 4730–4732, 4735–4746, 4754, 4800–4812, 4814–4825, 4828–4830, 4849–4850, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "SA: 5220–5734",
+      "WA: 6041–6044, 6055, 6069, 6076, 6083–6084, 6111, 6121–6126, 6200–6799",
+      "TAS: 7017, 7030, 7054, 7056, 7070, 7072–7999, 7209, 7255–7257, 7321",
+      "NT: All postcodes",
+      "ACT: None"
+    ]
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+      "Accommodation: caravan parks and camping grounds",
+      "Hospitality: cafes, restaurants, takeaway shops, catering",
+      "Hospitality: pubs, taverns, bars, clubs",
+      "Hospitality: casinos",
+      "Travel agents",
+      "Tour guides",
+      "Dive instructors",
+      "Bus drivers",
+      "Event/entertainment staff",
+      "Gallery/museum staff"
+    ],
+    states: ["QLD", "NT", "WA", "NSW", "VIC", "SA", "TAS"],
+    areas: ["Northern", "Remote", "Very Remote"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799",
+      "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+      "TAS: 7209, 7255–7257, 7321"
+    ]
+  },
+  "Fishing & Pearling": {
+    roles: [
+      "Fishing deckhands (trawlers, longliners, net boats)",
+      "Aquaculture workers",
+      "Pearl farm workers"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Tree Farming & Felling": {
+    roles: [
+      "Planting or tending trees in a plantation/forest",
+      "Felling trees in a plantation or forest",
+      "Transporting trees or parts of trees to the mill"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Mining": {
+    roles: [
+      "Coal mining",
+      "Oil and gas extraction",
+      "Metal ore mining",
+      "Quarrying and construction material mining"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern"],
+    postcodes: [
+      "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "NT: All postcodes",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Construction": {
+    roles: [
+      "Residential building construction",
+      "Non-residential building construction",
+      "Heavy and civil engineering construction",
+      "Construction services"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: ["All"]
+  },
+  "Natural Disaster Recovery": {
+    roles: [
+      "Flood and cyclone clean-up",
+      "Demolition",
+      "Construction repairs",
+      "Land clearing",
+      "Community recovery work"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  }
+},
+// --- 462 2nd Visa (3 months specified work) ---
+"462_2nd Visa (3 months specified work)": {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting and/or packing of fruit and vegetable crops",
+      "Pruning and trimming vines and trees (commercial horticulture)",
+      "Maintaining crops",
+      "Cultivating or propagating plants, fungi, or their products/parts",
+      "Processing of plant products",
+      "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+      "Processing of animal products (shearing, butchery, packing, tanning)",
+      "Manufacturing dairy produce"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: [
+      "NSW: 2311–2312, 2328, 2336, 2338, 2340, 2350, 2352, 2354, 2356–2357, 2360, 2365, 2369, 2370, 2379–2382, 2386–2387, 2395, 2397, 2401, 2404–2406, 2409–2411, 2415, 2421–2423, 2425, 2427–2429, 2439, 2446–2449, 2452–2454, 2456, 2460, 2462–2463, 2465–2466, 2469–2471, 2474–2476, 2480, 2482–2484, 2486–2490",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "QLD: 4124–4125, 4133, 4211, 4270, 4272, 4275, 4280, 4285, 4287, 4307, 4309, 4310, 4313, 4340, 4342, 4345–4346, 4350–4352, 4355–4359, 4361–4362, 4364–4365, 4370–4375, 4380–4383, 4385, 4400–4407, 4410–4413, 4415–4420, 4422–4424, 4426–4428, 4454–4471, 4472, 4474–4478, 4480–4498, 4507, 4515, 4517–4519, 4521, 4550–4551, 4553–4562, 4565–4575, 4580, 4581, 4600–4601, 4605–4612, 4614–4618, 4620–4621, 4625–4630, 4650, 4655, 4659–4662, 4670–4678, 4694–4698, 4700–4717, 4720–4728, 4730–4732, 4735–4746, 4754, 4800–4812, 4814–4825, 4828–4830, 4849–4850, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "SA: 5220–5734",
+      "WA: 6041–6044, 6055, 6069, 6076, 6083–6084, 6111, 6121–6126, 6200–6799",
+      "TAS: 7017, 7030, 7054, 7056, 7070, 7072–7999, 7209, 7255–7257, 7321",
+      "NT: All postcodes"
+    ]
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+      "Accommodation: caravan parks and camping grounds",
+      "Hospitality: cafes, restaurants, takeaway shops, catering",
+      "Hospitality: pubs, taverns, bars, clubs",
+      "Hospitality: casinos",
+      "Travel agents",
+      "Tour guides",
+      "Dive instructors",
+      "Bus drivers",
+      "Event/entertainment staff",
+      "Gallery/museum staff"
+    ],
+    states: ["QLD", "NT", "WA", "NSW", "VIC", "SA", "TAS"],
+    areas: ["Northern Australia", "Remote Australia", "Very Remote Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799",
+      "TAS: 7209, 7255–7257, 7321",
+      "SA: 5220–5734",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+    ]
+  },
+  "Fishing & Pearling": {
+    roles: [
+      "Fishing deckhands (trawlers, longliners, net boats)",
+      "Aquaculture workers",
+      "Pearl farm workers"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Tree Farming & Felling": {
+    roles: [
+      "Planting or tending trees in a plantation/forest",
+      "Felling trees in a plantation or forest",
+      "Transporting trees or parts of trees to the mill"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Mining": {
+    roles: [
+      "Coal mining",
+      "Oil and gas extraction",
+      "Metal ore mining",
+      "Quarrying and construction material mining"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Construction": {
+    roles: [
+      "Residential building construction",
+      "Non-residential building construction",
+      "Heavy and civil engineering construction",
+      "Construction services"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: ["All"]
+  },
+  "Natural Disaster Recovery": {
+    roles: [
+      "Flood and cyclone clean-up",
+      "Demolition",
+      "Construction repairs",
+      "Land clearing",
+      "Community recovery work"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  }
+},
+// --- 462 3rd Visa (6 months specified work) ---
+"462_3rd Visa (6 months specified work)": {
+  "Plant & Animal Cultivation": {
+    roles: [
+      "Harvesting and/or packing of fruit and vegetable crops",
+      "Pruning and trimming vines and trees (commercial horticulture)",
+      "Maintaining crops",
+      "Cultivating or propagating plants, fungi, or their products/parts",
+      "Processing of plant products",
+      "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
+      "Processing of animal products (shearing, butchery, packing, tanning)",
+      "Manufacturing dairy produce"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: [
+      "NSW: 2311–2312, 2328, 2336, 2338, 2340, 2350, 2352, 2354, 2356–2357, 2360, 2365, 2369, 2370, 2379–2382, 2386–2387, 2395, 2397, 2401, 2404–2406, 2409–2411, 2415, 2421–2423, 2425, 2427–2429, 2439, 2446–2449, 2452–2454, 2456, 2460, 2462–2463, 2465–2466, 2469–2471, 2474–2476, 2480, 2482–2484, 2486–2490",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "QLD: 4124–4125, 4133, 4211, 4270, 4272, 4275, 4280, 4285, 4287, 4307, 4309, 4310, 4313, 4340, 4342, 4345–4346, 4350–4352, 4355–4359, 4361–4362, 4364–4365, 4370–4375, 4380–4383, 4385, 4400–4407, 4410–4413, 4415–4420, 4422–4424, 4426–4428, 4454–4471, 4472, 4474–4478, 4480–4498, 4507, 4515, 4517–4519, 4521, 4550–4551, 4553–4562, 4565–4575, 4580, 4581, 4600–4601, 4605–4612, 4614–4618, 4620–4621, 4625–4630, 4650, 4655, 4659–4662, 4670–4678, 4694–4698, 4700–4717, 4720–4728, 4730–4732, 4735–4746, 4754, 4800–4812, 4814–4825, 4828–4830, 4849–4850, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "SA: 5220–5734",
+      "WA: 6041–6044, 6055, 6069, 6076, 6083–6084, 6111, 6121–6126, 6200–6799",
+      "TAS: 7017, 7030, 7054, 7056, 7070, 7072–7999, 7209, 7255–7257, 7321",
+      "NT: All postcodes"
+    ]
+  },
+  "Tourism & Hospitality": {
+    roles: [
+      "Accommodation: hotels, motels, bed and breakfasts, backpacker hostels",
+      "Accommodation: caravan parks and camping grounds",
+      "Hospitality: cafes, restaurants, takeaway shops, catering",
+      "Hospitality: pubs, taverns, bars, clubs",
+      "Hospitality: casinos",
+      "Travel agents",
+      "Tour guides",
+      "Dive instructors",
+      "Bus drivers",
+      "Event/entertainment staff",
+      "Gallery/museum staff"
+    ],
+    states: ["QLD", "NT", "WA", "NSW", "VIC", "SA", "TAS"],
+    areas: ["Northern Australia", "Remote Australia", "Very Remote Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799",
+      "TAS: 7209, 7255–7257, 7321",
+      "SA: 5220–5734",
+      "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+      "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+    ]
+  },
+  "Fishing & Pearling": {
+    roles: [
+      "Fishing deckhands (trawlers, longliners, net boats)",
+      "Aquaculture workers",
+      "Pearl farm workers"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Tree Farming & Felling": {
+    roles: [
+      "Planting or tending trees in a plantation/forest",
+      "Felling trees in a plantation or forest",
+      "Transporting trees or parts of trees to the mill"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Mining": {
+    roles: [
+      "Coal mining",
+      "Oil and gas extraction",
+      "Metal ore mining",
+      "Quarrying and construction material mining"
+    ],
+    states: ["QLD", "NT", "WA"],
+    areas: ["Northern Australia"],
+    postcodes: [
+      "NT: All postcodes",
+      "QLD (Northern): 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+      "WA: 0872, 6121–6126, 6200–6799"
+    ]
+  },
+  "Construction": {
+    roles: [
+      "Residential building construction",
+      "Non-residential building construction",
+      "Heavy and civil engineering construction",
+      "Construction services"
+    ],
+    states: ["All"],
+    areas: ["Regional Australia"],
+    postcodes: ["All"]
+  },
+  "Natural Disaster Recovery": {
+    roles: [
+      "Flood and cyclone clean-up",
+      "Demolition",
+      "Construction repairs",
+      "Land clearing",
+      "Community recovery work"
+    ],
+    states: ["All"],
+    areas: ["All"],
+    postcodes: ["All"]
+  }
+},
 // ==========================
 // Props Interface
 // ==========================
@@ -799,42 +909,6 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredStates, setPreferredStates] = useState<string[]>([]);
   const [preferredAreas, setPreferredAreas] = useState<string[]>([]);
-
-  // ==========================
-  // Tooltip Generator (Fixed)
-  // ==========================
-  const getIndustryTooltip = (
-    visaSubclass: string,
-    industry: string,
-    state: string,
-    area: string
-  ): string => {
-    const config = whvIndustries[visaSubclass]?.[industry];
-    if (!config || !state || !area) return "";
-
-    const validStates =
-      config.states.includes("All") ? australianStates : config.states;
-
-    // ✅ If "All" in config.areas, any area (incl. "Anywhere in {state}") is valid
-    const validAreas = config.areas.includes("All")
-      ? ["All", "Anywhere"] // wildcard tokens
-      : config.areas;
-
-    if (!validStates.includes(state)) {
-      return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
-    }
-
-    if (
-      !validAreas.includes("All") &&
-      !validAreas.some((a) =>
-        area.startsWith("Anywhere in") ? a === "Anywhere" : a === area
-      )
-    ) {
-      return `⚠️ ${industry} may only count in areas: ${validAreas.join(", ")}.`;
-    }
-
-    return `✅ ${industry} can be done in ${state} (${area}).`;
-  };
 
   // Toggle industries (max 3)
   const toggleIndustry = (industry: string) => {
@@ -1034,11 +1108,7 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                         onChange={() => togglePreferredArea(area)}
                         className="h-4 w-4"
                       />
-                      <span className="text-sm text-gray-700">
-                        {area === "All" && preferredStates.length > 0
-                          ? preferredStates.map((s) => `Anywhere in ${s}`).join(", ")
-                          : area}
-                      </span>
+                      <span className="text-sm text-gray-700">{area}</span>
                     </label>
                   ))}
                 </div>
@@ -1096,3 +1166,4 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
 };
 
 export default WHVWorkPreferences;
+
