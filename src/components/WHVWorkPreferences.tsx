@@ -651,7 +651,7 @@ const whvIndustries: Record<
       postcodes: ["All"]
     }
   },
-  // --- 462 3rd Visa (6 months specified work) ---
+   // --- 462 3rd Visa (6 months specified work) ---
   "462_3rd Visa (6 months specified work)": {
     "Plant & Animal Cultivation": {
       roles: [
@@ -783,12 +783,12 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
   // Map the visa type and stage to the correct key in whvIndustries
   const getVisaSubclass = (type: string, stage: string): string => {
     if (type === "417" && stage === "1st") return "417_6-Month Exemption";
-    if (type === "417" && stage === "2nd") return "417_12-Month Exemption";
-    if (type === "417" && stage === "3rd") return "417_18-Month Exemption";
+    if (type === "417" && stage === "2nd") return "417_2nd Visa (3 months specified work)";
+    if (type === "417" && stage === "3rd") return "417_3rd Visa (6 months specified work)";
     if (type === "462" && stage === "1st") return "462_6-Month Exemption";
-    if (type === "462" && stage === "2nd") return "462_12-Month Exemption";
-    if (type === "462" && stage === "3rd") return "462_18-Month Exemption";
-    // Fallback to original format if no mapping found
+    if (type === "462" && stage === "2nd") return "462_2nd Visa (3 months specified work)";
+    if (type === "462" && stage === "3rd") return "462_3rd Visa (6 months specified work)";
+    // fallback
     return `${type}_${stage}`;
   };
 
@@ -799,6 +799,42 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredStates, setPreferredStates] = useState<string[]>([]);
   const [preferredAreas, setPreferredAreas] = useState<string[]>([]);
+
+  // ==========================
+  // Tooltip Generator (Fixed)
+  // ==========================
+  const getIndustryTooltip = (
+    visaSubclass: string,
+    industry: string,
+    state: string,
+    area: string
+  ): string => {
+    const config = whvIndustries[visaSubclass]?.[industry];
+    if (!config || !state || !area) return "";
+
+    const validStates =
+      config.states.includes("All") ? australianStates : config.states;
+
+    // ✅ If "All" in config.areas, any area (incl. "Anywhere in {state}") is valid
+    const validAreas = config.areas.includes("All")
+      ? ["All", "Anywhere"] // wildcard tokens
+      : config.areas;
+
+    if (!validStates.includes(state)) {
+      return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
+    }
+
+    if (
+      !validAreas.includes("All") &&
+      !validAreas.some((a) =>
+        area.startsWith("Anywhere in") ? a === "Anywhere" : a === area
+      )
+    ) {
+      return `⚠️ ${industry} may only count in areas: ${validAreas.join(", ")}.`;
+    }
+
+    return `✅ ${industry} can be done in ${state} (${area}).`;
+  };
 
   // Toggle industries (max 3)
   const toggleIndustry = (industry: string) => {
@@ -1012,6 +1048,11 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
               {preferredStates.length > 0 &&
                 preferredAreas.length > 0 &&
                 selectedIndustries.length > 0 && (
+                  <div className="space-y
+              {/* Tooltips */}
+              {preferredStates.length > 0 &&
+                preferredAreas.length > 0 &&
+                selectedIndustries.length > 0 && (
                   <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
                     {selectedIndustries.map((industry) =>
                       preferredStates.map((state) =>
@@ -1019,12 +1060,22 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                           <p
                             key={`${industry}-${state}-${area}`}
                             className={`${
-                              getIndustryTooltip(visaSubclass, industry, state, area).includes("⚠️")
+                              getIndustryTooltip(
+                                visaSubclass,
+                                industry,
+                                state,
+                                area
+                              ).includes("⚠️")
                                 ? "text-yellow-600"
                                 : "text-green-600"
                             }`}
                           >
-                            {getIndustryTooltip(visaSubclass, industry, state, area)}
+                            {getIndustryTooltip(
+                              visaSubclass,
+                              industry,
+                              state,
+                              area
+                            )}
                           </p>
                         ))
                       )
@@ -1050,4 +1101,3 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
 };
 
 export default WHVWorkPreferences;
-
