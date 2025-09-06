@@ -4,41 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import AustraliaIcon from "./AustraliaIcon";
 import SignInAsModal from "./SignInAsModal";
-import { supabase } from "@/integrations/supabase/client";
 
 const LetsBeginScreen: React.FC = () => {
   const navigate = useNavigate();
   const [showSignInModal, setShowSignInModal] = useState(false);
-
-  // ✅ Helper: set user type in Supabase profile
-  const setUserType = async (type: "employer" | "whv_maker") => {
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      // Not logged in → open sign-in modal
-      setShowSignInModal(true);
-      return false;
-    }
-
-    // 👇 Cast to any so TS doesn't complain about user_id
-    const { error } = await supabase.from("profile").upsert([
-      {
-        user_id: user.id,
-        email: user.email,
-        user_type: type,
-      } as any,
-    ]);
-
-    if (error) {
-      console.error("❌ Profile upsert failed:", error.message);
-      return false;
-    }
-
-    return true;
-  };
 
   if (showSignInModal) {
     return <SignInAsModal />;
@@ -92,10 +61,7 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default"
                 size="lg"
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                onClick={async () => {
-                  const ok = await setUserType("employer");
-                  if (ok) navigate("/employer/onboarding");
-                }}
+                onClick={() => navigate("/employer/onboarding")}
               >
                 I want to hire
               </Button>
@@ -104,10 +70,7 @@ const LetsBeginScreen: React.FC = () => {
                 variant="default"
                 size="lg"
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={async () => {
-                  const ok = await setUserType("whv_maker"); // ✅ use whv_maker
-                  if (ok) navigate("/whv/onboarding");
-                }}
+                onClick={() => navigate("/whv/onboarding")}
               >
                 I want to get hired
               </Button>
@@ -133,3 +96,4 @@ const LetsBeginScreen: React.FC = () => {
 };
 
 export default LetsBeginScreen;
+
