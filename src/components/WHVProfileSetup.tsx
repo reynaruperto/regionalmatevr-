@@ -11,7 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft, Info } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabaseExtended as supabase } from "@/lib/extendedSupabaseClient";
+import type { Database } from "@/lib/extendedDatabase";
 
 const australianStates = [
   "Australian Capital Territory",
@@ -106,12 +107,12 @@ const WHVProfileSetup: React.FC = () => {
         middle_name: formData.middleName || null,
         family_name: formData.familyName,
         birth_date: formData.dateOfBirth || null,
-        nationality: formData.nationality,
+        nationality: formData.nationality as Database["public"]["Enums"]["nationality"],
         mobile_num: formData.phone,
         address_line1: formData.address1,
         address_line2: formData.address2 || null,
         suburb: formData.suburb,
-        state: formData.state,
+        state: formData.state as Database["public"]["Enums"]["state"],
         postcode: formData.postcode,
       },
       { onConflict: "user_id" }
@@ -126,7 +127,7 @@ const WHVProfileSetup: React.FC = () => {
     const { error: visaError } = await supabase.from("maker_visa").upsert(
       {
         user_id: user.id,
-        visa_type: chosenStage?.label,
+        visa_type: chosenStage?.label as Database["public"]["Enums"]["visa_type"],
         expiry_date: formData.visaExpiry,
       },
       { onConflict: "user_id,visa_type" }
@@ -193,7 +194,9 @@ const WHVProfileSetup: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Label>Date of Birth</Label>
-                  <Info size={16} className="text-gray-400" title="Format: DD MM YYYY" />
+                  <div title="Format: DD MM YYYY">
+                    <Info size={16} className="text-gray-400" />
+                  </div>
                 </div>
                 <Input
                   name="dateOfBirth"
