@@ -14,10 +14,10 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   password: z.string()
     .min(8, { message: "Password must be at least 8 characters." })
-    .regex(/[a-z]/, { message: "Must contain a lowercase letter." })
-    .regex(/[A-Z]/, { message: "Must contain an uppercase letter." })
-    .regex(/[0-9]/, { message: "Must contain a number." })
-    .regex(/[^a-zA-Z0-9]/, { message: "Must contain a special character." }),
+    .regex(/[a-z]/, { message: "Password must contain a lowercase letter." })
+    .regex(/[A-Z]/, { message: "Password must contain an uppercase letter." })
+    .regex(/[0-9]/, { message: "Password must contain a number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Password must contain a special character." }),
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -33,9 +33,6 @@ const WHVOnboardingForm: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 🔎 Toggle between WHV redirect and Employer redirect for testing
-  const [useEmployerRedirect, setUseEmployerRedirect] = useState(false);
-
   const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
@@ -46,15 +43,11 @@ const WHVOnboardingForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      const redirectUrl = useEmployerRedirect
-        ? `${window.location.origin}/employer/about-business`
-        : `${window.location.origin}/whv/profile-setup`;
-
       const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
           data: { user_type: 'whv' }
         }
       });
@@ -65,7 +58,7 @@ const WHVOnboardingForm: React.FC = () => {
 
       toast({
         title: "Account created successfully!",
-        description: `Check your email (Redirect: ${useEmployerRedirect ? "Employer" : "WHV"})`,
+        description: "Please check your email for a confirmation code",
       });
 
       navigate('/whv/email-confirmation');
@@ -73,7 +66,7 @@ const WHVOnboardingForm: React.FC = () => {
       console.error("Signup error:", error);
       toast({
         title: "Registration failed",
-        description: error.message || "Unexpected error",
+        description: error.message || "An unexpected error occurred.",
         variant: "destructive"
       });
     } finally {
@@ -83,6 +76,7 @@ const WHVOnboardingForm: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
@@ -112,18 +106,6 @@ const WHVOnboardingForm: React.FC = () => {
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
               <p className="text-gray-600 mb-6">Start by setting up your account with email and password.</p>
 
-              {/* Toggle for testing */}
-              <div className="mb-4">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={useEmployerRedirect}
-                    onChange={() => setUseEmployerRedirect(!useEmployerRedirect)}
-                  />
-                  Use Employer Redirect (instead of WHV)
-                </label>
-              </div>
-
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Email */}
                 <div>
@@ -149,7 +131,11 @@ const WHVOnboardingForm: React.FC = () => {
                       className="absolute right-4 top-1/2 -translate-y-1/2"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5 text-gray-500" />
+                      ) : (
+                        <Eye className="w-5 h-5 text-gray-500" />
+                      )}
                     </button>
                   </div>
                   {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
@@ -171,7 +157,11 @@ const WHVOnboardingForm: React.FC = () => {
                       className="absolute right-4 top-1/2 -translate-y-1/2"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
-                      {showConfirmPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-5 h-5 text-gray-500" />
+                      ) : (
+                        <Eye className="w-5 h-5 text-gray-500" />
+                      )}
                     </button>
                   </div>
                   {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
@@ -197,6 +187,5 @@ const WHVOnboardingForm: React.FC = () => {
 };
 
 export default WHVOnboardingForm;
-
 
 
