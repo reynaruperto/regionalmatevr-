@@ -50,10 +50,12 @@ const getIndustryTooltip = (
     config.states.includes("All") ? australianStates : config.states;
 
   const validAreas =
-    config.areas.includes("All") ? Object.values(AreaRestriction) : config.areas;
+    config.areas.includes("All") ? [`Anywhere in ${state}`] : config.areas;
 
   if (!validStates.includes(state)) {
-    return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
+    return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(
+      ", "
+    )}.`;
   }
 
   if (!validAreas.includes(area)) {
@@ -161,17 +163,13 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Northern Australia – Fishing & Pearling": {
-      roles: [
-        "Fishing deckhands",
-        "aquaculture workers",
-        "pearl farm workers"
-      ],
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Northern Australia – Tree Farming & Felling": {
+    "Tree Farming & Felling": {
       roles: [
         "Planting/tending plantation trees",
         "felling trees",
@@ -181,13 +179,13 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Northern Australia – Mining": {
+    "Mining": {
       roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Northern Australia – Construction": {
+    "Construction": {
       roles: [
         "Residential builders",
         "non-residential builders",
@@ -215,7 +213,7 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+    "Tourism & Hospitality": {
       roles: [
         "Hotel/motel/hostel staff",
         "reception",
@@ -340,7 +338,7 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+    "Tourism & Hospitality": {
       roles: [
         "Hotel/motel/hostel staff",
         "reception",
@@ -450,7 +448,7 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+    "Tourism & Hospitality": {
       roles: [
         "Hotel/motel/hostel staff",
         "reception",
@@ -559,7 +557,7 @@ const whvIndustries: Record<
       areas: ["All"],
       postcodes: ["All"]
     },
-    "Tourism & Hospitality (Northern/Remote/Very Remote Aus only)": {
+    "Tourism & Hospitality": {
       roles: [
         "Hotel/motel/hostel staff",
         "reception",
@@ -664,9 +662,10 @@ const WHVWorkPreferences: React.FC = () => {
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [preferredState, setPreferredState] = useState("");
-  const [preferredArea, setPreferredArea] = useState("");
+  const [preferredStates, setPreferredStates] = useState<string[]>([]);
+  const [preferredAreas, setPreferredAreas] = useState<string[]>([]);
 
+  // Toggle industries (max 3)
   const toggleIndustry = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
       setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
@@ -678,11 +677,30 @@ const WHVWorkPreferences: React.FC = () => {
     }
   };
 
+  // Toggle roles
   const toggleRole = (role: string) => {
     if (selectedRoles.includes(role)) {
       setSelectedRoles(selectedRoles.filter((r) => r !== role));
     } else {
       setSelectedRoles([...selectedRoles, role]);
+    }
+  };
+
+  // Toggle preferred states (max 3)
+  const togglePreferredState = (state: string) => {
+    if (preferredStates.includes(state)) {
+      setPreferredStates(preferredStates.filter((s) => s !== state));
+    } else if (preferredStates.length < 3) {
+      setPreferredStates([...preferredStates, state]);
+    }
+  };
+
+  // Toggle preferred areas (max 3)
+  const togglePreferredArea = (area: string) => {
+    if (preferredAreas.includes(area)) {
+      setPreferredAreas(preferredAreas.filter((a) => a !== area));
+    } else if (preferredAreas.length < 3) {
+      setPreferredAreas([...preferredAreas, area]);
     }
   };
 
@@ -692,8 +710,8 @@ const WHVWorkPreferences: React.FC = () => {
     console.log("Tagline:", tagline);
     console.log("Industries:", selectedIndustries);
     console.log("Roles:", selectedRoles);
-    console.log("Preferred State:", preferredState);
-    console.log("Preferred Area:", preferredArea);
+    console.log("Preferred States:", preferredStates);
+    console.log("Preferred Areas:", preferredAreas);
     navigate("/whv/work-experience");
   };
 
@@ -745,28 +763,20 @@ const WHVWorkPreferences: React.FC = () => {
                 <Label className="text-base font-medium text-gray-700">
                   Select up to 3 industries of interest <span className="text-red-500">*</span>
                 </Label>
-                <div className="flex flex-wrap gap-2">
+                <div className="max-h-48 overflow-y-auto border rounded-md p-2">
                   {Object.keys(whvIndustries[visaSubclass]).map((industry) => (
-                    <button
-                      type="button"
-                      key={industry}
-                      onClick={() => toggleIndustry(industry)}
-                      disabled={
-                        selectedIndustries.length >= 3 && !selectedIndustries.includes(industry)
-                      }
-                      className={`px-4 py-2 rounded-full text-sm border transition ${
-                        selectedIndustries.includes(industry)
-                          ? "bg-orange-500 text-white border-orange-500"
-                          : "bg-white text-gray-700 border-gray-300"
-                      } ${
-                        selectedIndustries.length >= 3 &&
-                        !selectedIndustries.includes(industry)
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                    >
-                      {industry}
-                    </button>
+                    <label key={industry} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedIndustries.includes(industry)}
+                        disabled={
+                          selectedIndustries.length >= 3 && !selectedIndustries.includes(industry)
+                        }
+                        onChange={() => toggleIndustry(industry)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">{industry}</span>
+                    </label>
                   ))}
                 </div>
               </div>
@@ -784,7 +794,7 @@ const WHVWorkPreferences: React.FC = () => {
                           type="button"
                           key={`${industry}-${role}`}
                           onClick={() => toggleRole(role)}
-                          className={`px-4 py-2 rounded-full text-sm border transition ${
+                          className={`px-3 py-1.5 rounded-full text-xs border transition ${
                             selectedRoles.includes(role)
                               ? "bg-orange-500 text-white border-orange-500"
                               : "bg-white text-gray-700 border-gray-300"
@@ -798,61 +808,81 @@ const WHVWorkPreferences: React.FC = () => {
                 </div>
               )}
 
-              {/* Preferred State */}
+              {/* Preferred States */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Working State <span className="text-red-500">*</span>
+                  Preferred Working States (up to 3) <span className="text-red-500">*</span>
                 </Label>
-                <Select onValueChange={(value) => setPreferredState(value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="Select a state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {australianStates.map((state) => (
-                      <SelectItem key={state} value={state}>
-                        {state}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-2">
+                  {australianStates.map((state) => (
+                    <button
+                      type="button"
+                      key={state}
+                      onClick={() => togglePreferredState(state)}
+                      className={`px-3 py-1.5 rounded-full text-xs border transition ${
+                        preferredStates.includes(state)
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-white text-gray-700 border-gray-300"
+                      }`}
+                      disabled={
+                        preferredStates.length >= 3 && !preferredStates.includes(state)
+                      }
+                    >
+                      {state}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Preferred Area */}
+              {/* Preferred Areas */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Area Restriction <span className="text-red-500">*</span>
+                  Preferred Area Restrictions (up to 3) <span className="text-red-500">*</span>
                 </Label>
-                <Select onValueChange={(value) => setPreferredArea(value)}>
-                  <SelectTrigger className="h-12 bg-gray-100 border-0 text-gray-900">
-                    <SelectValue placeholder="Select an area" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values(AreaRestriction).map((area) => (
-                      <SelectItem key={area} value={area}>
-                        {area}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-2">
+                  {Object.values(AreaRestriction).map((area) => (
+                    <button
+                      type="button"
+                      key={area}
+                      onClick={() => togglePreferredArea(area)}
+                      className={`px-3 py-1.5 rounded-full text-xs border transition ${
+                        preferredAreas.includes(area)
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-white text-gray-700 border-gray-300"
+                      }`}
+                      disabled={
+                        preferredAreas.length >= 3 && !preferredAreas.includes(area)
+                      }
+                    >
+                      {area === "All" ? "Anywhere in selected state" : area}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Tooltips */}
-              {preferredState && preferredArea && selectedIndustries.length > 0 && (
-                <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
-                  {selectedIndustries.map((industry) => (
-                    <p
-                      key={industry}
-                      className={`${
-                        getIndustryTooltip(visaSubclass, industry, preferredState, preferredArea).includes("⚠️")
-                          ? "text-yellow-600"
-                          : "text-green-600"
-                      }`}
-                    >
-                      {getIndustryTooltip(visaSubclass, industry, preferredState, preferredArea)}
-                    </p>
-                  ))}
-                </div>
-              )}
+              {preferredStates.length > 0 &&
+                preferredAreas.length > 0 &&
+                selectedIndustries.length > 0 && (
+                  <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
+                    {selectedIndustries.map((industry) =>
+                      preferredStates.map((state) =>
+                        preferredAreas.map((area) => (
+                          <p
+                            key={`${industry}-${state}-${area}`}
+                            className={`${
+                              getIndustryTooltip(visaSubclass, industry, state, area).includes("⚠️")
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {getIndustryTooltip(visaSubclass, industry, state, area)}
+                          </p>
+                        ))
+                      )
+                    )}
+                  </div>
+                )}
 
               {/* Continue Button */}
               <div className="pt-8">
