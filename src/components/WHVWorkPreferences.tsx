@@ -780,8 +780,19 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const initialSubclass = `${visaType}_${visaStage}`;
-  const [visaSubclass] = useState<string>(initialSubclass);
+  // Map the visa type and stage to the correct key in whvIndustries
+  const getVisaSubclass = (type: string, stage: string): string => {
+    if (type === "417" && stage === "1st") return "417_6-Month Exemption";
+    if (type === "417" && stage === "2nd") return "417_12-Month Exemption";
+    if (type === "417" && stage === "3rd") return "417_18-Month Exemption";
+    if (type === "462" && stage === "1st") return "462_6-Month Exemption";
+    if (type === "462" && stage === "2nd") return "462_12-Month Exemption";
+    if (type === "462" && stage === "3rd") return "462_18-Month Exemption";
+    // Fallback to original format if no mapping found
+    return `${type}_${stage}`;
+  };
+
+  const [visaSubclass] = useState<string>(getVisaSubclass(visaType, visaStage));
 
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
@@ -894,7 +905,7 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                   <span className="text-red-500">*</span>
                 </Label>
                 <div className="max-h-48 overflow-y-auto border rounded-md p-2">
-                  {Object.keys(whvIndustries[visaSubclass]).map((industry) => (
+                  {whvIndustries[visaSubclass] ? Object.keys(whvIndustries[visaSubclass]).map((industry) => (
                     <label key={industry} className="flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -908,7 +919,11 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                       />
                       <span className="text-sm text-gray-700">{industry}</span>
                     </label>
-                  ))}
+                  )) : (
+                    <div className="text-sm text-gray-500 p-2">
+                      No industries available for the selected visa type.
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -920,7 +935,7 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                   </Label>
                   <div className="flex flex-wrap gap-2">
                     {selectedIndustries.flatMap((industry) =>
-                      whvIndustries[visaSubclass][industry].roles.map((role) => (
+                      whvIndustries[visaSubclass]?.[industry]?.roles?.map((role) => (
                         <button
                           type="button"
                           key={`${industry}-${role}`}
