@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,9 +6,6 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
-// ==========================
-// Enums & Constants
-// ==========================
 enum AreaRestriction {
   All = "All",
   Regional = "Regional",
@@ -28,631 +25,6 @@ const australianStates = [
   "Western Australia",
 ];
 
-// ==========================
-// Full WHV Industries Dataset (417 + 462 visas)
-// ==========================
-const whvIndustries: Record<
-  string,
-  Record<string, { roles: string[]; states: string[]; areas: string[]; postcodes: string[] }>
-> = {
-  // --- 417 1st Visa (6-Month Exemption) ---
-  "417_6-Month Exemption": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Construction": {
-      roles: [
-        "Residential builders",
-        "Non-residential builders",
-        "Heavy civil engineering staff",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Health": {
-      roles: [
-        "Doctors",
-        "Nurses",
-        "Dentists and dental staff",
-        "Allied health workers",
-        "Medical support/admin roles",
-        "Medical imaging staff",
-        "Mental health staff",
-        "Radiology services staff",
-        "Installation/maintenance of medical machinery",
-        "Hospital/healthcare cleaning staff",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Aged & Disability Care": {
-      roles: ["Disability carers", "Aged care workers", "Community support carers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Childcare": {
-      roles: [
-        "Daycare staff",
-        "Nursery/crèche attendants",
-        "Family day care workers",
-        "Nannies/au pairs",
-        "Out-of-school/vacation care staff",
-        "Child protection/welfare staff",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Clean-up",
-        "Construction repairs",
-        "Demolition",
-        "Land clearing",
-        "Community recovery work",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-
-  // --- 417 2nd Visa (3 months specified work) ---
-  "417_2nd Visa (3 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales",
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: ["Regional QLD/NT/WA/SA/VIC/NSW/TAS lists"],
-    },
-    "Bushfire Recovery": {
-      roles: [
-        "Rebuilding fences",
-        "Demolition",
-        "Land clearing",
-        "Replanting",
-        "Clearing debris",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["Regional NSW, VIC, ACT"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "Heavy civil engineering",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "Demolition",
-        "Construction repairs",
-        "Land clearing",
-        "Community recovery",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-  // --- 417 3rd Visa (6 months specified work) ---
-  "417_3rd Visa (6 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "New South Wales",
-        "Victoria",
-        "South Australia",
-        "Tasmania",
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: ["Regional QLD/NT/WA/NSW/VIC/SA/TAS lists"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "Heavy civil engineering",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "Demolition",
-        "Construction repairs",
-        "Land clearing",
-        "Community recovery",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-
-  // --- 462 1st Visa (6-Month Exemption) ---
-  "462_6-Month Exemption": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Construction": {
-      roles: [
-        "Residential builders",
-        "Non-residential builders",
-        "Heavy civil engineering staff",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Health": {
-      roles: [
-        "Doctors",
-        "Nurses",
-        "Dentists and dental staff",
-        "Allied health workers",
-        "Medical support/admin roles",
-        "Medical imaging staff",
-        "Mental health staff",
-        "Radiology services staff",
-        "Installation/maintenance of medical machinery",
-        "Hospital/healthcare cleaning staff",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Aged & Disability Care": {
-      roles: ["Disability carers", "Aged care workers", "Community support carers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Childcare": {
-      roles: [
-        "Daycare staff",
-        "Nursery/crèche attendants",
-        "Family day care workers",
-        "Nannies/au pairs",
-        "Out-of-school/vacation care staff",
-        "Child protection/welfare staff",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Clean-up",
-        "Construction repairs",
-        "Demolition",
-        "Land clearing",
-        "Community recovery work",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-
-  // --- 462 2nd Visa (3 months specified work) ---
-  "462_2nd Visa (3 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales",
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: ["Regional QLD/NT/WA/SA/VIC/NSW/TAS lists"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "Heavy civil engineering",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "Demolition",
-        "Construction repairs",
-        "Land clearing",
-        "Community recovery",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-
-  // --- 462 3rd Visa (6 months specified work) ---
-  "462_3rd Visa (6 months specified work)": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting and/or packing of fruit and vegetable crops",
-        "Pruning and trimming vines and trees (commercial horticulture)",
-        "Maintaining crops",
-        "Cultivating or propagating plants, fungi, or their products/parts",
-        "Processing of plant products",
-        "Maintaining animals for the purpose of selling them or their bodily produce (including natural increase)",
-        "Processing of animal products (shearing, butchery, packing, tanning)",
-        "Manufacturing dairy produce",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "Reception",
-        "Housekeeping",
-        "Chefs",
-        "Waiters",
-        "Bartenders",
-        "Catering staff",
-        "Tour guides",
-        "Dive instructors",
-        "Bus drivers",
-        "Event/entertainment staff",
-        "Gallery/museum staff",
-        "Travel agents",
-      ],
-      states: [
-        "Queensland",
-        "Northern Territory",
-        "Western Australia",
-        "Tasmania",
-        "South Australia",
-        "Victoria",
-        "New South Wales",
-      ],
-      areas: ["Northern", "Remote", "Very Remote"],
-      postcodes: ["Regional QLD/NT/WA/SA/VIC/NSW/TAS lists"],
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "Aquaculture workers", "Pearl farm workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "Felling trees",
-        "Transporting logs to mills",
-      ],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Mining": {
-      roles: ["Coal miners", "Oil & gas workers", "Ore miners", "Quarry workers"],
-      states: ["Queensland", "Northern Territory", "Western Australia"],
-      areas: ["Northern"],
-      postcodes: ["Regional QLD/NT/WA lists"],
-    },
-    "Construction": {
-      roles: [
-        "Residential/non-residential builders",
-        "Heavy civil engineering",
-        "Construction services",
-      ],
-      states: ["All"],
-      areas: ["Regional"],
-      postcodes: ["All"],
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Flood/cyclone clean-up",
-        "Demolition",
-        "Construction repairs",
-        "Land clearing",
-        "Community recovery",
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"],
-    },
-  },
-};
-// ==========================
-// Component
-// ==========================
 const WHVWorkPreferences: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -663,47 +35,112 @@ const WHVWorkPreferences: React.FC = () => {
       visaStage: "1st",
     };
 
-  const getVisaSubclass = (type: string, stage: string): string => {
-    if (type === "417" && stage === "1st") return "417_6-Month Exemption";
-    if (type === "417" && stage === "2nd") return "417_2nd Visa (3 months specified work)";
-    if (type === "417" && stage === "3rd") return "417_3rd Visa (6 months specified work)";
-    if (type === "462" && stage === "1st") return "462_6-Month Exemption";
-    if (type === "462" && stage === "2nd") return "462_2nd Visa (3 months specified work)";
-    if (type === "462" && stage === "3rd") return "462_3rd Visa (6 months specified work)";
-    return "";
-  };
-
-  const [visaSubclass] = useState<string>(getVisaSubclass(visaType, visaStage));
   const [tagline, setTagline] = useState("");
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [industries, setIndustries] = useState<any[]>([]);
+  const [regionRules, setRegionRules] = useState<any[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<number[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
   const [preferredStates, setPreferredStates] = useState<string[]>([]);
   const [preferredAreas, setPreferredAreas] = useState<string[]>([]);
 
   // ==========================
+  // Load industries + roles + region rules
+  // ==========================
+  useEffect(() => {
+    const loadData = async () => {
+      // Industries + roles
+      const { data: industriesData, error: indError } = await supabase
+        .from("industry")
+        .select("industry_id, name, industry_role(industry_role_id, role)");
+
+      if (!indError && industriesData) {
+        const mapped = industriesData.map((i: any) => ({
+          industry_id: i.industry_id,
+          name: i.name,
+          roles: i.industry_role.map((r: any) => ({
+            id: r.industry_role_id,
+            name: r.role,
+          })),
+        }));
+        setIndustries(mapped);
+      }
+
+      // Region rules
+      const { data: regionsData, error: regError } = await supabase
+        .from("region_postcode")
+        .select("state, area, postcode_range");
+
+      if (!regError && regionsData) {
+        setRegionRules(regionsData);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // ==========================
+  // Tooltip validation
+  // ==========================
+  const getIndustryTooltip = (
+    industry: string,
+    state: string,
+    area: string,
+    postcode: string
+  ): string => {
+    const rulesForState = regionRules.filter((r) => r.state === state);
+
+    if (rulesForState.length === 0) {
+      return `⚠️ No regional rules found for ${state}.`;
+    }
+
+    const areaAllowed = rulesForState.some(
+      (r) => r.area === area || r.area === "All"
+    );
+    if (!areaAllowed) {
+      return `⚠️ ${industry} may not count in ${area}, ${state}. Allowed areas: ${rulesForState
+        .map((r) => r.area)
+        .join(", ")}`;
+    }
+
+    // Postcode validation (demo only, here we assume employer postcode "4709")
+    const pc = parseInt(postcode, 10);
+    const postcodeAllowed = rulesForState.some((r) => {
+      if (r.postcode_range === "All") return true;
+      if (r.postcode_range.includes("–")) {
+        const [start, end] = r.postcode_range.split("–").map(Number);
+        return pc >= start && pc <= end;
+      }
+      return r.postcode_range === postcode;
+    });
+
+    if (!postcodeAllowed) {
+      return `⚠️ ${industry} not valid in postcode ${postcode}.`;
+    }
+
+    return `✅ ${industry} can be done in ${state} (${area})`;
+  };
+
+  // ==========================
   // Toggle helpers
   // ==========================
-  const toggleIndustry = (industry: string) => {
-    if (selectedIndustries.includes(industry)) {
-      setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
-      setSelectedRoles(
-        selectedRoles.filter(
-          (role) => !whvIndustries[visaSubclass]?.[industry]?.roles.includes(role)
-        )
-      );
+  const toggleIndustry = (industryId: number) => {
+    if (selectedIndustries.includes(industryId)) {
+      setSelectedIndustries(selectedIndustries.filter((id) => id !== industryId));
+      setSelectedRoles([]);
     } else if (selectedIndustries.length < 3) {
-      setSelectedIndustries([...selectedIndustries, industry]);
+      setSelectedIndustries([...selectedIndustries, industryId]);
     }
   };
 
-  const toggleRole = (role: string) =>
+  const toggleRole = (roleId: number) => {
     setSelectedRoles(
-      selectedRoles.includes(role)
-        ? selectedRoles.filter((r) => r !== role)
-        : [...selectedRoles, role]
+      selectedRoles.includes(roleId)
+        ? selectedRoles.filter((r) => r !== roleId)
+        : [...selectedRoles, roleId]
     );
+  };
 
-  const togglePreferredState = (state: string) =>
+  const togglePreferredState = (state: string) => {
     setPreferredStates(
       preferredStates.includes(state)
         ? preferredStates.filter((s) => s !== state)
@@ -711,8 +148,9 @@ const WHVWorkPreferences: React.FC = () => {
         ? [...preferredStates, state]
         : preferredStates
     );
+  };
 
-  const togglePreferredArea = (area: string) =>
+  const togglePreferredArea = (area: string) => {
     setPreferredAreas(
       preferredAreas.includes(area)
         ? preferredAreas.filter((a) => a !== area)
@@ -720,6 +158,7 @@ const WHVWorkPreferences: React.FC = () => {
         ? [...preferredAreas, area]
         : preferredAreas
     );
+  };
 
   // ==========================
   // Save to Supabase
@@ -731,48 +170,20 @@ const WHVWorkPreferences: React.FC = () => {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    // Save tagline
     await supabase.from("whv_maker").update({ tagline }).eq("user_id", user.id);
 
-    // Save preferences
-    for (const industry of selectedIndustries) {
-      const { data: industryRow } = await supabase
-        .from("industry")
-        .select("industry_id")
-        .eq("name", industry)
-        .single();
-      const industryId = industryRow?.industry_id || null;
-
-      const rolesForIndustry = selectedRoles.filter((r) =>
-        whvIndustries[visaSubclass]?.[industry]?.roles.includes(r)
-      );
-
-      if (rolesForIndustry.length === 0) {
+    for (const industryId of selectedIndustries) {
+      const rolesForIndustry = selectedRoles.length ? selectedRoles : [null];
+      for (const roleId of rolesForIndustry) {
         await supabase.from("maker_preference").insert(
           preferredStates.map((s) => ({
             user_id: user.id,
             state: s,
+            area: preferredAreas.join(", "),
             industry_id: industryId,
-            industry_role_id: null,
+            industry_role_id: roleId,
           }))
         );
-      } else {
-        for (const role of rolesForIndustry) {
-          const { data: roleRow } = await supabase
-            .from("industry_role")
-            .select("industry_role_id")
-            .eq("role", role)
-            .single();
-          const roleId = roleRow?.industry_role_id || null;
-          await supabase.from("maker_preference").insert(
-            preferredStates.map((s) => ({
-              user_id: user.id,
-              state: s,
-              industry_id: industryId,
-              industry_role_id: roleId,
-            }))
-          );
-        }
       }
     }
 
@@ -795,7 +206,9 @@ const WHVWorkPreferences: React.FC = () => {
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Work Preferences</h1>
+              <h1 className="text-lg font-medium text-gray-900">
+                Work Preferences
+              </h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">4/6</span>
               </div>
@@ -821,22 +234,24 @@ const WHVWorkPreferences: React.FC = () => {
               <div className="space-y-3">
                 <Label>Select up to 3 industries *</Label>
                 <div className="max-h-48 overflow-y-auto border rounded-md p-2">
-                  {whvIndustries[visaSubclass] &&
-                    Object.keys(whvIndustries[visaSubclass]).map((industry) => (
-                      <label key={industry} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedIndustries.includes(industry)}
-                          disabled={
-                            selectedIndustries.length >= 3 &&
-                            !selectedIndustries.includes(industry)
-                          }
-                          onChange={() => toggleIndustry(industry)}
-                          className="h-4 w-4"
-                        />
-                        <span className="text-sm text-gray-700">{industry}</span>
-                      </label>
-                    ))}
+                  {industries.map((ind) => (
+                    <label
+                      key={ind.industry_id}
+                      className="flex items-center space-x-2"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedIndustries.includes(ind.industry_id)}
+                        disabled={
+                          selectedIndustries.length >= 3 &&
+                          !selectedIndustries.includes(ind.industry_id)
+                        }
+                        onChange={() => toggleIndustry(ind.industry_id)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">{ind.name}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -845,22 +260,24 @@ const WHVWorkPreferences: React.FC = () => {
                 <div className="space-y-3">
                   <Label>Select roles</Label>
                   <div className="flex flex-wrap gap-2">
-                    {selectedIndustries.flatMap((industry) =>
-                      whvIndustries[visaSubclass]?.[industry]?.roles?.map((role) => (
-                        <button
-                          type="button"
-                          key={`${industry}-${role}`}
-                          onClick={() => toggleRole(role)}
-                          className={`px-3 py-1.5 rounded-full text-xs border ${
-                            selectedRoles.includes(role)
-                              ? "bg-orange-500 text-white border-orange-500"
-                              : "bg-white text-gray-700 border-gray-300"
-                          }`}
-                        >
-                          {role}
-                        </button>
-                      ))
-                    )}
+                    {industries
+                      .filter((i) => selectedIndustries.includes(i.industry_id))
+                      .flatMap((ind) =>
+                        ind.roles.map((r: any) => (
+                          <button
+                            type="button"
+                            key={r.id}
+                            onClick={() => toggleRole(r.id)}
+                            className={`px-3 py-1.5 rounded-full text-xs border ${
+                              selectedRoles.includes(r.id)
+                                ? "bg-orange-500 text-white border-orange-500"
+                                : "bg-white text-gray-700 border-gray-300"
+                            }`}
+                          >
+                            {r.name}
+                          </button>
+                        ))
+                      )}
                   </div>
                 </div>
               )}
@@ -909,6 +326,43 @@ const WHVWorkPreferences: React.FC = () => {
                 </div>
               </div>
 
+              {/* Tooltips */}
+              {selectedIndustries.length > 0 &&
+                preferredStates.length > 0 &&
+                preferredAreas.length > 0 && (
+                  <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
+                    {selectedIndustries.map((indId) => {
+                      const industry = industries.find(
+                        (i) => i.industry_id === indId
+                      );
+                      return preferredStates.map((state) =>
+                        preferredAreas.map((area) => (
+                          <p
+                            key={`${industry?.name}-${state}-${area}`}
+                            className={`${
+                              getIndustryTooltip(
+                                industry?.name,
+                                state,
+                                area,
+                                "4709" // Example postcode
+                              ).includes("⚠️")
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {getIndustryTooltip(
+                              industry?.name,
+                              state,
+                              area,
+                              "4709"
+                            )}
+                          </p>
+                        ))
+                      );
+                    })}
+                  </div>
+                )}
+
               {/* Continue */}
               <div className="pt-8">
                 <Button
@@ -927,3 +381,5 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
+
+
