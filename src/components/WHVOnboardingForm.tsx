@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,76 +12,68 @@ import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  password: z.string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/[a-z]/, { message: "Must contain a lowercase letter." })
+    .regex(/[A-Z]/, { message: "Must contain an uppercase letter." })
+    .regex(/[0-9]/, { message: "Must contain a number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Must contain a special character." }),
+  confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-const WHVOnboardingDebug: React.FC = () => {
+const WHVOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  // 🔎 Toggle between WHV redirect and Employer redirect for testing
+  const [useEmployerRedirect, setUseEmployerRedirect] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
 
-  // 🔎 Toggle which test you want to run
-  const TEST_MODE: "minimal" | "redirectOnly" | "metadataOnly" = "minimal";
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      let response;
-      if (TEST_MODE === "minimal") {
-        // ✅ No redirect, no metadata
-        response = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-        });
-      } else if (TEST_MODE === "redirectOnly") {
-        // ✅ Only redirect
-        response = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
-          },
-        });
-      } else if (TEST_MODE === "metadataOnly") {
-        // ✅ Only metadata
-        response = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-          options: {
-            data: { user_type: "whv" },
-          },
-        });
-      }
+      const redirectUrl = useEmployerRedirect
+        ? `${window.location.origin}/employer/about-business`
+        : `${window.location.origin}/whv/profile-setup`;
 
-      const { error, data: supaData } = response;
-
-      console.log("Supabase signup response:", supaData);
-      if (error) {
-        console.error("Supabase signup error:", error);
-        toast({
-          title: "Registration failed",
-          description: error.message || "Unexpected error",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      toast({
-        title: "Signup success (check DB)",
-        description: "See console for Supabase response",
+      const { error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: { user_type: 'whv' }
+        }
       });
 
-    } catch (err) {
-      console.error("Unexpected error:", err);
+      if (error) throw error;
+
+      sessionStorage.setItem('pendingEmail', data.email);
+
       toast({
-        title: "Unexpected failure",
-        description: "Check console logs",
+        title: "Account created successfully!",
+        description: `Check your email (Redirect: ${useEmployerRedirect ? "Employer" : "WHV"})`,
+      });
+
+      navigate('/whv/email-confirmation');
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      toast({
+        title: "Registration failed",
+        description: error.message || "Unexpected error",
         variant: "destructive"
       });
     } finally {
@@ -90,36 +82,121 @@ const WHVOnboardingDebug: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/lets-begin')}>
-          <ArrowLeft className="w-6 h-6 text-gray-700" />
-        </Button>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
+        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
+          {/* Dynamic Island */}
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
 
-        <h1 className="text-xl font-bold mb-6">WHV Debug Signup ({TEST_MODE})</h1>
+          <div className="w-full h-full flex flex-col relative bg-white">
+            {/* Header */}
+            <div className="px-6 pt-16 pb-6">
+              <div className="flex items-center justify-between mb-8">
+                <Button variant="ghost" size="icon" className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
+                  onClick={() => navigate('/lets-begin')}>
+                  <ArrowLeft className="w-6 h-6 text-gray-700" />
+                </Button>
+              </div>
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
+                  <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                    <span className="text-sm font-medium text-gray-600">1/6</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" {...register("email")} />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            {/* Form */}
+            <div className="flex-1 overflow-y-auto px-6 pb-20">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
+              <p className="text-gray-600 mb-6">Start by setting up your account with email and password.</p>
+
+              {/* Toggle for testing */}
+              <div className="mb-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={useEmployerRedirect}
+                    onChange={() => setUseEmployerRedirect(!useEmployerRedirect)}
+                  />
+                  Use Employer Redirect (instead of WHV)
+                </label>
+              </div>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Email */}
+                <div>
+                  <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+                  <Input id="email" type="email" {...register("email")}
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
+                  {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                </div>
+
+                {/* Password */}
+                <div>
+                  <Label htmlFor="password">Password <span className="text-red-500">*</span></Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="new-password"
+                      {...register("password")}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+                </div>
+
+                {/* Confirm Password */}
+                <div>
+                  <Label htmlFor="confirmPassword">Confirm Password <span className="text-red-500">*</span></Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      autoComplete="new-password"
+                      {...register("confirmPassword")}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
+                  {password && confirmPassword && password !== confirmPassword && !errors.confirmPassword && (
+                    <p className="text-red-500 text-sm mt-1">Passwords don't match</p>
+                  )}
+                </div>
+
+                {/* Submit */}
+                <div className="pt-8">
+                  <Button type="submit" disabled={isLoading}
+                    className="w-full h-14 text-lg rounded-xl bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50">
+                    {isLoading ? 'Creating account...' : 'Continue'}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
-
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" {...register("password")} />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-          </div>
-
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading ? "Signing up..." : "Test Signup"}
-          </Button>
-        </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default WHVOnboardingDebug;
+export default WHVOnboardingForm;
+
 
 
