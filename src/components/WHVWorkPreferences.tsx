@@ -186,19 +186,124 @@ const whvIndustries: Record<
     }
   },
 
-  // --- 462 6-Month Exemption (10 industries, same as 417) ---
+  // --- 462 6-Month Exemption (10 industries, identical to 417) ---
   "462_6-Month Exemption": {
-    // 👆 Duplicate all 10 industries from 417_6-Month Exemption
-    "Plant & Animal Cultivation": { ... },
-    "Health": { ... },
-    "Aged & Disability Care": { ... },
-    "Childcare": { ... },
-    "Tourism & Hospitality": { ... },
-    "Natural Disaster Recovery": { ... },
-    "Fishing & Pearling": { ... },
-    "Tree Farming & Felling": { ... },
-    "Mining": { ... },
-    "Construction": { ... }
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "maintaining crops",
+        "cultivating/propagating plants and fungi",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Health": {
+      roles: [
+        "Doctors",
+        "nurses",
+        "dentists and dental staff",
+        "allied health workers",
+        "medical support/admin roles",
+        "medical imaging staff",
+        "mental health staff",
+        "radiology services staff",
+        "installation/maintenance of medical machinery",
+        "hospital/healthcare cleaning staff"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Aged & Disability Care": {
+      roles: ["Disability carers", "aged care workers", "community support carers"],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Childcare": {
+      roles: [
+        "Daycare staff",
+        "nursery/crèche attendants",
+        "family day care workers",
+        "nannies/au pairs",
+        "out-of-school/vacation care staff",
+        "child protection/welfare staff"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Clean-up",
+        "construction repairs",
+        "demolition",
+        "land clearing",
+        "community recovery work"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Construction": {
+      roles: [
+        "Residential builders",
+        "non-residential builders",
+        "heavy civil engineering staff",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
   },
   // --- 417 2nd Visa (3 months specified work) ---
   "417_2nd Visa (3 months specified work)": {
@@ -906,4 +1011,3 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
-
