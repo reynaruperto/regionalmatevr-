@@ -1,120 +1,69 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z.string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/(?=.*[0-9])/, { message: "Password must contain at least one number." })
+    .regex(/(?=.*[!@#$%^&*])/, { message: "Password must contain at least one special character." }),
+  confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const WHVOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const validatePassword = (password: string) => {
-    const errors = [];
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+    resolver: zodResolver(formSchema)
+  });
 
-    if (password.length < 8) {
-      errors.push('Password must be at least 8 characters long');
-    }
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
 
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      errors.push('Password must contain at least one uppercase letter, one lowercase letter, and one number');
-    }
-
-    return errors;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-
-    const newErrors: { [key: string]: string } = {};
-
-    // Password validation
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    const passwordErrors = validatePassword(formData.password);
-    if (passwordErrors.length > 0) {
-      newErrors.password = passwordErrors[0];
-    }
-
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!formData.password.trim()) newErrors.password = 'Password is required';
-    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = 'Password confirmation is required';
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      setIsLoading(false);
-      return;
-    }
-
     try {
       const { error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
+        email: data.email,
+        password: data.password,
         options: {
           emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
-          data: {
-            user_type: 'whv'
-          }
+          data: { user_type: 'whv' }
         }
       });
 
-      if (error) {
-        if (error.message === 'User already registered') {
-          setErrors({ email: 'An account with this email already exists' });
-        } else {
-          toast({
-            title: "Registration failed",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
-        return;
-      }
+      if (error) throw error;
 
-      // Store email for the confirmation page
-      sessionStorage.setItem('pendingEmail', formData.email);
-      
+      sessionStorage.setItem('pendingEmail', data.email);
+
       toast({
-        title: "Registration successful",
+        title: "Account created successfully!",
         description: "Please check your email for a confirmation code",
       });
-      
+
       navigate('/whv/email-confirmation');
-    } catch (error) {
-      console.error('Registration error:', error);
+    } catch (error: any) {
       toast({
         title: "Registration failed",
-        description: "An unexpected error occurred. Please try again.",
+        description: error.message || "An unexpected error occurred.",
         variant: "destructive"
       });
     } finally {
@@ -123,115 +72,86 @@ const WHVOnboardingForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      {/* iPhone 16 Pro Max frame */}
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+        <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-2 mb-4 flex-shrink-0"></div>
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
 
-          {/* Header */}
-          <div className="px-4 py-3 border-b bg-white flex-shrink-0">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => navigate('/lets-begin')}
-                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-              >
-                <ArrowLeft size={20} className="text-gray-600" />
-              </button>
-              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
-              <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                {/* ✅ Updated to show Step 1 of 6 */}
-                <span className="text-sm font-medium text-gray-600">1/6</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 iphone-scroll-content px-4 py-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-base font-medium text-gray-700">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`h-12 bg-gray-100 border-0 text-gray-900 ${errors.email ? 'border-red-500' : ''}`}
-                  placeholder="peterparker@gmail.com"
-                />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-              </div>
-
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-base font-medium text-gray-700">
-                  Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.password ? 'border-red-500' : ''}`}
-                    placeholder="••••••••••••••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-              </div>
-
-              {/* Confirm Password */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-700">
-                  Confirm Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    required
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className={`h-12 bg-gray-100 border-0 text-gray-900 pr-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                    placeholder="••••••••••••••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-              </div>
-
-              <div className="pt-8">
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium disabled:opacity-50"
-                >
-                  {isLoading ? 'Creating account...' : 'Continue →'}
+          <div className="w-full h-full flex flex-col relative bg-white">
+            {/* Header */}
+            <div className="px-6 pt-16 pb-6">
+              <div className="flex items-center justify-between mb-8">
+                <Button variant="ghost" size="icon" className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
+                  onClick={() => navigate('/lets-begin')}>
+                  <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
               </div>
-            </form>
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
+                  <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                    <span className="text-sm font-medium text-gray-600">1/6</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Form */}
+            <div className="flex-1 overflow-y-auto px-6 pb-20">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
+              <p className="text-gray-600 mb-6">Start by setting up your account with email and password.</p>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Email */}
+                <div>
+                  <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+                  <Input id="email" type="email" {...register("email")}
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
+                  {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                </div>
+
+                {/* Password */}
+                <div>
+                  <Label htmlFor="password">Password <span className="text-red-500">*</span></Label>
+                  <div className="relative">
+                    <Input id="password" type={showPassword ? "text" : "password"} {...register("password")}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12" />
+                    <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                </div>
+
+                {/* Confirm Password */}
+                <div>
+                  <Label htmlFor="confirmPassword">Confirm Password <span className="text-red-500">*</span></Label>
+                  <div className="relative">
+                    <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"}
+                      {...register("confirmPassword")}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12" />
+                    <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                      {showConfirmPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+                  {password && confirmPassword && password !== confirmPassword && !errors.confirmPassword && (
+                    <p className="text-red-500 text-sm">Passwords don't match</p>
+                  )}
+                </div>
+
+                {/* Submit */}
+                <div className="pt-8">
+                  <Button type="submit" disabled={isLoading}
+                    className="w-full h-14 text-lg rounded-xl bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50">
+                    {isLoading ? 'Creating account...' : 'Continue'}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -240,3 +160,4 @@ const WHVOnboardingForm: React.FC = () => {
 };
 
 export default WHVOnboardingForm;
+

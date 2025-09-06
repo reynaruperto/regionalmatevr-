@@ -31,12 +31,7 @@ const EmployerOnboardingForm: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch
-  } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
 
@@ -45,50 +40,30 @@ const EmployerOnboardingForm: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-
     try {
       const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           emailRedirectTo: `${window.location.origin}/employer/about-business`,
-          data: {
-            user_type: 'employer'
-          }
+          data: { user_type: 'employer' }
         }
       });
 
-      if (error) {
-        if (error.message === 'User already registered') {
-          toast({
-            title: "Account exists",
-            description: "An account with this email already exists",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Registration failed",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
-        return;
-      }
+      if (error) throw error;
 
-      // Store email for the confirmation page
       sessionStorage.setItem('pendingEmail', data.email);
-      
+
       toast({
         title: "Account created successfully!",
         description: "Please check your email for a confirmation code",
       });
-      
+
       navigate('/employer/email-confirmation');
-    } catch (error) {
-      console.error('Registration error:', error);
+    } catch (error: any) {
       toast({
         title: "Registration failed",
-        description: "An unexpected error occurred. Please try again.",
+        description: error.message || "An unexpected error occurred.",
         variant: "destructive"
       });
     } finally {
@@ -98,30 +73,20 @@ const EmployerOnboardingForm: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
-      {/* iPhone 16 Pro Max frame */}
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
-          
-          {/* Main content container */}
+
           <div className="w-full h-full flex flex-col relative bg-white">
-            
-            {/* Header with back button and title */}
+            {/* Header */}
             <div className="px-6 pt-16 pb-6">
               <div className="flex items-center justify-between mb-8">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
-                  onClick={() => navigate('/lets-begin')}
-                >
+                <Button variant="ghost" size="icon" className="w-12 h-12 bg-gray-100 rounded-xl shadow-sm"
+                  onClick={() => navigate('/lets-begin')}>
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </Button>
-                <div className="flex-1"></div>
               </div>
-
-              {/* Progress indicator and title */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-bold text-gray-900">Account Set Up</h1>
@@ -132,107 +97,61 @@ const EmployerOnboardingForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Form content */}
+            {/* Form */}
             <div className="flex-1 overflow-y-auto px-6 pb-20">
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
-                <p className="text-gray-600">Start by setting up your account with email and password.</p>
-              </div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Create your login</h2>
+              <p className="text-gray-600 mb-6">Start by setting up your account with email and password.</p>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Email field */}
+                {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="text-base font-medium text-gray-900 mb-2 block">
-                    Email <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    autoComplete="off"
-                    className="h-14 text-base bg-gray-100 border-0 rounded-xl"
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-                  )}
+                  <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
+                  <Input id="email" type="email" {...register("email")}
+                    className="h-14 text-base bg-gray-100 border-0 rounded-xl" />
+                  {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                 </div>
 
-                {/* Password field */}
+                {/* Password */}
                 <div>
-                  <Label htmlFor="password" className="text-base font-medium text-gray-900 mb-2 block">
-                    Password <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="password">Password <span className="text-red-500">*</span></Label>
                   <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      autoComplete="new-password"
-                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
-                      {...register("password")}
-                    />
-                    <button
-                      type="button"
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-5 h-5 text-gray-500" />
-                      ) : (
-                        <Eye className="w-5 h-5 text-gray-500" />
-                      )}
+                    <Input id="password" type={showPassword ? "text" : "password"} {...register("password")}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12" />
+                    <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
                     </button>
                   </div>
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-                  )}
+                  {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                 </div>
 
-                {/* Confirm Password field */}
+                {/* Confirm Password */}
                 <div>
-                  <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-900 mb-2 block">
-                    Confirm Password <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="confirmPassword">Confirm Password <span className="text-red-500">*</span></Label>
                   <div className="relative">
-                    <Input
-                      id="confirmPassword"
-                      type={showConfirmPassword ? "text" : "password"}
-                      autoComplete="new-password"
-                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12"
+                    <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"}
                       {...register("confirmPassword")}
-                    />
-                    <button
-                      type="button"
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="w-5 h-5 text-gray-500" />
-                      ) : (
-                        <Eye className="w-5 h-5 text-gray-500" />
-                      )}
+                      className="h-14 text-base bg-gray-100 border-0 rounded-xl pr-12" />
+                    <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                      {showConfirmPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
                     </button>
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
-                  )}
+                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
                   {password && confirmPassword && password !== confirmPassword && !errors.confirmPassword && (
-                    <p className="text-red-500 text-sm mt-1">Passwords don't match</p>
+                    <p className="text-red-500 text-sm">Passwords don't match</p>
                   )}
                 </div>
 
-                {/* Continue button */}
+                {/* Submit */}
                 <div className="pt-8">
-                  <Button 
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full h-14 text-lg rounded-xl bg-[#1E293B] hover:opacity-90 text-white disabled:opacity-50"
-                  >
+                  <Button type="submit" disabled={isLoading}
+                    className="w-full h-14 text-lg rounded-xl bg-[#1E293B] text-white hover:opacity-90 disabled:opacity-50">
                     {isLoading ? 'Creating account...' : 'Continue'}
                   </Button>
                 </div>
               </form>
             </div>
-
           </div>
         </div>
       </div>
@@ -241,4 +160,5 @@ const EmployerOnboardingForm: React.FC = () => {
 };
 
 export default EmployerOnboardingForm;
+
 
