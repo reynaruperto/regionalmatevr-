@@ -186,7 +186,7 @@ const whvIndustries: Record<
     }
   },
 
-  // --- 462 6-Month Exemption (10 industries, identical to 417) ---
+  // --- 462 6-Month Exemption (10 industries) ---
   "462_6-Month Exemption": {
     "Plant & Animal Cultivation": {
       roles: [
@@ -651,6 +651,116 @@ const whvIndustries: Record<
       postcodes: ["All"]
     }
   },
+  // --- 462 2nd Visa (3 months specified work) ---
+  "462_2nd Visa (3 months specified work)": {
+    "Plant & Animal Cultivation": {
+      roles: [
+        "Harvesting/packing fruit & vegetable crops",
+        "pruning/trimming vines and trees (commercial horticulture)",
+        "cultivating plants and fungi",
+        "maintaining crops",
+        "processing plant products",
+        "maintaining animals for sale or produce",
+        "processing animal products (shearing, butchery, packing, tanning)",
+        "manufacturing dairy produce"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    },
+    "Tourism & Hospitality": {
+      roles: [
+        "Hotel/motel/hostel staff",
+        "reception",
+        "housekeeping",
+        "chefs",
+        "waiters",
+        "bartenders",
+        "catering staff",
+        "tour guides",
+        "dive instructors",
+        "bus drivers",
+        "event/entertainment staff",
+        "gallery/museum staff",
+        "travel agents"
+      ],
+      states: [
+        "Queensland",
+        "Northern Territory",
+        "Western Australia",
+        "Tasmania",
+        "South Australia",
+        "Victoria",
+        "New South Wales"
+      ],
+      areas: ["Northern", "Remote", "Very Remote"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799",
+        "TAS: 7209, 7255–7257, 7321",
+        "SA: 5220, 5222–5223, 5235, 5275, 5280, 5304, 5307, 5320, 5327, 5340, 5354, 5374, 5400, 5402, 5419, 5432, 5453–5455, 5470, 5473, 5495, 5501–5510, 5520–5734",
+        "VIC: 3211–3334, 3340–3424, 3430–3649, 3658–3749, 3753, 3756, 3758, 3762, 3764, 3778–3781, 3783, 3797, 3799, 3810–3909, 3912–3921, 3926–3971, 3979, 3984",
+        "NSW: 2311–2490, 2536–2551, 2575–2594, 2618–2739, 2787–2898"
+      ]
+    },
+    "Fishing & Pearling": {
+      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Tree Farming & Felling": {
+      roles: [
+        "Planting/tending plantation trees",
+        "felling trees",
+        "transporting logs to mills"
+      ],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Mining": {
+      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
+      states: ["Queensland", "Northern Territory", "Western Australia"],
+      areas: ["Northern"],
+      postcodes: [
+        "QLD: 4472, 4478, 4481–4482, 4680, 4694–4707, 4709–4712, 4717, 4720–4721, 4737, 4800–4816, 4819–4825, 4828–4830, 4849, 4852, 4854–4861, 4865, 4868–4888, 4890–4895",
+        "NT: All postcodes",
+        "WA: 0872, 6121–6126, 6200–6799"
+      ]
+    },
+    "Construction": {
+      roles: [
+        "Residential/non-residential builders",
+        "heavy civil engineering",
+        "construction services"
+      ],
+      states: ["All"],
+      areas: ["Regional"],
+      postcodes: ["All"]
+    },
+    "Natural Disaster Recovery": {
+      roles: [
+        "Flood/cyclone clean-up",
+        "demolition",
+        "construction repairs",
+        "land clearing",
+        "community recovery"
+      ],
+      states: ["All"],
+      areas: ["All"],
+      postcodes: ["All"]
+    }
+  },
   // --- 462 3rd Visa (6 months specified work) ---
   "462_3rd Visa (6 months specified work)": {
     "Plant & Animal Cultivation": {
@@ -764,12 +874,25 @@ const whvIndustries: Record<
 }; // END of whvIndustries
 
 // ==========================
+// Props Interface
+// ==========================
+interface WHVWorkPreferencesProps {
+  visaType: string;
+  visaStage: string;
+}
+
+// ==========================
 // Main Component
 // ==========================
-const WHVWorkPreferences: React.FC = () => {
+const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
+  visaType,
+  visaStage,
+}) => {
   const navigate = useNavigate();
 
-  const [visaSubclass, setVisaSubclass] = useState<string>("417_2nd Visa (3 months specified work)");
+  const initialSubclass = `${visaType}_${visaStage}`;
+  const [visaSubclass] = useState<string>(initialSubclass);
+
   const [tagline, setTagline] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -781,7 +904,10 @@ const WHVWorkPreferences: React.FC = () => {
     if (selectedIndustries.includes(industry)) {
       setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
       setSelectedRoles(
-        selectedRoles.filter((role) => !whvIndustries[visaSubclass]?.[industry]?.roles.includes(role))
+        selectedRoles.filter(
+          (role) =>
+            !whvIndustries[visaSubclass]?.[industry]?.roles.includes(role)
+        )
       );
     } else if (selectedIndustries.length < 3) {
       setSelectedIndustries([...selectedIndustries, industry]);
@@ -842,7 +968,9 @@ const WHVWorkPreferences: React.FC = () => {
               >
                 <ArrowLeft size={20} className="text-gray-600" />
               </button>
-              <h1 className="text-lg font-medium text-gray-900">Work Preferences</h1>
+              <h1 className="text-lg font-medium text-gray-900">
+                Work Preferences
+              </h1>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <span className="text-sm font-medium text-gray-600">4/6</span>
               </div>
@@ -872,7 +1000,8 @@ const WHVWorkPreferences: React.FC = () => {
               {/* Industry Selection */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select up to 3 industries of interest <span className="text-red-500">*</span>
+                  Select up to 3 industries of interest{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <div className="max-h-48 overflow-y-auto border rounded-md p-2">
                   {Object.keys(whvIndustries[visaSubclass]).map((industry) => (
@@ -881,7 +1010,8 @@ const WHVWorkPreferences: React.FC = () => {
                         type="checkbox"
                         checked={selectedIndustries.includes(industry)}
                         disabled={
-                          selectedIndustries.length >= 3 && !selectedIndustries.includes(industry)
+                          selectedIndustries.length >= 3 &&
+                          !selectedIndustries.includes(industry)
                         }
                         onChange={() => toggleIndustry(industry)}
                         className="h-4 w-4"
@@ -922,7 +1052,8 @@ const WHVWorkPreferences: React.FC = () => {
               {/* Preferred States */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Working States (up to 3) <span className="text-red-500">*</span>
+                  Preferred Working States (up to 3){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <div className="max-h-48 overflow-y-auto border rounded-md p-2">
                   {australianStates.map((state) => (
@@ -931,7 +1062,8 @@ const WHVWorkPreferences: React.FC = () => {
                         type="checkbox"
                         checked={preferredStates.includes(state)}
                         disabled={
-                          preferredStates.length >= 3 && !preferredStates.includes(state)
+                          preferredStates.length >= 3 &&
+                          !preferredStates.includes(state)
                         }
                         onChange={() => togglePreferredState(state)}
                         className="h-4 w-4"
@@ -945,7 +1077,8 @@ const WHVWorkPreferences: React.FC = () => {
               {/* Preferred Areas */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Preferred Area Restrictions (up to 3) <span className="text-red-500">*</span>
+                  Preferred Area Restrictions (up to 3){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <div className="max-h-32 overflow-y-auto border rounded-md p-2">
                   {Object.values(AreaRestriction).map((area) => (
@@ -954,7 +1087,8 @@ const WHVWorkPreferences: React.FC = () => {
                         type="checkbox"
                         checked={preferredAreas.includes(area)}
                         disabled={
-                          preferredAreas.length >= 3 && !preferredAreas.includes(area)
+                          preferredAreas.length >= 3 &&
+                          !preferredAreas.includes(area)
                         }
                         onChange={() => togglePreferredArea(area)}
                         className="h-4 w-4"
@@ -1011,3 +1145,4 @@ const WHVWorkPreferences: React.FC = () => {
 };
 
 export default WHVWorkPreferences;
+
