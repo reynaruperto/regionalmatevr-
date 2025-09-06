@@ -857,7 +857,6 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  // Map the visa type and stage to the correct key in whvIndustries
   const getVisaSubclass = (type: string, stage: string): string => {
     if (type === "417" && stage === "1st") return "417_6-Month Exemption";
     if (type === "417" && stage === "2nd") return "417_2nd Visa (3 months specified work)";
@@ -874,6 +873,33 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [preferredStates, setPreferredStates] = useState<string[]>([]);
   const [preferredAreas, setPreferredAreas] = useState<string[]>([]);
+
+  // Tooltip Generator
+  const getIndustryTooltip = (
+    visaSubclass: string,
+    industry: string,
+    state: string,
+    area: string
+  ): string => {
+    const config = whvIndustries[visaSubclass]?.[industry];
+    if (!config || !state || !area) return "";
+
+    const validStates =
+      config.states.includes("All") ? australianStates : config.states;
+
+    const validAreas =
+      config.areas.includes("All") ? ["All"] : config.areas;
+
+    if (!validStates.includes(state)) {
+      return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
+    }
+
+    if (!validAreas.includes("All") && !validAreas.includes(area)) {
+      return `⚠️ ${industry} may only count in areas: ${validAreas.join(", ")}.`;
+    }
+
+    return `✅ ${industry} can be done in ${state} (${area}).`;
+  };
 
   const toggleIndustry = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
@@ -917,7 +943,7 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
     e.preventDefault();
     console.log("Visa:", visaSubclass);
     console.log("Tagline:", tagline);
-    console.log("Industries:", selectedIndustries);
+    console.log("Preferred Industries:", selectedIndustries);
     console.log("Roles:", selectedRoles);
     console.log("Preferred States:", preferredStates);
     console.log("Preferred Areas:", preferredAreas);
@@ -928,7 +954,7 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
         <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
-          <div className="w-32 h-6 bg-black rounded-full mx-auto mt-4 flex-shrink-0"></div>
+          {/* Header */}
           <div className="px-4 py-4 border-b bg-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
@@ -945,6 +971,8 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Content */}
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-8 pb-20">
               {/* Profile Tagline */}
@@ -959,15 +987,32 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                   className="h-12 bg-gray-100 border-0 text-gray-900"
                   maxLength={60}
                 />
-                <p className="text-xs text-gray-500">
-                  This will appear under your profile photo (max 60 characters)
-                </p>
               </div>
 
-              {/* Industry Selection */}
+              {/* Eligible Industries (auto-display) */}
               <div className="space-y-3">
                 <Label className="text-base font-medium text-gray-700">
-                  Select up to 3 industries of interest{" "}
+                  Eligible industries for your visa
+                </Label>
+                <div className="max-h-48 overflow-y-auto border rounded-md p-2 bg-gray-50">
+                  {whvIndustries[visaSubclass] ? (
+                    Object.keys(whvIndustries[visaSubclass]).map((industry) => (
+                      <div key={industry} className="text-sm text-gray-700 py-1">
+                        • {industry}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500 p-2">
+                      No industries available for the selected visa type.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Industry Preferences (checkboxes for matching) */}
+              <div className="space-y-3">
+                <Label className="text-base font-medium text-gray-700">
+                  Select up to 3 industries of interest (for matching){" "}
                   <span className="text-red-500">*</span>
                 </Label>
                 <div className="max-h-48 overflow-y-auto border rounded-md p-2">
@@ -1069,6 +1114,40 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
                   ))}
                 </div>
               </div>
+
+              {/* Tooltips */}
+              {preferredStates.length > 0 &&
+                preferredAreas.length > 0 &&
+                selectedIndustries.length > 0 && (
+                  <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
+                    {selectedIndustries.map((industry) =>
+                      preferredStates.map((state) =>
+                        preferredAreas.map((area) => (
+                          <p
+                            key={`${industry}-${state}-${area}`}
+                            className={`${
+                              getIndustryTooltip(
+                                visaSubclass,
+                                industry,
+                                state,
+                                area
+                              ).includes("⚠️")
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {getIndustryTooltip(
+                              visaSubclass,
+                              industry,
+                              state,
+                              area
+                            )}
+                          </p>
+                        ))
+                      )
+                    )}
+                  </div>
+                )}
 
               {/* Continue Button */}
               <div className="pt-8">
