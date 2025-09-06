@@ -46,7 +46,7 @@ const WHVOnboardingForm: React.FC = () => {
         password: data.password,
         options: {
           emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
-          data: { user_type: 'whv' }
+          data: { user_type: 'whv_maker' }
         }
       });
 
