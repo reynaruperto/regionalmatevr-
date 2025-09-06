@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/integrations/supabase/client";
 
 enum AreaRestriction {
   All = "All",
@@ -65,14 +65,14 @@ const WHVWorkPreferences: React.FC = () => {
         setIndustries(mapped);
       }
 
-      // Region rules
-      const { data: regionsData, error: regError } = await supabase
-        .from("region_postcode")
-        .select("state, area, postcode_range");
+      // Region rules - commenting out since table doesn't exist
+      // const { data: regionsData, error: regError } = await supabase
+      //   .from("region_postcode")
+      //   .select("state, area, postcode_range");
 
-      if (!regError && regionsData) {
-        setRegionRules(regionsData);
-      }
+      // if (!regError && regionsData) {
+      //   setRegionRules(regionsData);
+      // }
     };
 
     loadData();
@@ -175,15 +175,15 @@ const WHVWorkPreferences: React.FC = () => {
     for (const industryId of selectedIndustries) {
       const rolesForIndustry = selectedRoles.length ? selectedRoles : [null];
       for (const roleId of rolesForIndustry) {
-        await supabase.from("maker_preference").insert(
-          preferredStates.map((s) => ({
+        for (const state of preferredStates) {
+          await supabase.from("maker_preference").insert({
             user_id: user.id,
-            state: s,
-            area: preferredAreas.join(", "),
+            state: state as "Australian Capital Territory" | "New South Wales" | "Northern Territory" | "Queensland" | "South Australia" | "Tasmania" | "Victoria" | "Western Australia",
+            suburb_city: preferredAreas.join(", "),
             industry_id: industryId,
             industry_role_id: roleId,
-          }))
-        );
+          });
+        }
       }
     }
 

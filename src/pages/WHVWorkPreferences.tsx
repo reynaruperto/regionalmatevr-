@@ -1,7 +1,7 @@
 import WHVWorkPreferences from '@/components/WHVWorkPreferences';
 
 const WHVWorkPreferencesPage = () => {
-  return <WHVWorkPreferences visaType="417" visaStage="1st" />;
+  return <WHVWorkPreferences />;
 };
 
 export default WHVWorkPreferencesPage;
