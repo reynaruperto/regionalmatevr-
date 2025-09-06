@@ -1048,11 +1048,6 @@ const WHVWorkPreferences: React.FC<WHVWorkPreferencesProps> = ({
               {preferredStates.length > 0 &&
                 preferredAreas.length > 0 &&
                 selectedIndustries.length > 0 && (
-                  <div className="space-y
-              {/* Tooltips */}
-              {preferredStates.length > 0 &&
-                preferredAreas.length > 0 &&
-                selectedIndustries.length > 0 && (
                   <div className="space-y-2 bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
                     {selectedIndustries.map((industry) =>
                       preferredStates.map((state) =>
