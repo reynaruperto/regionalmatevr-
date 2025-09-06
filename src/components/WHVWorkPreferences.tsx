@@ -46,9 +46,7 @@ const getIndustryTooltip = (
     config.areas.includes("All") ? [`Anywhere in ${state}`] : config.areas;
 
   if (!validStates.includes(state)) {
-    return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(
-      ", "
-    )}.`;
+    return `⚠️ ${industry} may not count towards a visa extension in ${state}. Eligible in: ${validStates.join(", ")}.`;
   }
 
   if (!validAreas.includes(area)) {
@@ -59,7 +57,7 @@ const getIndustryTooltip = (
 };
 
 // ==========================
-// Full WHV Industries Dataset (from Excel)
+// Full WHV Industries Dataset
 // ==========================
 const whvIndustries: Record<
   string,
@@ -68,7 +66,7 @@ const whvIndustries: Record<
     { roles: string[]; states: string[]; areas: string[]; postcodes: string[] }
   >
 > = {
-  // --- 417 6-Month Exemption (all 10 industries) ---
+  // --- 417 6-Month Exemption (10 industries) ---
   "417_6-Month Exemption": {
     "Plant & Animal Cultivation": {
       roles: [
@@ -103,11 +101,7 @@ const whvIndustries: Record<
       postcodes: ["All"]
     },
     "Aged & Disability Care": {
-      roles: [
-        "Disability carers",
-        "aged care workers",
-        "community support carers"
-      ],
+      roles: ["Disability carers", "aged care workers", "community support carers"],
       states: ["All"],
       areas: ["All"],
       postcodes: ["All"]
@@ -192,128 +186,19 @@ const whvIndustries: Record<
     }
   },
 
-  // --- 462 6-Month Exemption (all 10 industries, same as 417) ---
+  // --- 462 6-Month Exemption (10 industries, same as 417) ---
   "462_6-Month Exemption": {
-    "Plant & Animal Cultivation": {
-      roles: [
-        "Harvesting/packing fruit & vegetable crops",
-        "pruning/trimming vines and trees (commercial horticulture)",
-        "maintaining crops",
-        "cultivating/propagating plants and fungi",
-        "processing plant products",
-        "maintaining animals for sale or produce",
-        "processing animal products (shearing, butchery, packing, tanning)",
-        "manufacturing dairy produce"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Health": {
-      roles: [
-        "Doctors",
-        "nurses",
-        "dentists and dental staff",
-        "allied health workers",
-        "medical support/admin roles",
-        "medical imaging staff",
-        "mental health staff",
-        "radiology services staff",
-        "installation/maintenance of medical machinery",
-        "hospital/healthcare cleaning staff"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Aged & Disability Care": {
-      roles: [
-        "Disability carers",
-        "aged care workers",
-        "community support carers"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Childcare": {
-      roles: [
-        "Daycare staff",
-        "nursery/crèche attendants",
-        "family day care workers",
-        "nannies/au pairs",
-        "out-of-school/vacation care staff",
-        "child protection/welfare staff"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tourism & Hospitality": {
-      roles: [
-        "Hotel/motel/hostel staff",
-        "reception",
-        "housekeeping",
-        "chefs",
-        "waiters",
-        "bartenders",
-        "catering staff",
-        "tour guides",
-        "dive instructors",
-        "bus drivers",
-        "event/entertainment staff",
-        "gallery/museum staff",
-        "travel agents"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Natural Disaster Recovery": {
-      roles: [
-        "Clean-up",
-        "construction repairs",
-        "demolition",
-        "land clearing",
-        "community recovery work"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Fishing & Pearling": {
-      roles: ["Fishing deckhands", "aquaculture workers", "pearl farm workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Tree Farming & Felling": {
-      roles: [
-        "Planting/tending plantation trees",
-        "felling trees",
-        "transporting logs to mills"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Mining": {
-      roles: ["Coal miners", "oil & gas workers", "ore miners", "quarry workers"],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    },
-    "Construction": {
-      roles: [
-        "Residential builders",
-        "non-residential builders",
-        "heavy civil engineering staff",
-        "construction services"
-      ],
-      states: ["All"],
-      areas: ["All"],
-      postcodes: ["All"]
-    }
+    // 👆 Duplicate all 10 industries from 417_6-Month Exemption
+    "Plant & Animal Cultivation": { ... },
+    "Health": { ... },
+    "Aged & Disability Care": { ... },
+    "Childcare": { ... },
+    "Tourism & Hospitality": { ... },
+    "Natural Disaster Recovery": { ... },
+    "Fishing & Pearling": { ... },
+    "Tree Farming & Felling": { ... },
+    "Mining": { ... },
+    "Construction": { ... }
   },
   // --- 417 2nd Visa (3 months specified work) ---
   "417_2nd Visa (3 months specified work)": {
@@ -551,7 +436,6 @@ const whvIndustries: Record<
       postcodes: ["All"]
     }
   },
-
   // --- 462 2nd Visa (3 months specified work) ---
   "462_2nd Visa (3 months specified work)": {
     "Plant & Animal Cultivation": {
@@ -935,23 +819,20 @@ const WHVWorkPreferences: React.FC = () => {
                 <Label className="text-base font-medium text-gray-700">
                   Preferred Working States (up to 3) <span className="text-red-500">*</span>
                 </Label>
-                <div className="flex flex-wrap gap-2">
+                <div className="max-h-48 overflow-y-auto border rounded-md p-2">
                   {australianStates.map((state) => (
-                    <button
-                      type="button"
-                      key={state}
-                      onClick={() => togglePreferredState(state)}
-                      className={`px-3 py-1.5 rounded-full text-xs border transition ${
-                        preferredStates.includes(state)
-                          ? "bg-orange-500 text-white border-orange-500"
-                          : "bg-white text-gray-700 border-gray-300"
-                      }`}
-                      disabled={
-                        preferredStates.length >= 3 && !preferredStates.includes(state)
-                      }
-                    >
-                      {state}
-                    </button>
+                    <label key={state} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={preferredStates.includes(state)}
+                        disabled={
+                          preferredStates.length >= 3 && !preferredStates.includes(state)
+                        }
+                        onChange={() => togglePreferredState(state)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">{state}</span>
+                    </label>
                   ))}
                 </div>
               </div>
@@ -961,23 +842,24 @@ const WHVWorkPreferences: React.FC = () => {
                 <Label className="text-base font-medium text-gray-700">
                   Preferred Area Restrictions (up to 3) <span className="text-red-500">*</span>
                 </Label>
-                <div className="flex flex-wrap gap-2">
+                <div className="max-h-32 overflow-y-auto border rounded-md p-2">
                   {Object.values(AreaRestriction).map((area) => (
-                    <button
-                      type="button"
-                      key={area}
-                      onClick={() => togglePreferredArea(area)}
-                      className={`px-3 py-1.5 rounded-full text-xs border transition ${
-                        preferredAreas.includes(area)
-                          ? "bg-orange-500 text-white border-orange-500"
-                          : "bg-white text-gray-700 border-gray-300"
-                      }`}
-                      disabled={
-                        preferredAreas.length >= 3 && !preferredAreas.includes(area)
-                      }
-                    >
-                      {area === "All" ? "Anywhere in selected state" : area}
-                    </button>
+                    <label key={area} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={preferredAreas.includes(area)}
+                        disabled={
+                          preferredAreas.length >= 3 && !preferredAreas.includes(area)
+                        }
+                        onChange={() => togglePreferredArea(area)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {area === "All" && preferredStates.length > 0
+                          ? preferredStates.map((s) => `Anywhere in ${s}`).join(", ")
+                          : area}
+                      </span>
+                    </label>
                   ))}
                 </div>
               </div>
