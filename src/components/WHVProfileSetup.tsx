@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,236 +11,281 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 
-// ==========================
-// Eligible Countries
-// ==========================
-const countries417FirstSecond = [
-  "Belgium", "Canada", "Republic of Cyprus", "Denmark", "Estonia", "Finland",
-  "France", "Germany", "Hong Kong Special Administrative Region",
-  "Republic of Ireland", "Italy", "Japan", "Republic of Korea",
-  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan",
-  "United Kingdom of Great Britain and Northern Ireland",
-];
-
-const countries417Third = [
-  "Republic of Cyprus", "Denmark", "Estonia", "Finland",
-  "France", "Germany", "Hong Kong Special Administrative Region",
-  "Republic of Ireland", "Italy", "Japan", "Republic of Korea",
-  "Malta", "Netherlands", "Norway", "Sweden", "Taiwan",
-  "United Kingdom of Great Britain and Northern Ireland",
-];
-
-const countries462First = [
-  "Argentina", "Austria", "Brazil", "Chile", "China", "Czech Republic",
-  "Ecuador", "Greece", "Hungary", "India", "Indonesia", "Israel",
-  "Luxembourg", "Malaysia", "Mongolia", "Papua New Guinea", "Peru",
-  "Poland", "Portugal", "San Marino", "Singapore", "Slovak Republic",
-  "Slovenia", "Spain", "Switzerland", "Thailand", "Türkiye",
-  "Uruguay", "United States of America", "Vietnam",
-];
-
-const countries462SecondThird = [...countries462First];
-
-// ==========================
-// Helpers
-// ==========================
-const getVisaOptions = (nationality: string) => {
-  if (countries417FirstSecond.includes(nationality)) {
-    return [
-      "417 (First Working Holiday Visa)",
-      "417 (Second Working Holiday Visa)",
-      ...(countries417Third.includes(nationality)
-        ? ["417 (Third Working Holiday Visa)"]
-        : []),
-    ];
-  }
-  if (countries462First.includes(nationality)) {
-    return [
-      "462 (First Work and Holiday Visa)",
-      "462 (Second Work and Holiday Visa)",
-      ...(countries462SecondThird.includes(nationality)
-        ? ["462 (Third Work and Holiday Visa)"]
-        : []),
-    ];
-  }
-  return [];
-};
-
-const formatDateInput = (value: string) => {
-  const numericValue = value.replace(/\D/g, "");
-  if (numericValue.length <= 2) return numericValue;
-  else if (numericValue.length <= 4)
-    return `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
-  else
-    return `${numericValue.slice(0, 2)}/${numericValue.slice(
-      2,
-      4
-    )}/${numericValue.slice(4, 8)}`;
-};
-
-const validateDate = (dateStr: string, isDateOfBirth = false) => {
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  if (!dateRegex.test(dateStr)) return "Please enter DD/MM/YYYY";
-
-  const [day, month, year] = dateStr.split("/").map(Number);
-  const date = new Date(year, month - 1, day);
-  if (
-    date.getDate() !== day ||
-    date.getMonth() !== month - 1 ||
-    date.getFullYear() !== year
-  ) {
-    return "Invalid date";
-  }
-
-  if (isDateOfBirth) {
-    const today = new Date();
-    const age = today.getFullYear() - year;
-    if (age < 18) return "You must be at least 18 years old";
-  } else {
-    const today = new Date();
-    if (date <= today) return "Visa expiry must be in the future";
-  }
-
-  return "";
-};
-
-const validatePhoneNumber = (phone: string) => {
-  const numericPhone = phone.replace(/\D/g, "");
-  if (!/^0\d{9}$/.test(numericPhone) && !/^61\d{9}$/.test(numericPhone)) {
-    return "Enter a valid Australian phone number";
-  }
-  return "";
-};
-
-// ==========================
-// Component
-// ==========================
 const WHVProfileSetup: React.FC = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     givenName: "",
-    middleName: "",
     familyName: "",
     dateOfBirth: "",
     nationality: "",
     visaType: "",
-    visaExpiryDate: "",
-    phoneNumber: "",
-    addressLine1: "",
-    addressLine2: "",
-    suburb: "",
+    visaExpiry: "",
+    phone: "",
+    address1: "",
     city: "",
     state: "",
-    postCode: "",
+    postcode: "",
   });
+
+  const [countries, setCountries] = useState<any[]>([]);
+  const [visaStages, setVisaStages] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Load countries + visa stages
+  useEffect(() => {
+    const loadData = async () => {
+      const { data: countryData, error: cErr } = await supabase
+        .from("country")
+        .select("country_id, name, scheme")
+        .order("name");
+      if (cErr) console.error(cErr);
+      else setCountries(countryData || []);
+
+      const { data: stageData, error: vErr } = await supabase
+        .from("visa_stage")
+        .select("stage_id, scheme, stage, label")
+        .order("stage");
+      if (vErr) console.error(vErr);
+      else setVisaStages(stageData || []);
+    };
+    loadData();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let formattedValue = value;
-    if (name === "dateOfBirth" || name === "visaExpiryDate")
-      formattedValue = formatDateInput(value);
-    if (name === "phoneNumber" || name === "postCode")
-      formattedValue = value.replace(/\D/g, "");
-
-    setFormData({ ...formData, [name]: formattedValue });
-    if (errors[name]) setErrors({ ...errors, [name]: "" });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    if (name === "nationality") {
-      setFormData({ ...formData, nationality: value, visaType: "" });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-    if (errors[name]) setErrors({ ...errors, [name]: "" });
+  const handleSelect = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newErrors: { [key: string]: string } = {};
-
-    if (!formData.givenName.trim()) newErrors.givenName = "Required";
-    if (!formData.familyName.trim()) newErrors.familyName = "Required";
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Required";
-    else {
-      const dobError = validateDate(formData.dateOfBirth, true);
-      if (dobError) newErrors.dateOfBirth = dobError;
-    }
-    if (!formData.visaExpiryDate) newErrors.visaExpiryDate = "Required";
-    else {
-      const visaError = validateDate(formData.visaExpiryDate, false);
-      if (visaError) newErrors.visaExpiryDate = visaError;
-    }
-    if (!formData.phoneNumber) newErrors.phoneNumber = "Required";
-    else {
-      const phoneError = validatePhoneNumber(formData.phoneNumber);
-      if (phoneError) newErrors.phoneNumber = phoneError;
-    }
+    const newErrors: any = {};
+    if (!formData.givenName) newErrors.givenName = "Required";
+    if (!formData.familyName) newErrors.familyName = "Required";
     if (!formData.nationality) newErrors.nationality = "Required";
-
-    const eligibleVisas = getVisaOptions(formData.nationality);
-    if (eligibleVisas.length === 0)
-      newErrors.nationality = "Not eligible for WHV";
-    else if (!formData.visaType) newErrors.visaType = "Required";
-
-    if (!formData.addressLine1.trim()) newErrors.addressLine1 = "Required";
-    if (!formData.suburb.trim()) newErrors.suburb = "Required";
-    if (!formData.city.trim()) newErrors.city = "Required";
-    if (!formData.state) newErrors.state = "Required";
-    if (!formData.postCode.trim()) newErrors.postCode = "Required";
-    else if (formData.postCode.length !== 4)
-      newErrors.postCode = "Must be 4 digits";
-
-    if (Object.keys(newErrors).length > 0) {
+    if (!formData.visaType) newErrors.visaType = "Required";
+    if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       return;
     }
 
-    // ✅ Pass visaType + visaStage to Work Preferences
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return;
+
+    // Save WHV maker profile
+    await supabase.from("whv_maker").upsert({
+      user_id: user.id,
+      given_name: formData.givenName,
+      family_name: formData.familyName,
+      birth_date: formData.dateOfBirth || null,
+      nationality: formData.nationality,
+      mobile_num: formData.phone,
+      address_line1: formData.address1,
+      city: formData.city,
+      state: formData.state,
+      postcode: formData.postcode,
+    });
+
+    // Save visa info
+    await supabase.from("maker_visa").upsert({
+      user_id: user.id,
+      visa_type: formData.visaType,
+      expiry_date: formData.visaExpiry || null,
+    });
+
+    // Extract scheme + stage
+    const chosenStage = visaStages.find((v) => v.label === formData.visaType);
     navigate("/whv/work-preferences", {
       state: {
-        visaType: formData.visaType.startsWith("417") ? "417" : "462",
-        visaStage: formData.visaType.includes("First")
-          ? "1st"
-          : formData.visaType.includes("Second")
-          ? "2nd"
-          : "3rd",
+        visaType: chosenStage?.scheme || "",
+        visaStage: chosenStage?.stage?.toString() || "",
       },
     });
   };
 
+  // Filter visa stages by scheme of selected nationality
+  const selectedCountry = countries.find(
+    (c) => c.name === formData.nationality
+  );
+  const filteredStages = selectedCountry
+    ? visaStages.filter((v) => v.scheme === selectedCountry.scheme)
+    : [];
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-[430px] h-[932px] bg-black rounded-[60px] p-2 shadow-2xl">
-        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden relative flex flex-col">
+        <div className="w-full h-full bg-white rounded-[48px] overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="px-4 py-5 border-b bg-white flex-shrink-0 mb-4">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => navigate("/whv/email-confirmation")}
-                className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-              >
-                <ArrowLeft size={20} className="text-gray-600" />
-              </button>
-              <h1 className="text-lg font-medium text-gray-900">Account Set Up</h1>
-              <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <span className="text-sm font-medium text-gray-600">3/6</span>
-              </div>
-            </div>
+          <div className="px-4 py-4 border-b flex items-center justify-between">
+            <button
+              onClick={() => navigate("/whv/email-confirmation")}
+              className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
+            >
+              <ArrowLeft size={20} className="text-gray-600" />
+            </button>
+            <h1 className="text-lg font-medium">Account Set Up</h1>
+            <span className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full text-sm">
+              3/6
+            </span>
           </div>
 
           {/* Form */}
-          <div className="flex-1 overflow-y-auto px-4 pt-6 pb-6">
+          <div className="flex-1 overflow-y-auto px-4 py-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Form fields (GivenName, FamilyName, DOB, Nationality, Visa, Address, etc.) */}
-              {/* ... paste all inputs from earlier version ... */}
+              {/* Given Name */}
+              <div>
+                <Label>Given Name *</Label>
+                <Input
+                  name="givenName"
+                  value={formData.givenName}
+                  onChange={handleChange}
+                />
+                {errors.givenName && (
+                  <p className="text-red-500">{errors.givenName}</p>
+                )}
+              </div>
 
-              <div className="pt-8">
+              {/* Family Name */}
+              <div>
+                <Label>Family Name *</Label>
+                <Input
+                  name="familyName"
+                  value={formData.familyName}
+                  onChange={handleChange}
+                />
+                {errors.familyName && (
+                  <p className="text-red-500">{errors.familyName}</p>
+                )}
+              </div>
+
+              {/* Date of Birth */}
+              <div>
+                <Label>Date of Birth</Label>
+                <Input
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  placeholder="YYYY-MM-DD"
+                />
+              </div>
+
+              {/* Nationality */}
+              <div>
+                <Label>Nationality *</Label>
+                <Select
+                  value={formData.nationality}
+                  onValueChange={(v) => handleSelect("nationality", v)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select nationality" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((c) => (
+                      <SelectItem key={c.country_id} value={c.name}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.nationality && (
+                  <p className="text-red-500">{errors.nationality}</p>
+                )}
+              </div>
+
+              {/* Visa Type */}
+              {filteredStages.length > 0 && (
+                <div>
+                  <Label>Visa Type *</Label>
+                  <Select
+                    value={formData.visaType}
+                    onValueChange={(v) => handleSelect("visaType", v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select visa type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filteredStages.map((v) => (
+                        <SelectItem key={v.stage_id} value={v.label}>
+                          {v.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.visaType && (
+                    <p className="text-red-500">{errors.visaType}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Visa Expiry */}
+              <div>
+                <Label>Visa Expiry</Label>
+                <Input
+                  name="visaExpiry"
+                  value={formData.visaExpiry}
+                  onChange={handleChange}
+                  placeholder="YYYY-MM-DD"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <Label>Phone</Label>
+                <Input
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <Label>Address</Label>
+                <Input
+                  name="address1"
+                  value={formData.address1}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <Label>City</Label>
+                <Input
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <Label>State</Label>
+                <Input
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <Label>Postcode</Label>
+                <Input
+                  name="postcode"
+                  value={formData.postcode}
+                  onChange={handleChange}
+                  maxLength={4}
+                />
+              </div>
+
+              {/* Continue */}
+              <div className="pt-6">
                 <Button
                   type="submit"
-                  className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                  className="w-full h-14 bg-orange-500 text-white rounded-xl"
                 >
                   Continue →
                 </Button>
