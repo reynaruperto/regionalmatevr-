@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import AustraliaIcon from "./AustraliaIcon";
-import SignInAsModal from "./SignInAsModal";
 
 const LetsBeginScreen: React.FC = () => {
   const navigate = useNavigate();
-  const [showSignInModal, setShowSignInModal] = useState(false);
-
-  if (showSignInModal) {
-    return <SignInAsModal />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
@@ -81,7 +75,7 @@ const LetsBeginScreen: React.FC = () => {
               <p className="text-brand-secondary-text">
                 Already have an account?
                 <button
-                  onClick={() => setShowSignInModal(true)}
+                  onClick={() => navigate("/employer/sign-in")}
                   className="text-brand-text font-medium ml-1 hover:underline"
                 >
                   Sign in
@@ -96,4 +90,5 @@ const LetsBeginScreen: React.FC = () => {
 };
 
 export default LetsBeginScreen;
+
 
