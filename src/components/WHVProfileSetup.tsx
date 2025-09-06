@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const australianStates = [
@@ -71,20 +71,17 @@ const WHVProfileSetup: React.FC = () => {
     e.preventDefault();
     const newErrors: any = {};
 
-    // ✅ Validate mandatory fields
+    // ✅ Validation
     if (!formData.givenName) newErrors.givenName = "Required";
     if (!formData.familyName) newErrors.familyName = "Required";
     if (!formData.nationality) newErrors.nationality = "Required";
     if (!formData.visaType) newErrors.visaType = "Required";
     if (!formData.visaExpiry) newErrors.visaExpiry = "Required";
-
-    // ✅ Validate Australian phone number
     if (!formData.phone) {
       newErrors.phone = "Required";
     } else if (!/^(\+614\d{8}|04\d{8})$/.test(formData.phone)) {
       newErrors.phone = "Invalid Australian phone number";
     }
-
     if (!formData.address1) newErrors.address1 = "Required";
     if (!formData.suburb) newErrors.suburb = "Required";
     if (!formData.state) newErrors.state = "Required";
@@ -139,7 +136,6 @@ const WHVProfileSetup: React.FC = () => {
       return;
     }
 
-    // ✅ Navigate to work preferences (no need to pass state — will read from Supabase)
     navigate("/whv/work-preferences");
   };
 
@@ -193,14 +189,17 @@ const WHVProfileSetup: React.FC = () => {
                 {errors.familyName && <p className="text-red-500">{errors.familyName}</p>}
               </div>
 
-              {/* Date of Birth */}
+              {/* Date of Birth with tooltip */}
               <div>
-                <Label>Date of Birth</Label>
+                <div className="flex items-center gap-2">
+                  <Label>Date of Birth</Label>
+                  <Info size={16} className="text-gray-400" title="Format: DD MM YYYY" />
+                </div>
                 <Input
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  placeholder="YYYY-MM-DD"
+                  placeholder="DD MM YYYY"
                 />
               </div>
 
@@ -253,9 +252,9 @@ const WHVProfileSetup: React.FC = () => {
                 <Label>Visa Expiry <span className="text-red-500">*</span></Label>
                 <Input
                   name="visaExpiry"
+                  type="date"
                   value={formData.visaExpiry}
                   onChange={handleChange}
-                  placeholder="YYYY-MM-DD"
                 />
                 {errors.visaExpiry && <p className="text-red-500">{errors.visaExpiry}</p>}
               </div>
@@ -343,6 +342,7 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
+
 
 
 
