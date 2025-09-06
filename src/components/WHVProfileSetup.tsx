@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client"; // ✅ keep Lovable path
 
 const WHVProfileSetup: React.FC = () => {
   const navigate = useNavigate();
@@ -34,27 +34,33 @@ const WHVProfileSetup: React.FC = () => {
   const [visaStages, setVisaStages] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Load countries + visa stages (using mock data since tables don't exist)
+  // ✅ Load countries + visa stages from Supabase
   useEffect(() => {
-    const mockCountries = [
-      { country_id: 1, name: "Germany", scheme: "462" },
-      { country_id: 2, name: "France", scheme: "462" },
-      { country_id: 3, name: "United Kingdom", scheme: "417" },
-      { country_id: 4, name: "Canada", scheme: "417" },
-      { country_id: 5, name: "Ireland", scheme: "417" },
-    ];
-    
-    const mockVisaStages = [
-      { stage_id: 1, scheme: "462", stage: 1, label: "First Work and Holiday Visa (462)" },
-      { stage_id: 2, scheme: "462", stage: 2, label: "Second Work and Holiday Visa (462)" },
-      { stage_id: 3, scheme: "462", stage: 3, label: "Third Work and Holiday Visa (462)" },
-      { stage_id: 4, scheme: "417", stage: 1, label: "First Working Holiday Visa (417)" },
-      { stage_id: 5, scheme: "417", stage: 2, label: "Second Working Holiday Visa (417)" },
-      { stage_id: 6, scheme: "417", stage: 3, label: "Third Working Holiday Visa (417)" },
-    ];
-    
-    setCountries(mockCountries);
-    setVisaStages(mockVisaStages);
+    const loadData = async () => {
+      // Countries
+      const { data: countryData, error: cErr } = await supabase
+        .from("country")
+        .select("country_id, name, scheme")
+        .order("name");
+      if (cErr) {
+        console.error("Error loading countries:", cErr);
+      } else {
+        setCountries(countryData || []);
+      }
+
+      // Visa stages
+      const { data: stageData, error: vErr } = await supabase
+        .from("visa_stage")
+        .select("stage_id, scheme, stage, label")
+        .order("stage");
+      if (vErr) {
+        console.error("Error loading visa stages:", vErr);
+      } else {
+        setVisaStages(stageData || []);
+      }
+    };
+
+    loadData();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,15 +89,28 @@ const WHVProfileSetup: React.FC = () => {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    // TODO: Save WHV maker profile and visa info to database
-    // Database operations commented out until proper schema is available
-    console.log("Form data to save:", {
+    // ✅ Save WHV maker profile
+    await supabase.from("whv_maker").upsert({
       user_id: user.id,
-      profile: formData,
-      visaType: formData.visaType,
+      given_name: formData.givenName,
+      family_name: formData.familyName,
+      birth_date: formData.dateOfBirth || null,
+      nationality: formData.nationality,
+      mobile_num: formData.phone,
+      address_line1: formData.address1,
+      city: formData.city,
+      state: formData.state,
+      postcode: formData.postcode,
     });
 
-    // Extract scheme + stage
+    // ✅ Save visa info
+    await supabase.from("maker_visa").upsert({
+      user_id: user.id,
+      visa_type: formData.visaType,
+      expiry_date: formData.visaExpiry || null,
+    });
+
+    // ✅ Extract scheme + stage for navigation
     const chosenStage = visaStages.find((v) => v.label === formData.visaType);
     navigate("/whv/work-preferences", {
       state: {
@@ -101,7 +120,7 @@ const WHVProfileSetup: React.FC = () => {
     });
   };
 
-  // Filter visa stages by scheme of selected nationality
+  // ✅ Filter visa stages by scheme of selected nationality
   const selectedCountry = countries.find(
     (c) => c.name === formData.nationality
   );
@@ -289,6 +308,7 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
+
 
 
 
