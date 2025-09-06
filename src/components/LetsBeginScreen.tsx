@@ -1,19 +1,46 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import AustraliaIcon from './AustraliaIcon';
-import SignInAsModal from './SignInAsModal';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import AustraliaIcon from "./AustraliaIcon";
+import SignInAsModal from "./SignInAsModal";
+import { supabase } from "@/integrations/supabase/client";
 
 const LetsBeginScreen: React.FC = () => {
   const navigate = useNavigate();
   const [showSignInModal, setShowSignInModal] = useState(false);
 
+  // ✅ Helper: set user type in Supabase profile
+  const setUserType = async (type: "employer" | "whv") => {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      // Not logged in → open sign-in modal
+      setShowSignInModal(true);
+      return false;
+    }
+
+    const { error } = await supabase.from("profile").upsert({
+      user_id: user.id,
+      email: user.email,
+      user_type: type,
+    });
+
+    if (error) {
+      console.error("❌ Profile upsert failed:", error.message);
+      return false;
+    }
+
+    return true;
+  };
+
   if (showSignInModal) {
-    // ✅ Removed onClose prop
     return <SignInAsModal />;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       {/* iPhone 16 Pro Max frame */}
@@ -21,17 +48,16 @@ const LetsBeginScreen: React.FC = () => {
         <div className="w-full h-full bg-background rounded-[48px] overflow-hidden relative">
           {/* Dynamic Island */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-full z-50"></div>
-          
+
           {/* Main content container */}
           <div className="w-full h-full flex flex-col relative bg-gray-50">
-            
             {/* Header with back button */}
             <div className="flex items-center justify-between px-6 pt-16 pb-4">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="w-12 h-12 bg-white rounded-2xl shadow-sm"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
               >
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </Button>
@@ -59,20 +85,26 @@ const LetsBeginScreen: React.FC = () => {
 
             {/* Role selection buttons */}
             <div className="px-6 pb-8 space-y-4">
-              <Button 
-                variant="default" 
-                size="lg" 
+              <Button
+                variant="default"
+                size="lg"
                 className="w-full h-14 text-lg rounded-xl bg-slate-800 hover:bg-slate-700 text-white"
-                onClick={() => navigate('/employer/onboarding')}
+                onClick={async () => {
+                  const ok = await setUserType("employer");
+                  if (ok) navigate("/employer/onboarding");
+                }}
               >
                 I want to hire
               </Button>
-              
-              <Button 
-                variant="default" 
-                size="lg" 
+
+              <Button
+                variant="default"
+                size="lg"
                 className="w-full h-14 text-lg rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={() => navigate('/whv/onboarding')}
+                onClick={async () => {
+                  const ok = await setUserType("whv");
+                  if (ok) navigate("/whv/onboarding");
+                }}
               >
                 I want to get hired
               </Button>
@@ -81,8 +113,8 @@ const LetsBeginScreen: React.FC = () => {
             {/* Sign in link */}
             <div className="px-6 pb-12 text-center">
               <p className="text-brand-secondary-text">
-                Already have an account? 
-                <button 
+                Already have an account?
+                <button
                   onClick={() => setShowSignInModal(true)}
                   className="text-brand-text font-medium ml-1 hover:underline"
                 >
@@ -90,7 +122,6 @@ const LetsBeginScreen: React.FC = () => {
                 </button>
               </p>
             </div>
-
           </div>
         </div>
       </div>
@@ -99,3 +130,4 @@ const LetsBeginScreen: React.FC = () => {
 };
 
 export default LetsBeginScreen;
+
