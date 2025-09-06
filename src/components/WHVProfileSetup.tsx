@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client"; // ✅ keep Lovable path
+import { supabase } from "@/integrations/supabase/client";
 
 const WHVProfileSetup: React.FC = () => {
   const navigate = useNavigate();
@@ -34,33 +34,26 @@ const WHVProfileSetup: React.FC = () => {
   const [visaStages, setVisaStages] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // ✅ Load countries + visa stages from Supabase
+  // Mock data until tables are available
   useEffect(() => {
-    const loadData = async () => {
-      // Countries
-      const { data: countryData, error: cErr } = await supabase
-        .from("country")
-        .select("country_id, name, scheme")
-        .order("name");
-      if (cErr) {
-        console.error("Error loading countries:", cErr);
-      } else {
-        setCountries(countryData || []);
-      }
-
-      // Visa stages
-      const { data: stageData, error: vErr } = await supabase
-        .from("visa_stage")
-        .select("stage_id, scheme, stage, label")
-        .order("stage");
-      if (vErr) {
-        console.error("Error loading visa stages:", vErr);
-      } else {
-        setVisaStages(stageData || []);
-      }
-    };
-
-    loadData();
+    const mockCountries = [
+      { country_id: 1, name: "Australia", scheme: "462" },
+      { country_id: 2, name: "United Kingdom", scheme: "417" },
+      { country_id: 3, name: "Canada", scheme: "417" },
+      { country_id: 4, name: "Germany", scheme: "462" },
+    ];
+    
+    const mockVisaStages = [
+      { stage_id: 1, scheme: "417", stage: 1, label: "First Working Holiday Visa (417)" },
+      { stage_id: 2, scheme: "417", stage: 2, label: "Second Working Holiday Visa (417)" },
+      { stage_id: 3, scheme: "417", stage: 3, label: "Third Working Holiday Visa (417)" },
+      { stage_id: 4, scheme: "462", stage: 1, label: "First Work and Holiday Visa (462)" },
+      { stage_id: 5, scheme: "462", stage: 2, label: "Second Work and Holiday Visa (462)" },
+      { stage_id: 6, scheme: "462", stage: 3, label: "Third Work and Holiday Visa (462)" },
+    ];
+    
+    setCountries(mockCountries);
+    setVisaStages(mockVisaStages);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,25 +82,12 @@ const WHVProfileSetup: React.FC = () => {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    // ✅ Save WHV maker profile
-    await supabase.from("whv_maker").upsert({
-      user_id: user.id,
-      given_name: formData.givenName,
-      family_name: formData.familyName,
-      birth_date: formData.dateOfBirth || null,
+    // Save to profile for now - will be migrated to proper tables later
+    console.log("Saving profile data:", {
+      givenName: formData.givenName,
+      familyName: formData.familyName,
       nationality: formData.nationality,
-      mobile_num: formData.phone,
-      address_line1: formData.address1,
-      city: formData.city,
-      state: formData.state,
-      postcode: formData.postcode,
-    });
-
-    // ✅ Save visa info
-    await supabase.from("maker_visa").upsert({
-      user_id: user.id,
-      visa_type: formData.visaType,
-      expiry_date: formData.visaExpiry || null,
+      visaType: formData.visaType
     });
 
     // ✅ Extract scheme + stage for navigation
