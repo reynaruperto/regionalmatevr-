@@ -127,8 +127,7 @@ const WHVProfileSetup: React.FC = () => {
         suburb: formData.suburb,
         state: formData.state,
         postcode: formData.postcode,
-        is_profile_visible: true,
-      } as any,
+      },
       { onConflict: "user_id" }
     );
     if (whvError) {
@@ -144,14 +143,15 @@ const WHVProfileSetup: React.FC = () => {
         user_id: user.id,
         visa_type: chosenStage?.label || formData.visaType,
         expiry_date: formData.visaExpiry,
-      } as any,
+      },
       { onConflict: "user_id,visa_type" }
     );
-    if (visaError) {
-      console.error("Failed to save Visa:", visaError);
-      alert("Error saving visa info. Please try again.");
-      return;
-    }
+    if (whvError) {
+  console.error("❌ WHV insert error:", whvError);
+  alert(`Error saving profile: ${whvError.message}`);
+  return;
+}
+
 
     navigate("/whv/work-preferences");
   };
@@ -217,7 +217,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <Input
                   name="dateOfBirth"
-                  type="date"
+                  type="date" // 👈 now calendar picker
                   value={formData.dateOfBirth}
                   onChange={handleChange}
                 />
@@ -279,7 +279,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <Input
                   name="visaExpiry"
-                  type="date"
+                  type="date" // 👈 now calendar picker
                   value={formData.visaExpiry}
                   onChange={handleChange}
                 />
@@ -379,7 +379,6 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
-
 
 
 
