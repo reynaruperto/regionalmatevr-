@@ -12,19 +12,10 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/supabase-extensions";
 
-type Country = {
-  country_id: number;
-  name: string;
-  scheme: "417" | "462";
-};
-
-type VisaStage = {
-  stage_id: number;
-  sub_class: "417" | "462";
-  stage: number;
-  label: string;
-};
+type Country = Database["public"]["Tables"]["country"]["Row"];
+type VisaStage = Database["public"]["Tables"]["visa_stage"]["Row"];
 
 const australianStates = [
   "Australian Capital Territory",
@@ -122,7 +113,7 @@ const WHVProfileSetup: React.FC = () => {
     }
 
     // ✅ Save profile to whv_maker
-    const { error: whvError } = await (supabase as any).from("whv_maker").upsert(
+    const { error: whvError } = await supabase.from("whv_maker").upsert(
       {
         user_id: user.id,
         given_name: formData.givenName,
@@ -147,7 +138,7 @@ const WHVProfileSetup: React.FC = () => {
 
     // ✅ Save visa to maker_visa
     const chosenStage = visaStages.find((v) => v.label === formData.visaType);
-    const { error: visaError } = await (supabase as any).from("maker_visa").upsert(
+    const { error: visaError } = await supabase.from("maker_visa").upsert(
       {
         user_id: user.id,
         visa_type: chosenStage?.label || formData.visaType,
@@ -225,7 +216,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <Input
                   name="dateOfBirth"
-                  type="date" // 👈 now calendar picker
+                  type="date"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
                 />
@@ -287,7 +278,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <Input
                   name="visaExpiry"
-                  type="date" // 👈 now calendar picker
+                  type="date"
                   value={formData.visaExpiry}
                   onChange={handleChange}
                 />
@@ -387,6 +378,7 @@ const WHVProfileSetup: React.FC = () => {
 };
 
 export default WHVProfileSetup;
+
 
 
 
