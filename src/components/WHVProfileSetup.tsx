@@ -11,8 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft, Info } from "lucide-react";
-import { supabaseExtended as supabase } from "@/lib/extendedSupabaseClient";
-import type { Database } from "@/lib/extendedDatabase";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/supabase-extensions";
 
 const australianStates = [
   "Australian Capital Territory",
