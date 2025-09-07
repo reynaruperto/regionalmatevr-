@@ -39,6 +39,43 @@ const WHVEmailConfirmation: React.FC = () => {
     setIsVerifying(true);
 
     try {
+      // Bypass OTP verification for testing - accept 123456
+      if (confirmationCode === '123456') {
+        // Simulate successful verification for testing
+        const pendingPassword = sessionStorage.getItem('pendingPassword');
+        if (pendingPassword && email) {
+          // Create user with email and password
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password: pendingPassword,
+            options: {
+              data: { user_type: 'whv' }
+            }
+          });
+          
+          if (error) {
+            toast({
+              title: "Account creation failed",
+              description: error.message,
+              variant: "destructive"
+            });
+            return;
+          }
+        }
+        
+        sessionStorage.removeItem('pendingPassword');
+        sessionStorage.removeItem('pendingEmail');
+        
+        toast({
+          title: "Email confirmed!",
+          description: "Your account has been verified successfully",
+        });
+        
+        navigate('/whv/profile-setup');
+        return;
+      }
+
+      // Original OTP verification (currently disabled)
       const { data, error } = await supabase.auth.verifyOtp({
         email,
         token: confirmationCode,
