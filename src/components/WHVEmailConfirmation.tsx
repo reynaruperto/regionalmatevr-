@@ -39,10 +39,10 @@ const WHVEmailConfirmation: React.FC = () => {
     setIsVerifying(true);
 
     try {
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         email,
         token: confirmationCode,
-        type: 'signup'
+        type: 'email'
       });
 
       if (error) {
@@ -54,6 +54,21 @@ const WHVEmailConfirmation: React.FC = () => {
           variant: "destructive"
         });
         return;
+      }
+
+      // After successful OTP verification, update user password if one was stored
+      const pendingPassword = sessionStorage.getItem('pendingPassword');
+      if (pendingPassword && data.user) {
+        const { error: passwordError } = await supabase.auth.updateUser({
+          password: pendingPassword
+        });
+        
+        if (passwordError) {
+          console.error('Password update error:', passwordError);
+          // Don't fail the flow for password error, user can reset later
+        }
+        
+        sessionStorage.removeItem('pendingPassword');
       }
 
       // Clear pending email from session
@@ -82,11 +97,10 @@ const WHVEmailConfirmation: React.FC = () => {
     
     setIsResending(true);
     try {
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
+      const { error } = await supabase.auth.signInWithOtp({
         email: email,
         options: {
-          emailRedirectTo: `${window.location.origin}/whv/profile-setup`
+          shouldCreateUser: false
         }
       });
 

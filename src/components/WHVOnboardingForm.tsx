@@ -43,22 +43,26 @@ const WHVOnboardingForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
+      // Send OTP to email for signup verification
+      const { error } = await supabase.auth.signInWithOtp({
         email: data.email,
-        password: data.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/whv/profile-setup`,
-          data: { user_type: 'whv' }
+          shouldCreateUser: true,
+          data: { 
+            user_type: 'whv',
+            password: data.password // Store password in metadata for later use
+          }
         }
       });
 
       if (error) throw error;
 
       sessionStorage.setItem('pendingEmail', data.email);
+      sessionStorage.setItem('pendingPassword', data.password);
 
       toast({
         title: "Account created successfully!",
-        description: "Please check your email for a confirmation code",
+        description: "Please check your email for a 6-digit confirmation code",
       });
 
       navigate('/whv/email-confirmation');
