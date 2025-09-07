@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/supabase-extensions";
 
@@ -84,6 +84,7 @@ const WHVProfileSetup: React.FC = () => {
     // ✅ Validation
     if (!formData.givenName) newErrors.givenName = "Required";
     if (!formData.familyName) newErrors.familyName = "Required";
+    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Required";
     if (!formData.nationality) newErrors.nationality = "Required";
     if (!formData.visaType) newErrors.visaType = "Required";
     if (!formData.visaExpiry) newErrors.visaExpiry = "Required";
@@ -106,7 +107,10 @@ const WHVProfileSetup: React.FC = () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      alert("User not logged in — please restart signup flow.");
+      return;
+    }
 
     // ✅ Save profile to whv_maker
     const { error: whvError } = await supabase.from("whv_maker").upsert(
@@ -115,7 +119,7 @@ const WHVProfileSetup: React.FC = () => {
         given_name: formData.givenName,
         middle_name: formData.middleName || null,
         family_name: formData.familyName,
-        birth_date: formData.dateOfBirth || new Date().toISOString().split('T')[0],
+        birth_date: formData.dateOfBirth,
         nationality: formData.nationality,
         mobile_num: formData.phone,
         address_line1: formData.address1,
@@ -123,12 +127,12 @@ const WHVProfileSetup: React.FC = () => {
         suburb: formData.suburb,
         state: formData.state,
         postcode: formData.postcode,
-        is_profile_visible: true,
-      } as Database["public"]["Tables"]["whv_maker"]["Insert"],
+      },
       { onConflict: "user_id" }
     );
     if (whvError) {
       console.error("Failed to save WHV profile:", whvError);
+      alert("Error saving profile. Please try again.");
       return;
     }
 
@@ -139,11 +143,12 @@ const WHVProfileSetup: React.FC = () => {
         user_id: user.id,
         visa_type: chosenStage?.label || formData.visaType,
         expiry_date: formData.visaExpiry,
-      } as Database["public"]["Tables"]["maker_visa"]["Insert"],
+      },
       { onConflict: "user_id,visa_type" }
     );
     if (visaError) {
       console.error("Failed to save Visa:", visaError);
+      alert("Error saving visa info. Please try again.");
       return;
     }
 
@@ -204,20 +209,18 @@ const WHVProfileSetup: React.FC = () => {
                 {errors.familyName && <p className="text-red-500">{errors.familyName}</p>}
               </div>
 
-              {/* Date of Birth with tooltip */}
+              {/* Date of Birth */}
               <div>
-                <div className="flex items-center gap-2">
-                  <Label>Date of Birth</Label>
-                  <span title="Format: DD MM YYYY">
-                    <Info size={16} className="text-gray-400" />
-                  </span>
-                </div>
+                <Label>
+                  Date of Birth <span className="text-red-500">*</span>
+                </Label>
                 <Input
                   name="dateOfBirth"
+                  type="date" // 👈 now calendar picker
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  placeholder="DD MM YYYY"
                 />
+                {errors.dateOfBirth && <p className="text-red-500">{errors.dateOfBirth}</p>}
               </div>
 
               {/* Nationality */}
@@ -275,7 +278,7 @@ const WHVProfileSetup: React.FC = () => {
                 </Label>
                 <Input
                   name="visaExpiry"
-                  type="date"
+                  type="date" // 👈 now calendar picker
                   value={formData.visaExpiry}
                   onChange={handleChange}
                 />
