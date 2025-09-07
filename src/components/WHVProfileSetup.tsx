@@ -12,10 +12,20 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/supabase-extensions";
+import type { Database } from "@/integrations/supabase/types";
 
-type Country = Database["public"]["Tables"]["country"]["Row"];
-type VisaStage = Database["public"]["Tables"]["visa_stage"]["Row"];
+type Country = {
+  country_id: number;
+  name: string;
+  scheme: string;
+};
+
+type VisaStage = {
+  stage_id: number;
+  sub_class: string;
+  stage: number;
+  label: string;
+};
 
 const australianStates = [
   "Australian Capital Territory",

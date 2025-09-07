@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      country: {
+        Row: {
+          country_id: number
+          name: string
+          scheme: string
+        }
+        Insert: {
+          country_id?: number
+          name: string
+          scheme: string
+        }
+        Update: {
+          country_id?: number
+          name?: string
+          scheme?: string
+        }
+        Relationships: []
+      }
+      industry: {
+        Row: {
+          description: string | null
+          industry_id: number
+          name: string
+        }
+        Insert: {
+          description?: string | null
+          industry_id?: number
+          name: string
+        }
+        Update: {
+          description?: string | null
+          industry_id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      maker_visa: {
+        Row: {
+          expiry_date: string
+          user_id: string
+          visa_type: string
+        }
+        Insert: {
+          expiry_date: string
+          user_id: string
+          visa_type: string
+        }
+        Update: {
+          expiry_date?: string
+          user_id?: string
+          visa_type?: string
+        }
+        Relationships: []
+      }
+      visa_stage: {
+        Row: {
+          label: string
+          stage: number
+          stage_id: number
+          sub_class: string
+        }
+        Insert: {
+          label: string
+          stage: number
+          stage_id?: number
+          sub_class: string
+        }
+        Update: {
+          label?: string
+          stage?: number
+          stage_id?: number
+          sub_class?: string
+        }
+        Relationships: []
+      }
+      whv_maker: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          birth_date: string
+          created_at: string | null
+          family_name: string
+          given_name: string
+          is_profile_visible: boolean | null
+          middle_name: string | null
+          mobile_num: string | null
+          nationality: string
+          postcode: string | null
+          profile_photo: string | null
+          state: string | null
+          suburb: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          birth_date: string
+          created_at?: string | null
+          family_name: string
+          given_name: string
+          is_profile_visible?: boolean | null
+          middle_name?: string | null
+          mobile_num?: string | null
+          nationality: string
+          postcode?: string | null
+          profile_photo?: string | null
+          state?: string | null
+          suburb?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          birth_date?: string
+          created_at?: string | null
+          family_name?: string
+          given_name?: string
+          is_profile_visible?: boolean | null
+          middle_name?: string | null
+          mobile_num?: string | null
+          nationality?: string
+          postcode?: string | null
+          profile_photo?: string | null
+          state?: string | null
+          suburb?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +154,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_type: "whv_maker" | "employer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +281,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_type: ["whv_maker", "employer"],
+    },
   },
 } as const
