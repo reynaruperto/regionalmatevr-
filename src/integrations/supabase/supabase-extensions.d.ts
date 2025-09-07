@@ -1,6 +1,6 @@
 import type { Database as OriginalDatabase } from "./types";
 
-export type Database = {
+export type Database = OriginalDatabase & {
   public: {
     Tables: OriginalDatabase["public"]["Tables"] & {
       country: {
