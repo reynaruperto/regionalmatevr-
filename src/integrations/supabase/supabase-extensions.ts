@@ -113,13 +113,9 @@ type ExtendedTables = {
   };
 };
 
-export type Database = {
-  __InternalSupabase: OriginalDatabase["__InternalSupabase"];
+export type Database = Omit<OriginalDatabase, "public"> & {
   public: {
-    Tables: OriginalDatabase["public"]["Tables"] & ExtendedTables;
-    Views: OriginalDatabase["public"]["Views"];
-    Functions: OriginalDatabase["public"]["Functions"];
-    Enums: OriginalDatabase["public"]["Enums"];
-    CompositeTypes: OriginalDatabase["public"]["CompositeTypes"];
+    Tables: Omit<OriginalDatabase["public"]["Tables"], keyof ExtendedTables> &
+      ExtendedTables;
   };
 };
