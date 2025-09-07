@@ -170,19 +170,33 @@ const WHVWorkPreferences: React.FC = () => {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    await supabase.from("whv_maker").update({ tagline }).eq("user_id", user.id);
+    const { error: updateError } = await (supabase as any)
+      .from("whv_maker")
+      .update({ tagline })
+      .eq("user_id", user.id);
+
+    if (updateError) {
+      console.error("Failed to update tagline:", updateError);
+      return;
+    }
 
     for (const industryId of selectedIndustries) {
       const rolesForIndustry = selectedRoles.length ? selectedRoles : [null];
       for (const roleId of rolesForIndustry) {
         for (const state of preferredStates) {
-          await supabase.from("maker_preference").insert({
-            user_id: user.id,
-            state: state as "Australian Capital Territory" | "New South Wales" | "Northern Territory" | "Queensland" | "South Australia" | "Tasmania" | "Victoria" | "Western Australia",
-            suburb_city: preferredAreas.join(", "),
-            industry_id: industryId,
-            industry_role_id: roleId,
-          });
+          const { error: insertError } = await (supabase as any)
+            .from("maker_preference")
+            .insert({
+              user_id: user.id,
+              state,
+              suburb_city: preferredAreas.join(", "),
+              industry_id: industryId,
+              industry_role_id: roleId,
+            });
+
+          if (insertError) {
+            console.error("Failed to insert preference:", insertError);
+          }
         }
       }
     }
