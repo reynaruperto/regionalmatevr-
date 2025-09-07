@@ -113,7 +113,7 @@ const WHVProfileSetup: React.FC = () => {
     }
 
     // ✅ Save profile to whv_maker
-    const { error: whvError } = await supabase.from("whv_maker").upsert(
+    const { error: whvError } = await (supabase.from("whv_maker") as any).upsert(
       {
         user_id: user.id,
         given_name: formData.givenName,
@@ -138,7 +138,7 @@ const WHVProfileSetup: React.FC = () => {
 
     // ✅ Save visa to maker_visa
     const chosenStage = visaStages.find((v) => v.label === formData.visaType);
-    const { error: visaError } = await supabase.from("maker_visa").upsert(
+    const { error: visaError } = await (supabase.from("maker_visa") as any).upsert(
       {
         user_id: user.id,
         visa_type: chosenStage?.label || formData.visaType,
