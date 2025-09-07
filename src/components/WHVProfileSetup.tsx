@@ -127,7 +127,8 @@ const WHVProfileSetup: React.FC = () => {
         suburb: formData.suburb,
         state: formData.state,
         postcode: formData.postcode,
-      },
+        is_profile_visible: true,
+      } as Database["public"]["Tables"]["whv_maker"]["Insert"],
       { onConflict: "user_id" }
     );
     if (whvError) {
@@ -143,7 +144,7 @@ const WHVProfileSetup: React.FC = () => {
         user_id: user.id,
         visa_type: chosenStage?.label || formData.visaType,
         expiry_date: formData.visaExpiry,
-      },
+      } as Database["public"]["Tables"]["maker_visa"]["Insert"],
       { onConflict: "user_id,visa_type" }
     );
     if (visaError) {
